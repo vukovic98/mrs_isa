@@ -14,7 +14,7 @@ import com.clinic.team16.service.DoctorService;
 
 @RestController
 @RequestMapping("/doctor")
-public class DoctorControl {
+public class DoctorController {
 	
 	@Autowired
 	DoctorService doctorService;
