@@ -1,4 +1,4 @@
-package com.clinic.team16.control;
+package com.clinic.team16.controller;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
