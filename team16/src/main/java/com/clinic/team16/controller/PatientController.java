@@ -10,7 +10,7 @@ import com.clinic.team16.beans.Patient;
 import org.springframework.http.*;
 @RestController
 @RequestMapping(value = "/patient")
-public class PatientControler {
+public class PatientController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE )
 	public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) throws Exception {
