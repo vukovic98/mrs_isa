@@ -21,6 +21,7 @@ public class DoctorController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Doctor> createDoctor(@RequestBody Doctor doctor) throws Exception{
+		System.out.println("Pozvana metoda kontrolera za dodavanje doktora.");
 		Doctor newDoctor = doctorService.create(doctor);
 		return new ResponseEntity<Doctor>(newDoctor,HttpStatus.CREATED);
 	}

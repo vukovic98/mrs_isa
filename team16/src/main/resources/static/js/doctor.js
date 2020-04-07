@@ -29,9 +29,6 @@ function fire_ajax_submit() {
         url: "/doctorApi",
         data: JSON.stringify(add),
         dataType: 'json',
-        headers: {
-            "Authorization": "Basic " + "username:password"
-          },
         cache: false,
         timeout: 600000,
         success: function (data) {
