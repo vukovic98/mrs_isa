@@ -12,6 +12,7 @@ public class DoctorService {
 	private DoctorRepository doctorRepository;
 	
 	public Doctor create(Doctor doc) throws Exception{
+		System.out.println("Pozvana metoda servisa za dodavanje doktora.");
 		Doctor savedDoc = doctorRepository.create(doc);
 		return savedDoc;
 	}
