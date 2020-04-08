@@ -28,7 +28,7 @@ function fire_ajax_submit() {
         type: "POST",
         contentType: "application/json",
         url: "/patientApi",
-        data: JSON.stringify(search),
+        data: JSON.stringify(add),
         dataType: 'json',
         cache: false,
         timeout: 600000,
