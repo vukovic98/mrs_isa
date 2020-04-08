@@ -21,4 +21,10 @@ public class Control {
 	   public String nurse() {
 		   return "nurse";
 	   }
+	   
+	   
+	   @RequestMapping(value = "/patient")
+	   public String patient() {
+		   return "patient";
+	   }
 }

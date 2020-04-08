@@ -9,7 +9,7 @@ import com.clinic.team16.beans.Patient;
 
 import org.springframework.http.*;
 @RestController
-@RequestMapping(value = "/patient")
+@RequestMapping(value = "/patientApi")
 public class PatientController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE )

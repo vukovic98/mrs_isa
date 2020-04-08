@@ -27,7 +27,7 @@ function fire_ajax_submit() {
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "/patient,
+        url: "/patientApi",
         data: JSON.stringify(search),
         dataType: 'json',
         cache: false,
