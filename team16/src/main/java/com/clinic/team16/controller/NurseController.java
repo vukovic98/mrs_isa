@@ -14,7 +14,7 @@ import com.clinic.team16.beans.Nurse;
 import com.clinic.team16.service.NurseService;
 
 @RestController
-@RequestMapping("/nurse")
+@RequestMapping("/nurseApi")
 public class NurseController {
 	
 	@Autowired
