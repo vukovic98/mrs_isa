@@ -18,7 +18,8 @@ function fire_ajax_submit() {
     add["lastName"] = $("#inputLastName").val();
     add["address"] = $("#inputAddress").val();
     add["city"] = $("#inputCity").val();
-    add["country"] = $("#inputPhoneNumber").val();
+    add["country"] = $("#inputCountry").val();
+    add["phone"] = $("#inputPhoneNumber").val();
     add["insuranceNumber"] = $("#inputInsuranceNumber").val();
     
 
@@ -28,7 +29,7 @@ function fire_ajax_submit() {
         type: "POST",
         contentType: "application/json",
         url: "/patientApi",
-        data: JSON.stringify(search),
+        data: JSON.stringify(add),
         dataType: 'json',
         cache: false,
         timeout: 600000,

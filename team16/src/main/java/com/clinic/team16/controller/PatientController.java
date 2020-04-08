@@ -6,16 +6,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Patient;
+import com.clinic.team16.service.PatientService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+
 @RestController
-@RequestMapping(value = "/patientApi")
+@RequestMapping("/patientApi")
 public class PatientController {
+	
+	@Autowired
+	private PatientService patientService;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE )
 	public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) throws Exception {
-		Patient savedPatient = new Patient();
-		return new ResponseEntity<Patient>(savedPatient, HttpStatus.OK);
+		
+		Patient newPatient = patientService.create(patient);
+		
+		return new ResponseEntity<Patient>(newPatient, HttpStatus.CREATED);
 		
 		 
 	}

@@ -8,11 +8,14 @@ import com.clinic.team16.repository.PatientRepository;
 
 @Service
 public class PatientService {
+	
 	@Autowired
 	private PatientRepository patientRepository; 
 	
 	public Patient create(Patient patient) throws Exception{
+		
 		Patient savedPatient = patientRepository.create(patient);
+		
 		return savedPatient;
 	}
 
