@@ -1,6 +1,5 @@
-package com.clinic.team16.beans;
+package com.clinic.team16.beans;import java.util.*;
 
-import java.util.*;
 
 
 public class ClinicAdministrator extends User {

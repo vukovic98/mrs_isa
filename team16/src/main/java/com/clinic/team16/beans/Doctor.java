@@ -1,8 +1,6 @@
 package com.clinic.team16.beans;
 
 import java.util.*;
-
-
 public class Doctor extends User {
 
    public Clinic clinic;
@@ -36,10 +34,6 @@ public void setClinic(Clinic clinic) {
 }
 
 
-public ArrayList<LeaveRequest> getLeaveRequests() {
-	return leaveRequests;
-}
-
 
 public void setLeaveRequests(ArrayList<LeaveRequest> leaveRequests) {
 	this.leaveRequests = leaveRequests;
@@ -54,7 +48,7 @@ public void setAppointments(ArrayList<Appointment> appointments) {
 public ArrayList<Appointment> getAppointments() {
       if (appointments == null)
          appointments = new ArrayList<Appointment>();
-      return appointment;
+      return appointments;
    }
 
    
@@ -67,11 +61,11 @@ public ArrayList<Appointment> getAppointments() {
    public void addAppointment(Appointment newAppointment) {
       if (newAppointment == null)
          return;
-      if (this.appointment == null)
-         this.appointment = new ArrayList<Appointment>();
-      if (!this.appointment.contains(newAppointment))
+      if (this.appointments == null)
+         this.appointments = new ArrayList<Appointment>();
+      if (!this.appointments.contains(newAppointment))
       {
-         this.appointment.add(newAppointment);
+         this.appointments.add(newAppointment);
          newAppointment.setDoctor(this);      
       }
    }
@@ -79,19 +73,19 @@ public ArrayList<Appointment> getAppointments() {
    public void removeAppointment(Appointment oldAppointment) {
       if (oldAppointment == null)
          return;
-      if (this.appointment != null)
-         if (this.appointment.contains(oldAppointment))
+      if (this.appointments != null)
+         if (this.appointments.contains(oldAppointment))
          {
-            this.appointment.remove(oldAppointment);
+            this.appointments.remove(oldAppointment);
             oldAppointment.setDoctor((Doctor)null);
          }
    }
    
    public void removeAllAppointment() {
-      if (appointment != null)
+      if (appointments != null)
       {
          Appointment oldAppointment;
-         for (java.util.Iterator iter = getIteratorAppointment(); iter.hasNext();)
+         for (java.util.Iterator iter = getIteratorAppointments(); iter.hasNext();)
          {
             oldAppointment = (Appointment)iter.next();
             iter.remove();
@@ -99,16 +93,22 @@ public ArrayList<Appointment> getAppointments() {
          }
       }
    }
-   public java.util.Collection<LeaveRequest> getLeaveRequest() {
-      if (leaveRequest == null)
-         leaveRequest = new ArrayList<LeaveRequest>();
-      return leaveRequest;
+   public ArrayList<LeaveRequest> getLeaveRequests() {
+      if (leaveRequests == null)
+         leaveRequests = new ArrayList<LeaveRequest>();
+      return leaveRequests;
    }
    
    public java.util.Iterator getIteratorLeaveRequest() {
-      if (leaveRequest == null)
-         leaveRequest = new ArrayList<LeaveRequest>();
-      return leaveRequest.iterator();
+      if (leaveRequests == null)
+         leaveRequests = new ArrayList<LeaveRequest>();
+      return leaveRequests.iterator();
+   }
+   
+   public java.util.Iterator getIteratorAppointments(){
+	   if(appointments == null)
+		   appointments = new ArrayList<Appointment>();
+	   return appointments.iterator();
    }
    
    public void setLeaveRequest(java.util.Collection<LeaveRequest> newLeaveRequest) {
@@ -120,35 +120,32 @@ public ArrayList<Appointment> getAppointments() {
    public void addLeaveRequest(LeaveRequest newLeaveRequest) {
       if (newLeaveRequest == null)
          return;
-      if (this.leaveRequest == null)
-         this.leaveRequest = new java.util.HashSet<LeaveRequest>();
-      if (!this.leaveRequest.contains(newLeaveRequest))
+      if (this.leaveRequests == null)
+         this.leaveRequests = new ArrayList<LeaveRequest>();
+      if (!this.leaveRequests.contains(newLeaveRequest))
       {
-         this.leaveRequest.add(newLeaveRequest);
-         newLeaveRequest.setDoctor(this);      
+         this.leaveRequests.add(newLeaveRequest);    
       }
    }
    
    public void removeLeaveRequest(LeaveRequest oldLeaveRequest) {
       if (oldLeaveRequest == null)
          return;
-      if (this.leaveRequest != null)
-         if (this.leaveRequest.contains(oldLeaveRequest))
+      if (this.leaveRequests != null)
+         if (this.leaveRequests.contains(oldLeaveRequest))
          {
-            this.leaveRequest.remove(oldLeaveRequest);
-            oldLeaveRequest.setDoctor((Doctor)null);
+            this.leaveRequests.remove(oldLeaveRequest);
          }
    }
    
    public void removeAllLeaveRequest() {
-      if (leaveRequest != null)
+      if (leaveRequests != null)
       {
          LeaveRequest oldLeaveRequest;
          for (java.util.Iterator iter = getIteratorLeaveRequest(); iter.hasNext();)
          {
             oldLeaveRequest = (LeaveRequest)iter.next();
             iter.remove();
-            oldLeaveRequest.setDoctor((Doctor)null);
          }
       }
    }
