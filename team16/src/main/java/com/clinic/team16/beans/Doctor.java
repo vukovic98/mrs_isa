@@ -3,7 +3,7 @@
  * Author:  Vladimir
  * Purpose: Defines the Class Doctor
  ***********************************************************************/
-
+package com.clinic.team16.beans;
 import java.util.*;
 
 /** @pdOid e417e9f4-c2b3-48ed-8573-998ffd23bf80 */

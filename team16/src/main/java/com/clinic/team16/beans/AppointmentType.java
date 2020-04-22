@@ -4,7 +4,7 @@
  * Author:  Vladimir
  * Purpose: Defines the Class AppointmentType
  ***********************************************************************/
-
+package com.clinic.team16.beans;
 import java.util.*;
 
 public class AppointmentType {

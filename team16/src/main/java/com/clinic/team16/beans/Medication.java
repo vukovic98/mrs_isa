@@ -3,7 +3,7 @@
  * Author:  Vladimir
  * Purpose: Defines the Class Medication
  ***********************************************************************/
-
+package com.clinic.team16.beans;
 import java.util.*;
 
 public class Medication {

@@ -4,7 +4,7 @@
  * Author:  Vladimir
  * Purpose: Defines the Class User
  ***********************************************************************/
-
+package com.clinic.team16.beans;
 import java.util.*;
 
 public class User {

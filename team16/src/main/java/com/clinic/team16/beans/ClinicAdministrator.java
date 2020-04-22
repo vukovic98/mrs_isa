@@ -5,7 +5,7 @@
  ***********************************************************************/
 
 import java.util.*;
-
+package com.clinic.team16.beans;
 
 public class ClinicAdministrator extends User {
    

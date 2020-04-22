@@ -3,7 +3,7 @@
  * Author:  Vladimir
  * Purpose: Defines the Class ClinicalCenterAdministrator
  ***********************************************************************/
-
+package com.clinic.team16.beans;
 import java.util.*;
 
 public class ClinicalCenterAdministrator extends User {
