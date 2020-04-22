@@ -41,7 +41,7 @@ public void setLeaveRequests(ArrayList<LeaveRequest> leaveRequests) {
 
 
 public void setAppointments(ArrayList<Appointment> appointments) {
-	this.appointment = appointments;
+	this.appointments = appointments;
 }
 
 
