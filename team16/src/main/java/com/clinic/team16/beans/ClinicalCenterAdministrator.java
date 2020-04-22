@@ -1,9 +1,5 @@
-/***********************************************************************
- * Module:  ClinicalCenterAdministrator.java
- * Author:  Vladimir
- * Purpose: Defines the Class ClinicalCenterAdministrator
- ***********************************************************************/
 package com.clinic.team16.beans;
+
 import java.util.*;
 
 public class ClinicalCenterAdministrator extends User {
@@ -46,7 +42,7 @@ public void setAppointmentRequest(AppointmentRequest[] appointmentRequest) {
 
 public ArrayList<RegistrationRequest> getRegistrationRequest() {
       if (registrationRequest == null)
-         registrationRequest = new java.util.HashSet<RegistrationRequest>();
+         registrationRequest = new ArrayList<RegistrationRequest>();
       return registrationRequest;
    }
    

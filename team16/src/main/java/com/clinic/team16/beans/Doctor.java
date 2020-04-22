@@ -1,12 +1,8 @@
-/***********************************************************************
- * Module:  Doctor.java
- * Author:  Vladimir
- * Purpose: Defines the Class Doctor
- ***********************************************************************/
 package com.clinic.team16.beans;
+
 import java.util.*;
 
-/** @pdOid e417e9f4-c2b3-48ed-8573-998ffd23bf80 */
+
 public class Doctor extends User {
 
    public Clinic clinic;
@@ -51,12 +47,12 @@ public void setLeaveRequests(ArrayList<LeaveRequest> leaveRequests) {
 
 
 public void setAppointments(ArrayList<Appointment> appointments) {
-	this.appointments = appointments;
+	this.appointment = appointments;
 }
 
 
 public ArrayList<Appointment> getAppointments() {
-      if (appointment == null)
+      if (appointments == null)
          appointments = new ArrayList<Appointment>();
       return appointment;
    }

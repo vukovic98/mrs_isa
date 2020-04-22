@@ -1,10 +1,5 @@
-
-/***********************************************************************
- * Module:  Nurse.java
- * Author:  Vladimir
- * Purpose: Defines the Class Nurse
- ***********************************************************************/
 package com.clinic.team16.beans;
+
 import java.util.*;
 
 public class Nurse extends User {
@@ -52,7 +47,6 @@ public class Nurse extends User {
 			this.leaveRequests = new ArrayList<LeaveRequest>();
 		if (!this.leaveRequests.contains(newLeaveRequest)) {
 			this.leaveRequests.add(newLeaveRequest);
-			newLeaveRequest.setNurse(this);
 		}
 	}
 
@@ -62,7 +56,6 @@ public class Nurse extends User {
 		if (this.leaveRequests != null)
 			if (this.leaveRequests.contains(oldLeaveRequest)) {
 				this.leaveRequests.remove(oldLeaveRequest);
-				oldLeaveRequest.setNurse((Nurse) null);
 			}
 	}
 
@@ -72,21 +65,20 @@ public class Nurse extends User {
 			for (java.util.Iterator iter = getIteratorLeaveRequest(); iter.hasNext();) {
 				oldLeaveRequest = (LeaveRequest) iter.next();
 				iter.remove();
-				oldLeaveRequest.setNurse((Nurse) null);
 			}
 		}
 	}
 
 	private Iterator getIteratorLeaveRequest() {
 		if (leaveRequests == null)
-			leaveRequests = new ArrayList<PricelistItem>();
+			leaveRequests = new ArrayList<LeaveRequest>();
 	      return leaveRequests.iterator();
 	}
 
 	public ArrayList<MedicalReport> getMedicalReport() {
 		if (medicalReports == null)
 			medicalReports = new ArrayList<MedicalReport>();
-		return medicalReport;
+		return medicalReports;
 	}
 
 	public void setMedicalReport(ArrayList<MedicalReport> newMedicalReport) {
@@ -129,7 +121,7 @@ public class Nurse extends User {
 
 	private Iterator getIteratorMedicalReport() {
 		if (medicalReports == null)
-			medicalReports = new ArrayList<PricelistItem>();
+			medicalReports = new ArrayList<MedicalReport>();
 	      return medicalReports.iterator();
 	}
 
