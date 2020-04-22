@@ -46,7 +46,7 @@ public void setAppointmentRequest(AppointmentRequest[] appointmentRequest) {
 
 public ArrayList<RegistrationRequest> getRegistrationRequest() {
       if (registrationRequest == null)
-         registrationRequest = new java.util.HashSet<RegistrationRequest>();
+         registrationRequest = new ArrayList<RegistrationRequest>();
       return registrationRequest;
    }
    
