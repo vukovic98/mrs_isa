@@ -1,10 +1,5 @@
-
-/***********************************************************************
- * Module:  Clinic.java
- * Author:  Vladimir
- * Purpose: Defines the Class Clinic
- ***********************************************************************/
 package com.clinic.team16.beans;
+
 import java.util.*;
 
 public class Clinic {
@@ -135,7 +130,7 @@ public class Clinic {
 			}
 	}
 
-	public void removeAllOrdination() {
+	public void removeAllOrdinations() {
 		if (ordinations != null) {
 			Ordination oldOrdination;
 			for (java.util.Iterator iter = getIteratorOrdinations(); iter.hasNext();) {

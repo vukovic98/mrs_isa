@@ -1,8 +1,5 @@
-/***********************************************************************
- * Module:  AppointmentRequest.java
- * Author:  Vladimir
- * Purpose: Defines the Class AppointmentRequest
- ***********************************************************************/
+package com.clinic.team16.beans;
+
 
 import java.util.*;
 
@@ -13,7 +10,6 @@ public class AppointmentRequest {
    
    private Date requestDate;
    
-  
    public ClinicalCenterAdministrator clinicalCenterAdministrator;
 
    public Appointment appointment;

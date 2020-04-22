@@ -1,9 +1,6 @@
-/***********************************************************************
- * Module:  Appointment.java
- * Author:  Vladimir
- * Purpose: Defines the Class Appointment
- ***********************************************************************/
+
 package com.clinic.team16.beans;
+
 import java.util.*;
 
 

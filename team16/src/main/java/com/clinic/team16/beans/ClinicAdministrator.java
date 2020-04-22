@@ -70,8 +70,8 @@ public ArrayList<LeaveRequest> getLeaveRequest() {
          this.leaveRequests = new ArrayList<LeaveRequest>();
       if (!this.leaveRequests.contains(newLeaveRequest))
       {
-         this.leaveRequest.add(newLeaveRequest);
-         newLeaveRequest.setClinicAdministrator(this);      
+         this.leaveRequests.add(newLeaveRequest);
+              
       }
    }
    
@@ -83,7 +83,7 @@ public ArrayList<LeaveRequest> getLeaveRequest() {
          if (this.leaveRequests.contains(oldLeaveRequest))
          {
             this.leaveRequests.remove(oldLeaveRequest);
-            oldLeaveRequest.setClinicAdministrator((ClinicAdministrator)null);
+           
          }
    }
    
@@ -96,7 +96,7 @@ public ArrayList<LeaveRequest> getLeaveRequest() {
          {
             oldLeaveRequest = (LeaveRequest)iter.next();
             iter.remove();
-            oldLeaveRequest.setClinicAdministrator((ClinicAdministrator)null);
+            
          }
       }
    }
