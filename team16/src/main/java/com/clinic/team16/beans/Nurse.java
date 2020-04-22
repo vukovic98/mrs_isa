@@ -1,104 +1,136 @@
-package com.clinic.team16.beans;
 
-public class Nurse {
-	private String email;
-	private String password;
-	private String firstName;
-	private String lastName;
-	private String address;
-	private String city;
-	private String country;
-	private String phoneNumber;
-	private String insuranceNumber;
+/***********************************************************************
+ * Module:  Nurse.java
+ * Author:  Vladimir
+ * Purpose: Defines the Class Nurse
+ ***********************************************************************/
+
+import java.util.*;
+
+public class Nurse extends User {
+	public ArrayList<LeaveRequest> leaveRequests;
+
+	public ArrayList<MedicalReport> medicalReports;
+
+	public Clinic clinic;
 
 	public Nurse() {
 		super();
 	}
 
-	public Nurse(String email, String password, String firstName, String lastName, String address, String city,
-			String country, String phoneNumber, String insuranceNumber) {
+	public Nurse(ArrayList<LeaveRequest> leaveRequest, ArrayList<MedicalReport> medicalReport, Clinic clinic) {
 		super();
-		this.email = email;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-		this.city = city;
-		this.country = country;
-		this.phoneNumber = phoneNumber;
-		this.insuranceNumber = insuranceNumber;
+		this.leaveRequests = leaveRequest;
+		this.medicalReports = medicalReport;
+		this.clinic = clinic;
 	}
 
-	public String getEmail() {
-		return email;
+	public Clinic getClinic() {
+		return clinic;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
 	}
 
-	public String getPassword() {
-		return password;
+	public ArrayList<LeaveRequest> getLeaveRequest() {
+		if (leaveRequests == null)
+			leaveRequests = new ArrayList<LeaveRequest>();
+		return leaveRequests;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setLeaveRequest(ArrayList<LeaveRequest> newLeaveRequest) {
+		removeAllLeaveRequest();
+		for (java.util.Iterator iter = newLeaveRequest.iterator(); iter.hasNext();)
+			addLeaveRequest((LeaveRequest) iter.next());
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public void addLeaveRequest(LeaveRequest newLeaveRequest) {
+		if (newLeaveRequest == null)
+			return;
+		if (this.leaveRequests == null)
+			this.leaveRequests = new ArrayList<LeaveRequest>();
+		if (!this.leaveRequests.contains(newLeaveRequest)) {
+			this.leaveRequests.add(newLeaveRequest);
+			newLeaveRequest.setNurse(this);
+		}
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void removeLeaveRequest(LeaveRequest oldLeaveRequest) {
+		if (oldLeaveRequest == null)
+			return;
+		if (this.leaveRequests != null)
+			if (this.leaveRequests.contains(oldLeaveRequest)) {
+				this.leaveRequests.remove(oldLeaveRequest);
+				oldLeaveRequest.setNurse((Nurse) null);
+			}
 	}
 
-	public String getLastName() {
-		return lastName;
+	public void removeAllLeaveRequest() {
+		if (leaveRequests != null) {
+			LeaveRequest oldLeaveRequest;
+			for (java.util.Iterator iter = getIteratorLeaveRequest(); iter.hasNext();) {
+				oldLeaveRequest = (LeaveRequest) iter.next();
+				iter.remove();
+				oldLeaveRequest.setNurse((Nurse) null);
+			}
+		}
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	private Iterator getIteratorLeaveRequest() {
+		if (leaveRequests == null)
+			leaveRequests = new ArrayList<PricelistItem>();
+	      return leaveRequests.iterator();
 	}
 
-	public String getAddress() {
-		return address;
+	public ArrayList<MedicalReport> getMedicalReport() {
+		if (medicalReports == null)
+			medicalReports = new ArrayList<MedicalReport>();
+		return medicalReport;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setMedicalReport(ArrayList<MedicalReport> newMedicalReport) {
+		removeAllMedicalReport();
+		for (java.util.Iterator iter = newMedicalReport.iterator(); iter.hasNext();)
+			addMedicalReport((MedicalReport) iter.next());
 	}
 
-	public String getCity() {
-		return city;
+	public void addMedicalReport(MedicalReport newMedicalReport) {
+		if (newMedicalReport == null)
+			return;
+		if (this.medicalReports == null)
+			this.medicalReports = new ArrayList<MedicalReport>();
+		if (!this.medicalReports.contains(newMedicalReport)) {
+			this.medicalReports.add(newMedicalReport);
+			newMedicalReport.setNurse(this);
+		}
 	}
 
-	public void setCity(String city) {
-		this.city = city;
+	public void removeMedicalReport(MedicalReport oldMedicalReport) {
+		if (oldMedicalReport == null)
+			return;
+		if (this.medicalReports != null)
+			if (this.medicalReports.contains(oldMedicalReport)) {
+				this.medicalReports.remove(oldMedicalReport);
+				oldMedicalReport.setNurse((Nurse) null);
+			}
 	}
 
-	public String getCountry() {
-		return country;
+	public void removeAllMedicalReport() {
+		if (medicalReports != null) {
+			MedicalReport oldMedicalReport;
+			for (java.util.Iterator iter = getIteratorMedicalReport(); iter.hasNext();) {
+				oldMedicalReport = (MedicalReport) iter.next();
+				iter.remove();
+				oldMedicalReport.setNurse((Nurse) null);
+			}
+		}
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getInsuranceNumber() {
-		return insuranceNumber;
-	}
-
-	public void setInsuranceNumber(String insuranceNumber) {
-		this.insuranceNumber = insuranceNumber;
+	private Iterator getIteratorMedicalReport() {
+		if (medicalReports == null)
+			medicalReports = new ArrayList<PricelistItem>();
+	      return medicalReports.iterator();
 	}
 
 }

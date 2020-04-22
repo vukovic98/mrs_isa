@@ -1,85 +1,84 @@
-package com.clinic.team16.beans;
 
-public class Patient {
-	private String email;
-	private String password;
-	private String firstName;
-	private String lastName;
-	private String address;
-	private String city;
-	private String country;
-	private String phone;
-	private String insuranceNumber;
-	
-	public Patient() {
-		
-	}
-	public Patient(String email, String password, String firstName, String lastName, String address, String city,
-			String country, String phone, String insuranceNumber) {
+/***********************************************************************
+ * Module:  Pacient.java
+ * Author:  Vladimir
+ * Purpose: Defines the Class Pacient
+ ***********************************************************************/
+
+import java.util.*;
+
+public class Pacient extends User {
+
+	public ArrayList<Appointment> appointments;
+
+	public MedicalRecord medicalRecord;
+
+	public Pacient() {
 		super();
-		this.email = email;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-		this.city = city;
-		this.country = country;
-		this.phone = phone;
-		this.insuranceNumber = insuranceNumber;
 	}
-	public String getEmail() {
-		return email;
+
+	public Pacient(ArrayList<Appointment> appointments, MedicalRecord medicalRecord) {
+		super();
+		this.appointments = appointments;
+		this.medicalRecord = medicalRecord;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+
+	public MedicalRecord getMedicalRecord() {
+		return medicalRecord;
 	}
-	public String getPassword() {
-		return password;
+
+	public void setMedicalRecord(MedicalRecord medicalRecord) {
+		this.medicalRecord = medicalRecord;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+
+	public ArrayList<Appointment> getAppointment() {
+		if (appointments == null)
+			appointments = new ArrayList<Appointment>();
+		return this.appointments;
 	}
-	public String getFirstName() {
-		return firstName;
+
+	public java.util.Iterator getIteratorAppointment() {
+		if (appointments == null)
+			appointments = new ArrayList<Appointment>();
+		return appointments.iterator();
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+
+	public void setAppointment(ArrayList<Appointment> newAppointment) {
+		removeAllAppointment();
+		for (java.util.Iterator iter = newAppointment.iterator(); iter.hasNext();)
+			addAppointment((Appointment) iter.next());
 	}
-	public String getLastName() {
-		return lastName;
+
+	public void addAppointment(Appointment newAppointment) {
+		if (newAppointment == null)
+			return;
+		if (this.appointments == null)
+			this.appointments = new ArrayList<Appointment>();
+		if (!this.appointments.contains(newAppointment)) {
+			this.appointments.add(newAppointment);
+			newAppointment.setPacient(this);
+		}
 	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+
+	public void removeAppointment(Appointment oldAppointment) {
+		if (oldAppointment == null)
+			return;
+		if (this.appointments != null)
+			if (this.appointments.contains(oldAppointment)) {
+				this.appointments.remove(oldAppointment);
+				oldAppointment.setPacient((Pacient) null);
+			}
 	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	public String getCountry() {
-		return country;
-	}
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	public String getInsuranceNumber() {
-		return insuranceNumber;
-	}
-	public void setInsuranceNumber(String insuranceNumber) {
-		this.insuranceNumber = insuranceNumber;
+
+	public void removeAllAppointment() {
+		if (appointments != null) {
+			Appointment oldAppointment;
+			for (java.util.Iterator iter = getIteratorAppointment(); iter.hasNext();) {
+				oldAppointment = (Appointment) iter.next();
+				iter.remove();
+				oldAppointment.setPacient((Pacient) null);
+			}
+		}
 	}
 
 }
