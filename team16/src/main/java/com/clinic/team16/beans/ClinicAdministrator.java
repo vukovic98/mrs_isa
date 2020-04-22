@@ -3,9 +3,9 @@
  * Author:  Vladimir
  * Purpose: Defines the Class ClinicAdministrator
  ***********************************************************************/
-
-import java.util.*;
 package com.clinic.team16.beans;
+import java.util.*;
+
 
 public class ClinicAdministrator extends User {
    
