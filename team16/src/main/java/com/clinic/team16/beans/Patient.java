@@ -7,17 +7,17 @@
 
 import java.util.*;
 
-public class Pacient extends User {
+public class Patient extends User {
 
 	public ArrayList<Appointment> appointments;
 
 	public MedicalRecord medicalRecord;
 
-	public Pacient() {
+	public Patient() {
 		super();
 	}
 
-	public Pacient(ArrayList<Appointment> appointments, MedicalRecord medicalRecord) {
+	public Patient(ArrayList<Appointment> appointments, MedicalRecord medicalRecord) {
 		super();
 		this.appointments = appointments;
 		this.medicalRecord = medicalRecord;
