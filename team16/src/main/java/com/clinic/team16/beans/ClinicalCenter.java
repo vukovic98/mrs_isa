@@ -1,18 +1,33 @@
-
-/***********************************************************************
- * Module:  ClinicalCenter.java
- * Author:  Vladimir
- * Purpose: Defines the Class ClinicalCenter
- ***********************************************************************/
 package com.clinic.team16.beans;
+
 import java.util.*;
 
+import javax.persistence.*;
+@Entity
 public class ClinicalCenter {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Clinic_ID", nullable = false)
+	private long id;
+
+	@Column(name = "Name",nullable = false)
 	private String name;
+	
+	@ElementCollection
+	@CollectionTable(name = "clinicCenter_clinics",joinColumns = @JoinColumn(name = "clinicCenter_id"))
 	public ArrayList<Clinic> clinic;
+	
+	@ElementCollection
+	@CollectionTable(name = "clinicCenter_medication",joinColumns = @JoinColumn(name = "clinicCenter_id"))
 	public ArrayList<Medication> medication;
+	
+	@ElementCollection
+	@CollectionTable(name = "clinicCenter_diagnosis",joinColumns = @JoinColumn(name = "clinicCenter_id"))
 	public ArrayList<Diagnosis> diagnosis;
+	
+	@ElementCollection
+	@CollectionTable(name = "clinicCenter_administrators",joinColumns = @JoinColumn(name = "clinicCenter_id"))
 	public ArrayList<ClinicalCenterAdministrator> clinicalCenterAdministrator;
 
 	public ClinicalCenter() {

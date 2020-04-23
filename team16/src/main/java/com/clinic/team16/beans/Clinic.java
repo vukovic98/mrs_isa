@@ -2,15 +2,43 @@ package com.clinic.team16.beans;
 
 import java.util.*;
 
+import javax.persistence.*;
+@Entity
+@Embeddable
 public class Clinic {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Clinic_ID",nullable = false)
+	private long clinicID;
+	
+	@Column(name = "Name",nullable = false)
 	private String name;
+	
+	@Column(name = "Address",nullable = false)
 	private String address;
+	
+	@Column(name = "Description",nullable = false)
 	private String description;
+	
+	@ElementCollection
+	@CollectionTable(name = "clinic_ordinations",joinColumns = @JoinColumn(name = "clinic_id"))
 	public ArrayList<Ordination> ordinations;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "Pricelist_ID")
 	public Pricelist pricelist;
+	
+	@ElementCollection
+	@CollectionTable(name = "clinic_administrators",joinColumns = @JoinColumn(name = "clinic_id"))
 	public ArrayList<ClinicAdministrator> clinicAdministrators;
+	
+	@ElementCollection
+	@CollectionTable(name = "clinic_doctors",joinColumns = @JoinColumn(name = "clinic_id"))
 	public ArrayList<Doctor> doctors;
+	
+	@ElementCollection
+	@CollectionTable(name = "clinic_nurses",joinColumns = @JoinColumn(name = "clinic_id"))
 	public ArrayList<Nurse> nurses;
 
 	public Clinic() {

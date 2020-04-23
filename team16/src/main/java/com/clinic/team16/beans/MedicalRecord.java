@@ -1,8 +1,3 @@
-/***********************************************************************
- * Module:  MedicalRecord.java
- * Author:  Vladimir
- * Purpose: Defines the Class MedicalRecord
- ***********************************************************************/
 package com.clinic.team16.beans;
 import java.util.*;
 
