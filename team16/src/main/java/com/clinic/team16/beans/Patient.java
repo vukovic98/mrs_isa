@@ -56,7 +56,7 @@ public class Patient extends User {
 			this.appointments = new ArrayList<Appointment>();
 		if (!this.appointments.contains(newAppointment)) {
 			this.appointments.add(newAppointment);
-			newAppointment.setPacient(this);
+			newAppointment.setPatient(this);
 		}
 	}
 
@@ -66,7 +66,7 @@ public class Patient extends User {
 		if (this.appointments != null)
 			if (this.appointments.contains(oldAppointment)) {
 				this.appointments.remove(oldAppointment);
-				oldAppointment.setPacient((Pacient) null);
+				oldAppointment.setPatient((Patient) null);
 			}
 	}
 
@@ -76,7 +76,7 @@ public class Patient extends User {
 			for (java.util.Iterator iter = getIteratorAppointment(); iter.hasNext();) {
 				oldAppointment = (Appointment) iter.next();
 				iter.remove();
-				oldAppointment.setPacient((Pacient) null);
+				oldAppointment.setPatient((Patient) null);
 			}
 		}
 	}

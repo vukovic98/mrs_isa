@@ -1,8 +1,4 @@
-/***********************************************************************
- * Module:  LeaveRequest.java
- * Author:  Vladimir
- * Purpose: Defines the Class LeaveRequest
- ***********************************************************************/
+
 package com.clinic.team16.beans;
 import java.util.*;
 
@@ -17,7 +13,7 @@ public LeaveRequest() {
 	super();
 }
 
-public LeaveRequest(Date dateFrom, Date dateTo, boolean approved, User user) {
+public LeaveRequest(Date dateFrom,Date dateTo, boolean approved, User user) {
 	super();
 	this.dateFrom = dateFrom;
 	this.dateTo = dateTo;
