@@ -1,11 +1,6 @@
-/***********************************************************************
- * Module:  Doctor.java
- * Author:  Vladimir
- * Purpose: Defines the Class Doctor
- ***********************************************************************/
 package com.clinic.team16.beans;
-import java.util.*;
 
+import java.util.*;
 public class Doctor extends User {
 
    public Clinic clinic;

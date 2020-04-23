@@ -1,9 +1,4 @@
 
-/***********************************************************************
- * Module:  Pacient.java
- * Author:  Vladimir
- * Purpose: Defines the Class Pacient
- ***********************************************************************/
 package com.clinic.team16.beans;
 import java.util.*;
 
@@ -56,7 +51,7 @@ public class Patient extends User {
 			this.appointments = new ArrayList<Appointment>();
 		if (!this.appointments.contains(newAppointment)) {
 			this.appointments.add(newAppointment);
-			newAppointment.setPatient(this);
+
 		}
 	}
 
@@ -66,7 +61,7 @@ public class Patient extends User {
 		if (this.appointments != null)
 			if (this.appointments.contains(oldAppointment)) {
 				this.appointments.remove(oldAppointment);
-				oldAppointment.setPatient((Patient) null);
+
 			}
 	}
 
@@ -76,9 +71,7 @@ public class Patient extends User {
 			for (java.util.Iterator iter = getIteratorAppointment(); iter.hasNext();) {
 				oldAppointment = (Appointment) iter.next();
 				iter.remove();
-				oldAppointment.setPatient((Patient) null);
 			}
 		}
 	}
-
 }

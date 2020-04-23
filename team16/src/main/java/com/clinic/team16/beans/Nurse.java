@@ -1,10 +1,5 @@
-
-/***********************************************************************
- * Module:  Nurse.java
- * Author:  Vladimir
- * Purpose: Defines the Class Nurse
- ***********************************************************************/
 package com.clinic.team16.beans;
+
 import java.util.*;
 
 public class Nurse extends User {
