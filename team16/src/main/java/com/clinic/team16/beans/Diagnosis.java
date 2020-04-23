@@ -1,65 +1,72 @@
-/***********************************************************************
- * Module:  Diagnosis.java
- * Author:  Vladimir
- * Purpose: Defines the Class Diagnosis
- ***********************************************************************/
-package com.clinic.team16.beans;
+ package com.clinic.team16.beans;
+
 import java.util.*;
 
-public class Diagnosis {
-   private String name;
-   private String code;
-   
+import javax.persistence.*;
  
-   public ClinicalCenter clinicalCenter;
-   
-   
-   public Diagnosis() {
-	super();
-}
 
-public Diagnosis(String name, String code, ClinicalCenter clinicalCenter) {
-	super();
-	this.name = name;
-	this.code = code;
-	this.clinicalCenter = clinicalCenter;
-}
+@Entity
+@Embeddable
+public class Diagnosis {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Diagnosis_ID", nullable = false)
+	private long diagnosisId;
+	
+	@Column(name = "Name" , nullable = false)
+	private String name;
+	
+	@Column(name = "Code", nullable = false)
+	private String code;
+	
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "clinicalCenter_ID")
+	public ClinicalCenter clinicalCenter;
 
-public String getName() {
-	return name;
-}
+	public Diagnosis() {
+		super();
+	}
 
-public void setName(String name) {
-	this.name = name;
-}
+	public Diagnosis(String name, String code, ClinicalCenter clinicalCenter) {
+		super();
+		this.name = name;
+		this.code = code;
+		this.clinicalCenter = clinicalCenter;
+	}
 
-public String getCode() {
-	return code;
-}
+	public String getName() {
+		return name;
+	}
 
-public void setCode(String code) {
-	this.code = code;
-}
+	public void setName(String name) {
+		this.name = name;
+	}
 
-public ClinicalCenter getClinicalCenter() {
-      return clinicalCenter;
-   }
-   
-   public void setClinicalCenter(ClinicalCenter newClinicalCenter) {
-      if (this.clinicalCenter == null || !this.clinicalCenter.equals(newClinicalCenter))
-      {
-         if (this.clinicalCenter != null)
-         {
-            ClinicalCenter oldClinicalCenter = this.clinicalCenter;
-            this.clinicalCenter = null;
-            oldClinicalCenter.removeDiagnosis(this);
-         }
-         if (newClinicalCenter != null)
-         {
-            this.clinicalCenter = newClinicalCenter;
-            this.clinicalCenter.addDiagnosis(this);
-         }
-      }
-   }
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public ClinicalCenter getClinicalCenter() {
+		return clinicalCenter;
+	}
+
+	public void setClinicalCenter(ClinicalCenter newClinicalCenter) {
+		if (this.clinicalCenter == null || !this.clinicalCenter.equals(newClinicalCenter)) {
+			if (this.clinicalCenter != null) {
+				ClinicalCenter oldClinicalCenter = this.clinicalCenter;
+				this.clinicalCenter = null;
+				oldClinicalCenter.removeDiagnosis(this);
+			}
+			if (newClinicalCenter != null) {
+				this.clinicalCenter = newClinicalCenter;
+				this.clinicalCenter.addDiagnosis(this);
+			}
+		}
+	}
 
 }

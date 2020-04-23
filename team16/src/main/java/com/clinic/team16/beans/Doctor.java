@@ -1,10 +1,22 @@
 package com.clinic.team16.beans;
 
 import java.util.*;
-public class Doctor extends User {
+import javax.persistence.*;
 
+@Entity
+@Embeddable
+public class Doctor extends User {
+	
+   @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE})
+   @JoinColumn(name="Clinic_ID")
    public Clinic clinic;
+   
+   @ElementCollection
+   @CollectionTable(name = "doctor_appointments", joinColumns =  @JoinColumn(name = "doctor_id"))
    public ArrayList<Appointment> appointments;
+   
+   @ElementCollection
+   @CollectionTable(name = "doctor_leaveRequests", joinColumns = @JoinColumn(name = "doctor_id"))
    public ArrayList<LeaveRequest> leaveRequests;
    
    

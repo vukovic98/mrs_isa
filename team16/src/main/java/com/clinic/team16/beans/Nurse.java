@@ -1,12 +1,24 @@
 package com.clinic.team16.beans;
 
 import java.util.*;
+import javax.persistence.*;
 
+import org.hibernate.annotations.MetaValue;
+
+@Entity
+@Embeddable
 public class Nurse extends User {
+	
+	@ElementCollection
+	@CollectionTable(name = "nurse_leaveRequests", joinColumns = @JoinColumn(name = "nurse_id"))
 	public ArrayList<LeaveRequest> leaveRequests;
-
+    
+	@ElementCollection
+	@CollectionTable(name = "nurse_medicalReports", joinColumns = @JoinColumn(name = "nurse_id"))
 	public ArrayList<MedicalReport> medicalReports;
-
+    
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "Nurse_ID")
 	public Clinic clinic;
 
 	public Nurse() {

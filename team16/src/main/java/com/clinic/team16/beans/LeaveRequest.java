@@ -1,58 +1,72 @@
-
 package com.clinic.team16.beans;
+
 import java.util.*;
+import javax.persistence.*;
 
+@Entity
+@Embeddable
 public class LeaveRequest {
-   private Date dateFrom;
-   private Date dateTo;
-   private boolean approved;
-   
-   private User user;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "LeaveRequest_ID", nullable = false)
+	private long leaveRequestId;
+	
+	@Column(name = "DateForm", nullable = false)
+	private Date dateFrom;
+	
+	@Column(name = "DateTo", nullable = false)
+	private Date dateTo;
+	
+	@Column(name = "Approved", nullable = false)
+	private boolean approved;
 
-public LeaveRequest() {
-	super();
-}
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "User_ID")
+	private User user;
 
-public LeaveRequest(Date dateFrom,Date dateTo, boolean approved, User user) {
-	super();
-	this.dateFrom = dateFrom;
-	this.dateTo = dateTo;
-	this.approved = approved;
-	this.user = user;
-}
+	public LeaveRequest() {
+		super();
+	}
 
-public Date getDateFrom() {
-	return dateFrom;
-}
+	public LeaveRequest(Date dateFrom, Date dateTo, boolean approved, User user) {
+		super();
+		this.dateFrom = dateFrom;
+		this.dateTo = dateTo;
+		this.approved = approved;
+		this.user = user;
+	}
 
-public void setDateFrom(Date dateFrom) {
-	this.dateFrom = dateFrom;
-}
+	public Date getDateFrom() {
+		return dateFrom;
+	}
 
-public Date getDateTo() {
-	return dateTo;
-}
+	public void setDateFrom(Date dateFrom) {
+		this.dateFrom = dateFrom;
+	}
 
-public void setDateTo(Date dateTo) {
-	this.dateTo = dateTo;
-}
+	public Date getDateTo() {
+		return dateTo;
+	}
 
-public boolean isApproved() {
-	return approved;
-}
+	public void setDateTo(Date dateTo) {
+		this.dateTo = dateTo;
+	}
 
-public void setApproved(boolean approved) {
-	this.approved = approved;
-}
+	public boolean isApproved() {
+		return approved;
+	}
 
-public User getUser() {
-	return user;
-}
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
 
-public void setUser(User user) {
-	this.user = user;
-}
-   
-   
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 }

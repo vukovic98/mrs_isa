@@ -1,66 +1,70 @@
-/***********************************************************************
- * Module:  Medication.java
- * Author:  Vladimir
- * Purpose: Defines the Class Medication
- ***********************************************************************/
 package com.clinic.team16.beans;
+
 import java.util.*;
+import javax.persistence.*;
 
+@Entity
+@Embeddable
 public class Medication {
-   private String name;
-   private String code;
-   
-   public ClinicalCenter clinicalCenter;
- 
-   
-   
-   
-   public Medication(String name, String code, ClinicalCenter clinicalCenter) {
-	super();
-	this.name = name;
-	this.code = code;
-	this.clinicalCenter = clinicalCenter;
-}
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Medication_ID", nullable = false)
+	private long medicationId;
+	
+	@Column(name = "Name", nullable = false)
+	private String name;
+	
+	@Column(name = "Code", nullable = false)
+	private String code;
 
-public Medication() {
-	super();
-}
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "Medication_ID")
+	public ClinicalCenter clinicalCenter;
 
-public String getName() {
-	return name;
-}
+	public Medication(String name, String code, ClinicalCenter clinicalCenter) {
+		super();
+		this.name = name;
+		this.code = code;
+		this.clinicalCenter = clinicalCenter;
+	}
 
-public void setName(String name) {
-	this.name = name;
-}
+	public Medication() {
+		super();
+	}
 
-public String getCode() {
-	return code;
-}
+	public String getName() {
+		return name;
+	}
 
-public void setCode(String code) {
-	this.code = code;
-}
+	public void setName(String name) {
+		this.name = name;
+	}
 
-public ClinicalCenter getClinicalCenter() {
-      return clinicalCenter;
-   }
-   
-   public void setClinicalCenter(ClinicalCenter newClinicalCenter) {
-      if (this.clinicalCenter == null || !this.clinicalCenter.equals(newClinicalCenter))
-      {
-         if (this.clinicalCenter != null)
-         {
-            ClinicalCenter oldClinicalCenter = this.clinicalCenter;
-            this.clinicalCenter = null;
-            oldClinicalCenter.removeMedication(this);
-         }
-         if (newClinicalCenter != null)
-         {
-            this.clinicalCenter = newClinicalCenter;
-            this.clinicalCenter.addMedication(this);
-         }
-      }
-   }
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public ClinicalCenter getClinicalCenter() {
+		return clinicalCenter;
+	}
+
+	public void setClinicalCenter(ClinicalCenter newClinicalCenter) {
+		if (this.clinicalCenter == null || !this.clinicalCenter.equals(newClinicalCenter)) {
+			if (this.clinicalCenter != null) {
+				ClinicalCenter oldClinicalCenter = this.clinicalCenter;
+				this.clinicalCenter = null;
+				oldClinicalCenter.removeMedication(this);
+			}
+			if (newClinicalCenter != null) {
+				this.clinicalCenter = newClinicalCenter;
+				this.clinicalCenter.addMedication(this);
+			}
+		}
+	}
 
 }
