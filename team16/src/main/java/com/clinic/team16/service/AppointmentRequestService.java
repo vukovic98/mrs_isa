@@ -9,5 +9,5 @@ import com.clinic.team16.repository.AppointmentRequestRepository;
 public class AppointmentRequestService {
 
 	@Autowired
-	AppointmentRequestRepository requestRepository;
+	private AppointmentRequestRepository requestRepository;
 }

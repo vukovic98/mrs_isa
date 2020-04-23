@@ -10,5 +10,5 @@ public class ClinicAdminService {
 
 	
 	@Autowired
-	ClinicAdminRepository adminRepository;
+	private ClinicAdminRepository adminRepository;
 }

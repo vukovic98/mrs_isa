@@ -10,15 +10,20 @@ import java.util.*;
 import javax.persistence.*;
 
 @Entity
+@Embeddable
 public class Ordination {
 
 	@Id
 	private int number;
 
+	@Enumerated(EnumType.STRING)
 	private OrdinationType type;
 
+	@Column(name = "Name")
 	private String name;
 
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "Clinic_ID")
 	public Clinic clinic;
 
 	@ElementCollection

@@ -1,18 +1,19 @@
-
-/***********************************************************************
- * Module:  PricelistItem.java
- * Author:  Vladimir
- * Purpose: Defines the Class PricelistItem
- ***********************************************************************/
 package com.clinic.team16.beans;
 import java.util.*;
+import javax.persistence.*;
 
+@Entity
+@Embeddable
 public class PricelistItem {
 
+	@Column(name = "name")
 	private String name;
 
+	@Column(name = "price")
 	private double price;
 
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "Pricelist_ID")
 	public Pricelist pricelist;
 
 	public PricelistItem() {

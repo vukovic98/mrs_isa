@@ -3,11 +3,11 @@ package com.clinic.team16.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.clinic.team16.repository.AppointmentTypeRepository;
+import com.clinic.team16.repository.AppointmentRepository;
 
 @Service
-public class AppointmentTypeService {
+public class OrdinationService {
 
 	@Autowired
-	private AppointmentTypeRepository typeRepository;
+	private OrdinationRepository ordinationRepository;
 }

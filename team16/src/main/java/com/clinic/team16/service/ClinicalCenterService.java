@@ -9,5 +9,5 @@ import com.clinic.team16.repository.ClinicalCenterRepository;
 public class ClinicalCenterService {
 
 	@Autowired
-	ClinicalCenterRepository clinicalCenterRepository;
+	private ClinicalCenterRepository clinicalCenterRepository;
 }

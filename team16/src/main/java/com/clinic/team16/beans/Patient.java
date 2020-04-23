@@ -1,10 +1,18 @@
 package com.clinic.team16.beans;
 import java.util.*;
 
+import javax.persistence.*;
+
+@Entity
+@Embeddable
 public class Patient extends User {
 
+	@ElementCollection
+	@CollectionTable(name = "patient_appointments", joinColumns = @JoinColumn(name = "patient_id"))
 	public ArrayList<Appointment> appointments;
 
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "MedicalRecord_ID")
 	public MedicalRecord medicalRecord;
 
 	public Patient() {

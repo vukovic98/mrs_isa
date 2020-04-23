@@ -1,9 +1,3 @@
-
-/***********************************************************************
- * Module:  RegistrationRequest.java
- * Author:  Vladimir
- * Purpose: Defines the Class RegistrationRequest
- ***********************************************************************/
 package com.clinic.team16.beans;
 import java.util.*;
 
@@ -13,10 +7,15 @@ import javax.persistence.*;
 @Embeddable
 public class RegistrationRequest {
 
+	@Column(name = "approved")
 	private boolean approved;
 
+	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "User_ID")
 	public User user;
 
+	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "ClinicalCenterAdministrator_ID")
 	public ClinicalCenterAdministrator clinicalCenterAdministrator;
 
 	public RegistrationRequest() {

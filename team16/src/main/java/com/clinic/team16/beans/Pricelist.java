@@ -1,15 +1,17 @@
-
-/***********************************************************************
- * Module:  Pricelist.java
- * Author:  Vladimir
- * Purpose: Defines the Class Pricelist
- ***********************************************************************/
 package com.clinic.team16.beans;
 import java.util.*;
 
+import javax.persistence.*;
+
+@Entity
 public class Pricelist {
+	
+	@ElementCollection
+	@CollectionTable(name = "pricelist_pricelisItems", joinColumns = @JoinColumn(name = "pricelist_id"))
 	public ArrayList<PricelistItem> pricelistItems;
 
+	@ElementCollection
+	@CollectionTable(name = "pricelist_clinics", joinColumns = @JoinColumn(name = "pricelist_id"))
 	public ArrayList<Clinic> clinics;
 
 	public Pricelist() {

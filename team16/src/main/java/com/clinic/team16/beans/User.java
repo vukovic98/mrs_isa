@@ -3,6 +3,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+@Entity
+@Embeddable
 public class User {
 	
 	@Id

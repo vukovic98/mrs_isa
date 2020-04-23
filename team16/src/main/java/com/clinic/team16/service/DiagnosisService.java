@@ -7,6 +7,7 @@ import com.clinic.team16.repository.DiagnosisRepository;
 
 @Service
 public class DiagnosisService {
+	
 	@Autowired
 	private DiagnosisRepository diagnosisRepository;
 
