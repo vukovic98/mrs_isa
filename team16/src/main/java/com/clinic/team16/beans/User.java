@@ -1,22 +1,42 @@
-
-/***********************************************************************
- * Module:  User.java
- * Author:  Vladimir
- * Purpose: Defines the Class User
- ***********************************************************************/
 package com.clinic.team16.beans;
 import java.util.*;
 
+import javax.persistence.*;
+
 public class User {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "User_ID", nullable = false)
+	private long id;
+	
+	@Column(name = "Email", nullable = false)
 	private String email;
+	
+	@Column(name = "Password", nullable = false)
 	private String password;
+	
+	@Column(name = "FirstName", nullable = false)
 	private String firstName;
+	
+	@Column(name = "LastName", nullable = false)
 	private String lastName;
+	
+	@Column(name = "Address", nullable = false)
 	private String address;
+	
+	@Column(name = "City", nullable = false)
 	private String city;
+	
+	@Column(name = "Country", nullable = false)
 	private String country;
+	
+	@Column(name = "PhoneNumber", nullable = false)
 	private String phoneNumber;
+	
+	@Column(name = "InsuranceNumber", nullable = false)
 	private String insuranceNumber;
+	
 
 	public User() {
 		super();

@@ -2,14 +2,29 @@ package com.clinic.team16.beans;
 
 import java.util.*;
 
+import javax.persistence.*;
+
+@Entity
+@Embeddable
 public class AppointmentRequest {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "AppointmentRequest_ID",nullable = false)
+	private long appointmentRequestId;
+	
+	@Column(name = "Approved",nullable = false)
 	private Boolean approved;
 
+	@Column(name = "RequestDate",nullable = false)
 	private Date requestDate;
 
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "Ordination_ID")
 	public ClinicalCenterAdministrator clinicalCenterAdministrator;
 
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "MedicalReport_ID")
 	public Appointment appointment;
 
 	public AppointmentRequest() {

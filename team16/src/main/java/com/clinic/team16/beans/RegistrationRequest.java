@@ -7,6 +7,10 @@
 package com.clinic.team16.beans;
 import java.util.*;
 
+import javax.persistence.*;
+
+@Entity
+@Embeddable
 public class RegistrationRequest {
 
 	private boolean approved;

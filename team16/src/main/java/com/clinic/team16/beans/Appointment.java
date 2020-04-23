@@ -1,4 +1,3 @@
-
 package com.clinic.team16.beans;
 
 import java.util.*;
