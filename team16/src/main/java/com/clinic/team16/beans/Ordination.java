@@ -7,8 +7,12 @@
 package com.clinic.team16.beans;
 import java.util.*;
 
+import javax.persistence.*;
+
+@Entity
 public class Ordination {
 
+	@Id
 	private int number;
 
 	private OrdinationType type;
@@ -17,6 +21,8 @@ public class Ordination {
 
 	public Clinic clinic;
 
+	@ElementCollection
+	@CollectionTable(name = "ordination_appointments",joinColumns = @JoinColumn(name = "ordination_id"))
 	public ArrayList<Appointment> appointments;
 
 	public Ordination() {
