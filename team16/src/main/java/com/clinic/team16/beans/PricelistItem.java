@@ -5,11 +5,16 @@ import javax.persistence.*;
 @Entity
 @Embeddable
 public class PricelistItem {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "PricelistItem_ID", nullable = false)
+	private long pricelistItemId;
 
-	@Column(name = "name")
+	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "price")
+	@Column(name = "price", nullable = false)
 	private double price;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})

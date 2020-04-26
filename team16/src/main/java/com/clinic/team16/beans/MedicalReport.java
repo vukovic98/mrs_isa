@@ -22,15 +22,15 @@ public class MedicalReport {
 	private Boolean approved;
     
 	@ElementCollection
-	@CollectionTable(name = "medicalReport_diagnosis", joinColumns = @JoinColumn(name = "medicalReport_id"))
-	public ArrayList<Diagnosis> diagnosis;
+	@CollectionTable(name = "medicalReport_diagnosis", joinColumns = @JoinColumn(name = "medicalReport_Diagnosis_id"))
+	public List<Diagnosis> diagnosis;
 	
 	@ElementCollection
-	@CollectionTable(name = "medicalReport_medication", joinColumns = @JoinColumn(name = "medicalReport_id"))
-	public ArrayList<Medication> medication;
+	@CollectionTable(name = "medicalReport_medication", joinColumns = @JoinColumn(name = "medicalReport_Medication_id"))
+	public List<Medication> medication;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-	@JoinColumn(name="MedicalReport_ID")
+	@JoinColumn(name="MedicalReport_Nurse_ID")
 	public Nurse nurse;
 
 	public String getDetails() {
@@ -49,7 +49,7 @@ public class MedicalReport {
 		this.approved = approved;
 	}
 
-	public ArrayList<Diagnosis> getDiagnosis() {
+	public List<Diagnosis> getDiagnosis() {
 		return diagnosis;
 	}
 
@@ -57,7 +57,7 @@ public class MedicalReport {
 		this.diagnosis = diagnosis;
 	}
 
-	public ArrayList<Medication> getMedication() {
+	public List<Medication> getMedication() {
 		return medication;
 	}
 

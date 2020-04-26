@@ -6,8 +6,13 @@ import javax.persistence.*;
 @Entity
 @Embeddable
 public class RegistrationRequest {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "RegistrationRequest_ID", nullable = false)
+	private long registrationRequestId;
 
-	@Column(name = "approved")
+	@Column(name = "approved", nullable = false)
 	private boolean approved;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})

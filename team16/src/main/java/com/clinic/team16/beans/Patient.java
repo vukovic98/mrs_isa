@@ -9,7 +9,7 @@ public class Patient extends User {
 
 	@ElementCollection
 	@CollectionTable(name = "patient_appointments", joinColumns = @JoinColumn(name = "patient_id"))
-	public ArrayList<Appointment> appointments;
+	public List<Appointment> appointments;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "MedicalRecord_ID")
@@ -33,7 +33,7 @@ public class Patient extends User {
 		this.medicalRecord = medicalRecord;
 	}
 
-	public ArrayList<Appointment> getAppointment() {
+	public List<Appointment> getAppointments() {
 		if (appointments == null)
 			appointments = new ArrayList<Appointment>();
 		return this.appointments;

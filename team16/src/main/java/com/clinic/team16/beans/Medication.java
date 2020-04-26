@@ -18,8 +18,8 @@ public class Medication {
 	@Column(name = "Code", nullable = false)
 	private String code;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-	@JoinColumn(name = "Medication_ID")
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "Medication_ClinicalCenter_ID")
 	public ClinicalCenter clinicalCenter;
 
 	public Medication(String name, String code, ClinicalCenter clinicalCenter) {

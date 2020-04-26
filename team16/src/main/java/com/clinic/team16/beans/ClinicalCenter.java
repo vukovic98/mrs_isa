@@ -3,6 +3,7 @@ package com.clinic.team16.beans;
 import java.util.*;
 
 import javax.persistence.*;
+
 @Entity
 public class ClinicalCenter {
 
@@ -16,19 +17,19 @@ public class ClinicalCenter {
 	
 	@ElementCollection
 	@CollectionTable(name = "clinicCenter_clinics",joinColumns = @JoinColumn(name = "clinicCenter_id"))
-	public ArrayList<Clinic> clinic;
+	public List<Clinic> clinics;
 	
 	@ElementCollection
 	@CollectionTable(name = "clinicCenter_medication",joinColumns = @JoinColumn(name = "clinicCenter_id"))
-	public ArrayList<Medication> medication;
+	public List<Medication> medications;
 	
 	@ElementCollection
 	@CollectionTable(name = "clinicCenter_diagnosis",joinColumns = @JoinColumn(name = "clinicCenter_id"))
-	public ArrayList<Diagnosis> diagnosis;
+	public List<Diagnosis> diagnosis;
 	
 	@ElementCollection
 	@CollectionTable(name = "clinicCenter_administrators",joinColumns = @JoinColumn(name = "clinicCenter_id"))
-	public ArrayList<ClinicalCenterAdministrator> clinicalCenterAdministrator;
+	public List<ClinicalCenterAdministrator> clinicalCenterAdministrators;
 
 	public ClinicalCenter() {
 	}
@@ -41,24 +42,24 @@ public class ClinicalCenter {
 		this.name = name;
 	}
 
-	public ArrayList<ClinicalCenterAdministrator> getClinicalCenterAdministrator() {
-		return clinicalCenterAdministrator;
+	public List<ClinicalCenterAdministrator> getClinicalCenterAdministrators() {
+		return clinicalCenterAdministrators;
 	}
 
 	public void setClinicalCenterAdministrator(ArrayList<ClinicalCenterAdministrator> clinicalCenterAdministrator) {
-		this.clinicalCenterAdministrator = clinicalCenterAdministrator;
+		this.clinicalCenterAdministrators = clinicalCenterAdministrator;
 	}
 
-	public ArrayList<Clinic> getClinic() {
-		if (clinic == null)
-			clinic = new ArrayList<Clinic>();
-		return clinic;
+	public List<Clinic> getClinic() {
+		if (clinics == null)
+			clinics = new ArrayList<Clinic>();
+		return clinics;
 	}
 
 	public java.util.Iterator getIteratorClinic() {
-		if (clinic == null)
-			clinic = new ArrayList<Clinic>();
-		return clinic.iterator();
+		if (clinics == null)
+			clinics = new ArrayList<Clinic>();
+		return clinics.iterator();
 	}
 
 	public void setClinic(ArrayList<Clinic> newClinic) {
@@ -70,35 +71,35 @@ public class ClinicalCenter {
 	public void addClinic(Clinic newClinic) {
 		if (newClinic == null)
 			return;
-		if (this.clinic == null)
-			this.clinic = new ArrayList<Clinic>();
-		if (!this.clinic.contains(newClinic))
-			this.clinic.add(newClinic);
+		if (this.clinics == null)
+			this.clinics = new ArrayList<Clinic>();
+		if (!this.clinics.contains(newClinic))
+			this.clinics.add(newClinic);
 	}
 
 	public void removeClinic(Clinic oldClinic) {
 		if (oldClinic == null)
 			return;
-		if (this.clinic != null)
-			if (this.clinic.contains(oldClinic))
-				this.clinic.remove(oldClinic);
+		if (this.clinics != null)
+			if (this.clinics.contains(oldClinic))
+				this.clinics.remove(oldClinic);
 	}
 
 	public void removeAllClinic() {
-		if (clinic != null)
-			clinic.clear();
+		if (clinics != null)
+			clinics.clear();
 	}
 
-	public ArrayList<Medication> getMedication() {
-		if (medication == null)
-			medication = new ArrayList<Medication>();
-		return medication;
+	public List<Medication> getMedication() {
+		if (medications == null)
+			medications = new ArrayList<Medication>();
+		return medications;
 	}
 
 	public java.util.Iterator getIteratorMedication() {
-		if (medication == null)
-			medication = new ArrayList<Medication>();
-		return medication.iterator();
+		if (medications == null)
+			medications = new ArrayList<Medication>();
+		return medications.iterator();
 	}
 
 	public void setMedication(ArrayList<Medication> newMedication) {
@@ -110,10 +111,10 @@ public class ClinicalCenter {
 	public void addMedication(Medication newMedication) {
 		if (newMedication == null)
 			return;
-		if (this.medication == null)
-			this.medication = new ArrayList<Medication>();
-		if (!this.medication.contains(newMedication)) {
-			this.medication.add(newMedication);
+		if (this.medications == null)
+			this.medications = new ArrayList<Medication>();
+		if (!this.medications.contains(newMedication)) {
+			this.medications.add(newMedication);
 			newMedication.setClinicalCenter(this);
 		}
 	}
@@ -121,15 +122,15 @@ public class ClinicalCenter {
 	public void removeMedication(Medication oldMedication) {
 		if (oldMedication == null)
 			return;
-		if (this.medication != null)
-			if (this.medication.contains(oldMedication)) {
-				this.medication.remove(oldMedication);
+		if (this.medications != null)
+			if (this.medications.contains(oldMedication)) {
+				this.medications.remove(oldMedication);
 				oldMedication.setClinicalCenter((ClinicalCenter) null);
 			}
 	}
 
 	public void removeAllMedication() {
-		if (medication != null) {
+		if (medications != null) {
 			Medication oldMedication;
 			for (java.util.Iterator iter = getIteratorMedication(); iter.hasNext();) {
 				oldMedication = (Medication) iter.next();
@@ -139,7 +140,7 @@ public class ClinicalCenter {
 		}
 	}
 
-	public ArrayList<Diagnosis> getDiagnosis() {
+	public List<Diagnosis> getDiagnosis() {
 		if (diagnosis == null)
 			diagnosis = new ArrayList<Diagnosis>();
 		return diagnosis;

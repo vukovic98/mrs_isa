@@ -14,12 +14,13 @@ import javax.persistence.*;
 public class Ordination {
 
 	@Id
+	@Column(name = "Ordination_Number", nullable = false)
 	private int number;
 
 	@Enumerated(EnumType.STRING)
 	private OrdinationType type;
 
-	@Column(name = "Name")
+	@Column(name = "Name", nullable = false)
 	private String name;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
@@ -28,7 +29,7 @@ public class Ordination {
 
 	@ElementCollection
 	@CollectionTable(name = "ordination_appointments",joinColumns = @JoinColumn(name = "ordination_id"))
-	public ArrayList<Appointment> appointments;
+	public List<Appointment> appointments;
 
 	public Ordination() {
 		super();
@@ -68,7 +69,7 @@ public class Ordination {
 		this.name = name;
 	}
 
-	public ArrayList<Appointment> getAppointments() {
+	public List<Appointment> getAppointments() {
 		return appointments;
 	}
 

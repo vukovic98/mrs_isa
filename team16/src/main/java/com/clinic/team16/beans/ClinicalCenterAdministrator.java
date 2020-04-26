@@ -14,11 +14,11 @@ public class ClinicalCenterAdministrator extends User {
 	
 	@ElementCollection
 	@CollectionTable(name = "clinicCenterAdministrator_registrationRequests",joinColumns = @JoinColumn(name = "administrator_id"))
-	public ArrayList<RegistrationRequest> registrationRequest;
+	public List<RegistrationRequest> registrationRequest;
 	
 	@ElementCollection
 	@CollectionTable(name = "clinicCenterAdministrator_appointmentRequests",joinColumns = @JoinColumn(name = "administrator_id"))
-	public ArrayList<AppointmentRequest> appointmentRequest;
+	public List<AppointmentRequest> appointmentRequest;
 
 	public ClinicalCenterAdministrator() {
 		super();
@@ -40,7 +40,7 @@ public class ClinicalCenterAdministrator extends User {
 		this.clinicalCenter = clinicalCenter;
 	}
 
-	public ArrayList<AppointmentRequest> getAppointmentRequest() {
+	public List<AppointmentRequest> getAppointmentRequests() {
 		return appointmentRequest;
 	}
 
@@ -48,7 +48,7 @@ public class ClinicalCenterAdministrator extends User {
 		this.appointmentRequest = appointmentRequest;
 	}
 
-	public ArrayList<RegistrationRequest> getRegistrationRequest() {
+	public List<RegistrationRequest> getRegistrationRequests() {
 		if (registrationRequest == null)
 			registrationRequest = new ArrayList<RegistrationRequest>();
 		return registrationRequest;

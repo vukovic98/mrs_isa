@@ -1,124 +1,123 @@
 package com.clinic.team16.beans;
+
 import java.util.*;
 import javax.persistence.*;
 
 @Entity
 @Embeddable
 public class MedicalRecord {
-	
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "MedicalRecord_ID", nullable = false)
-   private long medicalRecordId;
-   
-   @Column(name = "Height", nullable = false)
-   private int height;
-   
-   @Column(name = "Weight", nullable = false)
-   private int weight;
-   
-   @Column(name = "BloodType", nullable = false)
-   private String bloodType;
-   
-   @Column(name = "BloodPressure", nullable = false)
-   private int bloodPressure;
-   
-   @ElementCollection
-   @CollectionTable(name = "medicalRecord_allergies", joinColumns = @JoinColumn(name = "medicalRedord_id"))
-   private ArrayList<String> allergies;
-   
-   @ElementCollection
-   @CollectionTable(name = "medicalRecord_perscriptions", joinColumns = @JoinColumn(name = "medicalRedord_id"))
-   private ArrayList<String> perscriptions;
-   
-   @Column(name = "MedicalHistory", nullable = false)
-   private String medicalHistory;
-   
-   @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-   @JoinColumn(name = "Patient_ID")
-   public Patient patient;
 
-public MedicalRecord() {
-	super();
-}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "MedicalRecord_ID", nullable = false)
+	private long medicalRecordId;
 
-public MedicalRecord(int height, int weight, String bloodType, int bloodPressure, ArrayList<String> allergies,
-		ArrayList<String> perscriptions, String medicalHistory, Patient patient) {
-	super();
-	this.height = height;
-	this.weight = weight;
-	this.bloodType = bloodType;
-	this.bloodPressure = bloodPressure;
-	this.allergies = allergies;
-	this.perscriptions = perscriptions;
-	this.medicalHistory = medicalHistory;
-	this.patient = patient;
-}
+	@Column(name = "Height", nullable = false)
+	private int height;
 
-public int getHeight() {
-	return height;
-}
+	@Column(name = "Weight", nullable = false)
+	private int weight;
 
-public void setHeight(int height) {
-	this.height = height;
-}
+	@Column(name = "BloodType", nullable = false)
+	private String bloodType;
 
-public int getWeight() {
-	return weight;
-}
+	@Column(name = "BloodPressure", nullable = false)
+	private int bloodPressure;
 
-public void setWeight(int weight) {
-	this.weight = weight;
-}
+	@ElementCollection
+	@CollectionTable(name = "medicalRecord_allergies", joinColumns = @JoinColumn(name = "medicalRedord_id"))
+	private List<String> allergies;
 
-public String getBloodType() {
-	return bloodType;
-}
+	@ElementCollection
+	@CollectionTable(name = "medicalRecord_perscriptions", joinColumns = @JoinColumn(name = "medicalRedord_id"))
+	private List<String> perscriptions;
 
-public void setBloodType(String bloodType) {
-	this.bloodType = bloodType;
-}
+	@Column(name = "MedicalHistory", nullable = false)
+	private String medicalHistory;
 
-public int getBloodPressure() {
-	return bloodPressure;
-}
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "Patient_ID")
+	public Patient patient;
 
-public void setBloodPressure(int bloodPressure) {
-	this.bloodPressure = bloodPressure;
-}
+	public MedicalRecord() {
+		super();
+	}
 
-public ArrayList<String> getAllergies() {
-	return allergies;
-}
+	public MedicalRecord(int height, int weight, String bloodType, int bloodPressure, ArrayList<String> allergies,
+			ArrayList<String> perscriptions, String medicalHistory, Patient patient) {
+		super();
+		this.height = height;
+		this.weight = weight;
+		this.bloodType = bloodType;
+		this.bloodPressure = bloodPressure;
+		this.allergies = allergies;
+		this.perscriptions = perscriptions;
+		this.medicalHistory = medicalHistory;
+		this.patient = patient;
+	}
 
-public void setAllergies(ArrayList<String> allergies) {
-	this.allergies = allergies;
-}
+	public int getHeight() {
+		return height;
+	}
 
-public ArrayList<String> getPerscriptions() {
-	return perscriptions;
-}
+	public void setHeight(int height) {
+		this.height = height;
+	}
 
-public void setPerscriptions(ArrayList<String> perscriptions) {
-	this.perscriptions = perscriptions;
-}
+	public int getWeight() {
+		return weight;
+	}
 
-public String getMedicalHistory() {
-	return medicalHistory;
-}
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
 
-public void setMedicalHistory(String medicalHistory) {
-	this.medicalHistory = medicalHistory;
-}
+	public String getBloodType() {
+		return bloodType;
+	}
 
-public Patient getPatient() {
-	return patient;
-}
+	public void setBloodType(String bloodType) {
+		this.bloodType = bloodType;
+	}
 
-public void setPatient(Patient patient) {
-	this.patient = patient;
-}
+	public int getBloodPressure() {
+		return bloodPressure;
+	}
 
-   
-   
+	public void setBloodPressure(int bloodPressure) {
+		this.bloodPressure = bloodPressure;
+	}
+
+	public List<String> getAllergies() {
+		return allergies;
+	}
+
+	public void setAllergies(ArrayList<String> allergies) {
+		this.allergies = allergies;
+	}
+
+	public List<String> getPerscriptions() {
+		return perscriptions;
+	}
+
+	public void setPerscriptions(ArrayList<String> perscriptions) {
+		this.perscriptions = perscriptions;
+	}
+
+	public String getMedicalHistory() {
+		return medicalHistory;
+	}
+
+	public void setMedicalHistory(String medicalHistory) {
+		this.medicalHistory = medicalHistory;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
 }

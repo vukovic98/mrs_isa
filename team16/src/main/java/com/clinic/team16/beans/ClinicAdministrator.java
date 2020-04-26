@@ -13,7 +13,7 @@ public class ClinicAdministrator extends User {
 	
 	@ElementCollection
 	@CollectionTable(name = "clinicAdministrator_leaveRequests",joinColumns = @JoinColumn(name = "administrator_id"))
-	public ArrayList<LeaveRequest> leaveRequests;
+	public List<LeaveRequest> leaveRequests;
 
 	public ClinicAdministrator() {
 
@@ -33,15 +33,11 @@ public class ClinicAdministrator extends User {
 		this.clinic = clinic;
 	}
 
-	public ArrayList<LeaveRequest> getLeaveRequests() {
-		return leaveRequests;
-	}
-
 	public void setLeaveRequests(ArrayList<LeaveRequest> leaveRequests) {
 		this.leaveRequests = leaveRequests;
 	}
 
-	public ArrayList<LeaveRequest> getLeaveRequest() {
+	public List<LeaveRequest> getLeaveRequests() {
 		if (leaveRequests == null)
 			leaveRequests = new ArrayList<LeaveRequest>();
 		return leaveRequests;

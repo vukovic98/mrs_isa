@@ -11,11 +11,11 @@ public class Nurse extends User {
 	
 	@ElementCollection
 	@CollectionTable(name = "nurse_leaveRequests", joinColumns = @JoinColumn(name = "nurse_id"))
-	public ArrayList<LeaveRequest> leaveRequests;
+	public List<LeaveRequest> leaveRequests;
     
 	@ElementCollection
 	@CollectionTable(name = "nurse_medicalReports", joinColumns = @JoinColumn(name = "nurse_id"))
-	public ArrayList<MedicalReport> medicalReports;
+	public List<MedicalReport> medicalReports;
     
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "Nurse_ID")
@@ -40,7 +40,7 @@ public class Nurse extends User {
 		this.clinic = clinic;
 	}
 
-	public ArrayList<LeaveRequest> getLeaveRequest() {
+	public List<LeaveRequest> getLeaveRequests() {
 		if (leaveRequests == null)
 			leaveRequests = new ArrayList<LeaveRequest>();
 		return leaveRequests;
@@ -87,7 +87,7 @@ public class Nurse extends User {
 	      return leaveRequests.iterator();
 	}
 
-	public ArrayList<MedicalReport> getMedicalReport() {
+	public List<MedicalReport> getMedicalReports() {
 		if (medicalReports == null)
 			medicalReports = new ArrayList<MedicalReport>();
 		return medicalReports;

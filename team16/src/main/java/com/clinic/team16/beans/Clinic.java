@@ -23,7 +23,7 @@ public class Clinic {
 	
 	@ElementCollection
 	@CollectionTable(name = "clinic_ordinations",joinColumns = @JoinColumn(name = "clinic_id"))
-	public ArrayList<Ordination> ordinations;
+	public List<Ordination> ordinations;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Pricelist_ID")
@@ -31,15 +31,15 @@ public class Clinic {
 	
 	@ElementCollection
 	@CollectionTable(name = "clinic_administrators",joinColumns = @JoinColumn(name = "clinic_id"))
-	public ArrayList<ClinicAdministrator> clinicAdministrators;
+	public List<ClinicAdministrator> clinicAdministrators;
 	
 	@ElementCollection
 	@CollectionTable(name = "clinic_doctors",joinColumns = @JoinColumn(name = "clinic_id"))
-	public ArrayList<Doctor> doctors;
+	public List<Doctor> doctors;
 	
 	@ElementCollection
 	@CollectionTable(name = "clinic_nurses",joinColumns = @JoinColumn(name = "clinic_id"))
-	public ArrayList<Nurse> nurses;
+	public List<Nurse> nurses;
 
 	public Clinic() {
 
@@ -91,7 +91,7 @@ public class Clinic {
 		this.pricelist = pricelist;
 	}
 
-	public ArrayList<ClinicAdministrator> getClinicAdministrators() {
+	public List<ClinicAdministrator> getClinicAdministrators() {
 		return clinicAdministrators;
 	}
 
@@ -99,7 +99,7 @@ public class Clinic {
 		this.clinicAdministrators = clinicAdministrators;
 	}
 
-	public ArrayList<Doctor> getDoctors() {
+	public List<Doctor> getDoctors() {
 		return doctors;
 	}
 
@@ -107,7 +107,7 @@ public class Clinic {
 		this.doctors = doctors;
 	}
 
-	public ArrayList<Nurse> getNurses() {
+	public List<Nurse> getNurses() {
 		return nurses;
 	}
 
@@ -119,7 +119,7 @@ public class Clinic {
 		this.ordinations = ordinations;
 	}
 
-	public ArrayList<Ordination> getOrdinations() {
+	public List<Ordination> getOrdinations() {
 		if (ordinations == null)
 			ordinations = new ArrayList<Ordination>();
 		return ordinations;

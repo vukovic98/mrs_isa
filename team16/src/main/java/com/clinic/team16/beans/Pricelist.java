@@ -6,13 +6,18 @@ import javax.persistence.*;
 @Entity
 public class Pricelist {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Pricelist_ID", nullable = false)
+	private long pricelistId;
+	
 	@ElementCollection
 	@CollectionTable(name = "pricelist_pricelisItems", joinColumns = @JoinColumn(name = "pricelist_id"))
-	public ArrayList<PricelistItem> pricelistItems;
+	public List<PricelistItem> pricelistItems;
 
 	@ElementCollection
 	@CollectionTable(name = "pricelist_clinics", joinColumns = @JoinColumn(name = "pricelist_id"))
-	public ArrayList<Clinic> clinics;
+	public List<Clinic> clinics;
 
 	public Pricelist() {
 		super();
@@ -24,7 +29,7 @@ public class Pricelist {
 		this.clinics = clinics;
 	}
 
-	public ArrayList<Clinic> getClinics() {
+	public List<Clinic> getClinics() {
 		return clinics;
 	}
 
@@ -32,7 +37,7 @@ public class Pricelist {
 		this.clinics = clinics;
 	}
 
-	public ArrayList<PricelistItem> getPricelistItem() {
+	public List<PricelistItem> getPricelistItems() {
 		if (pricelistItems == null)
 			pricelistItems = new ArrayList<PricelistItem>();
 		return pricelistItems;
