@@ -27,4 +27,16 @@ public class Control {
 	   public String patient() {
 		   return "patient";
 	   }
+	   
+	   @RequestMapping(value = "/clinicalCenterAdmin")
+	   public String clinicalCenterAdmin() {
+		   return "clinicalCenterAdmin";
+	   }
+	   
+	   @RequestMapping(value = "/clinics")
+	   public String clinics() {
+		   return "clinics";
+	   }
+	   
+	   
 }

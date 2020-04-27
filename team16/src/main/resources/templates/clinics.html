@@ -19,8 +19,8 @@
 	<header id="header">
 		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Clinical center administrator</p>
 	<nav class="links" style="--items: 5;">
-		<a class="selected" th:href="@{/clinicalCenterAdmin}">Registration requests</a>
-		<a th:href="@{/clinics}">Clinics</a>
+		<a th:href="@{/clinicalCenterAdmin}">Registration requests</a>
+		<a class="selected" th:href="@{/clinics}">Clinics</a>
 		<a href="#">Clinic Administrators</a>
 		<a href="#">Medications</a>
 		<a href="#">Diagnosis</a>
@@ -31,22 +31,23 @@
 
 	<div class="container" style="margin-top: 85px;">
 		<div class="jumbotron bg-light">
-			<h1 class="mb-4">New users requests</h1>
+			<h1 class="mb-4 col-md-10 fl-left">Clinics</h1>
+			<div class="col-md-2 text-right fl-right pt-2">
+				<button type="button" class="btn btn-primary btn-block" data-dismiss="modal">Add clinic</button>
+			</div>
 			<table class="table table-hover mt-4 pt-4" id="usersTable">
 			  <tbody>
-			    <tr title="Click for more information">
-			      <td class="w-50" onclick="modalShow()">Mark Otto</td>
-			      <td class="w-50 text-right">
-			      	<button type="button" class="btn btn-outline-primary" id="acBtn">Accept</button>
-					<button type="button" class="btn btn-outline-secondary" id="acBtn">Decline</button>
-			      </td>
+			    <tr class="clinic-table-text" title="Click for more information">
+			      <td>Cardio Clinic</td>
 			    </tr>
-			    <tr>
-			      <td class="w-50" title="Click for more information">Mark Otto</td>
-			      <td class="w-50 text-right">
-			      	<button type="button" class="btn btn-outline-primary">Accept</button>
-					<button type="button" class="btn btn-outline-secondary">Decline</button>
-			      </td>
+			    <tr class="clinic-table-text" title="Click for more information">
+			      <td>Pulmology Clinic</td>
+			    </tr>
+			    <tr class="clinic-table-text" title="Click for more information">
+			      <td>Pediatric Clinic</td>
+			    </tr>
+			    <tr class="clinic-table-text" title="Click for more information">
+			      <td>Genereal Surgery Clinic</td>
 			    </tr>
 			  </tbody>
 			</table>
