@@ -42,7 +42,7 @@ public class Clinic {
 	public List<Nurse> nurses;
 
 	public Clinic() {
-
+		
 	}
 
 	public Clinic(String name, String address, String description, ArrayList<Ordination> ordinations,
@@ -91,7 +91,7 @@ public class Clinic {
 		this.pricelist = pricelist;
 	}
 
-	public List<ClinicAdministrator> getClinicAdministrators() {
+	public ArrayList<ClinicAdministrator> getClinicAdministrators() {
 		return clinicAdministrators;
 	}
 
@@ -99,7 +99,7 @@ public class Clinic {
 		this.clinicAdministrators = clinicAdministrators;
 	}
 
-	public List<Doctor> getDoctors() {
+	public ArrayList<Doctor> getDoctors() {
 		return doctors;
 	}
 
@@ -107,7 +107,7 @@ public class Clinic {
 		this.doctors = doctors;
 	}
 
-	public List<Nurse> getNurses() {
+	public ArrayList<Nurse> getNurses() {
 		return nurses;
 	}
 
@@ -119,7 +119,7 @@ public class Clinic {
 		this.ordinations = ordinations;
 	}
 
-	public List<Ordination> getOrdinations() {
+	public ArrayList<Ordination> getOrdinations() {
 		if (ordinations == null)
 			ordinations = new ArrayList<Ordination>();
 		return ordinations;
