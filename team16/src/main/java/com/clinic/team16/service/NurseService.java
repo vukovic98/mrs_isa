@@ -11,10 +11,5 @@ public class NurseService {
 	
 	@Autowired
 	private NurseRepository nurseRepository;
-	
-	public Nurse create(Nurse nurse) {
-		Nurse savedNurse = nurseRepository.create(nurse);
-		
-		return savedNurse;
-	}
+
 }

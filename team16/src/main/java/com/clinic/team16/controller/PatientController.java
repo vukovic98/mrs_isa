@@ -17,15 +17,6 @@ public class PatientController {
 	
 	@Autowired
 	private PatientService patientService;
-	
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE )
-	public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) throws Exception {
-		
-		Patient newPatient = patientService.create(patient);
-		
-		return new ResponseEntity<Patient>(newPatient, HttpStatus.CREATED);
-		
-		 
-	}
+
 
 }

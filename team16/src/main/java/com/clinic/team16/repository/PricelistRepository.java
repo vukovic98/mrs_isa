@@ -1,8 +1,11 @@
 package com.clinic.team16.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.clinic.team16.beans.Pricelist;
+
 @Repository
-public class PricelistRepository {
+public interface PricelistRepository extends JpaRepository<Pricelist, Long>{
 
 }
