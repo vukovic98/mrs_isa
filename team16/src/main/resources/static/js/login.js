@@ -19,12 +19,15 @@ $(document).ready(function(e) {
 				}),
 				contentType: "application/json; charset=utf-8",
 			    dataType: "json",
-				success : function(response) {
-					whereToGo(response)
-				},
-				error : function(data) {
-					alert(data.responseText)
-				}
+			    statusCode: {
+			        200: function(responseObject, textStatus, jqXHR) {
+			            console.log("usao");
+			            whereToGo(responseObject);
+			        },
+			        400: function(responseObject, textStatus, errorThrown) {
+			            concole.log("ERROR");
+			        }           
+			    }
 			});
 		}
 	});
@@ -55,9 +58,11 @@ $(document).ready(function(e) {
 });
 
 function whereToGo(user) {
-	if(user.email == "a@a") {
-		$(location).attr('href', 'clinicalCenterAdmin.html');
-	}
+		if(user.email == "a@a") {
+			console.log("USAO");
+			window.location.href = "/clinicalCenterAdmin";
+		}
+	
 }
 
 
