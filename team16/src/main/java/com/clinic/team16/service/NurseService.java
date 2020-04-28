@@ -13,7 +13,7 @@ public class NurseService {
 	private NurseRepository nurseRepository;
 	
 	public Nurse create(Nurse nurse) {
-		Nurse savedNurse = nurseRepository.create(nurse);
+		Nurse savedNurse = nurseRepository.save(nurse);
 		
 		return savedNurse;
 	}
