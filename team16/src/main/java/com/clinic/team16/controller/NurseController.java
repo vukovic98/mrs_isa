@@ -19,12 +19,4 @@ public class NurseController {
 	
 	@Autowired
 	private NurseService nurseService;
-
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Nurse> createNurse(@RequestBody Nurse nurse) {
-		
-		Nurse savedNurse = nurseService.create(nurse);
-		
-		return new ResponseEntity<Nurse>(savedNurse, HttpStatus.OK);
-	}
 }

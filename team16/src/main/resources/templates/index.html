@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
+
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<link rel="stylesheet" href="/css/style.css">
+	
 </head>
 <body>
 	<div class="col-md-12 fl-left" style="height: 90px;"></div>
@@ -23,16 +25,15 @@
 			<div class="center">
 				<h2 class="form-title" id="login"><span>or</span>Log in</h2>
 				<div class="form-holder">
-					<input type="email" class="input" placeholder="Email" />
-					<input type="password" class="input" placeholder="Password" />
+					<input type="email" id="emailInput" class="input" placeholder="Email" />
+					<input type="password" id="passInput" class="input" placeholder="Password" />
 				</div>
-				<a th:href="@{/clinicalCenterAdmin}">
-					<button class="submit-btn" >Log in</button>
-				</a>
+				<button class="submit-btn" id="loginBtn">Log in</button>
 			</div>
 		</div>
 	</div>
-
+	
+	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
 	<script type="application/javascript" th:src="@{js/login.js}"></script>
 </body>
 </html>

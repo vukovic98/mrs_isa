@@ -8,7 +8,7 @@ import org.hibernate.annotations.MetaValue;
 @Entity
 @Embeddable
 public class Nurse extends User {
-	
+
 	@ElementCollection
 	@CollectionTable(name = "nurse_leaveRequests", joinColumns = @JoinColumn(name = "nurse_id"))
 	public List<LeaveRequest> leaveRequests;
@@ -18,7 +18,7 @@ public class Nurse extends User {
 	public List<MedicalReport> medicalReports;
     
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-	@JoinColumn(name = "Nurse_ID")
+	@JoinColumn(name = "Nurse_Clinic_ID")
 	public Clinic clinic;
 
 	public Nurse() {

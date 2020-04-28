@@ -58,6 +58,19 @@ public class User {
 		this.insuranceNumber = insuranceNumber;
 	}
 
+	public User(User u) {
+		this.address = u.address;
+		this.city = u.city;
+		this.country = u.country;
+		this.email = u.email;
+		this.firstName = u.firstName;
+		this.id = u.id;
+		this.insuranceNumber = u.insuranceNumber;
+		this.lastName = u.lastName;
+		this.password = u.password;
+		this.phoneNumber = u.phoneNumber;
+	}
+
 	public String getEmail() {
 		return email;
 	}
