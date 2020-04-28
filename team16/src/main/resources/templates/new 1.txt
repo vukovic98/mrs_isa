@@ -1,4 +1,0 @@
-registration req na pacijenta umseto na usera
-medical record alergije su kolekcija enuma
-perscriptions su lista medicationa
-pricelistitem preimenuj ime u appointment type (ova klasa se brise)
