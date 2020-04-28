@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.clinic.team16.beans.User;
 import com.clinic.team16.service.AppointmentService;
@@ -25,13 +26,14 @@ public class UserController {
 
 	@PostMapping(path = "/validateUser", consumes = "application/json")
 	public ResponseEntity<User> validateUser(@RequestBody User u) {
-
+		System.out.println(u.getEmail());
 		List<User> k = userService.findOneByEmail(u.getEmail());
 		boolean found = false;
 		User f = new User();
 
 		if (k != null) {
 			for (User us : k) {
+				System.out.println(us.getEmail());
 				if (us.getEmail().equalsIgnoreCase(u.getEmail())) {
 					found = true;
 					f = us;
@@ -39,7 +41,12 @@ public class UserController {
 				}
 			}
 		}
+		System.out.println(found);
 		
-		return new ResponseEntity<>(new User(f), HttpStatus.OK);
+		if(found) {
+			return new ResponseEntity<User>(f, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<User>(f, HttpStatus.BAD_REQUEST);
+		}
 	}
 }
