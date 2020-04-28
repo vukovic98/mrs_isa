@@ -17,7 +17,7 @@ public class RegistrationRequest {
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "User_ID")
-	public User user;
+	public Patient patient;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "ClinicalCenterAdministrator_ID")
@@ -27,10 +27,10 @@ public class RegistrationRequest {
 		super();
 	}
 
-	public RegistrationRequest(boolean approved, User user, ClinicalCenterAdministrator clinicalCenterAdministrator) {
+	public RegistrationRequest(boolean approved, Patient patient, ClinicalCenterAdministrator clinicalCenterAdministrator) {
 		super();
 		this.approved = approved;
-		this.user = user;
+		this.patient = patient;
 		this.clinicalCenterAdministrator = clinicalCenterAdministrator;
 	}
 
@@ -42,12 +42,12 @@ public class RegistrationRequest {
 		this.approved = approved;
 	}
 
-	public User getUser() {
-		return user;
+	public Patient getUser() {
+		return patient;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(Patient patient) {
+		this.patient = patient;
 	}
 
 	public ClinicalCenterAdministrator getClinicalCenterAdministrator() {

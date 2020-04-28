@@ -12,7 +12,7 @@ public class PricelistItem {
 	private long pricelistItemId;
 
 	@Column(name = "name", nullable = false)
-	private String name;
+	private String appointmentType;
 
 	@Column(name = "price", nullable = false)
 	private double price;
@@ -25,19 +25,19 @@ public class PricelistItem {
 		super();
 	}
 
-	public PricelistItem(String name, double price, Pricelist pricelist) {
+	public PricelistItem(String appointmentType, double price, Pricelist pricelist) {
 		super();
-		this.name = name;
+		this.appointmentType = appointmentType;
 		this.price = price;
 		this.pricelist = pricelist;
 	}
 
 	public String getName() {
-		return name;
+		return appointmentType;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String appointmentType) {
+		this.appointmentType = appointmentType;
 	}
 
 	public double getPrice() {

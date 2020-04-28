@@ -23,10 +23,6 @@ public class Appointment {
 	@JoinColumn(name = "Ordination_ID")
 	public Ordination ordination;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-	@JoinColumn(name = "AppointmentType_ID")
-	public AppointmentType appointmentType;
-	
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "MedicalReport_ID")
 	public MedicalReport medicalReport;
@@ -47,13 +43,12 @@ public class Appointment {
 
 	}
 
-	public Appointment(Date dateTime, double duration, Ordination ordination, AppointmentType appointmentType,
+	public Appointment(Date dateTime, double duration, Ordination ordination,
 			MedicalReport medicalReport, AppointmentRequest appointmentRequest, Doctor doctor, Patient patient) {
 		super();
 		this.dateTime = dateTime;
 		this.duration = duration;
 		this.ordination = ordination;
-		this.appointmentType = appointmentType;
 		this.medicalReport = medicalReport;
 		this.appointmentRequest = appointmentRequest;
 		this.doctor = doctor;
@@ -84,13 +79,6 @@ public class Appointment {
 		this.ordination = ordination;
 	}
 
-	public AppointmentType getAppointmentType() {
-		return appointmentType;
-	}
-
-	public void setAppointmentType(AppointmentType appointmentType) {
-		this.appointmentType = appointmentType;
-	}
 
 	public MedicalReport getMedicalReport() {
 		return medicalReport;

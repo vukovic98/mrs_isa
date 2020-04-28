@@ -26,11 +26,11 @@ public class MedicalRecord {
 
 	@ElementCollection
 	@CollectionTable(name = "medicalRecord_allergies", joinColumns = @JoinColumn(name = "medicalRedord_id"))
-	private List<String> allergies;
+	private List<Allergies> allergies;
 
 	@ElementCollection
 	@CollectionTable(name = "medicalRecord_perscriptions", joinColumns = @JoinColumn(name = "medicalRedord_id"))
-	private List<String> perscriptions;
+	private List<Medication> perscriptions;
 
 	@Column(name = "MedicalHistory", nullable = false)
 	private String medicalHistory;
@@ -43,8 +43,8 @@ public class MedicalRecord {
 		super();
 	}
 
-	public MedicalRecord(int height, int weight, String bloodType, int bloodPressure, ArrayList<String> allergies,
-			ArrayList<String> perscriptions, String medicalHistory, Patient patient) {
+	public MedicalRecord(int height, int weight, String bloodType, int bloodPressure, ArrayList<Allergies> allergies,
+			ArrayList<Medication> perscriptions, String medicalHistory, Patient patient) {
 		super();
 		this.height = height;
 		this.weight = weight;
@@ -88,19 +88,19 @@ public class MedicalRecord {
 		this.bloodPressure = bloodPressure;
 	}
 
-	public List<String> getAllergies() {
+	public List<Allergies> getAllergies() {
 		return allergies;
 	}
 
-	public void setAllergies(ArrayList<String> allergies) {
+	public void setAllergies(ArrayList<Allergies> allergies) {
 		this.allergies = allergies;
 	}
 
-	public List<String> getPerscriptions() {
+	public List<Medication> getPerscriptions() {
 		return perscriptions;
 	}
 
-	public void setPerscriptions(ArrayList<String> perscriptions) {
+	public void setPerscriptions(ArrayList<Medication> perscriptions) {
 		this.perscriptions = perscriptions;
 	}
 

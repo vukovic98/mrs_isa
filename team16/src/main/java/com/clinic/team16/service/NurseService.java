@@ -7,7 +7,7 @@ import com.clinic.team16.beans.Nurse;
 import com.clinic.team16.repository.NurseRepository;
 
 @Service
-public interface NurseService extends JpaRepository<Nurse, Long>{
+public class NurseService{
 	
 	@Autowired
 	private NurseRepository nurseRepository;
