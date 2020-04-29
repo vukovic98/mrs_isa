@@ -21,9 +21,9 @@
 	<nav class="links" style="--items: 5;">
 		<a class="selected" th:href="@{/clinicalCenterAdmin}">Registration requests</a>
 		<a th:href="@{/clinics}">Clinics</a>
-		<a href="#">Clinic Administrators</a>
-		<a href="#">Medications</a>
-		<a href="#">Diagnosis</a>
+		<a th:href="@{/clinicalAdmins}">Clinic Administrators</a>
+		<a th:href="@{/medications}">Medications</a>
+		<a th:href="@{/diagnosis}">Diagnosis</a>
 		<span class="line"></span>
 	</nav>
 </header>
@@ -31,7 +31,7 @@
 
 	<div class="container" style="margin-top: 85px;">
 		<div class="jumbotron bg-light">
-			<h1 class="mb-4">New users requests</h1>
+			<h1 class="mb-4">Clinic Administrators</h1>
 			<table class="table table-hover mt-4 pt-4" id="usersTable">
 			  <tbody>
 			    <tr title="Click for more information">

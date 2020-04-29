@@ -38,5 +38,14 @@ public class Control {
 		   return "clinics";
 	   }
 	   
+	   @RequestMapping(value = "/clinicalAdmins")
+	   public String clinicalAdmins() {
+		   return "clinicalAdmins";
+	   }
+	   
+	   @RequestMapping(value = "/medications")
+	   public String medications() {
+		   return "medications";
+	   }
 	   
 }
