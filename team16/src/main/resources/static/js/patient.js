@@ -6,6 +6,7 @@ $(document).ready(function () {
         fire_ajax_submit();
 
     });
+   
 
 });
 
