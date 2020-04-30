@@ -62,6 +62,9 @@ function whereToGo(user) {
 			console.log("USAO");
 			window.location.href = "/clinicalCenterAdmin";
 		}
+		if(user.email == "p@p") {
+			window.location.href = "/patient";
+		}
 	
 }
 

@@ -24,18 +24,17 @@
     </p>
     <nav class="links" style="--items: 4;">
       <a class="selected" href="#">Profile</a>
-      <a href="medicalRecord.html">Medical Record</a>
-      <a href="#">Appointment History</a>
-      <a href="#">Clinics</a>
+      <a th:href="@{/medicalRecord}">Medical Record</a>
+      <a th:href="@{/appointmentHistory}">Appointment History</a>
+      <a th:href="@{/patientsClinics}">Clinics</a>
     </nav>
   </header>
-
-  <div style="padding-top: 8%;">
-    <div class="col-md-3" style="float: left; height: 500px;"></div>
-    <div class="col-md-6" style="float: left;">
+  <div class="container" style="margin-top: 85px;">
+    <div class="jumbotron bg-light">
+	<h1 class="mb-4">Patient</h1>
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <a class="nav-link active" data-toggle="pill" href="#patient">Profile</a>
+          <a class="nav-link active" data-toggle="pill" href="#patient">My Profile</a>
         </li>
         <li class="nav-item">
           <a class="nav-link " data-toggle="pill" href="#editPatientProfile">Edit Profile</a>
@@ -44,6 +43,9 @@
           <a class="nav-link" data-toggle="pill" href="#changePassword">Change Password</a>
         </li>
       </ul>
+
+
+
       <div class="tab-content">
 
         <div class="tab-pane active" id="patient">
@@ -62,10 +64,10 @@
             </div>
           </form>
         </div>
+
         <div class="tab-pane" id="editPatientProfile">
-          <div style="padding-top: 8%;">
-            <div class="col-md-3" style="float: left; height: 500px;"></div>
-            <div class="col-md-6" style="float: left;">
+          
+            
               <form id="patientEditForm">
                 <div>
                   <div class="form-group">
@@ -106,10 +108,11 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
               </form>
-            </div>
-            <div class="col-md-3" style="float: left;"></div>
-          </div>
+            
+          
+          <div class="col-md-3" style="float: left;"></div>
         </div>
+
 
         <div class="tab-pane" id="changePassword">
           <form id="patientEditForm">
@@ -131,10 +134,11 @@
           </form>
         </div>
       </div>
-      <div class="col-md-3" style="float: left;"></div>
+
     </div>
+    
   </div>
-  </div>
+
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

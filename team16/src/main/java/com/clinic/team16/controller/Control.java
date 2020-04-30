@@ -47,5 +47,17 @@ public class Control {
 	   public String medications() {
 		   return "medications";
 	   }
+	   @RequestMapping(value = "/medicalRecord")
+	   public String medicalRecord() {
+		   return "medicalRecord";
+	   }
+	   @RequestMapping(value = "/patientsClinics")
+	   public String patientsClinics() {
+		   return "patientsClinics";
+	   }
+	   @RequestMapping(value = "/appointmentHistory")
+	   public String appointmentHistory() {
+		   return "appointmentHistory";
+	   }
 	   
 }
