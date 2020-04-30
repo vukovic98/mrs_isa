@@ -32,7 +32,7 @@
   <div class="container" style="margin-top: 85px;">
     <div class="jumbotron bg-light">
 	<h1 class="mb-4">Patient</h1>
-      <ul class="nav nav-pills">
+      <ul class="nav nav-pills pt-3">
         <li class="nav-item">
           <a class="nav-link active" data-toggle="pill" href="#patient">My Profile</a>
         </li>
@@ -51,16 +51,43 @@
         <div class="tab-pane active" id="patient">
           <br>
           <form id="patientProfileForm">
-            <div class="col-xs-12 col-sm-8">
-              <ul class="list-group">
-                <li class="list-group-item">John Doe</li>
-                <li class="list-group-item">Country</li>
-                <li class="list-group-item">City</li>
-                <li class="list-group-item">Address</li>
-                <li class="list-group-item">LBO</li>
-                <li class="list-group-item"><i class="fa fa-phone"></i> 000-000-0000 </li>
-                <li class="list-group-item"><i class="fa fa-envelope"></i> john@example.com</li>
-              </ul>
+            <div class="col-xs-12 col-sm-12 pl-0 pt-1 pr-0">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Name</span>
+                </div>
+                  <input type="text" class="form-control" aria-label="Name" value="John Doe" aria-describedby="inputGroup-sizing-default" readonly>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Country</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Country" value="Srbija" aria-describedby="inputGroup-sizing-default" readonly>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">City</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="City" value="Novi Sad" aria-describedby="inputGroup-sizing-default" readonly>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Address</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Address" value="Zeleznica bb" aria-describedby="inputGroup-sizing-default" readonly>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Phone number</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Phone number" value="0776655443" aria-describedby="inputGroup-sizing-default" readonly>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Insurance number</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Insurance number" value="123456789876" aria-describedby="inputGroup-sizing-default" readonly>
+                </div>
             </div>
           </form>
         </div>
@@ -68,45 +95,54 @@
         <div class="tab-pane" id="editPatientProfile">
           
             
-              <form id="patientEditForm">
-                <div>
-                  <div class="form-group">
-                    <label>First name</label>
-                    <input type="text" class="form-control" id="inputFirstName">
-                  </div>
-                  <div class="form-group">
-                    <label>Last name</label>
-                    <input type="text" class="form-control" id="inputLastName">
-                  </div>
-                  <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" class="form-control" id="patientEmail" readonly>
-                  </div>
-                  <div class="form-group">
-                    <label>Address</label>
-                    <input type="text" class="form-control" id="inputAddress">
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="inputCity1">City</label>
-                      <input type="text" class="form-control" id="inputCity">
-                    </div>
-                    <div class="form-group col-md-4">
-                      <label for="inputCountry1">Country</label>
-                      <input type="text" class="form-control" id="inputCountry">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputPhoneNumber1">Phone number</label>
-                    <input type="text" class="form-control" id="inputPhoneNumber">
-                  </div>
-                  <div class="form-group">
-                    <label for="inputInsuranceNumber1">Insurance number</label>
-                    <input type="text" class="form-control" id="inputInsuranceNumber" readonly>
-                  </div>
-
+          <form id="patientEditForm">
+                <div class="col-xs-12 col-sm-12 pl-0 pt-4 pr-0">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Name</span>
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="Name" value="John Doe" aria-describedby="inputGroup-sizing-default" >
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Country</span>
+                  </div>
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="Country" value="Srbija" aria-describedby="inputGroup-sizing-default" >
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">City</span>
+                  </div>
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="City" value="Novi Sad" aria-describedby="inputGroup-sizing-default" >
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Address</span>
+                  </div>
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="Address" value="Zeleznica bb" aria-describedby="inputGroup-sizing-default" >
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Phone number</span>
+                  </div>
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="Phone number" value="0776655443" aria-describedby="inputGroup-sizing-default" >
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Insurance number</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Insurance number" value="123456789876" aria-describedby="inputGroup-sizing-default" readonly>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Email</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Email" value="a@a" aria-describedby="inputGroup-sizing-default" readonly>
+                </div>
+            </div>
+                <div class="text-right">
+                	<button style="width: 15%"; type="submit" class="btn btn-primary">Save</button>
+                </div>
               </form>
             
           
@@ -116,7 +152,7 @@
 
         <div class="tab-pane" id="changePassword">
           <form id="patientEditForm">
-            <div>
+            <div class="pt-3">
               <div class="form-group">
                 <label>Password</label>
                 <input type="password" class="form-control" id="oldPassword">
