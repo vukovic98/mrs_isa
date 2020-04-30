@@ -17,6 +17,21 @@ public class Control {
 		   return "doctor";
 	   }
 	   
+	   @RequestMapping(value = "/doctorAppointments")
+	   public String doctorAppointments() {
+		   return "doctorAppointments";
+	   }
+	   
+	   @RequestMapping(value = "/workSchedule")
+	   public String workSchedule() {
+		   return "doctor";
+	   }
+	   
+	   @RequestMapping(value = "/doctorProfile")
+	   public String doctorProfile() {
+		   return "doctor";
+	   }
+	   
 	   @RequestMapping(value = "/nurse")
 	   public String nurse() {
 		   return "nurse";
@@ -31,6 +46,36 @@ public class Control {
 	   @RequestMapping(value = "/clinicalCenterAdmin")
 	   public String clinicalCenterAdmin() {
 		   return "clinicalCenterAdmin";
+	   }
+	   
+	   @RequestMapping(value = "/clinicAdmin")
+	   public String clinicAdmin() {
+		   return "clinicAdmin";
+	   }
+	   
+	   @RequestMapping(value = "/businessReports")
+	   public String businessReports() {
+		   return "businessReports";
+	   }
+	   
+	   @RequestMapping(value = "/doctors")
+	   public String doctors() {
+		   return "doctors";
+	   }
+	   
+	   @RequestMapping(value = "/rooms")
+	   public String rooms() {
+		   return "rooms";
+	   }
+	   
+	   @RequestMapping(value = "/pricelist")
+	   public String pricelist() {
+		   return "pricelist";
+	   }
+	   
+	   @RequestMapping(value = "/predefinedAppointments")
+	   public String predefinedAppointments() {
+		   return "predefinedAppointments";
 	   }
 	   
 	   @RequestMapping(value = "/clinics")

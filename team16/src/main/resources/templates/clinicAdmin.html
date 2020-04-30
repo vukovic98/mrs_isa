@@ -2,9 +2,9 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Clinical center administrator</title>
+	<title>Clinic administrator</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="/css/style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
@@ -26,14 +26,14 @@
 	</script>
 
 	<header id="header">
-		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Clinical center administrator</p>
+		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Clinic administrator</p>
 	<nav class="links" style="--items: 6;">
 		<a class="selected" th:href="@{/clinicAdmin}">Profile</a>
-		<a href="#">Appointments</a>
-		<a href="#">Business reports</a>
-		<a href="#">OR/ER management</a>
-		<a href="#">Price list</a>
-		<a href="#">Doctors</a>
+		<a th:href="@{/predefinedAppointments}">Appointments</a>
+		<a th:href="@{/businessReports}">Business reports</a>
+		<a th:href="@{/rooms}">OR/ER management</a>
+		<a th:href="@{/pricelist}">Price list</a>
+		<a th:href="@{/doctors}">Doctors</a>
 	</nav>
 </header>
 	

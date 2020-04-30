@@ -26,10 +26,10 @@ public class UserController {
 
 	@GetMapping(path = "/add")
 	public String addUser(){
-		User u = new User("a@a", "123", "Vladimir", "Vukovic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789");
-		
+		User u = new User("s@s", "321", "Dusan", "Madzarevic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789");
+		User u2 = new User("d@d", "5436", "Dusan", "Madzarevic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789");
 		userService.save(u);
-		
+		userService.save(u2);
 		return "SAVED";
 	}
 	

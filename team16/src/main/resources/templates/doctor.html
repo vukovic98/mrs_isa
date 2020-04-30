@@ -1,67 +1,130 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title></title>
+	<meta charset="UTF-8">
+	<title>Doctor</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+	<link rel="stylesheet" href="/css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
+
 <body>
-<form id="doctorAddForm">
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputEmail4">Email</label>
-      <input type="email" class="form-control" id="inputEmail">
-    </div>
-    <div class="form-group col-md-6">
-      <label for="inputPassword4">Password</label>
-      <input type="password" class="form-control" id="inputPassword">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputFirstName">First name</label>
-      <input type="text" class="form-control" id="inputFirstName">
-    </div>
-    <div class="form-group col-md-6">
-      <label for="inputLastName">Last name</label>
-      <input type="text" class="form-control" id="inputLastName">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="inputAddress">Address</label>
-    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-  </div>
-  <div class="form-group">
-    <label for="inputPhoneNo">Phone No.</label>
-    <input type="text" class="form-control" id="inputPhoneNo" placeholder="06...">
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputCity">City</label>
-      <input type="text" class="form-control" id="inputCity">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="inputState">Country</label>
-      <select id="inputState" class="form-control">
-        <option selected>Serbia</option>
-        <option>Great Britain</option>
-        <option>Czech Republic</option>
-      </select>
-    </div>
-    <div class="form-group col-md-2">
-      <label for="inputInsurance">Insurance Number</label>
-      <input type="text" class="form-control" id="inputInsurance">
-    </div>
-  </div>
-  <button type="submit" class="btn btn-primary">Sign up</button>
-</form>
+
+	<script type="text/javascript">
+		function modalClinicShow() {
+			$("#clinicModal").modal();
+		}
+		
+		function modalUserShow(){
+			$("#userModal").modal();
+		}
+		
+		function modalOrdinationsShow(){
+			
+		}
+		
+	</script>
+
+	<header id="header" style="z-index:999">
+		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Doctor</p>
+	<nav class="links" style="--items: 4;">
+		<a class="selected" th:href="@{/doctor}">Clinic patients</a>
+		<a th:href="@{/doctorAppointments}">My appointments</a>
+		<a th:href="@{/workSchedule}">Work schedule</a>
+		<a th:href="@{/doctorProfile}">Profile</a>
+	</nav>
+</header>
+	
+
+	<div class="container" style="margin-top: 85px;">
+		<div class="jumbotron bg-light">
+			<h1 class="mb-4">Clinic patients</h1>
+			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="usersTable">
+				<thead>
+	                    <tr>
+	                        <th data-sortable="true" data-field="id">Insurance Number</th>
+	                        <th data-sortable="true" data-field="name">Name</th>
+	                        <th>Phone Number</th>
+	                    </tr>
+	                </thead>
+			  <tbody>
+			    <tr title="Click for more information">
+				  <td>1213141516171</td>
+				  <td>John Doe</td>
+			      <td>0601234234</td>
+			    </tr>
+			    <tr title="Click for more information">
+			      <td>2131415161718</td>
+				  <td>Susan Doe</td>
+				  <td>063442531</td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+	</div>
 
 
-	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
-	<script type="application/javascript" th:src="@{js/doctor.js}"></script>
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-body">
+	        <div class="card text-center">
+			  <div class="card-header">
+			    User information
+			  </div>
+			  <div class="card-body">
+			    <ul class="list-group">
+					<li	class="list-group-item d-flex justify-content-between align-items-center">
+						Name
+						<p id="name" class="mb-0"><i>Mark Otto</i></p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Email
+						<p id="email" class="mb-0"><i>vladimirvukovic98@hotmail.rs</i></p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Address
+						<p id="address" class="mb-0"><i>Bulevar Despota Stefana 7a</i></p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Phone
+						<p id="phone" class="mb-0"><i>0669074444</i></p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						City
+						<p id="city" class="mb-0"><i>Novi Sad</i></p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Country
+						<p id="country" class="mb-0"><i>Serbia</i></p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Insurance Number
+						<p id="insNumber" class="mb-0"><i>12345678998765</i></p>
+					</li>
+				</ul>
+			  </div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
+	
+	<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
 
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+<!-- Latest compiled and minified Locales -->
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
-</html>
 
+</html>

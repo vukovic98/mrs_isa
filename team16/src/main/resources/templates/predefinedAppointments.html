@@ -1,10 +1,177 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org">
 
+<head>
+	<meta charset="UTF-8">
+	<title>Clinic administrator</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+	var actions = $("table td:last-child").html();
+	// Append table with add row form on add new button click
+    $(".add-new").click(function(){
+		$(this).attr("disabled", "disabled");
+		var index = $("table tbody tr:last-child").index();
+        var row = '<tr>' +
+            '<td><input type="datetime-local" class="form-control"></td>' +
+            '<td><select class="form-control"><option value="Basic Examination">Basic Examination</option><option value="Biopsy">Biopsy</option></td>' +
+			'<td><select class="form-control"><option value="101">101</option><option value="102">102</option></td>' +
+			'<td><select class="form-control"><option value="John Doe">John Doe</option><option value="Doctor House">Doctor House</option></td>' +
+			'<td><select class="form-control"><option value="25 min.">25 min.</option><option value="35 min.">35 min.</option></td>' +
+			'<td>' + actions + '</td>' +
+        '</tr>';
+    	$("table").append(row);		
+		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+	// Add row on add button click
+	$(document).on("click", ".add", function(){
+		var empty = false;
+		var input = $(this).parents("tr").find('input');
+		var select = $(this).parents("tr").find('select');
+        input.each(function(){
+			if(!$(this).val()){
+				$(this).addClass("error");
+				empty = true;
+			} else{
+                $(this).removeClass("error");
+            }
+		});
+		$(this).parents("tr").find(".error").first().focus();
+		if(!empty){
+			input.each(function(){
+				$(this).parent("td").html($(this).val());
+			});			
+			select.each(function(){
+				$(this).parent("td").html($(this).val());
+			});	
+			$(this).parents("tr").find(".add, .edit").toggle();
+			$(".add-new").removeAttr("disabled");
+		}		
+    });
+	// Edit row on edit button click
+	$(document).on("click", ".edit", function(){		
+        $(this).parents("tr").find("td:not(:last-child)").each(function(){
+			$(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+		});		
+		$(this).parents("tr").find(".add, .edit").toggle();
+		$(".add-new").attr("disabled", "disabled");
+    });
+	// Delete row on delete button click
+	$(document).on("click", ".delete", function(){
+        $(this).parents("tr").remove();
+		$(".add-new").removeAttr("disabled");
+    });
+});
+
+function modalExamShow(){
+$("#examModal").modal();
+}
+</script>
+	<header id="header">
+		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Clinic administrator</p>
+	<nav class="links" style="--items: 6;">
+		<a th:href="@{/clinicAdmin}">Profile</a>
+		<a class="selected" th:href="@{/predefinedAppointments}">Appointments</a>
+		<a th:href="@{/businessReports}">Business reports</a>
+		<a th:href="@{/rooms}">OR/ER management</a>
+		<a th:href="@{/pricelist}">Price list</a>
+		<a th:href="@{/doctors}">Doctors</a>
+	</nav>
+</header>
+
+
+	<div class="container" style="margin-top: 85px;">
+		<div class="jumbotron bg-light">
+			<h1 class="mb-0 col-md-9 fl-left" style="z-index: 0;">Appointments</h1>
+			
+			<div class="mt-5">
+	            <div class="row pt-5 pb-1 mr-0">
+					<div class="col-sm-2 pr-0">
+                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                    </div>
+	            </div>
+	            <table class="table table-bordered" id="myTable">
+	                <thead>
+	                    <tr>
+	                        <th>Date and time</th>
+	                        <th>Appointment type</th>
+	                        <th>Room</th>
+	                        <th>Doctor</th>
+							<th>Duration</th>
+							<th>&nbsp</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                    <tr>
+	                        <td>05.05.2020. 15:30</td>
+	                        <td onclick="modalExamShow()" title="Click for more information...">Basic Examination</td>
+							<td>101</td>
+							<td>John Doe</td>
+							<td>25 min.</td>
+	                        <td>
+							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+	                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <td>07.05.2020. 12:30</td>
+	                        <td onclick="modalExamShow()" title="Click for more information...">Basic Examination</td>
+							<td>102</td>
+							<td>Doctor House</td>
+							<td>25 min.</td>
+	                        <td>
+							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+	                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+	                        </td>
+	                    </tr>						
+	                </tbody>
+	            </table>
+        	</div>
+		</div>
+	</div>
+
+	
+	<div class="modal fade" id="examModal" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-body">
+	        <div class="card text-center">
+			  <div class="card-header">
+			    Price information
+			  </div>
+			  <div class="card-body">
+			    <ul class="list-group">
+					<li	class="list-group-item d-flex justify-content-between align-items-center">
+						Appointment type
+						<p id="type" class="mb-0"><i>Basic examination</i></p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Price
+						<p id="price" class="mb-0"><i>$300</i></p>
+					</li>
+				</ul>
+			  </div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/medications.js}"></script>
 </body>
+
 </html>
