@@ -24,6 +24,15 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	@GetMapping(path = "/add")
+	public String addUser(){
+		User u = new User("a@a", "123", "Vladimir", "Vukovic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789");
+		
+		userService.save(u);
+		
+		return "SAVED";
+	}
+	
 	@PostMapping(path = "/validateUser", consumes = "application/json")
 	public ResponseEntity<User> validateUser(@RequestBody User u) {
 		System.out.println(u.getEmail());

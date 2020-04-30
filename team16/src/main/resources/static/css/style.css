@@ -4,6 +4,94 @@ body{
     background-size: cover;
 }
 
+.table-wrapper {
+		width: 700px;
+		margin: 30px auto;
+        background: #fff;
+        padding: 20px;	
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+    .table-title {
+        padding-bottom: 10px;
+        margin: 0 0 10px;
+    }
+    .table-title h2 {
+        margin: 6px 0 0;
+        font-size: 22px;
+    }
+    .table-title .add-new {
+        float: right;
+		height: 30px;
+		font-weight: bold;
+		font-size: 12px;
+		text-shadow: none;
+		min-width: 100px;
+		border-radius: 50px;
+		line-height: 13px;
+    }
+	.table-title .add-new i {
+		margin-right: 4px;
+	}
+    table.table {
+        table-layout: fixed;
+    }
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+    }
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    table.table th:last-child {
+        width: 100px;
+    }
+    table.table td a {
+		cursor: pointer;
+        display: inline-block;
+        margin: 0 5px;
+		min-width: 24px;
+    }    
+	table.table td a.add {
+        color: #27C46B;
+    }
+    table.table td a.edit {
+        color: #FFC107;
+    }
+    table.table td a.delete {
+        color: #E34724;
+    }
+    table.table td i {
+        font-size: 19px;
+    }
+	table.table td a.add i {
+        font-size: 24px;
+    	margin-right: -1px;
+        position: relative;
+        top: 3px;
+    }    
+    table.table .form-control {
+        height: 32px;
+        line-height: 32px;
+        box-shadow: none;
+        border-radius: 2px;
+    }
+	table.table .form-control.error {
+		border-color: #f50000;
+	}
+	table.table td .add {
+		display: none;
+	}
+
+.delete_btn {
+	background-image: url(/images/del_rem.png);
+	background-size: cover;
+}
+
+.delete_btn:hover {
+	transform: scale(1.1);
+}
+
 .fl-left {
 	float: left;
 }
@@ -317,4 +405,49 @@ body{
 .links > a:nth-of-type(9):hover ~ .line { --index: 9; }
 .links > a:nth-of-type(10):hover ~ .line { --index: 10; }
 .links > a:last-of-type:hover ~ .line { --index: var(--items); }
+
+.trash {
+    -webkit-transition: opacity 200ms;
+    height: 30px;
+    width: 30px;
+    opacity: 0.8;
+    position: absolute;    
+    vertical-align: middle;
+    cursor: pointer;    
+}
+
+.trash > .can, .trash > .lid {
+    background: url('//i.imgur.com/HY8AJMJ.png') 0 0 no-repeat;
+    left: 8px;
+    position: absolute;
+    right: 8px;
+    top: 6px;
+}
+
+.trash:hover > .lid {
+    -webkit-transition: -webkit-transform 250ms;
+}
+
+.trash:hover > .lid.lift {
+    -webkit-transform: translateY(-3px);
+}
+
+.trash:hover > .lid.rotate {
+    -webkit-transform: rotate(-45deg);
+}
+
+
+.trash > .lid {
+    -webkit-transform-origin: -7% 100%;
+    -webkit-transition: -webkit-transform 250ms;
+    height: 6px;
+    width: 14px;
+}
+
+.trash > .can {
+    background-position: 0px -4px;
+    height: 16px;
+    width: 13px;  
+    margin-top: 5px;
+}
  

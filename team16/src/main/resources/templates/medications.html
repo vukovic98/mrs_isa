@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Clinical center administrator</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+	<header id="header" style="z-index: 9999;">
+		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Clinical center administrator</p>
+	<nav class="links" style="--items: 5;">
+		<a th:href="@{/clinicalCenterAdmin}">Registration requests</a>
+		<a th:href="@{/clinics}">Clinics</a>
+		<a th:href="@{/clinicalAdmins}">Clinic Administrators</a>
+		<a class="selected" th:href="@{/medications}">Medications</a>
+		<a th:href="@{/diagnosis}">Diagnosis</a>
+		<span class="line"></span>
+	</nav>
+</header>
+	
+
+	<div class="container" style="margin-top: 85px;">
+		<div class="jumbotron bg-light">
+			<h1 class="mb-0 col-md-9 fl-left" style="z-index: 0;">Medications</h1>
+			
+			<div class="mt-5">
+	            <div class="row pt-5 pb-1 mr-0">
+	            	<div class="input-group mb-3 col-sm-10 pr-0">
+					  <input type="text" id="myInput" class="form-control" placeholder="Search medications..." aria-label="Medication" aria-describedby="basic-addon2" onkeyup="myFunction()">
+					</div>
+					<div class="col-sm-2 text-right pr-0">
+                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                    </div>
+	            </div>
+	            <table class="table table-bordered" id="myTable">
+	                <thead>
+	                    <tr>
+	                        <th>Name</th>
+	                        <th>Code</th>
+	                        <th>&nbsp</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                    <tr>
+	                        <td>John Doe</td>
+	                        <td>Administration</td>
+	                        <td>
+								<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+	                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+	                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <td>Peter Parker</td>
+	                        <td>Customer Service</td>
+	                        <td>
+								<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+	                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+	                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <td>Fran Wilson</td>
+	                        <td>Human Resources</td>
+	                        <td>
+								<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+	                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+	                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+	                        </td>
+	                    </tr>      
+	                </tbody>
+	            </table>
+        	</div>
+		</div>
+	</div>
+
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/medications.js}"></script>
+</body>
+
+</html>
