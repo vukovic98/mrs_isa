@@ -62,6 +62,7 @@ function whereToGo(user) {
 			console.log("USAO");
 			window.location.href = "/clinicalCenterAdmin";
 		}
+
 		if(user.email == "s@s") {
 			console.log("USAO");
 			window.location.href = "/clinicAdmin";
@@ -71,6 +72,11 @@ function whereToGo(user) {
 			console.log("USAO");
 			window.location.href = "/doctor";
 		}
+
+		if(user.email == "p@p") {
+			window.location.href = "/patient";
+		}
+	
 }
 
 
