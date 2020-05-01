@@ -28,9 +28,14 @@ public class UserController {
 	public String addUser(){
 		User u = new User("s@s", "321", "Dusan", "Madzarevic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789");
 		User u2 = new User("d@d", "5436", "Dusan", "Madzarevic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789");
+		User u3 = new User("p@p", "123", "Ivana", "Vlaisavljevic", "Backa", "Backa", "Srbija", "0642351998", "1234567890");
+		User u4 = new User("a@a", "123", "Vladimir", "Vukovic", "Bulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789");
 
 		userService.save(u);
 		userService.save(u2);
+		userService.save(u3);
+		userService.save(u4);
+		
 		return "SAVED";
 	}
 	

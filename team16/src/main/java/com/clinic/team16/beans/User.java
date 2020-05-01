@@ -5,10 +5,11 @@ import javax.persistence.*;
 
 @Entity
 @Embeddable
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "User_ID", nullable = false)
 	private long id;
 	

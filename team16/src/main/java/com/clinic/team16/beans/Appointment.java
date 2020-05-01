@@ -38,14 +38,20 @@ public class Appointment {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "Patient_ID")
 	public Patient patient;
+	
+	@ElementCollection
+	@CollectionTable(name = "clinicCenterAdministrator_pricelistItems",joinColumns = @JoinColumn(name = "pricelistItem_Id"))
+	public List<PricelistItem> pricelistItems;
 
 	public Appointment() {
 
 	}
 
-	public Appointment(Date dateTime, double duration, Ordination ordination,
-			MedicalReport medicalReport, AppointmentRequest appointmentRequest, Doctor doctor, Patient patient) {
+	public Appointment(long appointmentId, Date dateTime, double duration, Ordination ordination,
+			MedicalReport medicalReport, AppointmentRequest appointmentRequest, Doctor doctor, Patient patient,
+			List<PricelistItem> pricelistItems) {
 		super();
+		this.appointmentId = appointmentId;
 		this.dateTime = dateTime;
 		this.duration = duration;
 		this.ordination = ordination;
@@ -53,6 +59,24 @@ public class Appointment {
 		this.appointmentRequest = appointmentRequest;
 		this.doctor = doctor;
 		this.patient = patient;
+		this.pricelistItems = pricelistItems;
+	}
+
+
+	public long getAppointmentId() {
+		return appointmentId;
+	}
+
+	public void setAppointmentId(long appointmentId) {
+		this.appointmentId = appointmentId;
+	}
+
+	public List<PricelistItem> getPricelistItems() {
+		return pricelistItems;
+	}
+
+	public void setPricelistItems(List<PricelistItem> pricelistItems) {
+		this.pricelistItems = pricelistItems;
 	}
 
 	public Date getDateTime() {
