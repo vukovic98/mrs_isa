@@ -25,7 +25,7 @@ $(document).ready(function(e) {
 			            whereToGo(responseObject);
 			        },
 			        400: function(responseObject, textStatus, errorThrown) {
-			            concole.log("ERROR");
+			            alert("Error!", "There is no user with these credentials!");
 			        }           
 			    }
 			});
@@ -58,22 +58,22 @@ $(document).ready(function(e) {
 });
 
 function whereToGo(user) {
-		if(user.email == "a@a") {
+		if(user.role == "CLINICAL_CENTER_ADMINISTRATOR") {
 			console.log("USAO");
 			window.location.href = "/clinicalCenterAdmin";
 		}
 
-		if(user.email == "s@s") {
+		if(user.role == "CLINIC_ADMINISTRATOR") {
 			console.log("USAO");
 			window.location.href = "/clinicAdmin";
 		}
 		
-		if(user.email == "d@d") {
+		if(user.role == "DOCTOR") {
 			console.log("USAO");
 			window.location.href = "/doctor";
 		}
 
-		if(user.email == "p@p") {
+		if(user.role == "PATIENT") {
 			window.location.href = "/patient";
 		}
 	

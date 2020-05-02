@@ -40,13 +40,16 @@ public class User {
 	@Column(name = "InsuranceNumber", nullable = false)
 	private String insuranceNumber;
 	
+	@Enumerated(EnumType.STRING)
+	private Role role;
+	
 
 	public User() {
 		super();
 	}
 
 	public User(String email, String password, String firstName, String lastName, String address, String city,
-			String country, String phoneNumber, String insuranceNumber) {
+			String country, String phoneNumber, String insuranceNumber, Role role) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -57,6 +60,7 @@ public class User {
 		this.country = country;
 		this.phoneNumber = phoneNumber;
 		this.insuranceNumber = insuranceNumber;
+		this.role = role;
 	}
 
 	public User(User u) {
@@ -70,6 +74,25 @@ public class User {
 		this.lastName = u.lastName;
 		this.password = u.password;
 		this.phoneNumber = u.phoneNumber;
+		this.role = u.role;
+	}
+	
+	
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public String getEmail() {

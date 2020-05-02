@@ -11,7 +11,7 @@ import com.clinic.team16.beans.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	
-	public List<User> findByEmail(String email);
+	public User findByEmail(String email);
 	
 	public User save(User u);
 	

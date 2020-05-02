@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.clinic.team16.beans.Role;
 import com.clinic.team16.beans.User;
 import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicalCenterService;
@@ -26,10 +27,10 @@ public class UserController {
 
 	@GetMapping(path = "/add")
 	public String addUser(){
-		User u = new User("s@s", "321", "Dusan", "Madzarevic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789");
-		User u2 = new User("d@d", "5436", "Dusan", "Madzarevic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789");
-		User u3 = new User("p@p", "123", "Ivana", "Vlaisavljevic", "Backa", "Backa", "Srbija", "0642351998", "1234567890");
-		User u4 = new User("a@a", "123", "Vladimir", "Vukovic", "Bulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789");
+		User u = new User("s@s", "321", "Dusan", "Madzarevic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789", Role.CLINIC_ADMINISTRATOR);
+		User u2 = new User("d@d", "5436", "Dusan", "Madzarevic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789", Role.DOCTOR);
+		User u3 = new User("p@p", "123", "Ivana", "Vlaisavljevic", "Backa", "Backa", "Srbija", "0642351998", "1234567890", Role.PATIENT);
+		User u4 = new User("a@a", "123", "Vladimir", "Vukovic", "Bulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789", Role.CLINICAL_CENTER_ADMINISTRATOR);
 
 		userService.save(u);
 		userService.save(u2);
@@ -42,26 +43,17 @@ public class UserController {
 	@PostMapping(path = "/validateUser", consumes = "application/json")
 	public ResponseEntity<User> validateUser(@RequestBody User u) {
 		System.out.println(u.getEmail());
-		List<User> k = userService.findOneByEmail(u.getEmail());
-		boolean found = false;
-		User f = new User();
-
-		if (k != null) {
-			for (User us : k) {
-				System.out.println(us.getEmail());
-				if (us.getEmail().equalsIgnoreCase(u.getEmail())) {
-					found = true;
-					f = us;
-					break;
-				}
-			}
-		}
-		System.out.println(found);
+		User k = userService.findOneByEmail(u.getEmail());
+		boolean ok = false;
 		
-		if(found) {
-			return new ResponseEntity<User>(f, HttpStatus.OK);
+		if(k != null) {
+			if(u.getPassword().equalsIgnoreCase(k.getPassword())) ok = true;
+		}
+		
+		if(ok) {
+			return new ResponseEntity<User>(k, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<User>(f, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<User>(k, HttpStatus.BAD_REQUEST);
 		}
 	}
 }
