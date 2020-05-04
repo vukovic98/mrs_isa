@@ -10,44 +10,26 @@
 
 <body>
 
-	<script type="text/javascript">
-		function modalShow() {
-			$("#exampleModal").modal();
-		}
-	</script>
 
 	<header id="header">
 		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Clinical center administrator</p>
-	<nav class="links" style="--items: 5;">
-		<a class="selected" th:href="@{/clinicalCenterAdmin}">Registration requests</a>
-		<a th:href="@{/clinics}">Clinics</a>
-		<a th:href="@{/clinicalAdmins}">Clinic Administrators</a>
-		<a th:href="@{/medications}">Medications</a>
-		<a th:href="@{/diagnosis}">Diagnosis</a>
-		<span class="line"></span>
-	</nav>
+		<nav class="links" style="--items: 6;">
+			<a class="selected" th:href="@{/clinicalCenterAdmin}">Registration requests</a>
+			<a th:href="@{/clinics}">Clinics</a>
+			<a th:href="@{/clinicalAdmins}">Clinic Administrators</a>
+			<a th:href="@{/medications}">Medications</a>
+			<a th:href="@{/diagnosis}">Diagnosis</a>
+			<a th:href="@{/}" class="my_logout"></span></a>
+		</nav>
 </header>
 	
 
 	<div class="container" style="margin-top: 85px;">
 		<div class="jumbotron bg-light">
-			<h1 class="mb-4">Clinic Administrators</h1>
+			<h1 class="mb-4">Registration Requests</h1>
 			<table class="table table-hover mt-4 pt-4" id="usersTable">
-			  <tbody>
-			    <tr title="Click for more information">
-			      <td class="w-50" onclick="modalShow()">Mark Otto</td>
-			      <td class="w-50 text-right">
-			      	<button type="button" class="btn btn-outline-primary" id="acBtn">Accept</button>
-					<button type="button" class="btn btn-outline-secondary" id="acBtn">Decline</button>
-			      </td>
-			    </tr>
-			    <tr>
-			      <td class="w-50" title="Click for more information">Mark Otto</td>
-			      <td class="w-50 text-right">
-			      	<button type="button" class="btn btn-outline-primary">Accept</button>
-					<button type="button" class="btn btn-outline-secondary">Decline</button>
-			      </td>
-			    </tr>
+			  <tbody id="regReqBody">
+			    <!-- Dinamicly filled! -->
 			  </tbody>
 			</table>
 		</div>
@@ -67,31 +49,31 @@
 			    <ul class="list-group">
 					<li	class="list-group-item d-flex justify-content-between align-items-center">
 						Name
-						<p id="name" class="mb-0"><i>Mark Otto</i></p>
+						<p id="modalName" class="mb-0"><i>Mark Otto</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						Email
-						<p id="email" class="mb-0"><i>vladimirvukovic98@hotmail.rs</i></p>
+						<p id="modalEmail" class="mb-0"><i>vladimirvukovic98@hotmail.rs</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						Address
-						<p id="address" class="mb-0"><i>Bulevar Despota Stefana 7a</i></p>
+						<p id="modalAddress" class="mb-0"><i>Bulevar Despota Stefana 7a</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						Phone
-						<p id="phone" class="mb-0"><i>0669074444</i></p>
+						<p id="modalPhone" class="mb-0"><i>0669074444</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						City
-						<p id="city" class="mb-0"><i>Novi Sad</i></p>
+						<p id="modalCity" class="mb-0"><i>Novi Sad</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						Country
-						<p id="country" class="mb-0"><i>Serbia</i></p>
+						<p id="modalCountry" class="mb-0"><i>Serbia</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						Insurance Number
-						<p id="insNumber" class="mb-0"><i>12345678998765</i></p>
+						<p id="modalInsNumber" class="mb-0"><i>12345678998765</i></p>
 					</li>
 				</ul>
 			  </div>
@@ -104,10 +86,11 @@
 	  </div>
 	</div>
 
-
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/clinicalCenterAdmin.js}"></script>
+
 </body>
 
 </html>

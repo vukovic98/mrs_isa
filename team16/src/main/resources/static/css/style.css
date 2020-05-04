@@ -4,6 +4,20 @@ body{
     background-size: cover;
 }
 
+.my_logout {
+	background-image: url(/images/out.png);
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: center;
+}
+
+a.my_logout:hover {
+	background-image: url(/images/out.png) !important;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: center;
+}
+
 .table-wrapper {
 		width: 700px;
 		margin: 30px auto;
@@ -378,7 +392,7 @@ body{
 }
 .links {
 	display: grid;
-	grid-template-columns: repeat(var(--items), 1fr);
+	grid-template-columns: repeat(5, 1fr) 60px;
 	position: relative;
 }
 .links > .line {

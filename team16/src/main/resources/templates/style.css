@@ -374,7 +374,7 @@ body{
 }
 .links {
 	display: grid;
-	grid-template-columns: repeat(var(--items), 1fr);
+	grid-template-columns: repeat(5, 1fr) 60px;
 	position: relative;
 }
 .links > .line {

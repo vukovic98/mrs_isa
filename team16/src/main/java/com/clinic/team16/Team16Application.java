@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Team16Application {
 
 	public static void main(String[] args) {
+		
+		System.setProperty("tomcat.util.http.parser.HttpParser.requestTargetAllow","{}");
+		
 		SpringApplication.run(Team16Application.class, args);
 	}
 

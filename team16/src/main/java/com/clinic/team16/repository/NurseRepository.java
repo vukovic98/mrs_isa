@@ -10,4 +10,6 @@ import com.clinic.team16.beans.Nurse;
 @Repository
 public interface NurseRepository extends JpaRepository<Nurse, Long> {
 	
+	public Nurse findOneById(long id);
+	
 }

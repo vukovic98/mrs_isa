@@ -12,5 +12,13 @@ public class PatientService {
 	@Autowired
 	private PatientRepository patientRepository; 
 	
+	
+	public Patient save(Patient p) {
+		return this.patientRepository.save(p);
+	}
+	
+	public Patient findOneByEmail(String email) {
+		return this.patientRepository.findOneByEmail(email);
+	}
 
 }

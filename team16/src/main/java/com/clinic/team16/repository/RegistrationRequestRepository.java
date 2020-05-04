@@ -7,5 +7,6 @@ import com.clinic.team16.beans.RegistrationRequest;
 
 @Repository
 public interface RegistrationRequestRepository extends JpaRepository<RegistrationRequest, Long>{
-
+	
+	public RegistrationRequest findOneByRegistrationRequestId(long id);
 }

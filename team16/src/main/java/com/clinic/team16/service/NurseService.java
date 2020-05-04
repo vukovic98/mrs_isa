@@ -1,5 +1,7 @@
 package com.clinic.team16.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,4 +11,12 @@ import com.clinic.team16.repository.NurseRepository;
 @Service
 public class NurseService{	@Autowired
 	private NurseRepository nurseRepository;
+
+	public List<Nurse> findAll() {
+		return this.nurseRepository.findAll();
+	}
+	
+	public Nurse findOneById(long id) {
+		return this.nurseRepository.findOneById(id);
+	}
 }
