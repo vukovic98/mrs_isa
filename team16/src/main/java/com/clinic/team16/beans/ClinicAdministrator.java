@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Embeddable
 public class ClinicAdministrator extends User {
 	
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "Clinic_ID")
 	public Clinic clinic;

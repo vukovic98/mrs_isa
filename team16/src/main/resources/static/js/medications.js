@@ -1,5 +1,24 @@
 $(document).ready(function(){
 	
+	console.log("ready");
+
+  $.ajax({
+    type: 'GET',
+    url: 'medicationApi/findAll',
+    statusCode: {
+      200: function(responseObject, textStatus, jqXHR) {
+        console.log("Medications - findAll() - 200 OK");
+        medicationsAllOK(responseObject);
+      },
+      204: function(responseObject, textStatus, jqXHR) {
+        console.log("Medications - findAll() - 204 No Content");
+        medicationsAllNO(responseObject);
+      }
+    }
+  });
+
+
+
 	var actions = $("table td:last-child").html();
 	// Append table with add row form on add new button click
     $(".add-new").click(function(){
@@ -48,6 +67,33 @@ $(document).ready(function(){
 		$(".add-new").removeAttr("disabled");
     });
 });
+
+function medicationsAllOK(medicationsList) {
+  var table = $("#medicationsBody");
+  table.empty();
+
+  
+  $.each(medicationsList, function(i, val) {
+    var row = $("<tr id=\""+i+"\"></tr>");
+
+    row.append("<td id=\""+val.id+"\">" + val.name + "</td>");
+    row.append("<td id=\""+val.id+"\">" + val.code + "</td>");
+    row.append("<td id=\""+val.id+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
+	                            "<a class=\"edit\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +
+	                            "<a class=\"delete\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
+    table.append(row);
+  });
+}
+
+function medicationsAllNO(responseObject) {
+  var table = $("#medicationsBody");
+  table.empty();
+  
+  var row = $("<tr></tr>");
+  row.append("<td class='pl-1'>There are no medications in system.</td>");
+  
+  table.append(row);
+}
 
 function myFunction() {
   // Declare variables
