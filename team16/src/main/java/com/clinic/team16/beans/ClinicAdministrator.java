@@ -3,14 +3,18 @@ package com.clinic.team16.beans;
 import java.util.*;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Embeddable
 public class ClinicAdministrator extends User {
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "Clinic_ID")
 	public Clinic clinic;
 	
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinicAdministrator_leaveRequests",joinColumns = @JoinColumn(name = "administrator_id"))
 	public List<LeaveRequest> leaveRequests;
@@ -43,17 +47,7 @@ public class ClinicAdministrator extends User {
 		return leaveRequests;
 	}
 
-	public java.util.Iterator getIteratorLeaveRequest() {
-		if (leaveRequests == null)
-			leaveRequests = new ArrayList<LeaveRequest>();
-		return leaveRequests.iterator();
-	}
-
-	public void setLeaveRequest(ArrayList<LeaveRequest> newLeaveRequest) {
-		removeAllLeaveRequest();
-		for (java.util.Iterator iter = newLeaveRequest.iterator(); iter.hasNext();)
-			addLeaveRequest((LeaveRequest) iter.next());
-	}
+	
 
 	public void addLeaveRequest(LeaveRequest newLeaveRequest) {
 		if (newLeaveRequest == null)
@@ -76,15 +70,6 @@ public class ClinicAdministrator extends User {
 			}
 	}
 
-	public void removeAllLeaveRequest() {
-		if (leaveRequests != null) {
-			LeaveRequest oldLeaveRequest;
-			for (java.util.Iterator iter = getIteratorLeaveRequest(); iter.hasNext();) {
-				oldLeaveRequest = (LeaveRequest) iter.next();
-				iter.remove();
-
-			}
-		}
-	}
+	
 
 }

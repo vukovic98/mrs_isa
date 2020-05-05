@@ -3,18 +3,23 @@ package com.clinic.team16.beans;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class Doctor extends User {
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Clinic_ID")
 	public Clinic clinic;
 
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "doctor_appointments", joinColumns = @JoinColumn(name = "doctor_id"))
 	public List<Appointment> appointments;
 
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "doctor_leaveRequests", joinColumns = @JoinColumn(name = "doctor_id"))
 	public List<LeaveRequest> leaveRequests;
@@ -52,11 +57,7 @@ public class Doctor extends User {
 		return appointments;
 	}
 
-	public void setAppointment(ArrayList<Appointment> newAppointment) {
-		removeAllAppointment();
-		for (java.util.Iterator iter = newAppointment.iterator(); iter.hasNext();)
-			addAppointment((Appointment) iter.next());
-	}
+	
 
 	public void addAppointment(Appointment newAppointment) {
 		if (newAppointment == null)
@@ -79,16 +80,7 @@ public class Doctor extends User {
 			}
 	}
 
-	public void removeAllAppointment() {
-		if (appointments != null) {
-			Appointment oldAppointment;
-			for (java.util.Iterator iter = getIteratorAppointments(); iter.hasNext();) {
-				oldAppointment = (Appointment) iter.next();
-				iter.remove();
-				oldAppointment.setDoctor((Doctor) null);
-			}
-		}
-	}
+	
 
 	public List<LeaveRequest> getLeaveRequests() {
 		if (leaveRequests == null)
@@ -96,23 +88,7 @@ public class Doctor extends User {
 		return leaveRequests;
 	}
 
-	public java.util.Iterator getIteratorLeaveRequest() {
-		if (leaveRequests == null)
-			leaveRequests = new ArrayList<LeaveRequest>();
-		return leaveRequests.iterator();
-	}
-
-	public java.util.Iterator getIteratorAppointments() {
-		if (appointments == null)
-			appointments = new ArrayList<Appointment>();
-		return appointments.iterator();
-	}
-
-	public void setLeaveRequest(java.util.Collection<LeaveRequest> newLeaveRequest) {
-		removeAllLeaveRequest();
-		for (java.util.Iterator iter = newLeaveRequest.iterator(); iter.hasNext();)
-			addLeaveRequest((LeaveRequest) iter.next());
-	}
+	
 
 	public void addLeaveRequest(LeaveRequest newLeaveRequest) {
 		if (newLeaveRequest == null)
@@ -133,14 +109,6 @@ public class Doctor extends User {
 			}
 	}
 
-	public void removeAllLeaveRequest() {
-		if (leaveRequests != null) {
-			LeaveRequest oldLeaveRequest;
-			for (java.util.Iterator iter = getIteratorLeaveRequest(); iter.hasNext();) {
-				oldLeaveRequest = (LeaveRequest) iter.next();
-				iter.remove();
-			}
-		}
-	}
+	
 
 }

@@ -5,18 +5,23 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.MetaValue;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class Nurse extends User {
 
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "nurse_leaveRequests", joinColumns = @JoinColumn(name = "nurse_id"))
 	public List<LeaveRequest> leaveRequests;
     
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "nurse_medicalReports", joinColumns = @JoinColumn(name = "nurse_id"))
 	public List<MedicalReport> medicalReports;
     
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "Nurse_Clinic_ID")
 	public Clinic clinic;
@@ -46,11 +51,7 @@ public class Nurse extends User {
 		return leaveRequests;
 	}
 
-	public void setLeaveRequest(ArrayList<LeaveRequest> newLeaveRequest) {
-		removeAllLeaveRequest();
-		for (java.util.Iterator iter = newLeaveRequest.iterator(); iter.hasNext();)
-			addLeaveRequest((LeaveRequest) iter.next());
-	}
+	
 
 	public void addLeaveRequest(LeaveRequest newLeaveRequest) {
 		if (newLeaveRequest == null)
@@ -71,21 +72,7 @@ public class Nurse extends User {
 			}
 	}
 
-	public void removeAllLeaveRequest() {
-		if (leaveRequests != null) {
-			LeaveRequest oldLeaveRequest;
-			for (java.util.Iterator iter = getIteratorLeaveRequest(); iter.hasNext();) {
-				oldLeaveRequest = (LeaveRequest) iter.next();
-				iter.remove();
-			}
-		}
-	}
-
-	private Iterator getIteratorLeaveRequest() {
-		if (leaveRequests == null)
-			leaveRequests = new ArrayList<LeaveRequest>();
-	      return leaveRequests.iterator();
-	}
+	
 
 	public List<MedicalReport> getMedicalReports() {
 		if (medicalReports == null)
@@ -93,11 +80,7 @@ public class Nurse extends User {
 		return medicalReports;
 	}
 
-	public void setMedicalReport(ArrayList<MedicalReport> newMedicalReport) {
-		removeAllMedicalReport();
-		for (java.util.Iterator iter = newMedicalReport.iterator(); iter.hasNext();)
-			addMedicalReport((MedicalReport) iter.next());
-	}
+	
 
 	public void addMedicalReport(MedicalReport newMedicalReport) {
 		if (newMedicalReport == null)
@@ -120,21 +103,6 @@ public class Nurse extends User {
 			}
 	}
 
-	public void removeAllMedicalReport() {
-		if (medicalReports != null) {
-			MedicalReport oldMedicalReport;
-			for (java.util.Iterator iter = getIteratorMedicalReport(); iter.hasNext();) {
-				oldMedicalReport = (MedicalReport) iter.next();
-				iter.remove();
-				oldMedicalReport.setNurse((Nurse) null);
-			}
-		}
-	}
-
-	private Iterator getIteratorMedicalReport() {
-		if (medicalReports == null)
-			medicalReports = new ArrayList<MedicalReport>();
-	      return medicalReports.iterator();
-	}
+	
 
 }

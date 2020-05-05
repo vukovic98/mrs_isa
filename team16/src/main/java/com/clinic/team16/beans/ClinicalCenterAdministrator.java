@@ -4,18 +4,23 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class ClinicalCenterAdministrator extends User {
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "ClinicalCenter_ID")
 	public ClinicalCenter clinicalCenter;
 	
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinicCenterAdministrator_registrationRequests",joinColumns = @JoinColumn(name = "administrator_id"))
 	public List<RegistrationRequest> registrationRequest;
 	
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinicCenterAdministrator_appointmentRequests",joinColumns = @JoinColumn(name = "administrator_id"))
 	public List<AppointmentRequest> appointmentRequest;
@@ -54,17 +59,7 @@ public class ClinicalCenterAdministrator extends User {
 		return registrationRequest;
 	}
 
-	public java.util.Iterator getIteratorRegistrationRequest() {
-		if (registrationRequest == null)
-			registrationRequest = new ArrayList<RegistrationRequest>();
-		return registrationRequest.iterator();
-	}
-
-	public void setRegistrationRequest(ArrayList<RegistrationRequest> newRegistrationRequest) {
-		removeAllRegistrationRequest();
-		for (java.util.Iterator iter = newRegistrationRequest.iterator(); iter.hasNext();)
-			addRegistrationRequest((RegistrationRequest) iter.next());
-	}
+	
 
 	public void addRegistrationRequest(RegistrationRequest newRegistrationRequest) {
 		if (newRegistrationRequest == null)
@@ -87,15 +82,6 @@ public class ClinicalCenterAdministrator extends User {
 			}
 	}
 
-	public void removeAllRegistrationRequest() {
-		if (registrationRequest != null) {
-			RegistrationRequest oldRegistrationRequest;
-			for (java.util.Iterator iter = getIteratorRegistrationRequest(); iter.hasNext();) {
-				oldRegistrationRequest = (RegistrationRequest) iter.next();
-				iter.remove();
-				oldRegistrationRequest.setClinicalCenterAdministrator((ClinicalCenterAdministrator) null);
-			}
-		}
-	}
+	
 
 }

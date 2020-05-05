@@ -15,36 +15,31 @@ $( document ).ready(function() {
     		}
     	}
     });
+    
+    $(".modalTD").click(function(e) {
 
-    $(document).on('click', '.modalTD', function(e){
-    	e.preventDefault();
-    	console.log("UDJE CLASS");
         var email = $(this).attr('id');
 
         $.ajax({
-        	type : 'POST',
-        	url : "patientApi/findOneByEmail",
+        	type: 'GET',
+        	url: 'patientApi/findOneByEmail',
         	dataType: 'json',
-        	data : JSON.stringify({
-        		"email" : email
-        	}),
-        	contentType: "application/json; charset=utf-8",
-		    dataType: "json",
-		    statusCode: {
-		        200: function(patient, textStatus, jqXHR) {
-	        		$("#modalName").text(patient.firstName);
-			        $("#modalEmail").text(patient.email);
-			        $("#modalAddress").text(patient.Address);
-			        $("#modalPhone").text(patient.phoneNumber);
-			        $("#modalCity").text(patient.city);
-			        $("#modalCountry").text(patient.country);
-			        $("#modalInsNumber").text(patient.insuranceNumber);
-			        
-			        $("#exampleModal").modal();
-		        }
-		    }
+        	data: {
+        		"email": email 
+        	},
+        	success: function(patient) {
+        		$("#modalName").text(patient.firstName);
+		        $("#modalEmail").text(patient.email);
+		        $("#modalAddress").text(patient.Address);
+		        $("#modalPhone").text(patient.phoneNumber);
+		        $("#modalCity").text(patient.city);
+		        $("#modalCountry").text(patient.country);
+		        $("#modalInsNumber").text(patient.insuranceNumber);
+		        
+		        $("#exampleModal").show();
+        	}
         });
-     });
+    });
 });
 
 function regReqAllOK(regReqList) {

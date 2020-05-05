@@ -2,6 +2,8 @@ package com.clinic.team16.beans;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class PricelistItem {
@@ -17,6 +19,7 @@ public class PricelistItem {
 	@Column(name = "price", nullable = false)
 	private double price;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "Pricelist_ID")
 	public Pricelist pricelist;
@@ -53,17 +56,7 @@ public class PricelistItem {
 	}
 
 	public void setPricelist(Pricelist newPricelist) {
-		if (this.pricelist == null || !this.pricelist.equals(newPricelist)) {
-			if (this.pricelist != null) {
-				Pricelist oldPricelist = this.pricelist;
-				this.pricelist = null;
-				oldPricelist.removePricelistItem(this);
-			}
-			if (newPricelist != null) {
-				this.pricelist = newPricelist;
-				this.pricelist.addPricelistItem(this);
-			}
-		}
+		this.pricelist = newPricelist;
 	}
 
 }

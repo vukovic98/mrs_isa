@@ -3,6 +3,8 @@ package com.clinic.team16.beans;
 import java.util.*;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Embeddable
 public class Clinic {
@@ -21,6 +23,7 @@ public class Clinic {
 	@Column(name = "Description",nullable = false)
 	private String description;
 	
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinic_ordinations",joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<Ordination> ordinations;
@@ -29,14 +32,17 @@ public class Clinic {
 	@JoinColumn(name = "Pricelist_ID")
 	public Pricelist pricelist;
 	
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinic_administrators",joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<ClinicAdministrator> clinicAdministrators;
 	
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinic_doctors",joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<Doctor> doctors;
 	
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinic_nurses",joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<Nurse> nurses;
@@ -125,48 +131,6 @@ public class Clinic {
 		return ordinations;
 	}
 
-	public java.util.Iterator getIteratorOrdinations() {
-		if (ordinations == null)
-			ordinations = new ArrayList<Ordination>();
-		return ordinations.iterator();
-	}
 
-	public void setOrdination(ArrayList<Ordination> newOrdination) {
-		removeAllOrdinations();
-		for (java.util.Iterator iter = newOrdination.iterator(); iter.hasNext();)
-			addOrdination((Ordination) iter.next());
-	}
-
-	public void addOrdination(Ordination newOrdination) {
-		if (newOrdination == null)
-			return;
-		if (this.ordinations == null)
-			this.ordinations = new ArrayList<Ordination>();
-		if (!this.ordinations.contains(newOrdination)) {
-			this.ordinations.add(newOrdination);
-			newOrdination.setClinic(this);
-		}
-	}
-
-	public void removeOrdination(Ordination oldOrdination) {
-		if (oldOrdination == null)
-			return;
-		if (this.ordinations != null)
-			if (this.ordinations.contains(oldOrdination)) {
-				this.ordinations.remove(oldOrdination);
-				oldOrdination.setClinic((Clinic) null);
-			}
-	}
-
-	public void removeAllOrdinations() {
-		if (ordinations != null) {
-			Ordination oldOrdination;
-			for (java.util.Iterator iter = getIteratorOrdinations(); iter.hasNext();) {
-				oldOrdination = (Ordination) iter.next();
-				iter.remove();
-				oldOrdination.setClinic((Clinic) null);
-			}
-		}
-	}
 
 }
