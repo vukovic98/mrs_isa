@@ -8,7 +8,7 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/style.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -28,7 +28,7 @@
   </header>
   <div class="container" style="margin-top: 85px;">
     <div class="jumbotron bg-light">
-	<h1 class="mb-4">John Doe</h1>
+	<h1 class="mb-4" id="patientFullName"></h1>
       <ul class="nav nav-pills pt-3">
         <li class="nav-item">
           <a class="nav-link active" data-toggle="pill" href="#patient">About</a>
@@ -53,37 +53,37 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Name</span>
                 </div>
-                  <input type="text" class="form-control" aria-label="Name" value="John Doe" aria-describedby="inputGroup-sizing-default" readonly>
+                  <input type="text" class="form-control" aria-label="Name" id="fullName" aria-describedby="inputGroup-sizing-default" readonly>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Country</span>
                   </div>
-                  <input type="text" class="form-control" aria-label="Country" value="Srbija" aria-describedby="inputGroup-sizing-default" readonly>
+                  <input type="text" class="form-control" aria-label="Country" id="country" aria-describedby="inputGroup-sizing-default" readonly>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">City</span>
                   </div>
-                  <input type="text" class="form-control" aria-label="City" value="Novi Sad" aria-describedby="inputGroup-sizing-default" readonly>
+                  <input type="text" class="form-control" aria-label="City" id="city" aria-describedby="inputGroup-sizing-default" readonly>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Address</span>
                   </div>
-                  <input type="text" class="form-control" aria-label="Address" value="Zeleznica bb" aria-describedby="inputGroup-sizing-default" readonly>
+                  <input type="text" class="form-control" aria-label="Address" id="address" aria-describedby="inputGroup-sizing-default" readonly>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Phone number</span>
                   </div>
-                  <input type="text" class="form-control" aria-label="Phone number" value="0776655443" aria-describedby="inputGroup-sizing-default" readonly>
+                  <input type="text" class="form-control" aria-label="Phone number" id="phoneNumber" aria-describedby="inputGroup-sizing-default" readonly>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Insurance number</span>
                   </div>
-                  <input type="text" class="form-control" aria-label="Insurance number" value="123456789876" aria-describedby="inputGroup-sizing-default" readonly>
+                  <input type="text" class="form-control" aria-label="Insurance number" id="insNumber" aria-describedby="inputGroup-sizing-default" readonly>
                 </div>
             </div>
           </form>
@@ -96,49 +96,55 @@
                 <div class="col-xs-12 col-sm-12 pl-0 pt-4 pr-0">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Name</span>
+                  <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">First Name</span>
                 </div>
-                  <input type="text" style="background-color: white;" class="form-control" aria-label="Name" value="John Doe" aria-describedby="inputGroup-sizing-default" >
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="FirstName" id="editFirstName" aria-describedby="inputGroup-sizing-default" >
+                </div>
+                <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Last Name</span>
+                </div>
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="LastName" id="editLastName" aria-describedby="inputGroup-sizing-default" >
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Country</span>
                   </div>
-                  <input type="text" style="background-color: white;" class="form-control" aria-label="Country" value="Srbija" aria-describedby="inputGroup-sizing-default" >
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="Country" id="editCountry" aria-describedby="inputGroup-sizing-default" >
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">City</span>
                   </div>
-                  <input type="text" style="background-color: white;" class="form-control" aria-label="City" value="Novi Sad" aria-describedby="inputGroup-sizing-default" >
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="City" id="editCity" aria-describedby="inputGroup-sizing-default" >
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Address</span>
                   </div>
-                  <input type="text" style="background-color: white;" class="form-control" aria-label="Address" value="Zeleznica bb" aria-describedby="inputGroup-sizing-default" >
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="Address" id="editAddress" aria-describedby="inputGroup-sizing-default" >
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Phone number</span>
                   </div>
-                  <input type="text" style="background-color: white;" class="form-control" aria-label="Phone number" value="0776655443" aria-describedby="inputGroup-sizing-default" >
+                  <input type="text" style="background-color: white;" class="form-control" aria-label="Phone number" id="editPhoneNumber" aria-describedby="inputGroup-sizing-default" >
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Insurance number</span>
                   </div>
-                  <input type="text" class="form-control" aria-label="Insurance number" value="123456789876" aria-describedby="inputGroup-sizing-default" readonly>
+                  <input type="text" class="form-control" aria-label="Insurance number" id="editInsNumber" aria-describedby="inputGroup-sizing-default" readonly>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Email</span>
                   </div>
-                  <input type="text" class="form-control" aria-label="Email" value="a@a" aria-describedby="inputGroup-sizing-default" readonly>
+                  <input type="text" class="form-control" aria-label="Email" id="editEmail" aria-describedby="inputGroup-sizing-default" readonly>
                 </div>
             </div>
                 <div class="text-right">
-                	<button style="width: 15%"; type="submit" class="btn btn-primary">Save</button>
+                	<button style="width: 15%"; type="submit" id="saveButton" class="btn btn-primary">Save</button>
                 </div>
               </form>
             
@@ -148,7 +154,7 @@
 
 
         <div class="tab-pane" id="changePassword">
-          <form id="patientEditForm">
+          <form id="patientEditPasswordForm">
             <div class="pt-3">
               <div class="form-group">
                 <label>Password</label>
@@ -173,12 +179,8 @@
   </div>
 
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
+  <script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>

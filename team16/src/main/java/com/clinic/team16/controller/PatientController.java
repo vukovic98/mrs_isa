@@ -21,10 +21,11 @@ public class PatientController {
 	private PatientService patientService;
 
 	
-	@PostMapping(path = "/findOneByEmail")
-	public ResponseEntity<Patient> findOneByEmail(@RequestBody Patient p) {
-		System.out.println(p.getEmail());
-		Patient found = this.patientService.findOneByEmail(p.getEmail());
+ 
+	@GetMapping(path = "/findOneByEmail", produces = "application/json")
+	public ResponseEntity<Patient> findOneByEmail() {
+		
+		Patient found = this.patientService.findOneByEmail("p@p");
 		System.out.println("PROSLO");
 		if(found != null) 
 			return new ResponseEntity<Patient>(found, HttpStatus.OK);

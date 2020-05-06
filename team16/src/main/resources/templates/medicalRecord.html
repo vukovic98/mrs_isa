@@ -57,37 +57,37 @@
                   				  <div class="input-group-prepend">
 				                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 40px;"><i class="fa fa-user"></i></span>
 				                  </div>
-				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" value="John Doe" aria-describedby="inputGroup-sizing-default" readonly>
+				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" id="fullName" aria-describedby="inputGroup-sizing-default" readonly>
 				                </div>
 				                <div class="input-group mb-3">
 				                  <div class="input-group-prepend">
 				                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 40px;"><i class="fa fa-birthday-cake"></i></span>
 				                  </div>
-				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" value="23.05.1998" aria-describedby="inputGroup-sizing-default" readonly>
+				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" id="birthday" aria-describedby="inputGroup-sizing-default" readonly>
 				                </div>
 				                <div class="input-group mb-3">
 				                  <div class="input-group-prepend">
 				                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 40px;"><i class="fa fa-venus-mars"></i></span>
 				                  </div>
-				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" value="female" aria-describedby="inputGroup-sizing-default" readonly>
+				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" id="gender" aria-describedby="inputGroup-sizing-default" readonly>
 				                </div>
 				                <div class="input-group mb-3">
 				                  <div class="input-group-prepend">
 				                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 40px;"><i class="fa fa-weight"></i></span>
 				                  </div>
-				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" value="56kg" aria-describedby="inputGroup-sizing-default" readonly>
+				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" id="weight" aria-describedby="inputGroup-sizing-default" readonly>
 				                </div>
 				                <div class="input-group mb-3">
 				                  <div class="input-group-prepend">
 				                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 40px;"><i class="fa fa-male"></i></span>
 				                  </div>
-				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" value="Nzm" aria-describedby="inputGroup-sizing-default" readonly>
+				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" id="height" aria-describedby="inputGroup-sizing-default" readonly>
 				                </div>
 				                <div class="input-group mb-3">
 				                  <div class="input-group-prepend">
 				                    <span class="input-group-text" id="inputGroup-sizing-default" style="width: 40px;"><i class="fa fa-tint"></i></span>
 				                  </div>
-				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" value="B+" aria-describedby="inputGroup-sizing-default" readonly>
+				                  <input type="text" style="background-color: white;" class="form-control" aria-label="Email" id="bloodType" aria-describedby="inputGroup-sizing-default" readonly>
 				                </div>
                             </div>
                         </form>
@@ -96,11 +96,7 @@
                         <br>
                         <form id="allergiesForm">
                             <div class="col-xs-12 col-sm-12 pl-0">
-                                <ul class="list-group">
-                                    <li class="list-group-item">Grass</li>
-                                    <li class="list-group-item">Eggs</li>
-                                    <li class="list-group-item">Nuts</li>
-                                </ul>
+                                <ul class="list-group" id="allergies"></ul>
                             </div>
                         </form>
                     </div>
@@ -109,10 +105,7 @@
                         <form id="allergiesForm">
                         
                             <div class="col-xs-12 col-sm-12 pl-0 pr-0">
-                                <ul class="list-group">
-                                    <li class="list-group-item">Medication1</li>
-                                    <li class="list-group-item">Medication2</li>
-                                    <li class="list-group-item">Medication3</li>
+                                <ul class="list-group" id="medications">
                                 </ul>
                             </div>
                         </form>
@@ -143,7 +136,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-        <script type="application/javascript" th:src="@{js/patient.js}"></script>
+        <script type="application/javascript" th:src="@{js/medicalRecord.js}"></script>
 </body>
 
 </html>

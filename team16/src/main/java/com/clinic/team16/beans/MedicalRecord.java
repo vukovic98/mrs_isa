@@ -11,7 +11,13 @@ public class MedicalRecord {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "MedicalRecord_ID", nullable = false)
 	private long medicalRecordId;
-
+	
+	@Column(name="Gender",nullable=false)
+	private String gender;
+	
+	@Column(name="Birthday",nullable=false)
+	private Date birthday;
+	
 	@Column(name = "Height", nullable = false)
 	private int height;
 
@@ -43,9 +49,14 @@ public class MedicalRecord {
 		super();
 	}
 
-	public MedicalRecord(int height, int weight, String bloodType, int bloodPressure, ArrayList<Allergies> allergies,
-			ArrayList<Medication> perscriptions, String medicalHistory, Patient patient) {
+
+	public MedicalRecord(long medicalRecordId, String gender, Date birthday, int height, int weight, String bloodType,
+			int bloodPressure, List<Allergies> allergies, List<Medication> perscriptions, String medicalHistory,
+			Patient patient) {
 		super();
+		this.medicalRecordId = medicalRecordId;
+		this.gender = gender;
+		this.birthday = birthday;
 		this.height = height;
 		this.weight = weight;
 		this.bloodType = bloodType;
@@ -54,6 +65,38 @@ public class MedicalRecord {
 		this.perscriptions = perscriptions;
 		this.medicalHistory = medicalHistory;
 		this.patient = patient;
+	}
+
+	public long getMedicalRecordId() {
+		return medicalRecordId;
+	}
+
+	public void setMedicalRecordId(long medicalRecordId) {
+		this.medicalRecordId = medicalRecordId;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public void setAllergies(List<Allergies> allergies) {
+		this.allergies = allergies;
+	}
+
+	public void setPerscriptions(List<Medication> perscriptions) {
+		this.perscriptions = perscriptions;
 	}
 
 	public int getHeight() {
