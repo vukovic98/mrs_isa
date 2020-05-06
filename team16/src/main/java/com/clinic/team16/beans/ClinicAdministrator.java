@@ -4,16 +4,19 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Embeddable
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class ClinicAdministrator extends User {
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "Clinic_ID")
 	public Clinic clinic;
 	
-	@JsonIgnore
+	
 	@ElementCollection
 	@CollectionTable(name = "clinicAdministrator_leaveRequests",joinColumns = @JoinColumn(name = "administrator_id"))
 	public List<LeaveRequest> leaveRequests;
