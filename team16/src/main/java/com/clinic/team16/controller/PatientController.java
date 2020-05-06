@@ -44,5 +44,17 @@ public class PatientController {
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@PostMapping(path = "/findModalByEmail", consumes = "application/json")
+	public ResponseEntity<Patient> findModalByEmail(@RequestBody User u) {
+		
+		Patient found = this.patientService.findOneByEmail(u.getEmail());
+		
+		
+		if(found != null) 
+			return new ResponseEntity<Patient>(found, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 
 }

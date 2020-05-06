@@ -8,8 +8,21 @@ $(document).ready(function(e) {
 		
 		var email = $("#emailInput").val();
 		var pass = $("#passInput").val();
+
+		if(email == null || email == "") {
+			$("#emailInput").addClass("is-invalid");
+		} else {
+			$("#emailInput").removeClass("is-invalid");
+		}
+
+		if(pass == null || pass == "") {
+			$("#passInput").addClass("is-invalid");
+		} else {
+			$("#passInput").removeClass("is-invalid");
+		}
 		
-		if(email != '' && pass != '') {
+		if(email != '' && pass != '' && email != null && pass != null) {
+			console.log("Udje");
 			$.ajax({
 				type : 'POST',
 				url : "userApi/validateUser",
