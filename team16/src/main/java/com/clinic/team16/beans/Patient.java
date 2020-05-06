@@ -14,12 +14,8 @@ public class Patient extends User {
 	@CollectionTable(name = "patient_appointments", joinColumns = @JoinColumn(name = "patient_id"))
 	public List<Appointment> appointments;
 
-<<<<<<< HEAD
+
 	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-=======
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
->>>>>>> 65e62d7b22137f5f8f24e210799d7feed8619eaa
 	@JoinColumn(name = "MedicalRecord_ID")
 	public MedicalRecord medicalRecord;
 
