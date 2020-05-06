@@ -10,10 +10,13 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Embeddable
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Ordination {
 
 	@Id
@@ -26,12 +29,12 @@ public class Ordination {
 	@Column(name = "Name", nullable = false)
 	private String name;
 
-	@JsonIgnore
+	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Clinic_ID")
 	public Clinic clinic;
 
-	@JsonIgnore
+	
 	@ElementCollection
 	@CollectionTable(name = "ordination_appointments", joinColumns = @JoinColumn(name = "ordination_id"))
 	public List<Appointment> appointments;

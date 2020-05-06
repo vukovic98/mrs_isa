@@ -2,10 +2,13 @@ package com.clinic.team16.beans;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Embeddable
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class PricelistItem {
 	
 	@Id
@@ -19,7 +22,7 @@ public class PricelistItem {
 	@Column(name = "price", nullable = false)
 	private double price;
 
-	@JsonIgnore
+	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "Pricelist_ID")
 	public Pricelist pricelist;

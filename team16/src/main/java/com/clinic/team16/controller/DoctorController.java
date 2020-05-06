@@ -1,5 +1,7 @@
 package com.clinic.team16.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Doctor;
+import com.clinic.team16.beans.Medication;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.service.DoctorService;
 
@@ -28,6 +31,17 @@ public class DoctorController {
 		Doctor newDoctor = doctorService.create(doctor);
 		return new ResponseEntity<Doctor>(newDoctor,HttpStatus.CREATED);
 	}
+	
+	@GetMapping(path = "/findAll") 
+	public ResponseEntity<List<Doctor>> findAll() {
+		List<Doctor> list = this.doctorService.findAll();
+		
+		if(list != null)
+			return new ResponseEntity<List<Doctor>>(list, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
 	
 	@GetMapping(path = "/findOneByEmail")
 	public ResponseEntity<Doctor> findOneByEmail(@RequestParam String email) {
