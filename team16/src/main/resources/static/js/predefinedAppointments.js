@@ -81,17 +81,18 @@ function appointmentsAllOK(appointmentsList) {
 	  var table = $("#appointmentsBody");
 	  table.empty();
 
-	  
+	  console.log(appointmentsList);
 	  $.each(appointmentsList, function(i, val) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
-
+	    if(val.pricelistItems != undefined) {
 	    row.append("<td id=\""+val.id+"\">" + val.dateTime + "</td>");
+	    row.append("<td id=\""+val.id+"\">" + val.pricelistItems.name + "</td>");
 	    row.append("<td id=\""+val.id+"\">" + val.ordination.number + "</td>");
 	    row.append("<td id=\""+val.id+"\">" + val.patient.name + "</td>");
-	    row.append("<td id=\""+val.id+"\">" + val.duration + "</td>");
-	    row.append("<td id=\""+val.id+"\">" + val.pricelistItems.price + "</td>");
-	    row.append("<td id=\""+val.id+"\">" + "<a class=\"delete\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
+	    row.append("<td id=\""+val.id+"\">" + val.duration + " min</td>");
+	    row.append("<td id=\""+val.id+"\">" + val.pricelistItems.price + "$</td>");
 	    table.append(row);
+	    }
 	  });
 	}
 

@@ -16,9 +16,8 @@ $(document).ready(function(){
 	      }
 	    }
 	  });
-
-
-$(document).ready(function(){
+	
+	
 	$('[data-toggle="tooltip"]').tooltip();
 	var actions = $("table td:last-child").html();
 	// Append table with add row form on add new button click
@@ -34,6 +33,8 @@ $(document).ready(function(){
 		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
         $('[data-toggle="tooltip"]').tooltip();
     });
+    
+    
 	// Add row on add button click
 	$(document).on("click", ".add", function(){
 		var empty = false;
@@ -74,18 +75,18 @@ function pricelistAllOK(pricelistItemList) {
 	  var table = $("#pricelistBody");
 	  table.empty();
 
-	  
+	  console.log(pricelistItemList);
 	  $.each(pricelistItemList, function(i, val) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
 
-	    row.append("<td id=\""+val.id+"\">" + val.appointmentType + "</td>");
-	    row.append("<td id=\""+val.id+"\">" + val.price + "</td>");
-	    row.append("<td id=\""+val.id+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
+	    row.append("<td id=\""+i+"\">" + val.name + "</td>");
+	    row.append("<td id=\""+i+"\">" + val.price + "$</td>");
+	    row.append("<td id=\""+i+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
 		                            "<a class=\"edit\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +
 		                            "<a class=\"delete\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
 	    table.append(row);
 	  });
-	}
+}
 
 	function pricelistAllNO(responseObject) {
 	  var table = $("#pricelistBody");
@@ -118,4 +119,4 @@ function myFunction() {
 	      }
 	    }
 	  }
-	}
+}
