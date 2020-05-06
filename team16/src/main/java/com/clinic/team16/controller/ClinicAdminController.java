@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.ClinicAdministrator;
+import com.clinic.team16.beans.Patient;
 import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicAdminService;
 
@@ -29,4 +30,17 @@ public class ClinicAdminController {
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@GetMapping(path = "/findOneByEmail")
+	public ResponseEntity<ClinicAdministrator> findOneByEmail() {
+		
+		ClinicAdministrator found = this.clinicAdminService.findOneByEmail("s@s");
+		System.out.println("PROSLO");
+		if(found != null) 
+			return new ResponseEntity<ClinicAdministrator>(found, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	
 }

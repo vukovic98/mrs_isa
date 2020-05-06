@@ -25,6 +25,7 @@
 		<a th:href="@{/rooms}">OR/ER management</a>
 		<a th:href="@{/pricelist}">Price list</a>
 		<a class="selected" th:href="@{/doctors}">Doctors</a>
+		<a th:href="@{/}" class="my_logout"></a>
 	</nav>
 </header>
 	
@@ -67,31 +68,31 @@
 			    <ul class="list-group">
 					<li	class="list-group-item d-flex justify-content-between align-items-center">
 						Name
-						<p id="name" class="mb-0"><i>John Doe</i></p>
+						<p id="modalName" class="mb-0"><i>John Doe</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						Email
-						<p id="email" class="mb-0"><i>ducom98@hotmail.com</i></p>
+						<p id="modalEmail" class="mb-0"><i>ducom98@hotmail.com</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						Address
-						<p id="address" class="mb-0"><i>Vitkovac 103, Kraljevo</i></p>
+						<p id="modalAddress" class="mb-0"><i>Vitkovac 103, Kraljevo</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						Phone
-						<p id="phone" class="mb-0"><i>0605873456</i></p>
+						<p id="modalPhone" class="mb-0"><i>0605873456</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						City
-						<p id="city" class="mb-0"><i>Kraljevo</i></p>
+						<p id="modalCity" class="mb-0"><i>Kraljevo</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						Country
-						<p id="country" class="mb-0"><i>Serbia</i></p>
+						<p id="modalCountry" class="mb-0"><i>Serbia</i></p>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						Insurance Number
-						<p id="insNumber" class="mb-0"><i>1213141516171</i></p>
+						<p id="modalInsNumber" class="mb-0"><i>1213141516171</i></p>
 					</li>
 				</ul>
 			  </div>
@@ -105,9 +106,10 @@
 	</div>
 
 
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/doctors.js}"></script>
 </body>
 
 </html>
