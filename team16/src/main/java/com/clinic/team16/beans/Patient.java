@@ -3,13 +3,16 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Embeddable
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Patient extends User {
 
-	@JsonIgnore
+	
 	@ElementCollection
 	@CollectionTable(name = "patient_appointments", joinColumns = @JoinColumn(name = "patient_id"))
 	public List<Appointment> appointments;

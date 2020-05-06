@@ -3,10 +3,13 @@ package com.clinic.team16.beans;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Embeddable
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class MedicalRecord {
 
 	@Id
@@ -14,10 +17,10 @@ public class MedicalRecord {
 	@Column(name = "MedicalRecord_ID", nullable = false)
 	private long medicalRecordId;
 	
-	@Column(name="Gender",nullable=false)
+	@Column(name="Gender",nullable=true)
 	private String gender;
 	
-	@Column(name="Birthday",nullable=false)
+	@Column(name="Birthday",nullable=true)
 	private Date birthday;
 	
 	@Column(name = "Height", nullable = false)

@@ -22,22 +22,23 @@
     	var table = $("#appointmentHistoryBody");
     	table.empty();
     	var appointments = patient.appointments;
-    	if(appointments != null){
-    	$.each(appointments, function(i, val) {
-    		var row = $("<tr id=\""+i+"\"></tr>");
-
-    		row.append("<td class=\"w-50>" + val.dateTime + "</td>");
-    		row.append("<td class=\"w-50>" + val.pricelistItems[0].appointmentType + "</td>");
-    		row.append("<td class=\"w-50>" + val.doctor.clinic.name + "</td>");
-    		row.append("<td class=\"w-50>" + val.appointmentRequest.approved + "</td>");
-    		table.append(row);
-    	});
+    	console.log(appointments.length);
+    	if(appointments.length != 0){
+	    	$.each(appointments, function(i, val) {
+	    		console.log(val);
+	    		var row = $("<tr id=\""+i+"\"></tr>");
+	
+	    		row.append("<td class=\"w-50\">" + val.dateTime + "</td>");
+	    		row.append("<td class=\"w-50\">" + val.pricelistItems.name + "</td>");
+	    		row.append("<td class=\"w-50\">" + val.doctor.clinic.name + "</td>");
+	    		table.append(row);
+	    	});
     	}
     	else{
-    		var row = $("<tr id=\""+i+"\"></tr>");
+    		var row = $("<tr></tr>");
 
-    		row.append("<td class=\"w-50 colspan="4"> There are no appointments to show.</td>");
-    		
+    		row.append("<td class=\"w-50 text-center\" colspan=\"4\"> There are no appointments to show.</td>");
+    		table.append(row);
     	}
     }
     	

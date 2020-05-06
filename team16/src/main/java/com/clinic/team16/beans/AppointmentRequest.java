@@ -27,7 +27,7 @@ public class AppointmentRequest {
 	public ClinicalCenterAdministrator clinicalCenterAdministrator;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "MedicalReport_ID")
+	@JoinColumn(name = "Appointment_ID")
 	public Appointment appointment;
 
 	public AppointmentRequest() {

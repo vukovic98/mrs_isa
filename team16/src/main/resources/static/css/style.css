@@ -395,7 +395,7 @@ a.my_logout:hover {
 }
 .links {
 	display: grid;
-	grid-template-columns: repeat(5, 1fr) 60px;
+	grid-template-columns: repeat(var(--items), 1fr) 60px;
 	position: relative;
 }
 .links > .line {

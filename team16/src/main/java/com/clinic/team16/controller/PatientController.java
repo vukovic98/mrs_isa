@@ -20,9 +20,7 @@ public class PatientController {
 	@Autowired
 	private PatientService patientService;
 
-	
- 
-	@GetMapping(path = "/findOneByEmail", produces = "application/json")
+	@GetMapping(path = "/findOneByEmail")
 	public ResponseEntity<Patient> findOneByEmail() {
 		
 		Patient found = this.patientService.findOneByEmail("p@p");

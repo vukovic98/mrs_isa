@@ -4,10 +4,13 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Embeddable
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +23,6 @@ public class Appointment {
 	@Column(name = "Duration", nullable = false)
 	private double duration;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Ordination_ID")
 	public Ordination ordination;
@@ -33,20 +35,17 @@ public class Appointment {
 	@JoinColumn(name = "AppointmentRequest_ID")
 	public AppointmentRequest appointmentRequest;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Doctor_ID")
 	public Doctor doctor;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Patient_ID")
 	public Patient patient;
 
-	@JsonIgnore
-	@ElementCollection
-	@CollectionTable(name = "clinicCenterAdministrator_pricelistItems", joinColumns = @JoinColumn(name = "pricelistItem_Id"))
-	public List<PricelistItem> pricelistItems;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "PricelisItem_ID")
+	public PricelistItem pricelistItems;
 
 	public Appointment() {
 
@@ -54,7 +53,7 @@ public class Appointment {
 
 	public Appointment(long appointmentId, Date dateTime, double duration, Ordination ordination,
 			MedicalReport medicalReport, AppointmentRequest appointmentRequest, Doctor doctor, Patient patient,
-			List<PricelistItem> pricelistItems) {
+			PricelistItem pricelistItems) {
 		super();
 		this.appointmentId = appointmentId;
 		this.dateTime = dateTime;
@@ -75,11 +74,11 @@ public class Appointment {
 		this.appointmentId = appointmentId;
 	}
 
-	public List<PricelistItem> getPricelistItems() {
+	public PricelistItem getPricelistItems() {
 		return pricelistItems;
 	}
 
-	public void setPricelistItems(List<PricelistItem> pricelistItems) {
+	public void setPricelistItems(PricelistItem pricelistItems) {
 		this.pricelistItems = pricelistItems;
 	}
 

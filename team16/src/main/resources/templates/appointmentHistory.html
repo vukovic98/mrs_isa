@@ -52,6 +52,7 @@
 			<a th:href="@{/medicalRecord}">Medical Record</a>
 			<a class="selected" th:href="@{/appointmentHistory}">Appointment History</a>
 			<a th:href="@{/patientsClinics}">Clinics</a>
+			<a th:href="@{/}" class="my_logout"></span></a>
 		</nav>
 	</header>
 
@@ -66,13 +67,11 @@
 			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="myTable">
 				<thead>
 					<tr>
-						<th data-sortable="true" data-field="dateAndTime">Date And Time
+						<th data-sortable="true" data-field="dateAndTime" style="width: 33.33%;">Date And Time
 						</th>
-						<th data-sortable="true" data-field="appointmentType">Appointment Type
+						<th data-sortable="true" data-field="appointmentType" style="width: 33.33%;">Appointment Type
 						</th>
-						<th data-sortable="true" data-field="clinic">Clinic
-						</th>
-						<th data-sortable="true" data-field="approved">Approved
+						<th data-sortable="true" data-field="clinic" style="width: 33.33%;">Clinic
 						</th>
 
 					</tr>
@@ -85,15 +84,14 @@
 	</div>
 
 
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-		crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
 		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
 		crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/appointmentHistory.js}"></script>
 </body>
 
 </html>

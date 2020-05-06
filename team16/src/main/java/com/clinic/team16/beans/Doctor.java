@@ -3,23 +3,26 @@ package com.clinic.team16.beans;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Embeddable
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Doctor extends User {
 
-	@JsonIgnore
+
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Clinic_ID")
 	public Clinic clinic;
 
-	@JsonIgnore
+
 	@ElementCollection
 	@CollectionTable(name = "doctor_appointments", joinColumns = @JoinColumn(name = "doctor_id"))
 	public List<Appointment> appointments;
 
-	@JsonIgnore
+
 	@ElementCollection
 	@CollectionTable(name = "doctor_leaveRequests", joinColumns = @JoinColumn(name = "doctor_id"))
 	public List<LeaveRequest> leaveRequests;
