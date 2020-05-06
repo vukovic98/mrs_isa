@@ -24,26 +24,12 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
-	@GetMapping(path = "/add")
-	public String addUser(){
-		User u = new User("s@s", "321", "Dusan", "Madzarevic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789", Role.CLINIC_ADMINISTRATOR);
-		User u2 = new User("d@d", "5436", "Dusan", "Madzarevic", "Byulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789", Role.DOCTOR);
-		User u3 = new User("p@p", "123", "Ivana", "Vlaisavljevic", "Backa", "Backa", "Srbija", "0642351998", "1234567890", Role.PATIENT);
-		User u4 = new User("a@a", "123", "Vladimir", "Vukovic", "Bulevar Despota Stefana 7a", "Novi Sad", "Srbija", "0669074444", "123456789", Role.CLINICAL_CENTER_ADMINISTRATOR);
-		
-		userService.save(u);
-		userService.save(u2);
-		userService.save(u3);
-		userService.save(u4);
-		
-		return "SAVED";
-	}
 	
 	@PostMapping(path = "/validateUser", consumes = "application/json")
 	public ResponseEntity<User> validateUser(@RequestBody User u) {
 		System.out.println(u.getEmail());
 		User k = userService.findOneByEmail(u.getEmail());
+		System.out.println(k.getAddress());
 		boolean ok = false;
 		
 		if(k != null) {

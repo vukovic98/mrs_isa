@@ -151,7 +151,7 @@ a.my_logout:hover {
 }
  .form-structor .signup {
 	 position: absolute;
-	 top: 50%;
+	 top: 45%;
 	 left: 50%;
 	 -webkit-transform: translate(-50%, -50%);
 	 width: 65%;
@@ -192,7 +192,7 @@ a.my_logout:hover {
 	 border-radius: 15px;
 	 background-color: #fff;
 	 overflow: hidden;
-	 margin-top: 50px;
+	 margin-top: 35px;
 	 opacity: 1;
 	 visibility: visible;
 	 -webkit-transition: all 0.3s ease;

@@ -23,7 +23,7 @@ public class AppointmentRequest {
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-	@JoinColumn(name = "Ordination_ID")
+	@JoinColumn(name = "ClinicalCenterAdmin_ID")
 	public ClinicalCenterAdministrator clinicalCenterAdministrator;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

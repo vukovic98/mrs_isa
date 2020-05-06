@@ -16,27 +16,29 @@ $( document ).ready(function() {
     	}
     });
     
-    $(".modalTD").click(function(e) {
+    $(document).on('click', '.modalTD', function () {
 
         var email = $(this).attr('id');
-
+        console.log("UDJE MODAL");
         $.ajax({
-        	type: 'GET',
-        	url: 'patientApi/findOneByEmail',
+        	type: 'POST',
+        	url: 'patientApi/findModalByEmail',
         	dataType: 'json',
-        	data: {
+        	data: JSON.stringify({
         		"email": email 
-        	},
+        	}),
+        	contentType: "application/json; charset=utf-8",
+		    dataType: "json",
         	success: function(patient) {
-        		$("#modalName").text(patient.firstName);
+        		$("#modalName").text(patient.firstName + " " + patient.lastName);
 		        $("#modalEmail").text(patient.email);
-		        $("#modalAddress").text(patient.Address);
+		        $("#modalAddress").text(patient.address);
 		        $("#modalPhone").text(patient.phoneNumber);
 		        $("#modalCity").text(patient.city);
 		        $("#modalCountry").text(patient.country);
 		        $("#modalInsNumber").text(patient.insuranceNumber);
 		        
-		        $("#exampleModal").show();
+		        $("#exampleModal").modal();
         	}
         });
     });
