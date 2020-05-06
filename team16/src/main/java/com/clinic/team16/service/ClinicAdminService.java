@@ -18,4 +18,8 @@ public class ClinicAdminService {
 	public List<ClinicAdministrator> findAll() {
 		return this.adminRepository.findAll();
 	}
+
+	public ClinicAdministrator findOneByEmail(String email) {
+		return this.adminRepository.findOneByEmail(email);
+	}
 }
