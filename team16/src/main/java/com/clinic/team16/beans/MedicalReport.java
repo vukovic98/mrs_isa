@@ -6,6 +6,8 @@ import javax.persistence.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class MedicalReport {
@@ -21,14 +23,17 @@ public class MedicalReport {
 	@Column(name = "Approved", nullable = false)
 	private Boolean approved;
     
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "medicalReport_diagnosis", joinColumns = @JoinColumn(name = "medicalReport_Diagnosis_id"))
 	public List<Diagnosis> diagnosis;
 	
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "medicalReport_medication", joinColumns = @JoinColumn(name = "medicalReport_Medication_id"))
 	public List<Medication> medication;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name="MedicalReport_Nurse_ID")
 	public Nurse nurse;

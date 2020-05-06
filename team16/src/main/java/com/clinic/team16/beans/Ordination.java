@@ -5,9 +5,12 @@
  * Purpose: Defines the Class Ordination
  ***********************************************************************/
 package com.clinic.team16.beans;
+
 import java.util.*;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Embeddable
@@ -23,12 +26,14 @@ public class Ordination {
 	@Column(name = "Name", nullable = false)
 	private String name;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Clinic_ID")
 	public Clinic clinic;
 
+	@JsonIgnore
 	@ElementCollection
-	@CollectionTable(name = "ordination_appointments",joinColumns = @JoinColumn(name = "ordination_id"))
+	@CollectionTable(name = "ordination_appointments", joinColumns = @JoinColumn(name = "ordination_id"))
 	public List<Appointment> appointments;
 
 	public Ordination() {
@@ -82,17 +87,9 @@ public class Ordination {
 	}
 
 	public void setClinic(Clinic newClinic) {
-		if (this.clinic == null || !this.clinic.equals(newClinic)) {
-			if (this.clinic != null) {
-				Clinic oldClinic = this.clinic;
-				this.clinic = null;
-				oldClinic.removeOrdination(this);
-			}
-			if (newClinic != null) {
-				this.clinic = newClinic;
-				this.clinic.addOrdination(this);
-			}
-		}
+
+		this.clinic = newClinic;
+
 	}
 
 }

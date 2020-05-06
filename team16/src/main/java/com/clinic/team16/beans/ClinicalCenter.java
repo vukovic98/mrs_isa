@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ClinicalCenter {
 
@@ -12,23 +14,27 @@ public class ClinicalCenter {
 	@Column(name = "Clinic_ID", nullable = false)
 	private long id;
 
-	@Column(name = "Name",nullable = false)
+	@Column(name = "Name", nullable = false)
 	private String name;
-	
+
+	@JsonIgnore
 	@ElementCollection
-	@CollectionTable(name = "clinicCenter_clinics",joinColumns = @JoinColumn(name = "clinicCenter_id"))
+	@CollectionTable(name = "clinicCenter_clinics", joinColumns = @JoinColumn(name = "clinicCenter_id"))
 	public List<Clinic> clinics;
-	
+
+	@JsonIgnore
 	@ElementCollection
-	@CollectionTable(name = "clinicCenter_medication",joinColumns = @JoinColumn(name = "clinicCenter_id"))
+	@CollectionTable(name = "clinicCenter_medication", joinColumns = @JoinColumn(name = "clinicCenter_id"))
 	public List<Medication> medications;
-	
+
+	@JsonIgnore
 	@ElementCollection
-	@CollectionTable(name = "clinicCenter_diagnosis",joinColumns = @JoinColumn(name = "clinicCenter_id"))
+	@CollectionTable(name = "clinicCenter_diagnosis", joinColumns = @JoinColumn(name = "clinicCenter_id"))
 	public List<Diagnosis> diagnosis;
-	
+
+	@JsonIgnore
 	@ElementCollection
-	@CollectionTable(name = "clinicCenter_administrators",joinColumns = @JoinColumn(name = "clinicCenter_id"))
+	@CollectionTable(name = "clinicCenter_administrators", joinColumns = @JoinColumn(name = "clinicCenter_id"))
 	public List<ClinicalCenterAdministrator> clinicalCenterAdministrators;
 
 	public ClinicalCenter() {
@@ -54,18 +60,6 @@ public class ClinicalCenter {
 		if (clinics == null)
 			clinics = new ArrayList<Clinic>();
 		return clinics;
-	}
-
-	public java.util.Iterator getIteratorClinic() {
-		if (clinics == null)
-			clinics = new ArrayList<Clinic>();
-		return clinics.iterator();
-	}
-
-	public void setClinic(ArrayList<Clinic> newClinic) {
-		removeAllClinic();
-		for (java.util.Iterator iter = newClinic.iterator(); iter.hasNext();)
-			addClinic((Clinic) iter.next());
 	}
 
 	public void addClinic(Clinic newClinic) {
@@ -96,66 +90,22 @@ public class ClinicalCenter {
 		return medications;
 	}
 
-	public java.util.Iterator getIteratorMedication() {
-		if (medications == null)
-			medications = new ArrayList<Medication>();
-		return medications.iterator();
-	}
-
-	public void setMedication(ArrayList<Medication> newMedication) {
-		removeAllMedication();
-		for (java.util.Iterator iter = newMedication.iterator(); iter.hasNext();)
-			addMedication((Medication) iter.next());
-	}
-
 	public void addMedication(Medication newMedication) {
-		if (newMedication == null)
-			return;
-		if (this.medications == null)
-			this.medications = new ArrayList<Medication>();
-		if (!this.medications.contains(newMedication)) {
-			this.medications.add(newMedication);
-			newMedication.setClinicalCenter(this);
-		}
+
+		this.medications.add(newMedication);
+
 	}
 
 	public void removeMedication(Medication oldMedication) {
-		if (oldMedication == null)
-			return;
-		if (this.medications != null)
-			if (this.medications.contains(oldMedication)) {
-				this.medications.remove(oldMedication);
-				oldMedication.setClinicalCenter((ClinicalCenter) null);
-			}
-	}
 
-	public void removeAllMedication() {
-		if (medications != null) {
-			Medication oldMedication;
-			for (java.util.Iterator iter = getIteratorMedication(); iter.hasNext();) {
-				oldMedication = (Medication) iter.next();
-				iter.remove();
-				oldMedication.setClinicalCenter((ClinicalCenter) null);
-			}
-		}
+		this.medications.remove(oldMedication);
+
 	}
 
 	public List<Diagnosis> getDiagnosis() {
 		if (diagnosis == null)
 			diagnosis = new ArrayList<Diagnosis>();
 		return diagnosis;
-	}
-
-	public java.util.Iterator getIteratorDiagnosis() {
-		if (diagnosis == null)
-			diagnosis = new ArrayList<Diagnosis>();
-		return diagnosis.iterator();
-	}
-
-	public void setDiagnosis(ArrayList<Diagnosis> newDiagnosis) {
-		removeAllDiagnosis();
-		for (java.util.Iterator iter = newDiagnosis.iterator(); iter.hasNext();)
-			addDiagnosis((Diagnosis) iter.next());
 	}
 
 	public void addDiagnosis(Diagnosis newDiagnosis) {
@@ -177,17 +127,6 @@ public class ClinicalCenter {
 				this.diagnosis.remove(oldDiagnosis);
 				oldDiagnosis.setClinicalCenter((ClinicalCenter) null);
 			}
-	}
-
-	public void removeAllDiagnosis() {
-		if (diagnosis != null) {
-			Diagnosis oldDiagnosis;
-			for (java.util.Iterator iter = getIteratorDiagnosis(); iter.hasNext();) {
-				oldDiagnosis = (Diagnosis) iter.next();
-				iter.remove();
-				oldDiagnosis.setClinicalCenter((ClinicalCenter) null);
-			}
-		}
 	}
 
 }

@@ -3,6 +3,8 @@ package com.clinic.team16.beans;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class LeaveRequest {
@@ -21,6 +23,7 @@ public class LeaveRequest {
 	@Column(name = "Approved", nullable = false)
 	private boolean approved;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "User_ID")
 	private User user;

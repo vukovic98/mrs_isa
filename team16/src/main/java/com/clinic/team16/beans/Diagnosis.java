@@ -3,6 +3,8 @@
 import java.util.*;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
  
 
 @Entity
@@ -20,6 +22,7 @@ public class Diagnosis {
 	@Column(name = "Code", nullable = false)
 	private String code;
 	
+	@JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "clinicalCenter_ID")
 	public ClinicalCenter clinicalCenter;

@@ -3,6 +3,8 @@ package com.clinic.team16.beans;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class MedicalRecord {
@@ -30,10 +32,12 @@ public class MedicalRecord {
 	@Column(name = "BloodPressure", nullable = false)
 	private int bloodPressure;
 
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "medicalRecord_allergies", joinColumns = @JoinColumn(name = "medicalRedord_id"))
 	private List<Allergies> allergies;
 
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "medicalRecord_perscriptions", joinColumns = @JoinColumn(name = "medicalRedord_id"))
 	private List<Medication> perscriptions;

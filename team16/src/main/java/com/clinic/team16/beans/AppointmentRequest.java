@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class AppointmentRequest {
@@ -19,6 +21,7 @@ public class AppointmentRequest {
 	@Column(name = "RequestDate",nullable = false)
 	private Date requestDate;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "Ordination_ID")
 	public ClinicalCenterAdministrator clinicalCenterAdministrator;

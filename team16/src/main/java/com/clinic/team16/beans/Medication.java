@@ -3,22 +3,25 @@ package com.clinic.team16.beans;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class Medication {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Medication_ID", nullable = false)
 	private long medicationId;
-	
+
 	@Column(name = "Name", nullable = false)
 	private String name;
-	
+
 	@Column(name = "Code", nullable = false)
 	private String code;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Medication_ClinicalCenter_ID")
 	public ClinicalCenter clinicalCenter;
 
@@ -54,17 +57,9 @@ public class Medication {
 	}
 
 	public void setClinicalCenter(ClinicalCenter newClinicalCenter) {
-		if (this.clinicalCenter == null || !this.clinicalCenter.equals(newClinicalCenter)) {
-			if (this.clinicalCenter != null) {
-				ClinicalCenter oldClinicalCenter = this.clinicalCenter;
-				this.clinicalCenter = null;
-				oldClinicalCenter.removeMedication(this);
-			}
-			if (newClinicalCenter != null) {
-				this.clinicalCenter = newClinicalCenter;
-				this.clinicalCenter.addMedication(this);
-			}
-		}
+
+		this.clinicalCenter = newClinicalCenter;
+
 	}
 
 }

@@ -3,39 +3,42 @@ $( document ).ready(function() {
 
   $.ajax({
     type: 'GET',
-    url: 'clinicApi/findAll',
+    url: 'clinicAdminApi/findAll',
     statusCode: {
       200: function(responseObject, textStatus, jqXHR) {
-        console.log("Clinics - findAll() - 200 OK");
-        clinicsAllOK(responseObject);
+        console.log("ClinicAdmins - findAll() - 200 OK");
+        clinicAdminsAllOK(responseObject);
       },
       204: function(responseObject, textStatus, jqXHR) {
-        console.log("Clinics - findAll() - 204 No Content");
-        clinicsAllNO(responseObject);
+        console.log("ClinicAdmins - findAll() - 204 No Content");
+        clinicAdminsAllNO(responseObject);
       }
     }
   });
 });
 
-function clinicsAllOK(clinicsList) {
-  var table = $("#clinicsTableBody");
+function clinicAdminsAllOK(clinicAdminsList) {
+  var table = $("#clinicAdminsBody");
   table.empty();
+
   
-  $.each(clinicsList, function(i, val) {
+  $.each(clinicAdminsList, function(i, val) {
     var row = $("<tr class=\"clinic-table-text\" title=\"Click for more information\" id=\""+i+"\"></tr>");
 
-    row.append("<td id=\""+val.clinicID+"\">" + val.name + "</td>");
+    row.append("<td id=\""+val.id+"\"><p>" + val.firstName + " " + val.lastName + "</p>" +
+          "<p style=\"font-size: large\"><i>" + val.clinic.name + "</i></td>");
+    row.append("<span style=\"width: 30px; height: 30px;\" class=\"btn btn-sm mt-4 fl-right delete_btn\" type=\"button\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Delete\"><i class=\"fa fa-trash\"></i></span>");
 
     table.append(row);
   });
 }
 
-function clinicsAllNO(responseObject) {
-  var table = $("#clinicsTableBody");
+function clinicAdminsAllNO(responseObject) {
+  var table = $("#clinicAdminsBody");
   table.empty();
   
   var row = $("<tr></tr>");
-  row.append("<td class='pl-1'>There is clinics in the system</td>");
+  row.append("<td class='pl-1'>There are no clinical admins in system.</td>");
   
   table.append(row);
 }

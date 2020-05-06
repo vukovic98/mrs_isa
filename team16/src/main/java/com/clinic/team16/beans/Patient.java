@@ -3,15 +3,23 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class Patient extends User {
 
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "patient_appointments", joinColumns = @JoinColumn(name = "patient_id"))
 	public List<Appointment> appointments;
 
+<<<<<<< HEAD
 	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+=======
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+>>>>>>> 65e62d7b22137f5f8f24e210799d7feed8619eaa
 	@JoinColumn(name = "MedicalRecord_ID")
 	public MedicalRecord medicalRecord;
 
@@ -59,17 +67,7 @@ public class Patient extends User {
 		return this.appointments;
 	}
 
-	public java.util.Iterator getIteratorAppointment() {
-		if (appointments == null)
-			appointments = new ArrayList<Appointment>();
-		return appointments.iterator();
-	}
-
-	public void setAppointment(ArrayList<Appointment> newAppointment) {
-		removeAllAppointment();
-		for (java.util.Iterator iter = newAppointment.iterator(); iter.hasNext();)
-			addAppointment((Appointment) iter.next());
-	}
+	
 
 	public void addAppointment(Appointment newAppointment) {
 		if (newAppointment == null)
@@ -92,13 +90,5 @@ public class Patient extends User {
 			}
 	}
 
-	public void removeAllAppointment() {
-		if (appointments != null) {
-			Appointment oldAppointment;
-			for (java.util.Iterator iter = getIteratorAppointment(); iter.hasNext();) {
-				oldAppointment = (Appointment) iter.next();
-				iter.remove();
-			}
-		}
-	}
+	
 }
