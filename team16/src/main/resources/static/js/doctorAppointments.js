@@ -22,17 +22,17 @@ $(document).ready(function(){
 function appointmentsAllOK(appointmentsList) {
 	  var table = $("#appointmentsBody");
 	  table.empty();
-
+	  console.log(appointmentsList);
 	  
 	  $.each(appointmentsList, function(i, val) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
-
+	    if(val.pricelistItems != undefined) {
 	    row.append("<td class=\"w-25\" id=\""+val.id+"\">" + val.dateTime + "</td>");
-	    row.append("<td class=\"w-25\" id=\""+val.id+"\">" + val.pricelistItems.appointmentType + "</td>");
 	    row.append("<td class=\"w-25\" id=\""+val.id+"\">" + val.patient.firstName + " " + val.patient.lastName +"</td>");
 	    row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" class=\"btn btn-outline-primary\">Start</button><button type=\"button\" onclick=\"modalShow()\" class=\"btn btn-outline-secondary\">Report</button></td>");
 
 	    table.append(row);
+	    }
 	    
 	  });
 	}

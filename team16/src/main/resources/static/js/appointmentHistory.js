@@ -29,7 +29,7 @@
 	    		var row = $("<tr id=\""+i+"\"></tr>");
 	
 	    		row.append("<td class=\"w-50\">" + val.dateTime + "</td>");
-	    		row.append("<td class=\"w-50\">" + val.pricelistItems.name + "</td>");
+	    		row.append("<td class=\"w-50\">" + val.ordination.type + "</td>");
 	    		row.append("<td class=\"w-50\">" + val.doctor.clinic.name + "</td>");
 	    		table.append(row);
 	    	});

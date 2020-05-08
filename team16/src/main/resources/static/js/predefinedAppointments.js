@@ -88,7 +88,7 @@ function appointmentsAllOK(appointmentsList) {
 	    row.append("<td id=\""+val.id+"\">" + val.dateTime + "</td>");
 	    row.append("<td id=\""+val.id+"\">" + val.pricelistItems.name + "</td>");
 	    row.append("<td id=\""+val.id+"\">" + val.ordination.number + "</td>");
-	    row.append("<td id=\""+val.id+"\">" + val.patient.name + "</td>");
+	    row.append("<td id=\""+val.id+"\">" + val.doctor.firstName + " " + val.doctor.lastName + "</td>");
 	    row.append("<td id=\""+val.id+"\">" + val.duration + " min</td>");
 	    row.append("<td id=\""+val.id+"\">" + val.pricelistItems.price + "$</td>");
 	    table.append(row);

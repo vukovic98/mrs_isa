@@ -22,11 +22,11 @@ function patientsAllOK(medicationsList) {
   var table = $("#patientBody");
   table.empty();
 
-  
+  console.log(medicationsList);
   $.each(medicationsList, function(i, val) {
     var row = $("<tr id=\""+i+"\"></tr>");
-    row.append("<td id=\""+val.id+"\">" + val.insuranceNumber "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.firstName + " " + val.lastName "</td>");
+    row.append("<td id=\""+val.id+"\">" + val.insuranceNumber + "</td>");
+    row.append("<td id=\""+val.id+"\">" + val.firstName + " " + val.lastName + "</td>");
     row.append("<td id=\""+val.id+"\">" + val.phoneNumber + "</td>");
     table.append(row);
   });
