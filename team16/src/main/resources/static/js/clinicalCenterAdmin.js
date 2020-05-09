@@ -30,13 +30,13 @@ $( document ).ready(function() {
         	contentType: "application/json; charset=utf-8",
 		    dataType: "json",
         	success: function(patient) {
-        		$("#modalName").text(patient.firstName + " " + patient.lastName);
+        		$("#modalName").text(patient.name);
 		        $("#modalEmail").text(patient.email);
 		        $("#modalAddress").text(patient.address);
-		        $("#modalPhone").text(patient.phoneNumber);
+		        $("#modalPhone").text(patient.phone);
 		        $("#modalCity").text(patient.city);
 		        $("#modalCountry").text(patient.country);
-		        $("#modalInsNumber").text(patient.insuranceNumber);
+		        $("#modalInsNumber").text(patient.insurance);
 		        
 		        $("#exampleModal").modal();
         	}
@@ -50,8 +50,8 @@ function regReqAllOK(regReqList) {
 	
 	$.each(regReqList, function(i, val) {
 		var row = $("<tr id=\""+i+"\"></tr>");
-
-		row.append("<td class=\"w-50 modalTD\" id=\""+val.patient.email+"\">" + val.patient.firstName + " " + val.patient.lastName + "</td>");
+		console.log(val.patient);
+		row.append("<td class=\"w-50 modalTD\" id=\""+val.patientEmail+"\">" + val.patientName + "</td>");
 		row.append("<td class=\"w-50 text-right\"><button type=\"button\" class=\"btn btn-outline-primary mr-1\" id=\"acBtn\">Accept</button>" +
 			"<button type=\"button\" class=\"btn btn-outline-secondary\" id=\"decBtn\">Decline</button></td>");
 

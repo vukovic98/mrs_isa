@@ -5,50 +5,51 @@ import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Embeddable
 public class Clinic {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Clinic_ID",nullable = false)
+	@Column(name = "Clinic_ID", nullable = false)
 	private long clinicID;
-	
-	@Column(name = "Name",nullable = false)
+
+	@Column(name = "Name", nullable = false)
 	private String name;
-	
-	@Column(name = "Address",nullable = false)
+
+	@Column(name = "Address", nullable = false)
 	private String address;
-	
-	@Column(name = "Description",nullable = false)
+
+	@Column(name = "Description", nullable = false)
 	private String description;
-	
+
 	@JsonIgnore
 	@ElementCollection
-	@CollectionTable(name = "clinic_ordinations",joinColumns = @JoinColumn(name = "clinic_id"))
+	@CollectionTable(name = "clinic_ordinations", joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<Ordination> ordinations;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Pricelist_ID")
 	public Pricelist pricelist;
-	
+
 	@JsonIgnore
 	@ElementCollection
-	@CollectionTable(name = "clinic_administrators",joinColumns = @JoinColumn(name = "clinic_id"))
+	@CollectionTable(name = "clinic_administrators", joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<ClinicAdministrator> clinicAdministrators;
-	
+
 	@JsonIgnore
 	@ElementCollection
-	@CollectionTable(name = "clinic_doctors",joinColumns = @JoinColumn(name = "clinic_id"))
+	@CollectionTable(name = "clinic_doctors", joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<Doctor> doctors;
-	
+
 	@JsonIgnore
 	@ElementCollection
-	@CollectionTable(name = "clinic_nurses",joinColumns = @JoinColumn(name = "clinic_id"))
+	@CollectionTable(name = "clinic_nurses", joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<Nurse> nurses;
 
 	public Clinic() {
-		
+
 	}
 
 	public Clinic(String name, String address, String description, ArrayList<Ordination> ordinations,
@@ -63,6 +64,14 @@ public class Clinic {
 		this.clinicAdministrators = clinicAdministrators;
 		this.doctors = doctors;
 		this.nurses = nurses;
+	}
+
+	public long getClinicID() {
+		return clinicID;
+	}
+
+	public void setClinicID(long clinicID) {
+		this.clinicID = clinicID;
 	}
 
 	public String getName() {
@@ -130,7 +139,5 @@ public class Clinic {
 			ordinations = new ArrayList<Ordination>();
 		return ordinations;
 	}
-
-
 
 }
