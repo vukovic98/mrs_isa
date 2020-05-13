@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clinic.team16.beans.Medication;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.User;
+import com.clinic.team16.beans.DAO.UserDAO;
 import com.clinic.team16.service.PatientService;
 
 import java.util.List;
@@ -46,13 +47,17 @@ public class PatientController {
 	}
 	
 	@PostMapping(path = "/findModalByEmail", consumes = "application/json")
-	public ResponseEntity<Patient> findModalByEmail(@RequestBody User u) {
+	public ResponseEntity<UserDAO> findModalByEmail(@RequestBody User u) {
 		
 		Patient found = this.patientService.findOneByEmail(u.getEmail());
 		
 		
-		if(found != null) 
-			return new ResponseEntity<Patient>(found, HttpStatus.OK);
+		if(found != null) {
+			String name = found.getFirstName() + " " + found.getLastName();
+			UserDAO daoPatient = new UserDAO(name, found.getEmail(), found.getCity(), found.getCountry(),
+					found.getAddress(), found.getPhoneNumber(), found.getInsuranceNumber());
+			return new ResponseEntity<UserDAO>(daoPatient, HttpStatus.OK);
+		}
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

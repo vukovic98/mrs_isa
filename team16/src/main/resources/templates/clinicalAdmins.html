@@ -10,7 +10,7 @@
 
 <body>
 
-	<header id="header">
+	<header id="header" style="z-index: 9999;">
 		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Clinical center administrator</p>
 	<nav class="links" style="--items: 5;">
 		<a th:href="@{/clinicalCenterAdmin}">Registration requests</a>
@@ -24,16 +24,20 @@
 	
 
 	<div class="container" style="margin-top: 85px;">
-		<div class="jumbotron bg-light">
-			<h1 class="mb-4 col-md-9 fl-left">Clinical administrators</h1>
-			<div class="col-md-3 text-right fl-right pt-2">
-				<button type="button" class="btn btn-primary btn-block" data-dismiss="modal">Add clinical administrator</button>
+		<div class="jumbotron bg-light pb-0 mb-5">
+			<div class="ow_auto">
+				<h1 class="mb-4 col-md-9 fl-left">Clinical administrators</h1>
+				<div class="col-md-3 text-right fl-right pt-2">
+					<button type="button" class="btn btn-primary btn-block" data-dismiss="modal">Add clinical administrator</button>
+				</div>
 			</div>
-			<table class="table table-hover mt-4 pt-4" id="clinicAdminsTable">
-			  <tbody id="clinicAdminsBody">
-			    
-			  </tbody>
-			</table>
+			<div class="ow_auto h-100">
+				<table class="table table-hover mt-4 pt-4" id="clinicAdminsTable">
+				  <tbody id="clinicAdminsBody">
+				    
+				  </tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 

@@ -25,8 +25,8 @@ function clinicAdminsAllOK(clinicAdminsList) {
   $.each(clinicAdminsList, function(i, val) {
     var row = $("<tr class=\"clinic-table-text\" title=\"Click for more information\" id=\""+i+"\"></tr>");
 
-    row.append("<td id=\""+val.id+"\"><p>" + val.firstName + " " + val.lastName + "</p>" +
-          "<p style=\"font-size: large\"><i>" + val.clinic.name + "</i></td>");
+    row.append("<td id=\""+val.id+"\"><p>" + val.name + "</p>" +
+          "<p style=\"font-size: large\"><i>" + val.clinicName + "</i></td>");
     row.append("<span style=\"width: 30px; height: 30px;\" class=\"btn btn-sm mt-4 fl-right delete_btn\" type=\"button\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Delete\"><i class=\"fa fa-trash\"></i></span>");
 
     table.append(row);
