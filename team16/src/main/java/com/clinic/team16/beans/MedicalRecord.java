@@ -57,11 +57,10 @@ public class MedicalRecord {
 	}
 
 
-	public MedicalRecord(long medicalRecordId, String gender, Date birthday, int height, int weight, String bloodType,
+	public MedicalRecord(String gender, Date birthday, int height, int weight, String bloodType,
 			int bloodPressure, List<Allergies> allergies, List<Medication> perscriptions, String medicalHistory,
 			Patient patient) {
 		super();
-		this.medicalRecordId = medicalRecordId;
 		this.gender = gender;
 		this.birthday = birthday;
 		this.height = height;
