@@ -1,6 +1,6 @@
-package com.clinic.team16.beans.DAO;
+package com.clinic.team16.beans.DTO;
 
-public class UserDAO {
+public class UserDTO {
 	private String name;
 	private String email;
 	private String city;
@@ -9,10 +9,10 @@ public class UserDAO {
 	private String phone;
 	private String insurance;
 
-	public UserDAO() {
+	public UserDTO() {
 	}
 
-	public UserDAO(String name, String email, String city, String country, String address, String phone,
+	public UserDTO(String name, String email, String city, String country, String address, String phone,
 			String insurance) {
 		this.name = name;
 		this.email = email;

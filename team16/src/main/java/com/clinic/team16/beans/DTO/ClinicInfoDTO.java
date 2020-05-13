@@ -1,15 +1,15 @@
-package com.clinic.team16.beans.DAO;
+package com.clinic.team16.beans.DTO;
 
-public class ClinicInfoDAO {
+public class ClinicInfoDTO {
 	private long clinicID;
 	private String name;
 	private String address;
 	private String description;
 
-	public ClinicInfoDAO() {
+	public ClinicInfoDTO() {
 	}
 
-	public ClinicInfoDAO(long clinicID, String name, String address, String description) {
+	public ClinicInfoDTO(long clinicID, String name, String address, String description) {
 		this.name = name;
 		this.address = address;
 		this.description = description;

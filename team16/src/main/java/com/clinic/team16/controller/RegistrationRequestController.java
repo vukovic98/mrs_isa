@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.RegistrationRequest;
 import com.clinic.team16.beans.Role;
-import com.clinic.team16.beans.DAO.RegistrationRequestDAO;
+import com.clinic.team16.beans.DTO.RegistrationRequestDTO;
 import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicalCenterService;
 import com.clinic.team16.service.PatientService;
@@ -30,16 +30,16 @@ public class RegistrationRequestController {
 	private PatientService patientService;
 	
 	@GetMapping(path = "/findAll", produces = "application/json")
-	public ResponseEntity<List<RegistrationRequestDAO>> getAllRegistrationRequests() {
+	public ResponseEntity<List<RegistrationRequestDTO>> getAllRegistrationRequests() {
 		List<RegistrationRequest> list = this.registrationRequestService.findAll();
-		List<RegistrationRequestDAO> daoList = new ArrayList<RegistrationRequestDAO>();
+		List<RegistrationRequestDTO> daoList = new ArrayList<RegistrationRequestDTO>();
 		
 		
 		
 		if(!list.isEmpty()) {
 			for(RegistrationRequest r : list) {
 				String name = r.getUser().getFirstName() + " " + r.getUser().getLastName();
-				daoList.add(new RegistrationRequestDAO(r.isApproved(), name, r.getUser().getEmail()));
+				daoList.add(new RegistrationRequestDTO(r.isApproved(), name, r.getUser().getEmail()));
 			}
 			return new ResponseEntity<>(daoList, HttpStatus.OK);
 		}

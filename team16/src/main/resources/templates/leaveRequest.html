@@ -1,0 +1,87 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Leave request</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/util.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+
+	<header id="header" style="z-index: 9999;">
+		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Nurse</p>
+		<nav class="links" style="--items: 5;">
+			<a th:href="@{/nurse}">Patients</a>
+			<a th:href="@{/medicalReports}">Medical reports</a>
+			<a th:href="@{/workCalendar}">Work calendar</a>
+			<a class="selected" th:href="@{/leaveRequest}">Leave</a>
+			<a th:href="@{/nurseProfile}">Profile</a>
+			<a th:href="@{/}" class="my_logout"></span></a>
+		</nav>
+</header>
+	
+
+	<div class="container" style="margin-top: 85px;">
+		<div class="jumbotron bg-light pb-0 mb-5 pt-2">
+			<!--Leave request form-->
+				<div class="container-contact100 pb-5">
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Leave request
+				</span>
+
+				<div class="wrap-input100 bg1 rs1-wrap-input100">
+					<span class="label-input100">FULL NAME </span>
+					<input class="input100" type="text" name="name" id="name" readonly>
+				</div>
+				
+				<div class="wrap-input100 bg1 rs1-wrap-input100">
+					<span class="label-input100">Clinic </span>
+					<input class="input100" type="text" id="clinic"  readonly>
+				</div>
+
+				<div class="wrap-input100 bg1 rs1-wrap-input100">
+					<span class="label-input100">Email </span>
+					<input class="input100" type="text" id="email" readonly>
+				</div>
+
+				<div class="wrap-input100 bg1 rs1-wrap-input100">
+					<span class="label-input100">Phone</span>
+					<input class="input100" type="text" name="phone" id="phone" readonly>
+				</div>
+
+				<div class="wrap-input100 validate-input bg0 rs1-alert-validate" data-validate = "Please Type Your Message">
+					<span class="label-input100">Reason for leave request</span>
+					<textarea class="input100" name="message" placeholder="Your reason here..." style="resize: none;"></textarea>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<button class="contact100-form-btn">
+						<span>
+							Submit
+							<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+						</span>
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+			<!--Leave request form-->
+		</div>
+	</div>
+
+	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/leaveRequest.js}"></script>
+	<script type="application/javascript" th:src="@{js/main.js}"></script>
+
+</body>
+
+</html>

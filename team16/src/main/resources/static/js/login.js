@@ -89,6 +89,10 @@ function whereToGo(user) {
 		if(user.role == "PATIENT") {
 			window.location.href = "/patient";
 		}
+
+		if(user.role == "NURSE") {
+			window.location.href = "/nurse";
+		}
 	
 }
 

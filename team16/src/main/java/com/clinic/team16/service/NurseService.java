@@ -19,4 +19,8 @@ public class NurseService{	@Autowired
 	public Nurse findOneById(long id) {
 		return this.nurseRepository.findOneById(id);
 	}
+	
+	public Nurse findOneByEmail(String email) {
+		return this.nurseRepository.findOneByEmail(email);
+	}
 }

@@ -1,71 +1,105 @@
-<!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Nurse</title>
+	<meta charset="UTF-8">
+	<title>Nurse</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
+
 <body>
-<div style="padding-top: 8%;">
-<div class="col-md-3" style="float: left; height: 500px;"></div>
-<div class="col-md-6" style="float: left;">
-	<form id="nurse_add_form">
-	  <div class="form-row">
-	    <div class="form-group col-md-6">
-	      <label for="inputEmail4">Email</label>
-	      <input type="email" class="form-control" id="email">
-	    </div>
-	    <div class="form-group col-md-6">
-	      <label for="inputPassword4">Password</label>
-	      <input type="password" class="form-control" id="password">
+
+
+	<header id="header" style="z-index: 9999;">
+		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Nurse</p>
+		<nav class="links" style="--items: 5;">
+			<a class="selected" th:href="@{/nurse}">Patients</a>
+			<a th:href="@{/medicalReports}">Medical reports</a>
+			<a th:href="@{/workCalendar}">Work calendar</a>
+			<a th:href="@{/leaveRequest}">Leave</a>
+			<a th:href="@{/nurseProfile}">Profile</a>
+			<a th:href="@{/}" class="my_logout"></span></a>
+		</nav>
+</header>
+	
+
+	<div class="container" style="margin-top: 85px;">
+		<div class="jumbotron bg-light pb-0 mb-5">
+			<h1 class="mb-0 col-md-9 fl-left" style="z-index: 0;">Patients</h1>
+		<div class="mt-5">
+			<div class="pt-5 pb-1 mr-0 ow_auto">
+	            	<div class="input-group mb-3 col-sm-12 pr-0 pl-0 fl-left">
+					  <input type="text" id="myInput" class="form-control" placeholder="Search patients..." aria-label="Patient" aria-describedby="basic-addon2" onkeyup="myFunction()">
+					</div>
+	        </div>
+	        <div class="ow_auto h-75">
+				<table class="table table-hover mt-4 pt-4" id="patientsTable">
+				  <tbody id="patientsBody">
+				    
+				  </tbody>
+				</table>
+			</div>
+		</div>
+		</div>
+	</div>
+
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" role="dialog">
+	  <div class="modal-dialog" role="document" style="margin-top: 100px;">
+	    <div class="modal-content">
+	      <div class="modal-body">
+	        <div class="card text-center">
+			  <div class="card-header">
+			    Patient information
+			  </div>
+			  <div class="card-body">
+			    <ul class="list-group">
+					<li	class="list-group-item d-flex justify-content-between align-items-center">
+						Name
+						<i><p id="modalName" class="mb-0"></p></i>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Email
+						<i><p id="modalEmail" class="mb-0"></p></i>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Address
+						<i><p id="modalAddress" class="mb-0"></p></i>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Phone
+						<i><p id="modalPhone" class="mb-0"></p></i>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						City
+						<i><p id="modalCity" class="mb-0"></p></i>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Country
+						<i><p id="modalCountry" class="mb-0"></p></i>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Insurance Number
+						<i><p id="modalInsNumber" class="mb-0"></p></i>
+					</li>
+				</ul>
+			  </div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
 	    </div>
 	  </div>
-	  <div class="form-row">
-	    <div class="form-group col-md-6">
-	      <label for="inputEmail4">First name</label>
-	      <input type="text" class="form-control" id="firstName">
-	    </div>
-	    <div class="form-group col-md-6">
-	      <label for="inputPassword4">Last name</label>
-	      <input type="text" class="form-control" id="lastName">
-	    </div>
-	  </div>
-	  <div class="form-group">
-	    <label for="inputAddress">Address</label>
-	    <input type="text" class="form-control" id="address" placeholder="1234 Main Streat">
-	  </div>
-	  <div class="form-group">
-	    <label for="inputAddress2">Phone number</label>
-	    <input type="number" class="form-control" id="phone" placeholder="Phone number..">
-	  </div>
-	  <div class="form-row">
-	    <div class="form-group col-md-6">
-	      <label for="inputCity">City</label>
-	      <input type="text" class="form-control" id="city">
-	    </div>
-	    <div class="form-group col-md-6">
-	      <label for="inputState">State</label>
-	      <input type="text" class="form-control" id="state">
-	    </div>
-	    
-	  </div>
-	  <div class="form-row">
-	    <div class="form-group col-md-12">
-	      <label for="inputZip">Insurance number</label>
-	      <input type="text" class="form-control" id="insurance">
-	    </div>
-	  </div>
-	  <div class="form-row">
-	  	<div class="col-md-5"></div>
-	  	<div class="col-md-2"><button type="submit" class="btn btn-primary">Submit</button></div>
-	  	<div class="col-md-5"></div>
-	  </div>
-	</form>
-</div>
-<div class="col-md-3" style="float: left;"></div>
-</div>
+	</div>
 
 	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script type="application/javascript" th:src="@{js/nurse.js}"></script>
+
 </body>
+
 </html>
