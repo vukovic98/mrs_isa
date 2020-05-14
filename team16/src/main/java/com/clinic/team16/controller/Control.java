@@ -132,4 +132,8 @@ public class Control {
 	   public String nurseProfile() {
 		   return "nurseProfile";
 	   }
+	   @RequestMapping(value = "/makeAppointment")
+	   public String makeAppointment() {
+		   return "makeAppointment";
+	   }
 }

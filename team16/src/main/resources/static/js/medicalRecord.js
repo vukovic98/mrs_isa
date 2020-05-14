@@ -56,5 +56,5 @@ $( document ).ready(function() {
     	
     
     function loadPatientInfoNO(patient){
-    	$("#notFoundLabel").text("Patient Not Found");	
+    	$("#notFoundLabel").text("Medical Record Not Found");	
     }

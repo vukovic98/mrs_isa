@@ -34,7 +34,7 @@ function clinicsAllOK(clinicsList) {
 }
 
 function clinicsAllNO(responseObject) {
-  var table = $("#clinicsTableBody");
+  var table = $("#allClinicsTableBody");
   table.empty();
   
   var row = $("<tr></tr>");
@@ -42,47 +42,32 @@ function clinicsAllNO(responseObject) {
   
   table.append(row);
 }
+function searchClinics() {
+	// Declare variables
+	var input, filter, table, tr, td, i, j, txtValue;
+	input = document.getElementById("myInput");
+	filter = input.value.toUpperCase();
+	table = document.getElementById("allClinicsTable");
+	tr = table.getElementsByTagName("tr");
 
-function myFunction() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("clinicsTable");
-  tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
+	// Loop through all table rows, and hide those who don't match the search query
+	for (i = 0; i < tr.length; i++) {
+		let rowTds = tr[i].getElementsByTagName("td")
+		for (j = 0; j < rowTds.length; j++) {
+			td = tr[i].getElementsByTagName("td")[j];
+			if (td) {
+				if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+					tr[i].style.display = "";
+					break; // this will break the row looping on j after making the row visible.
+				} else {
+					tr[i].style.display = "none";
+				}
+			}
+		}
+
+	}
+
 }
 
- function searchClinics() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
-}
+ 

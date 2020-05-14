@@ -11,6 +11,7 @@
 	<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 	<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
 </head>
 
 
@@ -23,11 +24,12 @@
 		<p class="pt-1 pl-3 mb-0" style="float: left;font-size: x-large;">
 			Patient
 		</p>
-		<nav class="links" style="--items: 4;">
+		<nav class="links" style="--items: 5;">
 			<a th:href="@{/patient}">Profile</a>
 			<a th:href="@{/medicalRecord}">Medical Record</a>
 			<a th:href="@{/appointmentHistory}">Appointment History</a>
 			<a class="selected" th:href="@{/patientsClinics}">Clinics</a>
+			<a th:href="@{/makeAppointment}">Make An Appointment</a>
 			<a th:href="@{/}" class="my_logout"></span></a>
 		</nav>
 	</header>
@@ -36,6 +38,8 @@
 	<div class="container" style="margin-top: 85px;">
 		<div class="jumbotron bg-light">
 			<h1 class="mb-4 col-md-10 fl-left">Clinics</h1>
+			<div class="container-fluid">
+ 
 			<div class="input-group mb-3 col-sm-10 pr-0">
 				<input type="text" id="myInput" class="form-control" placeholder="Search clinics..."
 					aria-label="Medication" aria-describedby="basic-addon2" onkeyup="searchClinics()">
@@ -44,9 +48,9 @@
 			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="allClinicsTable">
 				<thead>
 					<tr>
-						<th data-sortable="true" data-field="name">Name</th>
-						<th data-sortable="true" data-field="address">Address</th>
-						<th data-sortable="true" data-field="avgRate">Average Rating</th>
+						<th data-sortable="true" data-field="name" style="width:40%;">Name</th>
+						<th data-sortable="true" data-field="address" style="width:50%;">Address</th>
+						<th data-sortable="true" data-field="avgRate" style="width:10%;">Average Rating</th>
 						
 					</tr>
 
@@ -55,22 +59,7 @@
 					
 				</tbody>
 			</table>
-			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="filterClinicsTable">
-				<thead>
-					<tr>
-						<th data-sortable="true" data-field="name">Name</th>
-						<th data-sortable="true" data-field="address">Address</th>
-						<th data-sortable="true" data-field="avgRate">Average Rating</th>
-						<th data-sortable="true" data-field="price">Price</th>
-						<th data-sortable="true" data-field="type">Appointment Type</th>
-						
-					</tr>
-
-				</thead>
-				<tbody id="filterClinicsTableBody">
-					
-				</tbody>
-			</table>
+			
 			</div>
 
 		</div>
