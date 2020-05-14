@@ -40,19 +40,38 @@
 				<input type="text" id="myInput" class="form-control" placeholder="Search clinics..."
 					aria-label="Medication" aria-describedby="basic-addon2" onkeyup="searchClinics()">
 			</div>
-			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="myTable">
+		    <div class="ow_auto h-100">
+			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="allClinicsTable">
 				<thead>
 					<tr>
-						<th data-sortable="true" data-field="name">Name
-						</th>
+						<th data-sortable="true" data-field="name">Name</th>
+						<th data-sortable="true" data-field="address">Address</th>
+						<th data-sortable="true" data-field="avgRate">Average Rating</th>
 						
 					</tr>
 
 				</thead>
-				<tbody id="clinicsTableBody">
+				<tbody id="allClinicsTableBody">
 					
 				</tbody>
 			</table>
+			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="filterClinicsTable">
+				<thead>
+					<tr>
+						<th data-sortable="true" data-field="name">Name</th>
+						<th data-sortable="true" data-field="address">Address</th>
+						<th data-sortable="true" data-field="avgRate">Average Rating</th>
+						<th data-sortable="true" data-field="price">Price</th>
+						<th data-sortable="true" data-field="type">Appointment Type</th>
+						
+					</tr>
+
+				</thead>
+				<tbody id="filterClinicsTableBody">
+					
+				</tbody>
+			</table>
+			</div>
 
 		</div>
 	</div>
@@ -64,7 +83,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
-	<script type="application/javascript" th:src="@{js/clinics.js}"></script>
+	<script type="application/javascript" th:src="@{js/patientsClinics.js}"></script>
 </body>
 
 </html>
