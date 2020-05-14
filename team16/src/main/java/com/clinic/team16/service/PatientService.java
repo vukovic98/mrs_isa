@@ -26,5 +26,14 @@ public class PatientService {
 	public List<Patient> findAll() {
 		return this.patientRepository.findAll();
 	}
+	
+	public boolean delete(Patient p) {
+		try {
+			this.patientRepository.delete(p);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 }

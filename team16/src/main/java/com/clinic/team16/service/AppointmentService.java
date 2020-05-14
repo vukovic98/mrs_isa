@@ -17,4 +17,12 @@ public class AppointmentService {
 	public List<Appointment> findAll() {
 		return this.appointmentRepository.findAll();
 	}
+	
+	public Appointment findBuMedicalReport(long id) {
+		return this.appointmentRepository.findByMedicalReport(id);
+	} 
+	
+	public List<Appointment> findByDoctor(long id){
+		return this.appointmentRepository.findByDoctor(id);
+	} 
 }

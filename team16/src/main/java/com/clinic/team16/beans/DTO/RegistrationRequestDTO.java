@@ -1,15 +1,15 @@
-package com.clinic.team16.beans.DAO;
+package com.clinic.team16.beans.DTO;
 
-public class RegistrationRequestDAO {
+public class RegistrationRequestDTO {
 
 	private boolean approved;
 	private String patientName;
 	private String patientEmail;
 
-	public RegistrationRequestDAO() {
+	public RegistrationRequestDTO() {
 	}
 
-	public RegistrationRequestDAO(boolean approved, String patientName, String patientEmail) {
+	public RegistrationRequestDTO(boolean approved, String patientName, String patientEmail) {
 		this.approved = approved;
 		this.patientName = patientName;
 		this.patientEmail = patientEmail;

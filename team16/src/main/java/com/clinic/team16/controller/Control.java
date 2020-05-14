@@ -112,4 +112,24 @@ public class Control {
 	   public String diagnosis() {
 		   return "diagnosis";
 	   }
+	   
+	   @RequestMapping(value = "/medicalReports")
+	   public String medicalReports() {
+		   return "medicalReports";
+	   }
+	   
+	   @RequestMapping(value = "/workCalendar")
+	   public String workCalendar() {
+		   return "workCalendar";
+	   }
+	   
+	   @RequestMapping(value = "/leaveRequest")
+	   public String leaveRequest() {
+		   return "leaveRequest";
+	   }
+	   
+	   @RequestMapping(value = "/nurseProfile")
+	   public String nurseProfile() {
+		   return "nurseProfile";
+	   }
 }

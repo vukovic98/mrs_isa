@@ -25,9 +25,9 @@ function patientsAllOK(medicationsList) {
   console.log(medicationsList);
   $.each(medicationsList, function(i, val) {
     var row = $("<tr id=\""+i+"\"></tr>");
-    row.append("<td id=\""+val.id+"\">" + val.insuranceNumber + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.firstName + " " + val.lastName + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.phoneNumber + "</td>");
+    row.append("<td id=\""+val.id+"\">" + val.insurance + "</td>");
+    row.append("<td id=\""+val.id+"\">" + val.name + "</td>");
+    row.append("<td id=\""+val.id+"\">" + val.phone + "</td>");
     table.append(row);
   });
 }

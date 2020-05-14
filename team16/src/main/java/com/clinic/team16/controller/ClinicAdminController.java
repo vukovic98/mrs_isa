@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.ClinicAdministrator;
 import com.clinic.team16.beans.Patient;
-import com.clinic.team16.beans.DAO.ClinicAdminInfoDAO;
+import com.clinic.team16.beans.DTO.ClinicAdminInfoDTO;
 import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicAdminService;
 
@@ -24,17 +24,17 @@ public class ClinicAdminController {
 	private ClinicAdminService clinicAdminService;
 	
 	@GetMapping(path = "/findAll")
-	public ResponseEntity<List<ClinicAdminInfoDAO>> findAll() {
+	public ResponseEntity<List<ClinicAdminInfoDTO>> findAll() {
 		List<ClinicAdministrator> list = this.clinicAdminService.findAll();
-		List<ClinicAdminInfoDAO> daoList = new ArrayList<ClinicAdminInfoDAO>();
+		List<ClinicAdminInfoDTO> daoList = new ArrayList<ClinicAdminInfoDTO>();
 		
 		
 		if(list != null) {
 			for(ClinicAdministrator c : list) {
 				String name = c.getFirstName() + " " + c.getLastName();
-				daoList.add(new ClinicAdminInfoDAO(name, c.getEmail(), c.getCity(), c.getCountry(), c.getClinic().getName()));
+				daoList.add(new ClinicAdminInfoDTO(name, c.getEmail(), c.getCity(), c.getCountry(), c.getClinic().getName()));
 			}
-			return new ResponseEntity<List<ClinicAdminInfoDAO>>(daoList, HttpStatus.OK);
+			return new ResponseEntity<List<ClinicAdminInfoDTO>>(daoList, HttpStatus.OK);
 		}
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

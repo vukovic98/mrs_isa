@@ -1,0 +1,118 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>MedicalReports</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/styleTable.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+
+	<header id="header" style="z-index: 9999;">
+		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Nurse</p>
+		<nav class="links" style="--items: 5;">
+			<a th:href="@{/nurse}">Patients</a>
+			<a class="selected" th:href="@{/medicalReports}">Medical reports</a>
+			<a th:href="@{/workCalendar}">Work calendar</a>
+			<a th:href="@{/leaveRequest}">Leave</a>
+			<a th:href="@{/nurseProfile}">Profile</a>
+			<a th:href="@{/}" class="my_logout"></span></a>
+		</nav>
+</header>
+	
+
+	<div class="container" style="margin-top: 85px;">
+		<div class="jumbotron bg-light pb-0 mb-5">
+			<h1 class="mb-0 col-md-9 fl-left" style="z-index: 0;">MedicalReports</h1>
+		<div class="mt-5">
+	        <div class="ow_auto h-75">
+				<table class="table table-hover mt-4 pt-4" id="reportsTable">
+					<thead>
+						<th>Medical report</th>
+						<th>Patient</th>
+						<th>Doctor</th>
+						<th>Details</th>
+					</thead>
+				    <tbody id="reportsBody">
+				    
+				    </tbody>
+				</table>
+			</div>
+		</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" role="dialog">
+	  <div class="modal-dialog" role="document" style="margin-top: 60px;">
+	    <div class="modal-content">
+	      <div class="modal-body">
+	        <div class="card text-center">
+			  <div class="card-header">
+			    Medical report
+			  </div>
+			  <div class="card-body">
+			    <div class="col-xs-12 col-sm-12 pl-0">
+					<div class="input-group mb-3">
+					  <div class="input-group-prepend w-25">
+						<span class="input-group-text w_available" id="clinicSPAN">Clinic</span>
+					  </div>
+					  <input type="text" id="clinic" class="form-control" aria-describedby="basic-addon1" readonly>
+					</div>
+					<div class="input-group mb-3">
+					  <div class="input-group-prepend  w-25">
+						<span class="input-group-text w_available" id="patientSPAN">Patient</span>
+					  </div>
+					  <input type="text" id="patient" class="form-control" aria-describedby="basic-addon1" readonly>
+					</div>
+					<div class="input-group mb-3">
+					  <div class="input-group-prepend  w-25">
+						<span class="input-group-text w_available" id="doctorSPAN">Doctor</span>
+					  </div>
+					  <input type="text" id="doctor" class="form-control" aria-describedby="basic-addon1" readonly>
+					</div>
+					<div class="input-group mb-3">
+					  <div class="input-group-prepend  w-25">
+						<span class="input-group-text w_available" id="diagnosisSPAN">Diagnosis</span>
+					  </div>
+					  <select class="form-control" id="diagnosis" multiple readonly>
+						</select>
+					</div>
+					<div class="input-group mb-3">
+					  <div class="input-group-prepend  w-25">
+						<span class="input-group-text w_available" id="medicationsSPAN">Medications</span>
+					  </div>
+					  <select class="form-control" id="medications" multiple readonly>
+						</select>
+					</div>
+  					<div class="input-group mb-3">
+					  <div class="input-group-prepend  w-25">
+						<span class="input-group-text w_available" id="detailsSPAN">Details</span>
+					  </div>
+					  <textarea rows="2" id="details" class="w-75" style="resize: none;" readonly></textarea>
+					</div>
+        		</div>
+			  </div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary" data-dismiss="modal">Approve</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- Modal end -->
+
+	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/medicalReports.js}"></script>
+
+</body>
+
+</html>

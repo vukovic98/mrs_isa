@@ -1,16 +1,16 @@
-package com.clinic.team16.beans.DAO;
+package com.clinic.team16.beans.DTO;
 
-public class ClinicAdminInfoDAO {
+public class ClinicAdminInfoDTO {
 	private String name;
 	private String email;
 	private String city;
 	private String country;
 	private String clinicName;
 
-	public ClinicAdminInfoDAO() {
+	public ClinicAdminInfoDTO() {
 	}
 
-	public ClinicAdminInfoDAO(String name, String email, String city, String country, String clinicName) {
+	public ClinicAdminInfoDTO(String name, String email, String city, String country, String clinicName) {
 		this.name = name;
 		this.email = email;
 		this.city = city;

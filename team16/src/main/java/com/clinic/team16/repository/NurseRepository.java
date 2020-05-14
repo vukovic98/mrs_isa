@@ -12,4 +12,6 @@ public interface NurseRepository extends JpaRepository<Nurse, Long> {
 	
 	public Nurse findOneById(long id);
 	
+	public Nurse findOneByEmail(String email);
+	
 }
