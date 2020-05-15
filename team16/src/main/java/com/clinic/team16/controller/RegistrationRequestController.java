@@ -41,9 +41,7 @@ public class RegistrationRequestController {
 	
 	@Autowired
 	private MedicalRecordService recordService;
-	
-	@Autowired
-	private JavaMailSender javaMailSender;
+
 	
 	@GetMapping(path = "/findAll", produces = "application/json")
 	public ResponseEntity<List<RegistrationRequestDTO>> getAllRegistrationRequests() {
@@ -73,23 +71,7 @@ public class RegistrationRequestController {
 			
 			this.registrationRequestService.save(r);
 			
-			MimeMessage msg = this.javaMailSender.createMimeMessage();
-	        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-
-	        helper.setTo("mrs.isa2020@gmail.com");
-	        helper.setSubject("DIV Clinical Center");
-	        
-	        StringBuffer sb = new StringBuffer();
-
-	        sb.append("<h2>Your registration request for our DIV clinical center was accepted!</h2><br>");
-	        sb.append("<h3>Please follow the link bellow to activate your accont:</h3> <br><br>");
-	        sb.append("http://localhost:8080/patientApi/activateAccount?email=" + p.getEmail());
-	        
-
-	        helper.setText(sb.toString(), true);
-	        this.javaMailSender.send(msg);
-	        
-	        System.out.println("SENT!");
+			this.registrationRequestService.sendAcceptedMail(p.getEmail());
 			
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
@@ -113,28 +95,7 @@ public class RegistrationRequestController {
 			boolean ok = this.registrationRequestService.delete(r);
 			this.patientService.delete(p);
 			if(ok) {
-				
-				MimeMessage msg = this.javaMailSender.createMimeMessage();
-
-		        // true = multipart message
-		        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-
-		        helper.setTo("mrs.isa2020@gmail.com");
-
-		        helper.setSubject("DIV Clinical Center");
-		        
-		        StringBuffer sb = new StringBuffer();
-
-		        sb.append("<h2>We are sorry, your registration request was declined.</h2><br>");
-		        sb.append("<h3>Management cites this as a reason:</h3> <br><br>");
-		        sb.append("\"<i>" + reason + "</i>\"");
-		        
-
-		        helper.setText(sb.toString(), true);
-
-		        this.javaMailSender.send(msg);
-		        
-		        System.out.println("SENT!");
+				this.registrationRequestService.sendDeclinedMail(reason);
 				
 				return new ResponseEntity<>(HttpStatus.OK);
 			}

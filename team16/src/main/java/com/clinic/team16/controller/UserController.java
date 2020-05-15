@@ -30,33 +30,14 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private JavaMailSender javaMailSender;
+
 	
 	@GetMapping(path = "/sendMail")
-	public void sendMail() throws MessagingException {
-		MimeMessage msg = this.javaMailSender.createMimeMessage();
-
-        // true = multipart message
-        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-
-        helper.setTo("mrs.isa2020@gmail.com");
-
-        helper.setSubject("Testing from Spring Boot");
-
-        // default = text/plain
-        //helper.setText("Check attachment for image!");
-
-        // true = text/html
-        helper.setText("<h1><i>Check attachment for image!</i></h1>", true);
-
-		// hard coded a file path
-        //FileSystemResource file = new FileSystemResource(new File("path/android.png"));
+	public String sendMail() throws MessagingException {
+		
+        this.userService.sendMail();
         
-        this.javaMailSender.send(msg);
-        
-        System.out.println("SENT!");
+        return("SENT!");
 	}
 	
 	@PostMapping(path = "/validateUser", consumes = "application/json")
