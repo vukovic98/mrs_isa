@@ -3,9 +3,14 @@ package com.clinic.team16.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +42,9 @@ public class RegistrationRequestController {
 	@Autowired
 	private MedicalRecordService recordService;
 	
+	@Autowired
+	private JavaMailSender javaMailSender;
+	
 	@GetMapping(path = "/findAll", produces = "application/json")
 	public ResponseEntity<List<RegistrationRequestDTO>> getAllRegistrationRequests() {
 		List<RegistrationRequest> list = this.registrationRequestService.findAll();
@@ -54,22 +62,34 @@ public class RegistrationRequestController {
 	}
 	
 	@PostMapping(path = "/acceptUser")
-	public ResponseEntity<HttpStatus> acceptUser(@RequestBody User u) {
+	public ResponseEntity<HttpStatus> acceptUser(@RequestBody User u) throws MessagingException {
 		String email = u.getEmail();
 		
 		Patient p = this.patientService.findOneByEmail(email);
 		
 		if(p != null) {
-			MedicalRecord m = new MedicalRecord("", null, 0, 0, "", 0, null, null, "", p);
-			this.recordService.save(m);
-			
-			p.setMedicalRecord(m);
-			this.patientService.save(p);
-			
 			RegistrationRequest r = this.registrationRequestService.findOneByUserId(p.getId());
 			r.setApproved(true);
 			
 			this.registrationRequestService.save(r);
+			
+			MimeMessage msg = this.javaMailSender.createMimeMessage();
+	        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+
+	        helper.setTo("mrs.isa2020@gmail.com");
+	        helper.setSubject("DIV Clinical Center");
+	        
+	        StringBuffer sb = new StringBuffer();
+
+	        sb.append("<h2>Your registration request for our DIV clinical center was accepted!</h2><br>");
+	        sb.append("<h3>Please follow the link bellow to activate your accont:</h3> <br><br>");
+	        sb.append("http://localhost:8080/patientApi/activateAccount?email=" + p.getEmail());
+	        
+
+	        helper.setText(sb.toString(), true);
+	        this.javaMailSender.send(msg);
+	        
+	        System.out.println("SENT!");
 			
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
@@ -77,7 +97,7 @@ public class RegistrationRequestController {
 	}
 	
 	@PostMapping(path = "/declineUser")
-	public ResponseEntity<HttpStatus> declineUser(@RequestBody User u) {
+	public ResponseEntity<HttpStatus> declineUser(@RequestBody User u) throws MessagingException {
 		String email = u.getEmail();
 		String reason = u.getAddress(); //smart work
 		
@@ -87,22 +107,37 @@ public class RegistrationRequestController {
 			RegistrationRequest r = this.registrationRequestService.findOneByUserId(p.getId());
 			r.setUser(null);
 			r.setClinicalCenterAdministrator(null);
-			
-			/*try {
-				this.registrationRequestService.deleteBonds(r.getRegistrationRequestId());
-				System.out.println("OK");
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}*/
-			
 			this.registrationRequestService.save(r);
 			
 			
 			boolean ok = this.registrationRequestService.delete(r);
 			this.patientService.delete(p);
-			if(ok)
+			if(ok) {
+				
+				MimeMessage msg = this.javaMailSender.createMimeMessage();
+
+		        // true = multipart message
+		        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+
+		        helper.setTo("mrs.isa2020@gmail.com");
+
+		        helper.setSubject("DIV Clinical Center");
+		        
+		        StringBuffer sb = new StringBuffer();
+
+		        sb.append("<h2>We are sorry, your registration request was declined.</h2><br>");
+		        sb.append("<h3>Management cites this as a reason:</h3> <br><br>");
+		        sb.append("\"<i>" + reason + "</i>\"");
+		        
+
+		        helper.setText(sb.toString(), true);
+
+		        this.javaMailSender.send(msg);
+		        
+		        System.out.println("SENT!");
+				
 				return new ResponseEntity<>(HttpStatus.OK);
+			}
 			else
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else

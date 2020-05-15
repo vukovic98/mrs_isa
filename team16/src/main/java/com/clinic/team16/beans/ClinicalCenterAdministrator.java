@@ -62,24 +62,11 @@ public class ClinicalCenterAdministrator extends User {
 	
 
 	public void addRegistrationRequest(RegistrationRequest newRegistrationRequest) {
-		if (newRegistrationRequest == null)
-			return;
-		if (this.registrationRequest == null)
-			this.registrationRequest = new ArrayList<RegistrationRequest>();
-		if (!this.registrationRequest.contains(newRegistrationRequest)) {
 			this.registrationRequest.add(newRegistrationRequest);
-			newRegistrationRequest.setClinicalCenterAdministrator(this);
-		}
 	}
 
 	public void removeRegistrationRequest(RegistrationRequest oldRegistrationRequest) {
-		if (oldRegistrationRequest == null)
-			return;
-		if (this.registrationRequest != null)
-			if (this.registrationRequest.contains(oldRegistrationRequest)) {
 				this.registrationRequest.remove(oldRegistrationRequest);
-				oldRegistrationRequest.setClinicalCenterAdministrator((ClinicalCenterAdministrator) null);
-			}
 	}
 
 	

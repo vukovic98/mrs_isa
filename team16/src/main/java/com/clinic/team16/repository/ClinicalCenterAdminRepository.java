@@ -8,5 +8,6 @@ import com.clinic.team16.beans.ClinicalCenterAdministrator;
 
 @Repository
 public interface ClinicalCenterAdminRepository extends JpaRepository<ClinicalCenterAdministrator, Long>{
-
+	
+	public ClinicalCenterAdministrator findOneById(long id);
 }

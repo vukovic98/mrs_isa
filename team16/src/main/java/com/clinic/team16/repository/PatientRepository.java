@@ -11,4 +11,5 @@ import com.clinic.team16.beans.Patient;
 public interface PatientRepository extends JpaRepository<Patient, Long>{
 	
 	public Patient findOneByEmail(String email);
+
 }

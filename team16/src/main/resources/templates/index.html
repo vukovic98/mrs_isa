@@ -9,6 +9,18 @@
 	
 </head>
 <body>
+	<style type="text/css">
+		#message_bar{
+  cursor: pointer;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 100%;
+}
+	</style>
+	<div id="message_bar" class="text-center">message</div>
 	<div class="col-md-12 fl-left" style="height: 90px;"></div>
 	<div class="col-md-5 fl-left" style="height: 500px;"></div>
 	<div class="form-structor col-md-4 fl-left" style="margin-left: -50px;">
@@ -16,16 +28,18 @@
 		<div class="signup">
 			<h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
 			<div class="form-holder mb-4">
-				<input type="text" class="input" placeholder="First name" />
-				<input type="text" class="input" placeholder="Last name" />
-				<input type="text" class="input" placeholder="City" />
-				<input type="text" class="input" placeholder="Country" />
-				<input type="text" class="input" placeholder="Insurance number" />
-				<input type="text" class="input" placeholder="Phone number" />
-				<input type="email" class="input" placeholder="Email" />
-				<input type="password" class="input" placeholder="Password" />
+				<input type="text" class="input form-control" id="firstNameSignUp" placeholder="First name" required />
+				<input type="text" class="input form-control" id="lastNameSignUp" placeholder="Last name" required />
+				<input type="text" class="input form-control" id="citySignUp" placeholder="City" required />
+				<input type="text" class="input form-control" id="countrySignUp" placeholder="Country" required />
+				<input type="text" class="input form-control" id="addressSignUp" placeholder="Address" required />
+				<input type="text" class="input form-control" id="insNumberSignUp" placeholder="Insurance number" required />
+				<input type="text" class="input form-control" id="phoneSignUp" placeholder="Phone number" required />
+				<input type="email" class="input form-control" id="emailSignUp" placeholder="Email" required />
+				<input type="password" class="input form-control" id="passSignUp" placeholder="Password" required />
+				<input type="password" class="input form-control" id="passRepeatSignUp" placeholder="Repeat password" required />
 			</div>
-			<button class="submit-btn">Sign up</button>
+			<button class="submit-btn" id="signUpBtn">Sign up</button>
 		</div>
 		
 		<div class="login slide-up">

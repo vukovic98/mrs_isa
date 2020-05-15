@@ -11,6 +11,11 @@ public class Control {
 	   public String index() {
 	      return "index";
 	   }
+	   
+	   @RequestMapping(value = "/patientApi/index")
+	   public String patientApiIndex() {
+		   return "redirect:index";
+	   }
 	
 	   @RequestMapping(value = "/doctor")
 	   public String doctor() {
