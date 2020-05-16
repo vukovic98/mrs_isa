@@ -4,18 +4,55 @@ $(document).ready(function () {
     	url: 'appointmentApi/findAllMedicalReports',
     	statusCode: {
     		200: function(responseObject, textStatus, jqXHR) {
-    			console.log("MedicalRecords - findAllMedicalReports() - 200 OK");
+    			console.log("MedicalReports - findAllMedicalReports() - 200 OK");
     			reportsAllOK(responseObject);
     		},
     		204: function(responseObject, textStatus, jqXHR) {
-    			console.log("MedicalRecords - findAllMedicalReports() - 204 No Content");
+    			console.log("MedicalReports - findAllMedicalReports() - 204 No Content");
     			reportsAllNO(responseObject);
     		}
     	}
     });
+	 
+	 $(document).on('click', '#modalApproveBtn', function () {
+		 var clinic = $("#clinic").val();
+		 var patient = $("#patient").val();
+		 var doctor = $("#doctor").val();
+		 var details = $("#details").val();
+		 
+		 var diagnosis = $("#diagnosis option").map(function() {return $(this).val();}).get();
+		 var medications = $("#medications option").map(function() {return $(this).val();}).get();
+		 var id = $("#reportId").text();
+		 $.ajax({
+			 type: 'POST',
+	        	url: 'medicalReportApi/addReport',
+	        	dataType: 'json',
+	        	data: JSON.stringify({
+	        		"id": id,
+	        		"clinic": clinic,
+	        		"doctor": doctor,
+	        		"patient": patient,
+	        		"details": details,
+	        		"diagnosis": diagnosis,
+	        		"medications": medications
+	        	}),
+	        	contentType: "application/json; charset=utf-8",
+			    dataType: "json",
+			    statusCode: {
+		    		200: function(responseObject, textStatus, jqXHR) {
+		    			console.log("MedicalReports - findAllMedicalReports() - 200 OK");
+		    			showMessage("Medical report successfully approved!", "palegreen");
+		    			window.setTimeout(function(){location.reload()},1500)
+		    		},
+		    		400: function(responseObject, textStatus, jqXHR) {
+		    			console.log("MedicalRecords - findAllMedicalReports() - 204 No Content");
+		    			showMessage("Something went wrong!", "antiquewhite");
+		    		}
+		    	}
+		 });
+	 });
 
 	 $(document).on('click', '.info', function () {
-
         var id = $(this).attr('id');
         console.log("UDJE MODAL");
         $.ajax({
@@ -29,7 +66,7 @@ $(document).ready(function () {
 		    dataType: "json",
         	success: function(report) {
         		console.log(report);
-        		
+        		$("#reportId").text(report.id);
         		$("#clinic").val(report.clinic);
 		        $("#patient").val(report.patient);
 		        $("#doctor").val(report.doctor);
@@ -52,12 +89,18 @@ $(document).ready(function () {
 		        $.each(report.medications, function(i, val) {
 		        	$('#medications').append(`<option value="${val}">${val}</option>`); 
 		        });
-		        
+
 		        $("#exampleModal").modal();
         	}
         });
     });
 });
+
+function showMessage(message, color) {
+	$("#message_bar").css("background", color);
+	$("#message_bar").text(message);
+	$("#message_bar").slideDown().delay(1500).slideUp();
+}
 
 function reportsAllOK(reportList) {
 	var table = $("#reportsBody");

@@ -17,4 +17,8 @@ public class MedicationService {
 	public List<Medication> findAll() {
 		return this.medicationRepository.findAll();
 	}
+	
+	public Medication findOneByCode(String code) {
+		return this.medicationRepository.findOneByCode(code);
+	}
 }

@@ -18,4 +18,7 @@ public class DiagnosisService {
 		return this.diagnosisRepository.findAll();
 	}
 
+	public Diagnosis findOneByCode(String code) {
+		return this.diagnosisRepository.findOneByCode(code);
+	}
 }

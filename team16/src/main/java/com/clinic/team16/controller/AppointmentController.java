@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.MedicalReport;
-import com.clinic.team16.beans.Medication;
 import com.clinic.team16.beans.DTO.AppointmentDTO;
 import com.clinic.team16.beans.DTO.MedicalReportDTO;
 import com.clinic.team16.service.AppointmentService;
@@ -66,7 +65,7 @@ public class AppointmentController {
 					String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
 					dtoList.add(new MedicalReportDTO(a.getMedicalReport().getMedicalReportId(),
 							a.getMedicalReport().getDetails(), doctor, patient, a.getDoctor().getClinic().getName(), 
-							a.getMedicalReport().getMedication(), a.getMedicalReport().getDiagnosis()));
+							a.getMedicalReport().getMedication(), a.getMedicalReport().getDiagnosis(), a.getMedicalReport().getNurse().getId()));
 				}
 			}
 			return new ResponseEntity<List<MedicalReportDTO>>(dtoList, HttpStatus.OK);
@@ -85,7 +84,7 @@ public class AppointmentController {
 			String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
 			MedicalReportDTO mDTO = new MedicalReportDTO(a.getMedicalReport().getMedicalReportId(),
 					a.getMedicalReport().getDetails(), doctor, patient, a.getDoctor().getClinic().getName(),
-					a.getMedicalReport().getMedication(), a.getMedicalReport().getDiagnosis());
+					a.getMedicalReport().getMedication(), a.getMedicalReport().getDiagnosis(), a.getMedicalReport().getNurse().getId());
 			System.out.println(a.getMedicalReport().getMedication());
 			System.out.println(a.getDoctor().getClinic().getName());
 			return new ResponseEntity<MedicalReportDTO>(mDTO, HttpStatus.OK);

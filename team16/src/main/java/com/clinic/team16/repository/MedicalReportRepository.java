@@ -8,4 +8,5 @@ import com.clinic.team16.beans.MedicalReport;
 @Repository
 public interface MedicalReportRepository extends JpaRepository<MedicalReport,Long> {
 
+	public MedicalReport findOneByMedicalReportId(long id);
 }
