@@ -1,0 +1,84 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>WorkSchedule</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="/css/equinox.css">
+	<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+</head>
+
+<body>
+	<header id="header" style="z-index:999">
+		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Doctor</p>
+	<nav class="links" style="--items: 4;">
+		<a th:href="@{/doctor}">Clinic patients</a>
+		<a th:href="@{/doctorAppointments}">My appointments</a>
+		<a class="selected" th:href="@{/workSchedule}">Work schedule</a>
+		<a th:href="@{/doctorProfile}">Profile</a>
+		<a th:href="@{/}" class="my_logout"></a>
+	</nav>
+</header>
+	
+
+	<div class="container" style="margin-top: 85px;">
+		<div class="jumbotron bg-light pb-0 mb-5 pt-4" style="background-color: none !important;">
+			
+			<div class="mt-0">
+		        <div class="ow_auto h-100">
+					<div class="event-calendar"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" role="dialog" style="z-index: 9999;">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-body">
+	        <div class="card text-center">
+			  <div class="card-header">
+			    Appointment information
+			  </div>
+			  <div class="card-body">
+			    <ul class="list-group">
+					<li	class="list-group-item d-flex justify-content-between align-items-center">
+						Date
+						<i><p id="modalDate" class="mb-0"></p></i>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Time
+						<i><p id="modalTime" class="mb-0"></p></i>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Patient
+						<i><p id="modalPatient" class="mb-0"></p></i>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Appointment type
+						<i><p id="modalType" class="mb-0"></p></i>
+					</li>
+				</ul>
+			  </div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script type="text/javascript" th:src="@{js/workSchedule.js}"></script>
+	<script type="text/javascript" th:src="@{js/equinox.min.js}"></script>
+</body>
+
+</html>

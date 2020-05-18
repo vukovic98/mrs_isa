@@ -1,5 +1,6 @@
 package com.clinic.team16.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.MedicalReport;
 import com.clinic.team16.beans.DTO.AppointmentDTO;
+import com.clinic.team16.beans.DTO.CalendarDataDTO;
 import com.clinic.team16.beans.DTO.MedicalReportDTO;
 import com.clinic.team16.service.AppointmentService;
 
@@ -25,66 +27,88 @@ public class AppointmentController {
 
 	@Autowired
 	private AppointmentService appointmentService;
-	
-	@GetMapping(path = "/findAll") 
+
+	@GetMapping(path = "/findAll")
 	public ResponseEntity<List<Appointment>> findAll() {
 		List<Appointment> list = this.appointmentService.findAll();
-		
-		if(list != null)
+
+		if (list != null)
 			return new ResponseEntity<List<Appointment>>(list, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
+	@GetMapping(path = "/findAllAppointments")
+	public ResponseEntity<ArrayList<CalendarDataDTO>> getCalendarDates() {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		ArrayList<Appointment> list = (ArrayList<Appointment>) this.appointmentService.findAll();
+		ArrayList<CalendarDataDTO> dtoList = new ArrayList<>();
+
+		if (list != null) {
+			for (Appointment a : list) {
+				String name = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
+				dtoList.add(new CalendarDataDTO(formatter.format(a.getDateTime()), name,
+						a.getOrdination().getType().toString()));
+			}
+			
+			return new ResponseEntity<ArrayList<CalendarDataDTO>>(dtoList, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	@GetMapping(path = "/findAllDoc/{doctorId}")
-	public ResponseEntity<List<AppointmentDTO>> findAllDoctor(@PathVariable("doctorId") long doctorId){
+	public ResponseEntity<List<AppointmentDTO>> findAllDoctor(@PathVariable("doctorId") long doctorId) {
 		List<Appointment> list = this.appointmentService.findByDoctor(doctorId);
 		List<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
-		
-		if(list != null) {
-			for(Appointment a : list) {
+
+		if (list != null) {
+			for (Appointment a : list) {
 				String doctor = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
 				String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
-				dtoList.add(new AppointmentDTO(a.getAppointmentId(), a.getDateTime(), a.getDuration(), doctor, patient));
+				dtoList.add(
+						new AppointmentDTO(a.getAppointmentId(), a.getDateTime(), a.getDuration(), doctor, patient));
 			}
 			return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
-		}else
+		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
+
 	}
-	
+
 	@GetMapping(path = "/findAllMedicalReports")
 	public ResponseEntity<List<MedicalReportDTO>> findMedicalReports() {
 		List<Appointment> list = this.appointmentService.findAll();
 		List<MedicalReportDTO> dtoList = new ArrayList<MedicalReportDTO>();
-		
-		if(list != null) {
-			for(Appointment a : list) {
-				if(a.getMedicalReport().getApproved() == false && a.getMedicalReport().getNurse().getId() == 67) {
+
+		if (list != null) {
+			for (Appointment a : list) {
+				if (a.getMedicalReport().getApproved() == false && a.getMedicalReport().getNurse().getId() == 67) {
 					String doctor = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
 					String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
 					dtoList.add(new MedicalReportDTO(a.getMedicalReport().getMedicalReportId(),
-							a.getMedicalReport().getDetails(), doctor, patient, a.getDoctor().getClinic().getName(), 
-							a.getMedicalReport().getMedication(), a.getMedicalReport().getDiagnosis(), a.getMedicalReport().getNurse().getId()));
+							a.getMedicalReport().getDetails(), doctor, patient, a.getDoctor().getClinic().getName(),
+							a.getMedicalReport().getMedication(), a.getMedicalReport().getDiagnosis(),
+							a.getMedicalReport().getNurse().getId()));
 				}
 			}
 			return new ResponseEntity<List<MedicalReportDTO>>(dtoList, HttpStatus.OK);
-		} else 
+		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	@PostMapping(path = "/findReportById", consumes = "application/json")
 	public ResponseEntity<MedicalReportDTO> findReportById(@RequestBody MedicalReport m) {
 		long id = m.getMedicalReportId();
-		
+
 		Appointment a = this.appointmentService.findBuMedicalReport(id);
-		
-		if(a != null) {
+
+		if (a != null) {
 			String doctor = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
 			String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
 			MedicalReportDTO mDTO = new MedicalReportDTO(a.getMedicalReport().getMedicalReportId(),
 					a.getMedicalReport().getDetails(), doctor, patient, a.getDoctor().getClinic().getName(),
-					a.getMedicalReport().getMedication(), a.getMedicalReport().getDiagnosis(), a.getMedicalReport().getNurse().getId());
+					a.getMedicalReport().getMedication(), a.getMedicalReport().getDiagnosis(),
+					a.getMedicalReport().getNurse().getId());
 			System.out.println(a.getMedicalReport().getMedication());
 			System.out.println(a.getDoctor().getClinic().getName());
 			return new ResponseEntity<MedicalReportDTO>(mDTO, HttpStatus.OK);

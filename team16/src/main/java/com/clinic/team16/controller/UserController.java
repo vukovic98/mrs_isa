@@ -43,19 +43,20 @@ public class UserController {
 	@PostMapping(path = "/validateUser", consumes = "application/json")
 	public ResponseEntity<User> validateUser(@RequestBody User u) {
 		System.out.println(u.getEmail());
+		System.out.println(u.getPassword());
 		User k = userService.findOneByEmail(u.getEmail());
 		boolean ok = false;
 		
 		if(k != null) {
 			if(u.getPassword().equals(k.getPassword())) {
-				if(u instanceof Patient) {
-					if(((Patient) u).getMedicalRecord() != null) ok = true;
+				if(k instanceof Patient) {
+					if(((Patient) k).getMedicalRecord() != null) ok = true;
 					else ok = false;
 				} else {
 					ok = true;
 				}
 			} else {
-				ok = false;
+				ok = false; 
 			}
 		}
 		

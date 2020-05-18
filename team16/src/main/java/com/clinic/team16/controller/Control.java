@@ -29,7 +29,7 @@ public class Control {
 	   
 	   @RequestMapping(value = "/workSchedule")
 	   public String workSchedule() {
-		   return "doctor";
+		   return "workSchedule";
 	   }
 	   
 	   @RequestMapping(value = "/doctorProfile")
