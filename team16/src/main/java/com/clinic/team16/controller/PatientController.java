@@ -90,14 +90,17 @@ public class PatientController {
 
 	@PostMapping(path = "/signUpUser", consumes = "application/json")
 	public ResponseEntity<HttpStatus> signUpUser(@RequestBody User u) {
+		System.out.println("UDJE");
 		Patient p = new Patient(u.getEmail(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getAddress(),
 				u.getCity(), u.getCountry(), u.getPhoneNumber(), u.getInsuranceNumber(), Role.PATIENT);
 		p.setMedicalRecord(null);
 
 		Patient same = this.patientService.findOneByEmail(u.getEmail());
 
-		if (same != null)
+		if (same != null) {
+			System.out.println("IMA");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 
 		Patient ok = this.patientService.save(p);
 
@@ -111,6 +114,7 @@ public class PatientController {
 
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
+			System.out.println("Nece da ga snimi");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
