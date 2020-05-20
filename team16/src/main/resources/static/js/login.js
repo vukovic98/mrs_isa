@@ -1,6 +1,6 @@
 const loginBtn = document.getElementById('login');
 const signupBtn = document.getElementById('signup');
-
+const doc = document;
 
 $(document).ready(function(e) {
 	$("#loginBtn").click(function(e) {
@@ -71,6 +71,7 @@ $(document).ready(function(e) {
 });
 
 function whereToGo(user) {
+	var jwt = user.jwt;
 		if(user.role == "CLINICAL_CENTER_ADMINISTRATOR") {
 			console.log("USAO");
 			window.location.href = "/clinicalCenterAdmin";
@@ -83,7 +84,18 @@ function whereToGo(user) {
 		
 		if(user.role == "DOCTOR") {
 			console.log("USAO");
-			window.location.href = "/doctor";
+			$.ajax({
+			    type: "GET",
+			    url: "/doctor",
+			    headers: { "Authorization": 'Bearer ' + jwt },
+			    statusCode: {
+			        200: function(responseObject) {
+			            console.log("usao");
+			            
+			        }
+			    }
+			});
+			
 		}
 
 		if(user.role == "PATIENT") {
