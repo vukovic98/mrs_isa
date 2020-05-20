@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 	  $.ajax({
 	    type: 'GET',
-	    url: 'pricelistItemApi/findAll',
+	    url: 'pricelistItemApi/findAllAppointmentTypes',
 	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 	    statusCode: {
 	      200: function(responseObject, textStatus, jqXHR) {
@@ -83,8 +83,8 @@ function pricelistAllOK(pricelistItemList) {
 	  console.log(pricelistItemList);
 	  $.each(pricelistItemList, function(i, val) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
-	    if(val.name != undefined){
-	    row.append("<td id=\""+i+"\">" + val.name + "</td>");
+	    if(val.appointmentType != undefined){
+	    row.append("<td id=\""+i+"\">" + val.appointmentType + "</td>");
 	    row.append("<td id=\""+i+"\">" + val.price + "$</td>");
 	    row.append("<td id=\""+i+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
 		                            "<a class=\"edit\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +

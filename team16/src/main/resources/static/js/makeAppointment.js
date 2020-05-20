@@ -14,12 +14,17 @@ $( document ).ready(function() {
     			console.log("204 No Content");
 
     			
-    		}
+    		},
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
     	}
     });
     $.ajax ({
     	type: 'GET',
     	url: '/clinicApi/findAll',
+    	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     	statusCode: {
     		200: function(responseObject, textStatus, jqXHR) {
     			console.log("200 OK");
@@ -37,7 +42,7 @@ $( document ).ready(function() {
 				unauthorized();
 			}
 
-    	}
+    	
     });
   
 });

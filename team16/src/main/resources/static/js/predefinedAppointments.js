@@ -89,13 +89,13 @@ function appointmentsAllOK(appointmentsList) {
 	  console.log(appointmentsList);
 	  $.each(appointmentsList, function(i, val) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
-	    if(val.pricelistItems != undefined) {
-	    row.append("<td id=\""+val.id+"\">" + val.dateTime + "</td>");
-	    row.append("<td id=\""+val.id+"\">" + val.pricelistItems.name + "</td>");
-	    row.append("<td id=\""+val.id+"\">" + val.ordination.number + "</td>");
-	    row.append("<td id=\""+val.id+"\">" + val.doctor.firstName + " " + val.doctor.lastName + "</td>");
+	    if(val.appointmentType != undefined) {
+	    row.append("<td id=\""+val.id+"\">" + val.datetime + "</td>");
+	    row.append("<td id=\""+val.id+"\">" + val.appointmentType + "</td>");
+	    row.append("<td id=\""+val.id+"\">" + val.roomNo + "</td>");
+	    row.append("<td id=\""+val.id+"\">" + val.doctor + "</td>");
 	    row.append("<td id=\""+val.id+"\">" + val.duration + " min</td>");
-	    row.append("<td id=\""+val.id+"\">" + val.pricelistItems.price + "$</td>");
+	    row.append("<td id=\""+val.id+"\">" + val.price + "$</td>");
 	    table.append(row);
 	    }
 	  });
