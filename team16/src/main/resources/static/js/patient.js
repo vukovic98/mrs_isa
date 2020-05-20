@@ -215,6 +215,7 @@ function passValidation(patientsPassword){
 		 $.ajax({
 	        	type: 'PUT',
 	        	url: 'patientApi/updatePatient',
+	        	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 	        	data: JSON.stringify(formData),
 	        	dataType: 'json',
 	        	contentType: "application/json",
