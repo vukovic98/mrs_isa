@@ -48,7 +48,7 @@
     }
     	
     function unauthorized(){
-    	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
+    	document.write("<html><head></head><body><h1>UNAUTHORIZED</h1></body></html>");
     }
     	
     

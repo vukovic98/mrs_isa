@@ -3,6 +3,8 @@ const signupBtn = document.getElementById('signup');
 const doc = document;
 
 $(document).ready(function(e) {
+	sessionStorage.clear();
+	
 	$("#loginBtn").click(function(e) {
 		e.preventDefault();
 		

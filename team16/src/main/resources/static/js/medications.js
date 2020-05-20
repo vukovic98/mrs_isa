@@ -59,6 +59,7 @@ $(document).ready(function(){
       $.ajax({
         type: 'POST',
         url: 'medicationApi/addMedication',
+        headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
         data : JSON.stringify({
           "name" : dataMed[0],
           "code" : dataMed[1]
@@ -79,7 +80,11 @@ $(document).ready(function(){
           400: function(responseObject, textStatus, jqXHR) {
             console.log("Medications - add() - 400 Bad request");
             showMessage("Medication with inserted code already exists!", "antiquewhite");
-          }
+          },
+		403: function(responseObject, textStatus, jqXHR) {
+			console.log("403 Unauthorized");
+			unauthorized();
+		}
         }
       });
     }   
@@ -99,6 +104,7 @@ $(document).ready(function(){
         $.ajax({
             type: 'DELETE',
             url: 'medicationApi/deleteMedication/' + code,
+            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             statusCode: {
@@ -109,7 +115,11 @@ $(document).ready(function(){
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Medications - delete() - 400 Bad request");
                 showMessage("Something went wrong!", "antiquewhite");
-              }
+              },
+      		403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		}
             }
           });
         
