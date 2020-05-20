@@ -1,9 +1,15 @@
 package com.clinic.team16.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+
 import org.springframework.stereotype.Service;
 
 import com.clinic.team16.beans.User;
@@ -15,7 +21,7 @@ import java.util.*;
 import javax.mail.internet.MimeMessage;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -31,6 +37,12 @@ public class UserService {
 		return userRepository.save(u);
 	}
 
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return userRepository.findByEmail(username);
+	}
+		
 	@Async
 	public void sendMail() {
 		try {

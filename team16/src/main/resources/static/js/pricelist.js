@@ -5,6 +5,7 @@ $(document).ready(function(){
 	  $.ajax({
 	    type: 'GET',
 	    url: 'pricelistItemApi/findAll',
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 	    statusCode: {
 	      200: function(responseObject, textStatus, jqXHR) {
 	        console.log("Pricelist - findAll() - 200 OK");
@@ -13,7 +14,11 @@ $(document).ready(function(){
 	      204: function(responseObject, textStatus, jqXHR) {
 	        console.log("Pricelist - findAll() - 204 No Content");
 	        pricelistAllNO(responseObject);
-	      }
+	      },
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
 	    }
 	  });
 	
@@ -98,7 +103,9 @@ function pricelistAllOK(pricelistItemList) {
 	  
 	  table.append(row);
 	}
-
+	function unauthorized(){
+		document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
+	}
 
 function myFunction() {
 	  // Declare variables

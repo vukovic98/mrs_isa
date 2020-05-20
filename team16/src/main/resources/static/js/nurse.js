@@ -3,6 +3,7 @@ $(document).ready(function () {
     $.ajax ({
     	type: 'GET',
     	url: 'patientApi/findAll',
+        headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     	statusCode: {
     		200: function(responseObject, textStatus, jqXHR) {
     			console.log("RegistrationRequests - findAll() - 200 OK");
@@ -11,6 +12,10 @@ $(document).ready(function () {
     		204: function(responseObject, textStatus, jqXHR) {
     			console.log("RegistrationRequests - findAll() - 204 No Content");
     			patientsAllNO(responseObject);
+    		},
+    		403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
     		}
     	}
     });
@@ -22,6 +27,7 @@ $(document).ready(function () {
         $.ajax({
         	type: 'POST',
         	url: 'patientApi/findModalByEmail',
+    	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
         	dataType: 'json',
         	data: JSON.stringify({
         		"email": email 
@@ -89,6 +95,10 @@ function patientsAllNO(responseObject) {
 	table.append(row);
 }
 
+function unauthorized(){
+	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
+}
+
 function fire_ajax_submit() {
 
     var create = {}
@@ -107,6 +117,7 @@ function fire_ajax_submit() {
         type: "POST",
         contentType: "application/json",
         url: "/nurseApi",
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
         data: JSON.stringify(create),
         dataType: 'json',
         cache: false,

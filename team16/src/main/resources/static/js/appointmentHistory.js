@@ -4,6 +4,7 @@
     $.ajax ({
     	type: 'GET',
     	url: '/patientApi/findOneByEmail',
+    	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     	statusCode: {
     		200: function(responseObject, textStatus, jqXHR) {
     			console.log("200 OK");
@@ -12,6 +13,10 @@
     		204: function(responseObject, textStatus, jqXHR) {
     			console.log("204 No Content");
     			loadPatientInfoNO(responseObject);
+    		},
+    		403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
     		}
     	}
     });
@@ -42,7 +47,9 @@
     	}
     }
     	
-    	
+    function unauthorized(){
+    	document.write("<html><head></head><body><h1>UNAUTHORIZED</h1></body></html>");
+    }
     	
     
     function loadPatientInfoNO(patient){

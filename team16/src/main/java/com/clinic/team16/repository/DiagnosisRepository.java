@@ -8,4 +8,5 @@ import com.clinic.team16.beans.Diagnosis;
 @Repository
 public interface DiagnosisRepository extends JpaRepository<Diagnosis, Long> {
 
+	public Diagnosis findOneByCode(String code);
 }

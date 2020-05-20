@@ -5,6 +5,7 @@ $(document).ready(function(){
   $.ajax({
     type: 'GET',
     url: 'patientApi/findAll',
+    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     statusCode: {
       200: function(responseObject, textStatus, jqXHR) {
         console.log("Patients - findAll() - 200 OK");
@@ -13,7 +14,11 @@ $(document).ready(function(){
       204: function(responseObject, textStatus, jqXHR) {
         console.log("Patients - findAll() - 204 No Content");
         patientsAllNO(responseObject);
-      }
+      },
+      403: function(responseObject, textStatus, jqXHR) {
+          console.log("Patients - findAll() - 403 Unauthorized");
+          unauthorized();
+        }
     }
   });
 });
@@ -40,4 +45,8 @@ function patientsAllNO(responseObject) {
   row.append("<td class='pl-1'>There are no patients in system.</td>");
   
   table.append(row);
+}
+
+function unauthorized(){
+	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
 }

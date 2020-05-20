@@ -15,11 +15,13 @@ public class MedicalReportDTO {
 	private ArrayList<String> medications = new ArrayList<>();
 	private ArrayList<String> diagnosis = new ArrayList<>();
 
+	private long nurseId;
+
 	public MedicalReportDTO() {
 	}
 
 	public MedicalReportDTO(long id, String details, String doctor, String patient, String clinic, List<Medication> med,
-			List<Diagnosis> diag) {
+			List<Diagnosis> diag, long nurseId) {
 		this.id = id;
 		this.details = details;
 		this.doctor = doctor;
@@ -27,6 +29,15 @@ public class MedicalReportDTO {
 		this.clinic = clinic;
 		this.addMedications(med);
 		this.addDiagnosis(diag);
+		this.nurseId = nurseId;
+	}
+
+	public long getNurseId() {
+		return nurseId;
+	}
+
+	public void setNurseId(long nurseId) {
+		this.nurseId = nurseId;
 	}
 
 	public String getClinic() {

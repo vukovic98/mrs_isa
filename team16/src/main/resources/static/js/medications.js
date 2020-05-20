@@ -5,6 +5,7 @@ $(document).ready(function(){
   $.ajax({
     type: 'GET',
     url: 'medicationApi/findAll',
+    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     statusCode: {
       200: function(responseObject, textStatus, jqXHR) {
         console.log("Medications - findAll() - 200 OK");
@@ -13,60 +14,126 @@ $(document).ready(function(){
       204: function(responseObject, textStatus, jqXHR) {
         console.log("Medications - findAll() - 204 No Content");
         medicationsAllNO(responseObject);
-      }
+      },
+		403: function(responseObject, textStatus, jqXHR) {
+			console.log("403 Unauthorized");
+			unauthorized();
+		}
     }
   });
 
+  
 
-
-	var actions = $("table td:last-child").html();
-	// Append table with add row form on add new button click
+  var actions = $("table td:last-child").html();
+  // Append table with add row form on add new button click
     $(".add-new").click(function(){
-		$(this).attr("disabled", "disabled");
-		var index = $("table tbody tr:nth-child(0)").index();
+      var actions = $("table td:last-child").html();
+    $(this).attr("disabled", "disabled");
+    var index = $("table tbody tr:nth-child(0)").index();
         var row = '<tr>' +
             '<td><input type="text" class="form-control" name="name" id="name"></td>' +
             '<td><input type="text" class="form-control" name="code" id="code"></td>' +
-			'<td>' + actions + '</td>' +
+              '<td>' + actions + '</td>' +
         '</tr>';
-    	$("table").prepend(row);		
-		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+      $("table").prepend(row);    
+    $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
     });
-	// Add row on add button click
-	$(document).on("click", ".add", function(){
-		var empty = false;
-		var input = $(this).parents("tr").find('input[type="text"]');
+  // Add row on add button click
+  $(document).on("click", ".add", function(){
+    var empty = false;
+    var input = $(this).parents("tr").find('input[type="text"]');
         input.each(function(){
-			if(!$(this).val()){
-				$(this).addClass("error");
-				empty = true;
-			} else{
+      if(!$(this).val()){
+        $(this).addClass("error");
+        empty = true;
+      } else{
                 $(this).removeClass("error");
             }
-		});
-		$(this).parents("tr").find(".error").first().focus();
-		if(!empty){
-			input.each(function(){
-				$(this).parent("td").html($(this).val());
-			});			
-			$(this).parents("tr").find(".add, .edit").toggle();
-			$(".add-new").removeAttr("disabled");
-		}		
     });
-	// Edit row on edit button click
-	$(document).on("click", ".edit", function(){		
+    $(this).parents("tr").find(".error").first().focus();
+    if(!empty){
+      var dataMed = [];
+      input.each(function(){
+        dataMed.push($(this).val());
+      });     
+      $.ajax({
+        type: 'POST',
+        url: 'medicationApi/addMedication',
+        headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+        data : JSON.stringify({
+          "name" : dataMed[0],
+          "code" : dataMed[1]
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        statusCode: {
+          200: function(responseObject, textStatus, jqXHR) {
+            console.log("Medications - add() - 200 OK");
+            showMessage("Medication successfully added!", "palegreen");
+            input.each(function(){
+              $(this).parent("td").html($(this).val());
+            }); 
+            $(this).parents("tr").find(".add, .edit").toggle();
+            $(".add-new").removeAttr("disabled");
+            
+          },
+          400: function(responseObject, textStatus, jqXHR) {
+            console.log("Medications - add() - 400 Bad request");
+            showMessage("Medication with inserted code already exists!", "antiquewhite");
+          },
+		403: function(responseObject, textStatus, jqXHR) {
+			console.log("403 Unauthorized");
+			unauthorized();
+		}
+        }
+      });
+    }   
+    });
+  // Edit row on edit button click
+  $(document).on("click", ".edit", function(){    
         $(this).parents("tr").find("td:not(:last-child)").each(function(){
-			$(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-		});		
-		$(this).parents("tr").find(".add, .edit").toggle();
-		$(".add-new").attr("disabled", "disabled");
+      $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+    });   
+    $(this).parents("tr").find(".add, .edit").toggle();
+    $(".add-new").attr("disabled", "disabled");
     });
-	// Delete row on delete button click
-	$(document).on("click", ".delete", function(){
+  // Delete row on delete button click
+  $(document).on("click", ".delete", function(){
+        var code = $(this).parents("td").attr('id');
+        
+        $.ajax({
+            type: 'DELETE',
+            url: 'medicationApi/deleteMedication/' + code,
+            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            statusCode: {
+              200: function(responseObject, textStatus, jqXHR) {
+                console.log("Medications - delete() - 200 OK");
+                showMessage("Medication successfully deleted!", "palegreen"); 
+              },
+              400: function(responseObject, textStatus, jqXHR) {
+                console.log("Medications - delete() - 400 Bad request");
+                showMessage("Something went wrong!", "antiquewhite");
+              },
+      		403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		}
+            }
+          });
+        
         $(this).parents("tr").remove();
-		$(".add-new").removeAttr("disabled");
+        $(".add-new").removeAttr("disabled");
     });
 });
+
+
+function showMessage(message, color) {
+  $("#message_bar").css("background", color);
+  $("#message_bar").text(message);
+  $("#message_bar").slideDown().delay(1500).slideUp();
+}
 
 function medicationsAllOK(medicationsList) {
   var table = $("#medicationsBody");
@@ -76,11 +143,11 @@ function medicationsAllOK(medicationsList) {
   $.each(medicationsList, function(i, val) {
     var row = $("<tr id=\""+i+"\"></tr>");
 
-    row.append("<td id=\""+val.id+"\">" + val.name + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.code + "</td>");
-    row.append("<td id=\""+val.id+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
-	                            "<a class=\"edit\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +
-	                            "<a class=\"delete\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
+    row.append("<td class=\"name\" id=\""+val.id+"\">" + val.name + "</td>");
+    row.append("<td class=\"code\" id=\""+val.id+"\">" + val.code + "</td>");
+   row.append("<td id=\""+val.code+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
+                              "<a class=\"edit\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +
+                              "<a class=\"delete\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
     table.append(row);
   });
 }
@@ -93,6 +160,10 @@ function medicationsAllNO(responseObject) {
   row.append("<td class='pl-1'>There are no medications in system.</td>");
   
   table.append(row);
+}
+
+function unauthorized(){
+	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
 }
 
 function myFunction() {

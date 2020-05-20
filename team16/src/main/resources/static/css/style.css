@@ -10,6 +10,17 @@ body{
     background-position: center;
 }
 
+#message_bar {
+  cursor: pointer;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 100%;
+  z-index: 9999;
+}
+
 .my_logout {
 	background-image: url(/images/out.png);
     background-repeat: no-repeat;

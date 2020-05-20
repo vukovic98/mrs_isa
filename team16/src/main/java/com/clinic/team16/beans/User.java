@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 @Embeddable
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User {
+public class User extends org.springframework.security.core.userdetails.User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
@@ -45,12 +45,12 @@ public class User {
 	
 
 	public User() {
-		super();
+		super("foo", "foo", new ArrayList<>());
 	}
 
 	public User(String email, String password, String firstName, String lastName, String address, String city,
 			String country, String phoneNumber, String insuranceNumber, Role role) {
-		super();
+		super(email, password, new ArrayList<>());
 		this.email = email;
 		this.password = password;
 		this.firstName = firstName;
@@ -64,6 +64,7 @@ public class User {
 	}
 
 	public User(User u) {
+		super(u.email,u.password,new ArrayList<>());
 		this.address = u.address;
 		this.city = u.city;
 		this.country = u.country;

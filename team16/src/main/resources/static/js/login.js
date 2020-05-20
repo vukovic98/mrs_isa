@@ -1,8 +1,10 @@
 const loginBtn = document.getElementById('login');
 const signupBtn = document.getElementById('signup');
-
+const doc = document;
 
 $(document).ready(function(e) {
+	sessionStorage.clear();
+	
 	$("#loginBtn").click(function(e) {
 		e.preventDefault();
 		
@@ -202,6 +204,8 @@ function showMessage(message, color) {
 }
 
 function whereToGo(user) {
+	var jwt = user.jwt;
+	sessionStorage.setItem('token', jwt);
 		if(user.role == "CLINICAL_CENTER_ADMINISTRATOR") {
 			console.log("USAO");
 			window.location.href = "/clinicalCenterAdmin";
@@ -215,6 +219,7 @@ function whereToGo(user) {
 		if(user.role == "DOCTOR") {
 			console.log("USAO");
 			window.location.href = "/doctor";
+			
 		}
 
 		if(user.role == "PATIENT") {
