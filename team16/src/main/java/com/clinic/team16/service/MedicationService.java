@@ -21,4 +21,12 @@ public class MedicationService {
 	public Medication findOneByCode(String code) {
 		return this.medicationRepository.findOneByCode(code);
 	}
+	
+	public Medication save(Medication m) {
+		return this.medicationRepository.save(m);
+	}
+	
+	public void delete(Medication m) {
+		this.medicationRepository.delete(m);
+	}
 }
