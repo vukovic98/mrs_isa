@@ -55,6 +55,12 @@ $( document ).ready(function() {
     	medicationsTable.empty();
     	
     	if(patient.medicalRecord.perscriptions != null){
+<<<<<<< HEAD
+    		$.each(patient.medicalRecord.allergies,function(i,val){
+        		medicationsList.append("<li id=\""+i+"\">"+val.name+"</li>");
+    		});
+    	}
+=======
     		
     		$.each(patient.medicalRecord.perscriptions,function(i,val){
     			 var row = $("<tr></tr>");
@@ -65,13 +71,20 @@ $( document ).ready(function() {
      		    medicationsTable.append(row);
      		
     	});}
+>>>>>>> a4a21ebc4b43fbbb2f9fee7340d048268c904577
     		else{
     			medicationsTable.append("<tr><td colspan=\"2\">There are no perscriptions found</td></tr>");
     		}
     	
+<<<<<<< HEAD
+    	}
+    	
+
+=======
     	};
     	
     
+>>>>>>> a4a21ebc4b43fbbb2f9fee7340d048268c904577
     	
     	
     	
