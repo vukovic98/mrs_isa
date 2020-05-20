@@ -11,6 +11,11 @@ public class Control {
 	   public String index() {
 	      return "index";
 	   }
+	   
+	   @RequestMapping(value = "/patientApi/index")
+	   public String patientApiIndex() {
+		   return "redirect:index";
+	   }
 	
 	   @RequestMapping(value = "/doctor")
 	   public String doctor() {
@@ -24,7 +29,7 @@ public class Control {
 	   
 	   @RequestMapping(value = "/workSchedule")
 	   public String workSchedule() {
-		   return "doctor";
+		   return "workSchedule";
 	   }
 	   
 	   @RequestMapping(value = "/doctorProfile")
@@ -131,5 +136,9 @@ public class Control {
 	   @RequestMapping(value = "/nurseProfile")
 	   public String nurseProfile() {
 		   return "nurseProfile";
+	   }
+	   @RequestMapping(value = "/makeAppointment")
+	   public String makeAppointment() {
+		   return "makeAppointment";
 	   }
 }

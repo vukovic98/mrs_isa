@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.clinic.team16.beans.PricelistItem;
+import com.clinic.team16.beans.DTO.PricelistItemDTO;
 import com.clinic.team16.repository.AppointmentRepository;
 import com.clinic.team16.repository.PricelistItemRepository;
 
@@ -18,4 +19,5 @@ public class PricelistItemService {
 	public List<PricelistItem> findAll() {
 		return pricelistItemRepository.findAll();
 	}
+	 
 }

@@ -1,4 +1,5 @@
 package com.clinic.team16.beans;
+
 import java.util.*;
 
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Embeddable
 public class RegistrationRequest {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "RegistrationRequest_ID", nullable = false)
@@ -17,13 +18,12 @@ public class RegistrationRequest {
 	@Column(name = "approved", nullable = false)
 	private boolean approved;
 
-	
-	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "User_ID")
 	public Patient patient;
 
 	@JsonIgnore
-	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "ClinicalCenterAdministrator_ID")
 	public ClinicalCenterAdministrator clinicalCenterAdministrator;
 
@@ -31,11 +31,20 @@ public class RegistrationRequest {
 		super();
 	}
 
-	public RegistrationRequest(boolean approved, Patient patient, ClinicalCenterAdministrator clinicalCenterAdministrator) {
+	public RegistrationRequest(boolean approved, Patient patient,
+			ClinicalCenterAdministrator clinicalCenterAdministrator) {
 		super();
 		this.approved = approved;
 		this.patient = patient;
 		this.clinicalCenterAdministrator = clinicalCenterAdministrator;
+	}
+
+	public long getRegistrationRequestId() {
+		return registrationRequestId;
+	}
+
+	public void setRegistrationRequestId(long registrationRequestId) {
+		this.registrationRequestId = registrationRequestId;
 	}
 
 	public boolean isApproved() {

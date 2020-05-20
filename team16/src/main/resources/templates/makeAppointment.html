@@ -1,0 +1,115 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Make An Appointment</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+	<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+
+	<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+</head>
+
+<body>
+
+	<header id="header" style="z-index: 9999;">
+		<p class="pt-1 pl-3 mb-0" style="float: left;font-size: x-large;">
+			Patient
+		</p>
+		<nav class="links" style="--items: 5;">
+			<a th:href="@{/patient}">Profile</a>
+			<a th:href="@{/medicalRecord}">Medical Record</a>
+			<a th:href="@{/appointmentHistory}">Appointment History</a>
+			<a th:href="@{/patientsClinics}">Clinics</a>
+			<a class="selected" th:href="@{/makeAppointment}">Make An Appointment</a>
+			<a th:href="@{/}" class="my_logout"></span></a>
+		</nav>
+	</header>
+
+
+	<div class="container" style="margin-top: 85px;">
+		<div class="jumbotron bg-light">
+			<h1 class="mb-4">Search for appointment</h1>
+			<div class="card">
+				<div class="card-body">
+					<form id="filterForm">
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="sel1">Pick a date</label>
+								<input class="form-control" type="date">
+							</div>
+							<div class="form-group col-md-6">
+								<label>Appointment Type</label>
+								<select class="form-control" id="appointmentTypes" aria-placeholder="Appointment Type">
+									<option>Eye</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+								</select>
+							</div>
+						
+							<div class="form-group col-md-6">
+								<label for="sel1">Location</label>
+								<select class="form-control" id="sel1">
+									<option>BG</option>
+									<option>NS</option>
+									<option>KG</option>
+									<option>NI</option>
+								</select>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="sel1">Average Rating</label>
+								<select class="form-control" id="sel1">
+									<option>5</option>
+									<option>6</option>
+									<option>7</option>
+									<option>8</option>
+								</select>
+							</div>
+							
+							
+						</div>
+						<div class="col text-center">
+					 <button type="submit" class="btn btn-primary" >Search</button>
+					</div>
+					</form>
+				</div>
+			</div>
+			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="myTable">
+				<thead>
+					<tr>
+						<th data-sortable="true" data-field="dateAndTime" style="width: 33.33%;">Clinic
+						</th>
+						<th data-sortable="true" data-field="appointmentType" style="width: 33.33%;">Address
+						</th>
+						<th data-sortable="true" data-field="clinic" style="width: 33.33%;">Average Rating
+						</th>
+						<th data-sortable="true" data-field="clinic" style="width: 33.33%;">Appointment Type
+						</th>
+						<th data-sortable="true" data-field="clinic" style="width: 33.33%;">Price
+						</th>
+
+					</tr>
+				</thead>
+				<tbody id="appointmentHistoryBody">
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+	<script type="application/javascript" th:src="@{js/makeAppointment.js}"></script>
+</body>
+
+</html>

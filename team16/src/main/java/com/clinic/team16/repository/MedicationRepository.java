@@ -7,5 +7,7 @@ import com.clinic.team16.beans.Medication;
 
 @Repository
 public interface MedicationRepository extends JpaRepository<Medication, Long> {
-
+	
+	public Medication findOneByCode(String code);
+	
 }

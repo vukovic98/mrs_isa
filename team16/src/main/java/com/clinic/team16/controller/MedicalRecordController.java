@@ -25,19 +25,5 @@ public class MedicalRecordController {
 	MedicalRecordService medicalRecordService;
 	@Autowired
 	PatientService patientService;
-	
-	
-	@GetMapping(path = "/add")
-	public String addMedicalRecord(){
-		Patient p = patientService.findOneByEmail("p@p");
-		java.util.List<Allergies> allergies = new java.util.ArrayList();
-	    java.util.List<Medication> perscriptions = new ArrayList<>();
-	    Date d = new Date(1234567833);
-		MedicalRecord medicalRecord = new MedicalRecord((long)1, "female",d, 169, 59, "B", 111, allergies, perscriptions, "istorija", p);
-		p.setMedicalRecord(medicalRecord);
-		medicalRecordService.save(medicalRecord);
-	
-		
-		return "SAVED";
-	}
+
 }
