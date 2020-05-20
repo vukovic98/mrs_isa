@@ -109,8 +109,9 @@ public class PatientController {
 			RegistrationRequest r = new RegistrationRequest(false, p, a);
 			a.addRegistrationRequest(r);
 
-			this.clinicalCenterAdminService.save(a);
 			this.registrationRequestService.save(r);
+			this.clinicalCenterAdminService.save(a);
+			
 
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {

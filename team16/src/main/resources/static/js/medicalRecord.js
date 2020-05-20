@@ -48,14 +48,15 @@ $( document ).ready(function() {
     	if(patient.medicalRecord.perscriptions != null){
     		$.each(patient.medicalRecord.allergies,function(i,val){
         		medicationsList.append("<li id=\""+i+"\">"+val.name+"</li>");
+    		});
     	}
     		else{
     			medicationsList.append("<li>There are no perscriptions found</li>");
     		}
     	
-    	});
+    	}
     	
-    }
+
     	
     	
     	
