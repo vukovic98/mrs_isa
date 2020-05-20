@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Clinic;
+
 import com.clinic.team16.beans.DTO.ClinicInfoDTO;
 import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicService;
@@ -36,4 +37,6 @@ public class ClinicController {
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	
 }

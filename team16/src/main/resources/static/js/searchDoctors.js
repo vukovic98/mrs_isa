@@ -18,20 +18,21 @@ $( document ).ready(function() {
 });
 
 function clinicsAllOK(clinicsList) {
-  var table = $("#allClinicsTableBody");
+ 
+  var table = $("#doctorsTableBody");
   table.empty();
-  $.each(clinicsList, function(i, val) {
-	  
-	    var row = $("<tr class=\"clinic-table-text\" title=\"Click for more information\" id=\""+i+"\"></tr>");
+  
+  $.each(doctorsList, function(i, val) {
+    var row = $("<tr  title=\"Click for more information\" id=\""+i+"\"></tr>");
 
-	    row.append("<td id=\""+val.clinicID+"\">" + val.name + "</td>");
-	    row.append("<td id=\""+val.clinicID+"\">" + val.address + "</td>");
-	    row.append("<td id=\""+val.clinicID+"\"> 10 </td>");
+    row.append("<td>" + val.name + "</td>");
+    row.append("<td>" + "10" + "</td>");
+    row.append("<td> 10:30,15:30 </td>");
 
 
-	    table.append(row);
-	  });
-
+    table.append(row);
+  });
+  
 }
 
 function clinicsAllNO(responseObject) {
@@ -43,12 +44,12 @@ function clinicsAllNO(responseObject) {
   
   table.append(row);
 }
-function searchClinics() {
+function searchDoctors() {
 	// Declare variables
 	var input, filter, table, tr, td, i, j, txtValue;
 	input = document.getElementById("myInput");
 	filter = input.value.toUpperCase();
-	table = document.getElementById("allClinicsTable");
+	table = document.getElementById("doctorsTable");
 	tr = table.getElementsByTagName("tr");
 
 
