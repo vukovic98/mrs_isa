@@ -8,6 +8,7 @@ $( document ).ready(function() {
         $.ajax({
         	type: 'GET',
         	url: 'clinicAdminApi/findOneByEmail',
+        	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
         	dataType: 'json',
         	data: {
         		"email": email 

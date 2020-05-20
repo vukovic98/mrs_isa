@@ -5,6 +5,7 @@ $(document).ready(function(){
   $.ajax({
     type: 'GET',
     url: 'medicationApi/findAll',
+    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     statusCode: {
       200: function(responseObject, textStatus, jqXHR) {
         console.log("Medications - findAll() - 200 OK");
@@ -13,7 +14,11 @@ $(document).ready(function(){
       204: function(responseObject, textStatus, jqXHR) {
         console.log("Medications - findAll() - 204 No Content");
         medicationsAllNO(responseObject);
-      }
+      },
+		403: function(responseObject, textStatus, jqXHR) {
+			console.log("403 Unauthorized");
+			unauthorized();
+		}
     }
   });
 
@@ -93,6 +98,10 @@ function medicationsAllNO(responseObject) {
   row.append("<td class='pl-1'>There are no medications in system.</td>");
   
   table.append(row);
+}
+
+function unauthorized(){
+	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
 }
 
 function myFunction() {

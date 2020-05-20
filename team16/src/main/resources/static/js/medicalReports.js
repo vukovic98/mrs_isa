@@ -2,6 +2,7 @@ $(document).ready(function () {
 	 $.ajax ({
     	type: 'GET',
     	url: 'appointmentApi/findAllMedicalReports',
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     	statusCode: {
     		200: function(responseObject, textStatus, jqXHR) {
     			console.log("MedicalReports - findAllMedicalReports() - 200 OK");
@@ -10,7 +11,11 @@ $(document).ready(function () {
     		204: function(responseObject, textStatus, jqXHR) {
     			console.log("MedicalReports - findAllMedicalReports() - 204 No Content");
     			reportsAllNO(responseObject);
-    		}
+    		},
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
     	}
     });
 	 
@@ -26,6 +31,7 @@ $(document).ready(function () {
 		 $.ajax({
 			 type: 'POST',
 	        	url: 'medicalReportApi/addReport',
+	    	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 	        	dataType: 'json',
 	        	data: JSON.stringify({
 	        		"id": id,
@@ -47,7 +53,11 @@ $(document).ready(function () {
 		    		400: function(responseObject, textStatus, jqXHR) {
 		    			console.log("MedicalRecords - findAllMedicalReports() - 204 No Content");
 		    			showMessage("Something went wrong!", "antiquewhite");
-		    		}
+		    		},
+					403: function(responseObject, textStatus, jqXHR) {
+						console.log("403 Unauthorized");
+						unauthorized();
+					}
 		    	}
 		 });
 	 });
@@ -58,6 +68,7 @@ $(document).ready(function () {
         $.ajax({
         	type: 'POST',
         	url: 'appointmentApi/findReportById',
+    	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
         	dataType: 'json',
         	data: JSON.stringify({
         		"medicalReportId": id 
@@ -125,4 +136,8 @@ function reportsAllNO(responseObject) {
 	row.append("<td class='pl-1'>There is no pending reports at the moment.</td>");
 	
 	table.append(row);
+}
+
+function unauthorized(){
+	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
 }

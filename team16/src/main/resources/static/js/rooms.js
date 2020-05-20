@@ -5,6 +5,7 @@ $(document).ready(function(){
 	  $.ajax({
 	    type: 'GET',
 	    url: 'ordinationApi/findAll',
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 	    statusCode: {
 	      200: function(responseObject, textStatus, jqXHR) {
 	        console.log("Rooms - findAll() - 200 OK");
@@ -13,7 +14,11 @@ $(document).ready(function(){
 	      204: function(responseObject, textStatus, jqXHR) {
 	        console.log("Rooms - findAll() - 204 No Content");
 	        roomsAllNO(responseObject);
-	      }
+	      },
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
 	    }
 	  });
 	
@@ -21,6 +26,7 @@ $(document).ready(function(){
 	  $.ajax({
 		    type: 'GET',
 		    url: 'appointmentApi/findAll',
+		    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 		    statusCode: {
 		      200: function(responseObject, textStatus, jqXHR) {
 		        console.log("Appointments - findAll() - 200 OK");
@@ -29,7 +35,11 @@ $(document).ready(function(){
 		      204: function(responseObject, textStatus, jqXHR) {
 		        console.log("Appointments - findAll() - 204 No Content");
 		        appointmentsAllNO(responseObject);
-		      }
+		      },
+				403: function(responseObject, textStatus, jqXHR) {
+					console.log("403 Unauthorized");
+					unauthorized();
+				}
 		    }
 		  });
 	  
@@ -149,7 +159,9 @@ function roomsAllOK(roomsList) {
 		  
 		  table.append(row);
 		}
-
+		function unauthorized(){
+			document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
+		}
 
 function myFunction() {
 	  // Declare variables

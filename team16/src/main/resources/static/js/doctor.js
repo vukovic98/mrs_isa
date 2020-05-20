@@ -27,6 +27,7 @@ function fire_ajax_submit() {
         type: "POST",
         contentType: "application/json",
         url: "/doctorApi",
+        headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
         data: JSON.stringify(add),
         dataType: 'json',
         cache: false,
