@@ -29,6 +29,7 @@ public class PricelistItemController {
 	public ResponseEntity<List<PricelistItem>> findAll() {
 		List<PricelistItem> list = this.pricelistItemService.findAll();
 		
+		
 		if(list != null)
 			return new ResponseEntity<List<PricelistItem>>(list, HttpStatus.OK);
 		else
@@ -40,7 +41,7 @@ public class PricelistItemController {
 		List<PricelistItemDTO> listDTO = new ArrayList<PricelistItemDTO>(); 
 		if(list != null) {
 			for (PricelistItem p : list) {
-				PricelistItemDTO  item = new PricelistItemDTO(p.getName());
+				PricelistItemDTO  item = new PricelistItemDTO(p.getName(),String.valueOf(p.getPrice()));
 				listDTO.add(item);
 			}
 			return new ResponseEntity<List<PricelistItemDTO>>(listDTO,HttpStatus.OK);

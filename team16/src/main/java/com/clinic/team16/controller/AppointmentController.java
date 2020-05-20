@@ -29,12 +29,19 @@ public class AppointmentController {
 	private AppointmentService appointmentService;
 
 	@GetMapping(path = "/findAll")
-	public ResponseEntity<List<Appointment>> findAll() {
+	public ResponseEntity<List<AppointmentDTO>> findAll() {
 		List<Appointment> list = this.appointmentService.findAll();
-
-		if (list != null)
-			return new ResponseEntity<List<Appointment>>(list, HttpStatus.OK);
-		else
+		List<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		if (list != null) {
+			for (Appointment a : list) {
+				String doctor = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
+				String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
+				dtoList.add(
+						new AppointmentDTO(a.getAppointmentId(), formatter.format(a.getDateTime()), a.getDuration(), doctor, patient, a.getPricelistItems().getName(), String.valueOf(a.getPricelistItems().getPrice()), String.valueOf(a.getOrdination().getNumber())));
+			}
+			return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
+		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -47,8 +54,9 @@ public class AppointmentController {
 		if (list != null) {
 			for (Appointment a : list) {
 				String name = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
-				dtoList.add(new CalendarDataDTO(formatter.format(a.getDateTime()), name,
-						a.getOrdination().getType().toString()));
+				String docName = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
+				dtoList.add(new CalendarDataDTO(formatter.format(a.getDateTime()), name, docName,
+						a.getOrdination().getType().toString(),a.getDuration()));
 			}
 			
 			return new ResponseEntity<ArrayList<CalendarDataDTO>>(dtoList, HttpStatus.OK);
@@ -61,13 +69,13 @@ public class AppointmentController {
 	public ResponseEntity<List<AppointmentDTO>> findAllDoctor(@PathVariable("doctorId") long doctorId) {
 		List<Appointment> list = this.appointmentService.findByDoctor(doctorId);
 		List<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
-
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		if (list != null) {
 			for (Appointment a : list) {
 				String doctor = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
 				String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
 				dtoList.add(
-						new AppointmentDTO(a.getAppointmentId(), a.getDateTime(), a.getDuration(), doctor, patient));
+						new AppointmentDTO(a.getAppointmentId(), formatter.format(a.getDateTime()), a.getDuration(), doctor, patient, a.getPricelistItems().getName(), String.valueOf(a.getPricelistItems().getPrice()), String.valueOf(a.getOrdination().getNumber())));
 			}
 			return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
 		} else

@@ -3,15 +3,38 @@ package com.clinic.team16.beans.DTO;
 public class CalendarDataDTO {
 	public String date;
 	public String patient;
+	public String doctor;
 	public String appointmentType;
+	public double duration;
 
-	public CalendarDataDTO() {
+
+	public String getDoctor() {
+		return doctor;
 	}
 
-	public CalendarDataDTO(String date, String patient, String appointmentType) {
+	public void setDoctor(String doctor) {
+		this.doctor = doctor;
+	}
+
+	public CalendarDataDTO() {
+		super();
+	}
+
+	public CalendarDataDTO(String date, String patient, String doctor, String appointmentType, double duration) {
+		super();
 		this.date = date;
 		this.patient = patient;
+		this.doctor = doctor;
 		this.appointmentType = appointmentType;
+		this.duration = duration;
+	}
+
+	public double getDuration() {
+		return duration;
+	}
+
+	public void setDuration(double duration) {
+		this.duration = duration;
 	}
 
 	public String getDate() {

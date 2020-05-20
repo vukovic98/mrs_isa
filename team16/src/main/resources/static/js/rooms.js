@@ -25,7 +25,7 @@ $(document).ready(function(){
 	  
 	  $.ajax({
 		    type: 'GET',
-		    url: 'appointmentApi/findAll',
+		    url: 'appointmentApi/findAllAppointments',
 		    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 		    statusCode: {
 		      200: function(responseObject, textStatus, jqXHR) {
@@ -114,9 +114,9 @@ function roomsAllOK(roomsList) {
 	  $.each(roomsList, function(i, val) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
 
-	    row.append("<td id=\""+val.id+"\">" + val.number + "</td>");
+	    row.append("<td id=\""+val.id+"\">" + val.name + "</td>");
 	    row.append("<td id=\""+val.id+"\">" + val.type + "</td>");
-	    row.append("<td class=\"but\"><button class=\"btn btn-primary\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseExample\" aria-expanded=\"false\" aria-controls=\"collapseExample\">Appointments</button></td>");
+	    row.append("<td class=\"but\"><button class=\"btn btn-primary\" type=\"button\" data-toggle=\"modal\" data-target=\"#exampleModal\" aria-expanded=\"false\" aria-controls=\"exampleModal\">Appointments</button></td>");
 	    row.append("<td id=\""+val.id+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
 		                            "<a class=\"edit\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +
 		                            "<a class=\"delete\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
@@ -142,10 +142,10 @@ function roomsAllOK(roomsList) {
 		  $.each(appointmentList, function(i, val) {
 		    var row = $("<tr id=\""+i+"\"></tr>");
 
-		    row.append("<td id=\""+val.id+"\">" + val.dateTime + "</td>");
+		    row.append("<td id=\""+val.id+"\">" + val.date + "</td>");
 		    row.append("<td id=\""+val.id+"\">" + val.duration + "</td>");
-		    row.append("<td id=\""+val.id+"\">" + val.doctor.name + "</td>");
-		    row.append("<td id=\""+val.id+"\">" + val.patient.name + "</td>");
+		    row.append("<td id=\""+val.id+"\">" + val.doctor + "</td>");
+		    row.append("<td id=\""+val.id+"\">" + val.patient + "</td>");
 		    table.append(row);
 		  });
 		}
