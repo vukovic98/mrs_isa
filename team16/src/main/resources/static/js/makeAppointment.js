@@ -12,13 +12,37 @@ $( document ).ready(function() {
     		},
     		204: function(responseObject, textStatus, jqXHR) {
     			console.log("204 No Content");
-    			loadAppointmentTypesNO(responseObject);
+
+    			
     		},
 			403: function(responseObject, textStatus, jqXHR) {
 				console.log("403 Unauthorized");
 				unauthorized();
 			}
     	}
+    });
+    $.ajax ({
+    	type: 'GET',
+    	url: '/clinicApi/findAll',
+    	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+    	statusCode: {
+    		200: function(responseObject, textStatus, jqXHR) {
+    			console.log("200 OK");
+    			loadClinicsAllOK(responseObject);
+    		},
+    		204: function(responseObject, textStatus, jqXHR) {
+    			console.log("204 No Content");
+    	
+    		}
+
+    			loadAppointmentTypesNO(responseObject);
+    		},
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+
+    	
     });
   
 });
@@ -34,6 +58,18 @@ function loadAppointmentTypesAllOK(pricelistItems){
 		  });
 }
 
+function loadClinicsAllOK(clinics){
+	 var select = $("#locations");
+	  select.empty();
+	 
+	  $.each(clinics, function(i, val) {
+		   
+		    var option = $("<option>"+val.address+"</option>");
+		    select.append(option);
+		  });
+
+
 function unauthorized(){
 	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
+
 }
