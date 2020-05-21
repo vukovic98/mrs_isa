@@ -193,9 +193,10 @@ public class PatientController {
 	public ResponseEntity<PatientMedicalRecordDTO> medicalRecord() {
 
 		Patient found = this.patientService.findOneByEmail("p@p");
-
+	
 		if (found != null) {
 			String name = found.getFirstName() + " " + found.getLastName();
+			
 			
 			PatientMedicalRecordDTO record = new PatientMedicalRecordDTO(name,found.getMedicalRecord());
 			 

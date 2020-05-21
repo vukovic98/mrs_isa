@@ -33,19 +33,15 @@ $( document ).ready(function() {
     		204: function(responseObject, textStatus, jqXHR) {
     			console.log("204 No Content");
     	
-    		}
-
-    			loadAppointmentTypesNO(responseObject);
     		},
 			403: function(responseObject, textStatus, jqXHR) {
 				console.log("403 Unauthorized");
 				unauthorized();
 			}
-
-    	
+    		}
     });
-  
 });
+
 
 function loadAppointmentTypesAllOK(pricelistItems){
 	 var select = $("#appointmentTypes");
@@ -67,6 +63,7 @@ function loadClinicsAllOK(clinics){
 		    var option = $("<option>"+val.address+"</option>");
 		    select.append(option);
 		  });
+}
 
 
 function unauthorized(){
