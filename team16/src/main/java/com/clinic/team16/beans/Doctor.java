@@ -3,14 +3,15 @@ package com.clinic.team16.beans;
 import java.util.*;
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 @Entity
 @Embeddable
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Doctor extends User {
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
@@ -26,16 +27,21 @@ public class Doctor extends User {
 	@ElementCollection
 	@CollectionTable(name = "doctor_leaveRequests", joinColumns = @JoinColumn(name = "doctor_id"))
 	public List<LeaveRequest> leaveRequests;
+	
+	@ElementCollection
+	@CollectionTable(name = "doctor_grades", joinColumns = @JoinColumn(name = "doctor_id"))
+	public List<Grade> grades;
 
 	public Doctor() {
 		super();
 	}
 
-	public Doctor(Clinic clinic, ArrayList<Appointment> appointment, ArrayList<LeaveRequest> leaveRequests) {
+	public Doctor(Clinic clinic, ArrayList<Appointment> appointment, ArrayList<LeaveRequest> leaveRequests, ArrayList<Grade> grades) {
 		super();
 		this.clinic = clinic;
 		this.appointments = appointment;
 		this.leaveRequests = leaveRequests;
+		this.grades = grades;
 	}
 
 	public Clinic getClinic() {
@@ -113,5 +119,29 @@ public class Doctor extends User {
 	}
 
 	
+	
+	public List<Grade> getGrades() {
+		return grades;
+	}
+
+	public void setGrades(ArrayList<Grade> grades) {
+		this.grades = grades;
+	}
+
+	public void addGrade(int number, Patient p) {
+		boolean exists = false;
+		
+		for(Grade g : this.grades) {
+			if(g.getPatient().getEmail().equalsIgnoreCase(p.getEmail())) {
+				g.setGradeNumber(number);
+				exists = true;
+			}
+		}
+		
+		if(!exists) {
+			Grade g = new Grade(0, number, p);
+			this.grades.add(g);
+		}
+	}
 
 }
