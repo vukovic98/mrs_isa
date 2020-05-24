@@ -107,22 +107,20 @@ function passValidation(patientsPassword){
 	
 	if(patientsPassword != pass){
 		 $("#oldPassword").addClass("is-invalid");
-		 $("#oldPassword").attr("placeholder", "Wrong password.");
+
 	 }
 	 else{
 		 $("#oldPassword").removeClass("is-invalid");
-		 $("#oldPassword").attr("placeholder", "");
+	
 	 }
     	 
     	 if(newPass != confirmedPass){
-     		$("#newPassword").addClass("is-invalid");
      		$("#confirmedPassword").addClass("is-invalid");
-     		$("#confirmedPassword").attr("placeholder", "Please make sure your passwords match.");
+     		
      	}
      	else{
-     		$("#newPassword").removeClass("is-invalid");
      		$("#confirmedPassword").removeClass("is-invalid");
-    		$("#confirmedPassword").attr("placeholder", "");
+    		
      	}
      	
     	 var formData ={
@@ -140,10 +138,11 @@ function passValidation(patientsPassword){
    	        	dataType: 'json',
    	        	contentType: "application/json",
    			    dataType: "json",
-   			    success:function(data) {
-   			        alert('Password changed!');},
+   			    success: function(data){
+   			    	showMessage("Password changed!", "palegreen");
+   			    },
    			   error : function(e) {
-   			            alert("Error!")
+   				showMessage("Couldn't change password!", "antiquewhite");
    			            console.log("ERROR: ", e);
    			          }
    	        });}
@@ -153,6 +152,8 @@ function passValidation(patientsPassword){
     	 $("#confirmedPassword").val('');
     	
 }
+
+
     $("#savePatient").click(function(e){
 		e.preventDefault();
 		
@@ -166,38 +167,38 @@ function passValidation(patientsPassword){
      	//VALIDATION
      	if (firstName == null || firstName == ""){
      		$("#editFirstName").addClass("is-invalid");
-     		$("#editFirstName").attr("placeholder", "First Name can not be empty!");
+     
      	}else{
      		$("#editFirstName").removeClass("is-invalid");
-     		$("#editFirstName").attr("placeholder", "");
+     	
      	}
      	if (lastName == null || lastName == ""){
      		$("#editLastName").addClass("is-invalid");
-     		$("#editLastName").attr("placeholder", "Last Name can not be empty!");
+     		
      	}else{
      		$("#editLastName").removeClass("is-invalid");
      	}
      	if (country == null || country == ""){
      		$("#editCountry").addClass("is-invalid");
-     		$("#editCountry").attr("placeholder", "Country can not be empty!");
+     		
      	}else{
      		$("#editCountry").removeClass("is-invalid");
      	}
      	if (city == null || country == ""){
      		$("#editCity").addClass("is-invalid");
-     		$("#editCity").attr("placeholder", "City can not be empty!");
+   
      	}else{
      		$("#editCity").removeClass("is-invalid");
      	}
     	if (phoneNumber == null || phoneNumber == ""){
      		$("#editPhoneNumber").addClass("is-invalid");
-     		$("#editPhoneNumber").attr("placeholder", "Phone number can not be empty!");
+     	
      	}else{
      		$("#editPhoneNumber").removeClass("is-invalid");
      	}
     	if (address == null || address == ""){
      		$("#editAddress").addClass("is-invalid");
-     		$("#editAddress").attr("placeholder", "Address can not be empty!");
+  
      	}else{
      		$("#editAddress").removeClass("is-invalid");
      	}
@@ -220,10 +221,11 @@ function passValidation(patientsPassword){
 	        	dataType: 'json',
 	        	contentType: "application/json",
 			    dataType: "json",
-			    success:function(data) {
-			        alert('Patient saved!');},
+			    success : 
+   			    	showMessage("Saved!", "palegreen")
+   			    ,
 			   error : function(e) {
-			            alert("Error!")
+				        showMessage("Something went wrong. Try again.", "antiquewhite");
 			            console.log("ERROR: ", e);
 			          }
 	        });
@@ -232,7 +234,11 @@ function passValidation(patientsPassword){
     });
 		
 		
-
+    function showMessage(message, color) {
+    	$("#message_bar").css("background", color);
+    	$("#message_bar").text(message);
+    	$("#message_bar").slideDown().delay(1500).slideUp();
+    }
     function unauthorized(){
     	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
     }

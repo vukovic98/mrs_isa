@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Embeddable
@@ -24,7 +23,6 @@ public class Clinic {
 	@Column(name = "Description", nullable = false)
 	private String description;
 
-	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinic_ordinations", joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<Ordination> ordinations;
@@ -33,20 +31,21 @@ public class Clinic {
 	@JoinColumn(name = "Pricelist_ID")
 	public Pricelist pricelist;
 
-	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinic_administrators", joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<ClinicAdministrator> clinicAdministrators;
 
-	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinic_doctors", joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<Doctor> doctors;
 
-	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinic_nurses", joinColumns = @JoinColumn(name = "clinic_id"))
 	public List<Nurse> nurses;
+	
+	@ElementCollection
+	@CollectionTable(name = "clinic_grades", joinColumns = @JoinColumn(name = "clinic_id"))
+	public List<Grade> grades;
 
 	public Clinic() {
 
@@ -54,7 +53,7 @@ public class Clinic {
 
 	public Clinic(String name, String address, String description, ArrayList<Ordination> ordinations,
 			Pricelist pricelist, ArrayList<ClinicAdministrator> clinicAdministrators, ArrayList<Doctor> doctors,
-			ArrayList<Nurse> nurses) {
+			ArrayList<Nurse> nurses, ArrayList<Grade> grades) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -64,6 +63,7 @@ public class Clinic {
 		this.clinicAdministrators = clinicAdministrators;
 		this.doctors = doctors;
 		this.nurses = nurses;
+		this.grades = grades;
 	}
 
 	public long getClinicID() {
@@ -138,6 +138,30 @@ public class Clinic {
 		if (ordinations == null)
 			ordinations = new ArrayList<Ordination>();
 		return ordinations;
+	}
+
+	public List<Grade> getGrades() {
+		return grades;
+	}
+
+	public void setGrades(ArrayList<Grade> grades) {
+		this.grades = grades;
+	}
+	
+	public void addGrade(int number, Patient p) {
+		boolean exists = false;
+		
+		for(Grade g : this.grades) {
+			if(g.getPatient().getEmail().equalsIgnoreCase(p.getEmail())) {
+				g.setGradeNumber(number);
+				exists = true;
+			}
+		}
+		
+		if(!exists) {
+			Grade g = new Grade(0, number, p);
+			this.grades.add(g);
+		}
 	}
 
 }
