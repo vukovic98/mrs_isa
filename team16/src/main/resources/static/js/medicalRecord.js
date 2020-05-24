@@ -28,12 +28,17 @@ $( document ).ready(function() {
 });
     function loadPatientInfoAllOK(patient) {
     	console.log(patient.firstName);
+    	var birthday = patient.medicalRecord.birthday;
+    	var date = new Date(birthday);
+    	var day = date.getDay()-1;
+    	var month = date.getMonth()+1;
+    	var year = date.getFullYear();
     	
     	$("#fullName").val(patient.firstName + " "+ patient.lastName);
-    	$("#birthday").val(patient.medicalRecord.birthday);
+    	$("#birthday").val(day+'-'+month+'-'+year);
     	$("#gender").val(patient.medicalRecord.gender);
-    	$("#weight").val(patient.medicalRecord.weight);
-    	$("#height").val(patient.medicalRecord.height);
+    	$("#weight").val(patient.medicalRecord.weight + " kg");
+    	$("#height").val(patient.medicalRecord.height+ " cm");
     	$("#bloodType").val(patient.medicalRecord.bloodType);
     	var allergiesTable = $("#allergiesBody");
     	allergiesTable.empty();
