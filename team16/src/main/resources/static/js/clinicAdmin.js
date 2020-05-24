@@ -3,16 +3,16 @@ $( document ).ready(function() {
     
     $.ajax ({
     	type: 'GET',
-    	url: '/patientApi/findOneByEmail',
+    	url: 'clinicAdminApi/findOneByEmail',
         headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     	statusCode: {
     		200: function(responseObject, textStatus, jqXHR) {
     			console.log("200 OK");
-    			loadPatientInfoAllOK(responseObject);
+    			loadAdminInfoAllOK(responseObject);
     		},
     		204: function(responseObject, textStatus, jqXHR) {
     			console.log("204 No Content");
-    			loadPatientInfoNO(responseObject);
+    			loadAdminInfoAllNO(responseObject);
     		},
     		403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
@@ -25,30 +25,30 @@ $( document ).ready(function() {
 });
 
 
-    function loadPatientInfoAllOK(patient) {
+    function loadAdminInfoAllOK(admin) {
     	
-    	$("#patientFullName").text(patient.firstName + " " + patient.lastName);
+    	$("#patientFullName").text(admin.firstName + " " + admin.lastName);
     	
     	
-    	$("#fullName").val(patient.firstName+" "+patient.lastName);
-    	$("#country").val(patient.country);
-    	$("#city").val(patient.city);
-    	$("#address").val(patient.address);
-    	$("#phoneNumber").val(patient.phoneNumber);
-    	$("#insNumber").val(patient.insuranceNumber);
+    	$("#fullName").val(admin.firstName+" "+admin.lastName);
+    	$("#country").val(admin.country);
+    	$("#city").val(admin.city);
+    	$("#address").val(admin.address);
+    	$("#phoneNumber").val(admin.phoneNumber);
+    	$("#insNumber").val(admin.insuranceNumber);
     	
-    	$("#editFirstName").val(patient.firstName);
-    	$("#editLastName").val(patient.lastName);
-    	$("#editCountry").val(patient.country);
-    	$("#editCity").val(patient.city);
-    	$("#editAddress").val(patient.address);
-    	$("#editPhoneNumber").val(patient.phoneNumber);
-    	$("#editInsNumber").val(patient.insuranceNumber);
-    	$("#editEmail").val(patient.email); 	
+    	$("#editFirstName").val(admin.firstName);
+    	$("#editLastName").val(admin.lastName);
+    	$("#editCountry").val(admin.country);
+    	$("#editCity").val(admin.city);
+    	$("#editAddress").val(admin.address);
+    	$("#editPhoneNumber").val(admin.phoneNumber);
+    	$("#editInsNumber").val(admin.insuranceNumber);
+    	$("#editEmail").val(admin.email); 	
     }
     
-    function loadPatientInfoNO(patient){
-    	$("#patientFullName").text("Patient Not Found");	
+    function loadAdminInfoAllNO(admin){
+    	$("#patientFullName").text("Clinic admin Not Found");	
     }
     
 
@@ -56,16 +56,16 @@ $( document ).ready(function() {
     $("#myTab").click(function(e){
    	 $.ajax ({
    	    	type: 'GET',
-   	    	url: '/clinicAdminApi/findOneByEmail',
+   	    	url: 'clinicAdminApi/findOneByEmail',
    	    	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
    	    	statusCode: {
    	    		200: function(responseObject, textStatus, jqXHR) {
    	    			console.log("200 OK");
-   	    			loadPatientInfoAllOK(responseObject);
+   	    			loadAdminInfoAllOK(responseObject);
    	    		},
    	    		204: function(responseObject, textStatus, jqXHR) {
    	    			console.log("204 No Content");
-   	    			loadPatientInfoNO(responseObject);
+   	    			loadAdminInfoAllNO(responseObject);
    	    		},
    	    		403: function(responseObject, textStatus, jqXHR) {
    	    			console.log("403 Unauthorized");
@@ -81,7 +81,7 @@ $( document ).ready(function() {
     	
     	 $.ajax ({
     	    	type: 'GET',
-    	    	url: '/patientApi/findPatientsPassword',
+    	    	url: 'clinicAdminApi/findPassword',
     	    	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     	    	statusCode: {
     	    		200: function(responseObject, textStatus, jqXHR) {
@@ -100,12 +100,12 @@ $( document ).ready(function() {
     	    	}
     	    });
     });
-function passValidation(patientsPassword){
+function passValidation(Password){
 	var pass = $("#oldPassword").val();
 	var newPass = $("#newPassword").val();
 	var confirmedPass = $("#confirmedPassword").val();
 	
-	if(patientsPassword != pass){
+	if(Password != pass){
 		 $("#oldPassword").addClass("is-invalid");
 
 	 }
@@ -132,7 +132,7 @@ function passValidation(patientsPassword){
     	
     		$.ajax({
    	        	type: 'PUT',
-   	        	url: 'patientApi/changePassword',
+   	        	url: 'clinicAdminApi/changePassword',
    	        	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
    	        	data: JSON.stringify(newPass),
    	        	dataType: 'json',
@@ -154,7 +154,7 @@ function passValidation(patientsPassword){
 }
 
 
-    $("#savePatient").click(function(e){
+    $("#saveAdmin").click(function(e){
 		e.preventDefault();
 		
 		var firstName = $("#editFirstName").val();
@@ -215,7 +215,7 @@ function passValidation(patientsPassword){
 		if (firstName != "" && lastName != "" && country !="" && city!="" && address!="" && phoneNumber != ""){
 		 $.ajax({
 	        	type: 'PUT',
-	        	url: 'patientApi/updatePatient',
+	        	url: 'clinicAdminApi/updateAdmin',
 	        	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 	        	data: JSON.stringify(formData),
 	        	dataType: 'json',

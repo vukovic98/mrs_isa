@@ -20,8 +20,7 @@ $( document ).ready(function() {
     		}
     	}
     });
-   
-  
+
 });
 
 
