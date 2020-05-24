@@ -17,4 +17,9 @@ public class ClinicService {
 	public List<Clinic> findAll() {
 		return this.clinicRepository.findAll();
 	}
+
+	public Clinic findOneByClinicID(long i) {
+		// TODO Auto-generated method stub
+		return clinicRepository.findOneByClinicID(i);
+	}
 }

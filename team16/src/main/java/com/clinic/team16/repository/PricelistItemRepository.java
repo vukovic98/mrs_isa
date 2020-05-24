@@ -11,4 +11,6 @@ import com.clinic.team16.beans.DTO.PricelistItemDTO;
 @Repository
 public interface PricelistItemRepository extends JpaRepository<PricelistItem, Long>{
 
+	public PricelistItem findOneByAppointmentType(String appointmentType);
+	public PricelistItem findOneByPricelistItemId(long pricelistItemId);
 }

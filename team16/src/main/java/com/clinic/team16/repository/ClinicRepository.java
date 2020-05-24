@@ -9,4 +9,6 @@ import com.clinic.team16.beans.ClinicalCenter;
 @Repository
 public interface ClinicRepository extends JpaRepository<Clinic, Long> {
 
+	public Clinic findOneByClinicID(long i);
+
 }
