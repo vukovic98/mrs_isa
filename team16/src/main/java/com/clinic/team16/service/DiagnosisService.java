@@ -21,4 +21,12 @@ public class DiagnosisService {
 	public Diagnosis findOneByCode(String code) {
 		return this.diagnosisRepository.findOneByCode(code);
 	}
+	
+	public Diagnosis save(Diagnosis s) {
+		return this.diagnosisRepository.save(s);
+	}
+	
+	public void delete(Diagnosis s) {
+		this.diagnosisRepository.delete(s);
+	}
 }

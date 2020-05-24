@@ -36,7 +36,7 @@ $(document).ready(function(){
               '<td>' + actions + '</td>' +
         '</tr>';
       $("table").prepend(row);    
-    $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+    $("table tbody tr").eq(index + 1).find(".add").toggle();
     });
   // Add row on add button click
   $(document).on("click", ".add", function(){
@@ -73,7 +73,7 @@ $(document).ready(function(){
             input.each(function(){
               $(this).parent("td").html($(this).val());
             }); 
-            $(this).parents("tr").find(".add, .edit").toggle();
+            $(this).parents("tr").find(".add").toggle();
             $(".add-new").removeAttr("disabled");
             
           },
@@ -81,22 +81,16 @@ $(document).ready(function(){
             console.log("Medications - add() - 400 Bad request");
             showMessage("Medication with inserted code already exists!", "antiquewhite");
           },
-		403: function(responseObject, textStatus, jqXHR) {
+		  403: function(responseObject, textStatus, jqXHR) {
 			console.log("403 Unauthorized");
 			unauthorized();
-		}
+		  }
         }
       });
     }   
     });
-  // Edit row on edit button click
-  $(document).on("click", ".edit", function(){    
-        $(this).parents("tr").find("td:not(:last-child)").each(function(){
-      $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-    });   
-    $(this).parents("tr").find(".add, .edit").toggle();
-    $(".add-new").attr("disabled", "disabled");
-    });
+  
+  
   // Delete row on delete button click
   $(document).on("click", ".delete", function(){
         var code = $(this).parents("td").attr('id');
@@ -141,12 +135,11 @@ function medicationsAllOK(medicationsList) {
 
   
   $.each(medicationsList, function(i, val) {
-    var row = $("<tr id=\""+i+"\"></tr>");
+    var row = $("<tr id=\""+val.code+"\"></tr>");
 
     row.append("<td class=\"name\" id=\""+val.id+"\">" + val.name + "</td>");
     row.append("<td class=\"code\" id=\""+val.id+"\">" + val.code + "</td>");
-   row.append("<td id=\""+val.code+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
-                              "<a class=\"edit\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +
+    row.append("<td id=\""+val.code+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
                               "<a class=\"delete\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
     table.append(row);
   });
