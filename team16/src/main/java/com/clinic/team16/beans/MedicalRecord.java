@@ -97,13 +97,7 @@ public class MedicalRecord {
 		this.birthday = birthday;
 	}
 
-	public void setAllergies(List<Allergies> allergies) {
-		this.allergies = allergies;
-	}
 
-	public void setPerscriptions(List<Medication> perscriptions) {
-		this.perscriptions = perscriptions;
-	}
 
 	public int getHeight() {
 		return height;

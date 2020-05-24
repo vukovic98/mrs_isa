@@ -8,4 +8,6 @@ import com.clinic.team16.beans.Ordination;
 @Repository
 public interface OrdinationRepository extends JpaRepository<Ordination, Integer>{
 
+	public Ordination findOneByName(String name);
+
 }

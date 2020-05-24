@@ -8,4 +8,5 @@ import com.clinic.team16.beans.Pricelist;
 @Repository
 public interface PricelistRepository extends JpaRepository<Pricelist, Long>{
 
+	public Pricelist findOneByPricelistId(long pricelistId);
 }
