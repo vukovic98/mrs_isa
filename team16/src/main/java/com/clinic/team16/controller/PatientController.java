@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.clinic.team16.beans.Allergies;
+import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.ClinicalCenterAdministrator;
 import com.clinic.team16.beans.MedicalRecord;
 import com.clinic.team16.beans.Medication;
@@ -19,6 +20,7 @@ import com.clinic.team16.beans.RegistrationRequest;
 import com.clinic.team16.beans.Role;
 import com.clinic.team16.beans.User;
 import com.clinic.team16.beans.DTO.PatientPasswordDTO;
+import com.clinic.team16.beans.DTO.AppointmentHistoryDTO;
 import com.clinic.team16.beans.DTO.PatientInfoDTO;
 import com.clinic.team16.beans.DTO.PatientMedicalRecordDTO;
 import com.clinic.team16.beans.DTO.UserDTO;
@@ -204,6 +206,34 @@ public class PatientController {
 		} 
 		else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);}
+	}
+	
+	@GetMapping(path = "/appointmentHistory")
+	public ResponseEntity<List<AppointmentHistoryDTO>> appointmentHistory() {
+
+		Patient found = this.patientService.findOneByEmail("p@p");
+	   
+	    
+		if (found != null) {
+			 List<Appointment> apps = new ArrayList<>();
+			 apps = found.getAppointments();
+		
+			 List<AppointmentHistoryDTO> appHistory = new ArrayList<AppointmentHistoryDTO>();
+			 if(apps != null && apps.size()>0) {
+				 	for (Appointment a : apps) {
+						AppointmentHistoryDTO ah = new AppointmentHistoryDTO();
+						ah.setDatetime(a.getDateTime().toString());
+						ah.setAppointmentType(a.getPricelistItems().getName());
+						ah.setClinic(a.getDoctor().getClinic().getName());
+						ah.setDoctor(a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName() );
+						appHistory.add(ah);
+					}	 	
+			 }	
+			 return new ResponseEntity<List<AppointmentHistoryDTO>>(appHistory, HttpStatus.OK);
+		} 
+		else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);}
+		
 	}
 	
 
