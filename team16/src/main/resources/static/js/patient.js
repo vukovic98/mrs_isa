@@ -21,8 +21,7 @@ $( document ).ready(function() {
     		}
     	}
     });
-   
-  
+
 });
 
 

@@ -22,4 +22,9 @@ public class ClinicAdminService {
 	public ClinicAdministrator findOneByEmail(String email) {
 		return this.adminRepository.findOneByEmail(email);
 	}
+
+	public ClinicAdministrator save(ClinicAdministrator found) {
+		// TODO Auto-generated method stub
+		return this.adminRepository.save(found);
+	}
 }
