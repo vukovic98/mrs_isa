@@ -8,6 +8,7 @@ $( document ).ready(function() {
     	statusCode: {
     		200: function(responseObject, textStatus, jqXHR) {
     			console.log("200 OK");
+    			
     			loadPatientInfoAllOK(responseObject);
     		},
     		204: function(responseObject, textStatus, jqXHR) {
@@ -25,7 +26,7 @@ $( document ).ready(function() {
 
 
     function loadPatientInfoAllOK(patient) {
-    	
+    	console.log(patient);
     	$("#patientFullName").text(patient.firstName + " " + patient.lastName);
     	
     	

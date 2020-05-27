@@ -79,6 +79,7 @@
     
     $(document).on('click', '.modalTD', function () {
     	$("#exampleModal").modal();
+    	
     });
     
     function searchAppointments() {

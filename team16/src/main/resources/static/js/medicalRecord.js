@@ -6,7 +6,6 @@ $( document ).ready(function() {
 
     	url: '/patientApi/medicalRecord',
 
-    	url: '/patientApi/findOneByEmail',
 	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 
     	statusCode: {
