@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @RestController
 @RequestMapping("/patientApi")
@@ -213,7 +214,7 @@ public class PatientController {
 
 		Patient found = this.patientService.findOneByEmail("p@p");
 	   
-	    
+	   
 		if (found != null) {
 			 List<Appointment> apps = new ArrayList<>();
 			 apps = found.getAppointments();

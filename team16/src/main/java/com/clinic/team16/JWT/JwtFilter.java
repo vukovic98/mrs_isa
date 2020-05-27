@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.clinic.team16.beans.User;
 import com.clinic.team16.service.UserService;
 
 import net.bytebuddy.asm.MemberSubstitution.Substitution.Chain;
@@ -42,11 +43,17 @@ public class JwtFilter extends OncePerRequestFilter {
 			System.out.println(email);
 		}
 		if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			
 			UserDetails user = this.userDetailService.loadUserByUsername(email);
-
+			
 			if(jwtUtility.validateToken(jwt, user)) {
 
-				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null,user.getAuthorities());
+				String a = user.getPassword();
+				User uTest = new User(email, a);
+				uTest.setPassword(a);
+				System.out.println(uTest.getUsername());
+				System.out.println(uTest.getPassword());
+				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(uTest, null,uTest.getAuthorities());
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
 		}

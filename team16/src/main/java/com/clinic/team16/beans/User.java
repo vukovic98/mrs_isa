@@ -48,6 +48,10 @@ public class User extends org.springframework.security.core.userdetails.User {
 		super("foo", "foo", new ArrayList<>());
 	}
 
+	public User(String email, String password) {
+		super(email,password,new ArrayList<>());
+	}
+	
 	public User(String email, String password, String firstName, String lastName, String address, String city,
 			String country, String phoneNumber, String insuranceNumber, Role role) {
 		super(email, password, new ArrayList<>());

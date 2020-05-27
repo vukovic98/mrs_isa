@@ -57,8 +57,8 @@ public class UserController {
 		}catch(BadCredentialsException e) {
 			return new ResponseEntity<UserLoginDTO>(new UserLoginDTO(null, null, null),HttpStatus.UNAUTHORIZED);
 		}
-		User user = (User)userService.loadUserByUsername(u.getEmail());
-		
+		UserDetails ua = userService.loadUserByUsername(u.getEmail());
+		User user = new User(u.getEmail(), ua.getPassword());
 		final String jwtToken = jwtTokenUtility.generateToken(user);
 		return new ResponseEntity<UserLoginDTO>(new UserLoginDTO(jwtToken, u.getEmail(),user.getRole().toString()),HttpStatus.OK);
 	}
