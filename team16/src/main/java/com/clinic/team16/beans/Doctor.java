@@ -66,7 +66,19 @@ public class Doctor extends User {
 		return appointments;
 	}
 
-	
+	public double getAverageGrade() {
+		double avg = 0;
+		if(this.grades.size() > 0) {
+			for (Grade g :this.grades) {
+				avg += g.getGradeNumber();
+			}
+			return Math.round(avg/this.grades.size());
+		}
+		else {
+			return 0;
+		}
+		
+	}
 
 	public void addAppointment(Appointment newAppointment) {
 		if (newAppointment == null)
@@ -121,6 +133,9 @@ public class Doctor extends User {
 	
 	
 	public List<Grade> getGrades() {
+		if(grades==null) {
+			grades = new ArrayList<Grade>();
+		}
 		return grades;
 	}
 
@@ -128,20 +143,20 @@ public class Doctor extends User {
 		this.grades = grades;
 	}
 
-	public void addGrade(int number, Patient p) {
-		boolean exists = false;
+	public Grade addGrade(Patient p,int grade) {
 		
 		for(Grade g : this.grades) {
 			if(g.getPatient().getEmail().equalsIgnoreCase(p.getEmail())) {
-				g.setGradeNumber(number);
-				exists = true;
+				g.setGradeNumber(grade);
+				return g;				
+				
 			}
 		}
 		
-		if(!exists) {
-			Grade g = new Grade(0, number, p);
-			this.grades.add(g);
-		}
+	
+		Grade g = new Grade(grade, p);
+		this.grades.add(g);
+		return g;
 	}
 
 }

@@ -31,7 +31,7 @@ function clinicsAllOK(clinicsList) {
 
 	    row.append("<td style=\"font-size:20px\">" + val.name + "</td>");
 	    row.append("<td style=\"font-size:20px\">"+ val.address + "</td>");
-	    row.append("<td style=\"font-size:20px\">"+ 10 +"</td>");
+	    row.append("<td style=\"font-size:20px\">"+ val.averageGrade +"</td>");
 
 
 	    table.append(row);

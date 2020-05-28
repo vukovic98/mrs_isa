@@ -143,24 +143,38 @@ public class Clinic {
 	public List<Grade> getGrades() {
 		return grades;
 	}
+	public double getAverageGrade() {
+		double avg = 0;
+		if(this.grades.size() > 0) {
+			for (Grade g :this.grades) {
+				avg += g.getGradeNumber();
+			}
+			return Math.round(avg/this.grades.size());
+		}
+		else {
+			return 0;
+		}
+		
+	}
 
 	public void setGrades(ArrayList<Grade> grades) {
 		this.grades = grades;
 	}
 	
-	public void addGrade(int number, Patient p) {
+	public void addGrade(Grade grade) {
 		boolean exists = false;
 		
 		for(Grade g : this.grades) {
-			if(g.getPatient().getEmail().equalsIgnoreCase(p.getEmail())) {
-				g.setGradeNumber(number);
+			if(g.getPatient().getEmail().equalsIgnoreCase(grade.getPatient().getEmail())) {
+				g.setGradeNumber(grade.getGradeNumber());
 				exists = true;
 			}
 		}
 		
 		if(!exists) {
-			Grade g = new Grade(0, number, p);
-			this.grades.add(g);
+			//Grade g = new Grade(0,number, p);
+
+			this.grades.add(grade);
 		}
 	}
 

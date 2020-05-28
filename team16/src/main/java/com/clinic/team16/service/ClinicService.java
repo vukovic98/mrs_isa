@@ -1,6 +1,7 @@
 package com.clinic.team16.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,12 @@ public class ClinicService {
 	}
 
 	public Clinic findOneByClinicID(long i) {
-		// TODO Auto-generated method stub
+		
 		return clinicRepository.findOneByClinicID(i);
+	}
+
+	public Clinic save(Clinic c) {
+	
+		return this.clinicRepository.save(c);
 	}
 }

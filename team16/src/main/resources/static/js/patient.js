@@ -3,7 +3,7 @@ $( document ).ready(function() {
     
     $.ajax ({
     	type: 'GET',
-    	url: '/patientApi/findOneByEmail',
+    	url: '/patientApi/patientInfo',
         headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     	statusCode: {
     		200: function(responseObject, textStatus, jqXHR) {
@@ -34,16 +34,16 @@ $( document ).ready(function() {
     	$("#country").val(patient.country);
     	$("#city").val(patient.city);
     	$("#address").val(patient.address);
-    	$("#phoneNumber").val(patient.phoneNumber);
-    	$("#insNumber").val(patient.insuranceNumber);
+    	$("#phoneNumber").val(patient.phone);
+    	$("#insNumber").val(patient.insurance);
     	
     	$("#editFirstName").val(patient.firstName);
     	$("#editLastName").val(patient.lastName);
     	$("#editCountry").val(patient.country);
     	$("#editCity").val(patient.city);
     	$("#editAddress").val(patient.address);
-    	$("#editPhoneNumber").val(patient.phoneNumber);
-    	$("#editInsNumber").val(patient.insuranceNumber);
+    	$("#editPhoneNumber").val(patient.phone);
+    	$("#editInsNumber").val(patient.insurance);
     	$("#editEmail").val(patient.email); 	
     }
     
@@ -56,7 +56,7 @@ $( document ).ready(function() {
     $("#myTab").click(function(e){
    	 $.ajax ({
    	    	type: 'GET',
-   	    	url: '/patientApi/findOneByEmail',
+   	    	url: '/patientApi/patientInfo',
    	    	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
    	    	statusCode: {
    	    		200: function(responseObject, textStatus, jqXHR) {
@@ -100,6 +100,7 @@ $( document ).ready(function() {
     	    	}
     	    });
     });
+    
 function passValidation(patientsPassword){
 	var pass = $("#oldPassword").val();
 	var newPass = $("#newPassword").val();
@@ -138,13 +139,17 @@ function passValidation(patientsPassword){
    	        	dataType: 'json',
    	        	contentType: "application/json",
    			    dataType: "json",
-   			    success: function(data){
-   			    	showMessage("Password changed!", "palegreen");
-   			    },
-   			   error : function(e) {
-   				showMessage("Couldn't change password!", "antiquewhite");
-   			            console.log("ERROR: ", e);
-   			          }
+   			    statusCode: {
+   			    	200: function(){showMessage("Password changed!", "palegreen");
+   	        			console.log("200 OK");
+   	    		},
+   	    		204:function(){
+   	    			console.log("204 No Content");
+   	    			showMessage("Couldn't change password!", "antiquewhite");
+   	    			
+   	    		}
+   			    }
+   			  
    	        });}
    		
     	 $("#oldPassword").val('');
@@ -212,6 +217,7 @@ function passValidation(patientsPassword){
 				phoneNumber : $("#editPhoneNumber").val()
 			
 		}
+		console.log(formData)
 		if (firstName != "" && lastName != "" && country !="" && city!="" && address!="" && phoneNumber != ""){
 		 $.ajax({
 	        	type: 'PUT',
@@ -221,13 +227,17 @@ function passValidation(patientsPassword){
 	        	dataType: 'json',
 	        	contentType: "application/json",
 			    dataType: "json",
-			    success : 
-   			    	showMessage("Saved!", "palegreen")
-   			    ,
-			   error : function(e) {
-				        showMessage("Something went wrong. Try again.", "antiquewhite");
-			            console.log("ERROR: ", e);
-			          }
+			    statusCode: {
+   			    	200: function(){showMessage("Saved!", "palegreen");
+   	        			console.log("200 OK");
+   	    		},
+   	    		204:function(){
+   	    			console.log("204 No Content");
+   	    			showMessage("Something went wrong. Try again.", "antiquewhite");
+   	    			
+   	    		}
+   			    }
+			    
 	        });
 		}
 		

@@ -10,20 +10,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.clinic.team16.beans.Allergies;
+
 import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.ClinicalCenterAdministrator;
 import com.clinic.team16.beans.MedicalRecord;
-import com.clinic.team16.beans.Medication;
+
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.RegistrationRequest;
 import com.clinic.team16.beans.Role;
 import com.clinic.team16.beans.User;
-import com.clinic.team16.beans.DTO.PatientPasswordDTO;
+
 import com.clinic.team16.beans.DTO.AppointmentHistoryDTO;
+import com.clinic.team16.beans.DTO.PatientDTO;
 import com.clinic.team16.beans.DTO.PatientInfoDTO;
 import com.clinic.team16.beans.DTO.PatientMedicalRecordDTO;
 import com.clinic.team16.beans.DTO.UserDTO;
+import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicalCenterAdminService;
 import com.clinic.team16.service.MedicalRecordService;
 import com.clinic.team16.service.PatientService;
@@ -50,6 +52,9 @@ public class PatientController {
 
 	@Autowired
 	private MedicalRecordService medicalRecordService;
+	
+	@Autowired
+	private AppointmentService appointmentService;
 
 	@GetMapping(path = "/findAll")
 	public ResponseEntity<List<PatientInfoDTO>> findAll() {
@@ -107,7 +112,7 @@ public class PatientController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	@PutMapping(path = "/updatePatient", consumes = "application/json")
-	public ResponseEntity<Patient> updatePatient(@RequestBody User p) {
+	public ResponseEntity<HttpStatus> updatePatient(@RequestBody Patient p) {
 		
 		Patient found = this.patientService.findOneByEmail("p@p");
 
@@ -119,12 +124,13 @@ public class PatientController {
 			found.setCountry(p.getCountry());
 			found.setPhoneNumber(p.getPhoneNumber());
 			final Patient updatedPatient = patientService.save(found);
-		    return ResponseEntity.ok(updatedPatient);
+		    //return ResponseEntity.ok(updatedPatient);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	@PutMapping(path = "/changePassword", consumes = "application/json")
-	public ResponseEntity<Patient> changePassword(@RequestBody String p) {
+	public ResponseEntity<HttpStatus> changePassword(@RequestBody String p) {
 		
 		Patient found = this.patientService.findOneByEmail("p@p");
 
@@ -132,7 +138,7 @@ public class PatientController {
 			
 			found.setPassword(p.substring(1, p.length()-1));
 			final Patient updatedPatient = patientService.save(found);
-		    return ResponseEntity.ok(updatedPatient);
+		    return  new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -200,14 +206,42 @@ public class PatientController {
 			String name = found.getFirstName() + " " + found.getLastName();
 			
 			
-			PatientMedicalRecordDTO record = new PatientMedicalRecordDTO(name,found.getMedicalRecord());
+			PatientMedicalRecordDTO record = new PatientMedicalRecordDTO(name,
+					found.getMedicalRecord().getGender(),
+					found.getMedicalRecord().getBirthday().toString(),
+					found.getMedicalRecord().getHeight(),
+					found.getMedicalRecord().getWeight(),
+					found.getMedicalRecord().getBloodType(),
+					found.getMedicalRecord().getAllergies(),
+					found.getMedicalRecord().getPerscriptions());
 			 
 			return new ResponseEntity<PatientMedicalRecordDTO>(record, HttpStatus.OK);
 		} 
 		else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);}
 	}
+	@GetMapping(path = "/patientInfo")
+	public ResponseEntity<PatientDTO> patientInfo() {
+
+		Patient found = this.patientService.findOneByEmail("p@p");
 	
+		if (found != null) {		
+			PatientDTO patient = new PatientDTO();
+			patient.setAddress(found.getAddress());
+			patient.setCity(found.getCity());
+			patient.setCountry(found.getCountry());
+			patient.setEmail(found.getEmail());
+			patient.setFirstName(found.getFirstName());
+			patient.setLastName(found.getLastName());
+			patient.setInsurance(found.getInsuranceNumber());
+			patient.setPassword(found.getPassword());
+			patient.setPhone(found.getPhoneNumber());
+			 
+			return new ResponseEntity<PatientDTO>(patient, HttpStatus.OK);
+		} 
+		else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);}
+	}
 	@GetMapping(path = "/appointmentHistory")
 	public ResponseEntity<List<AppointmentHistoryDTO>> appointmentHistory() {
 
@@ -222,6 +256,9 @@ public class PatientController {
 			 if(apps != null && apps.size()>0) {
 				 	for (Appointment a : apps) {
 						AppointmentHistoryDTO ah = new AppointmentHistoryDTO();
+						ah.setAppointmentID(a.getAppointmentId());
+						ah.setClinicID(a.getDoctor().getClinic().getClinicID());
+						ah.setDoctorID(a.getDoctor().getId());
 						ah.setDatetime(a.getDateTime().toString());
 						ah.setAppointmentType(a.getPricelistItems().getName());
 						ah.setClinic(a.getDoctor().getClinic().getName());
@@ -234,6 +271,31 @@ public class PatientController {
 		else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);}
 		
+	}
+	@PostMapping(path = "/findModalByID", consumes = "application/json")
+	public ResponseEntity<AppointmentHistoryDTO> findModalByID(@RequestBody Appointment a) {
+		long id = a.getAppointmentId();
+		AppointmentHistoryDTO app = new AppointmentHistoryDTO();
+		Patient found = this.patientService.findOneByEmail("p@p");
+		
+		if (found != null) {
+			if(found.getAppointments().size() >0) {
+				for (Appointment ap : found.getAppointments()) {
+					if (ap.getAppointmentId()==id) {
+						app.setClinicID(ap.getDoctor().getClinic().getClinicID());
+						app.setDoctorID(ap.getDoctor().getId());
+						app.setClinic(ap.getDoctor().getClinic().getName());
+						app.setDoctor(ap.getDoctor().getFirstName()+" "+ ap.getDoctor().getLastName());
+					}
+				}
+			}
+			return new ResponseEntity<AppointmentHistoryDTO>(app, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+		}
+
 	}
 	
 

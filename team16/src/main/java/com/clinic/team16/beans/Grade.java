@@ -35,6 +35,11 @@ public class Grade {
 		this.gradeNumber = gradeNumber;
 		this.patient = patient;
 	}
+	public Grade(int gradeNumber, Patient patient) {
+		this.gradeNumber = gradeNumber;
+		this.patient = patient;
+	}
+
 
 	public long getGradeId() {
 		return gradeId;

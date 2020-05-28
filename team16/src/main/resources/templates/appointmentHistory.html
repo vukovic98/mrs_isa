@@ -64,7 +64,8 @@
 	</div>
 	
 	<!-- Modal -->
-	<div class="modal fade" id="exampleModal" role="dialog">
+
+	<div class="modal hide fade" id="exampleModal" role="dialog">
 	  <div class="modal-dialog" role="document" style="margin-top: 100px;">
 	    <div class="modal-content">
 	      <div class="modal-body">
@@ -72,11 +73,14 @@
 			  <div class="card-header"><i class="fa fa-star"></i>
 			 
 			  </div>
+			  <div id="message_bar2" class="text-center"></div>
 			  <div class="card-body">
 			  <form id="filterForm">
 						<div class="form-group row ">
-								<label >Rate doctor</label>
-								<select class="form-control" id="sel1">
+								
+								<label id="rateDoctor"></label>
+								
+								<select class="form-control" id="doctorGrade">
 								<option>1</option>
 									<option>2</option>
 									<option>3</option>
@@ -90,11 +94,11 @@
 								</select>
 						</div>
 						<div class="col text-center">
-					 <button type="submit" class="btn btn-success" >Rate</button>
+					 <button type="button" class="btn btn-success" id="rateDoctorBtn" >Rate doctor</button>
 					</div>
 						<div class="form-group row">
-								<label >Rate clinic</label>
-								<select class="form-control" id="sel1">
+								<label id="rateClinic"></label>
+								<select class="form-control" id="clinicGrade">
 								<option>1</option>
 									<option>2</option>
 									<option>3</option>
@@ -109,7 +113,7 @@
 						</div>
 					
 						<div class="col text-center">
-					 <button type="submit" class="btn btn-success" >Rate</button>
+					 <button type="button" class="btn btn-success" id="rateClinicBtn" >Rate clinic</button>
 					</div>
 					</form>
 			  </div>
