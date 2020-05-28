@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinic.team16.JWT.JwtToken;
 import com.clinic.team16.beans.ClinicalCenter;
 import com.clinic.team16.beans.Medication;
 import com.clinic.team16.beans.Pricelist;
@@ -34,6 +36,10 @@ public class PricelistItemController {
 	@Autowired
 	private PricelistService pricelistService;
 
+	@Autowired
+	private JwtToken jwtUtility;
+	
+	
 	@GetMapping(path = "/findAll") 
 	public ResponseEntity<List<PricelistItem>> findAll() {
 		List<PricelistItem> list = this.pricelistItemService.findAll();
@@ -61,11 +67,11 @@ public class PricelistItemController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 	}
-	
+	      
 	@PostMapping(path = "/addPricelistItem", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addPricelistItem(@RequestBody PricelistItem pri) {
 		PricelistItem p = this.pricelistItemService.findOneByAppointmentType(pri.getName());
-
+		 System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
 		if (p == null) {
 
 			Pricelist prList = pricelistService.findOneByPricelistId(1);
