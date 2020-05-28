@@ -29,16 +29,22 @@ public class ClinicController {
 	@Autowired
 	private PatientService patientService;
 	@Autowired
-	private GradeService gradeService;	@Autowired
-	private PricelistService pricelistService;	@GetMapping("/findAll")
+	private GradeService gradeService;	
+	
+	@Autowired
+	private PricelistService pricelistService;	
+	
+	@GetMapping("/findAll")
 	public ResponseEntity<List<ClinicInfoDTO>> findAll() {
 		List<Clinic> list = this.clinicService.findAll();
 		List<ClinicInfoDTO> daoList = new ArrayList<ClinicInfoDTO>();
+		for (Clinic c : list) {
 				daoList.add(new ClinicInfoDTO(c.getClinicID() ,c.getName(), c.getAddress(), c.getDescription(),c.getAverageGrade()));
 			}
+		if(list != null)
 			return new ResponseEntity<List<ClinicInfoDTO>>(daoList, HttpStatus.OK);
 		
-		} else
+		 else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
