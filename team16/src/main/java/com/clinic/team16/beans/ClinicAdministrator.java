@@ -12,11 +12,12 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class ClinicAdministrator extends User {
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "Clinic_ID")
 	public Clinic clinic;
 	
-	
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "clinicAdministrator_leaveRequests",joinColumns = @JoinColumn(name = "administrator_id"))
 	public List<LeaveRequest> leaveRequests;

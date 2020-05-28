@@ -22,8 +22,6 @@ public class ClinicAdminService {
 	public ClinicAdministrator findOneByEmail(String email) {
 		return this.adminRepository.findOneByEmail(email);
 	}
-	
-	public ClinicAdministrator save(ClinicAdministrator a) {
+public ClinicAdministrator save(ClinicAdministrator a) {
 		return this.adminRepository.save(a);
-	}
-}
+	}}

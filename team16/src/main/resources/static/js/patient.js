@@ -3,11 +3,12 @@ $( document ).ready(function() {
     
     $.ajax ({
     	type: 'GET',
-    	url: '/patientApi/findOneByEmail',
+    	url: '/patientApi/patientInfo',
         headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     	statusCode: {
     		200: function(responseObject, textStatus, jqXHR) {
     			console.log("200 OK");
+    			
     			loadPatientInfoAllOK(responseObject);
     		},
     		204: function(responseObject, textStatus, jqXHR) {
@@ -20,13 +21,12 @@ $( document ).ready(function() {
     		}
     	}
     });
-   
-  
+
 });
 
 
     function loadPatientInfoAllOK(patient) {
-    	
+    	console.log(patient);
     	$("#patientFullName").text(patient.firstName + " " + patient.lastName);
     	
     	
@@ -34,16 +34,16 @@ $( document ).ready(function() {
     	$("#country").val(patient.country);
     	$("#city").val(patient.city);
     	$("#address").val(patient.address);
-    	$("#phoneNumber").val(patient.phoneNumber);
-    	$("#insNumber").val(patient.insuranceNumber);
+    	$("#phoneNumber").val(patient.phone);
+    	$("#insNumber").val(patient.insurance);
     	
     	$("#editFirstName").val(patient.firstName);
     	$("#editLastName").val(patient.lastName);
     	$("#editCountry").val(patient.country);
     	$("#editCity").val(patient.city);
     	$("#editAddress").val(patient.address);
-    	$("#editPhoneNumber").val(patient.phoneNumber);
-    	$("#editInsNumber").val(patient.insuranceNumber);
+    	$("#editPhoneNumber").val(patient.phone);
+    	$("#editInsNumber").val(patient.insurance);
     	$("#editEmail").val(patient.email); 	
     }
     
@@ -56,7 +56,7 @@ $( document ).ready(function() {
     $("#myTab").click(function(e){
    	 $.ajax ({
    	    	type: 'GET',
-   	    	url: '/patientApi/findOneByEmail',
+   	    	url: '/patientApi/patientInfo',
    	    	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
    	    	statusCode: {
    	    		200: function(responseObject, textStatus, jqXHR) {
@@ -100,6 +100,7 @@ $( document ).ready(function() {
     	    	}
     	    });
     });
+    
 function passValidation(patientsPassword){
 	var pass = $("#oldPassword").val();
 	var newPass = $("#newPassword").val();
@@ -107,22 +108,20 @@ function passValidation(patientsPassword){
 	
 	if(patientsPassword != pass){
 		 $("#oldPassword").addClass("is-invalid");
-		 $("#oldPassword").attr("placeholder", "Wrong password.");
+
 	 }
 	 else{
 		 $("#oldPassword").removeClass("is-invalid");
-		 $("#oldPassword").attr("placeholder", "");
+	
 	 }
     	 
     	 if(newPass != confirmedPass){
-     		$("#newPassword").addClass("is-invalid");
      		$("#confirmedPassword").addClass("is-invalid");
-     		$("#confirmedPassword").attr("placeholder", "Please make sure your passwords match.");
+     		
      	}
      	else{
-     		$("#newPassword").removeClass("is-invalid");
      		$("#confirmedPassword").removeClass("is-invalid");
-    		$("#confirmedPassword").attr("placeholder", "");
+    		
      	}
      	
     	 var formData ={
@@ -140,12 +139,17 @@ function passValidation(patientsPassword){
    	        	dataType: 'json',
    	        	contentType: "application/json",
    			    dataType: "json",
-   			    success:function(data) {
-   			        alert('Password changed!');},
-   			   error : function(e) {
-   			            alert("Error!")
-   			            console.log("ERROR: ", e);
-   			          }
+   			    statusCode: {
+   			    	200: function(){showMessage("Password changed!", "palegreen");
+   	        			console.log("200 OK");
+   	    		},
+   	    		204:function(){
+   	    			console.log("204 No Content");
+   	    			showMessage("Couldn't change password!", "antiquewhite");
+   	    			
+   	    		}
+   			    }
+   			  
    	        });}
    		
     	 $("#oldPassword").val('');
@@ -153,6 +157,8 @@ function passValidation(patientsPassword){
     	 $("#confirmedPassword").val('');
     	
 }
+
+
     $("#savePatient").click(function(e){
 		e.preventDefault();
 		
@@ -166,38 +172,38 @@ function passValidation(patientsPassword){
      	//VALIDATION
      	if (firstName == null || firstName == ""){
      		$("#editFirstName").addClass("is-invalid");
-     		$("#editFirstName").attr("placeholder", "First Name can not be empty!");
+     
      	}else{
      		$("#editFirstName").removeClass("is-invalid");
-     		$("#editFirstName").attr("placeholder", "");
+     	
      	}
      	if (lastName == null || lastName == ""){
      		$("#editLastName").addClass("is-invalid");
-     		$("#editLastName").attr("placeholder", "Last Name can not be empty!");
+     		
      	}else{
      		$("#editLastName").removeClass("is-invalid");
      	}
      	if (country == null || country == ""){
      		$("#editCountry").addClass("is-invalid");
-     		$("#editCountry").attr("placeholder", "Country can not be empty!");
+     		
      	}else{
      		$("#editCountry").removeClass("is-invalid");
      	}
      	if (city == null || country == ""){
      		$("#editCity").addClass("is-invalid");
-     		$("#editCity").attr("placeholder", "City can not be empty!");
+   
      	}else{
      		$("#editCity").removeClass("is-invalid");
      	}
     	if (phoneNumber == null || phoneNumber == ""){
      		$("#editPhoneNumber").addClass("is-invalid");
-     		$("#editPhoneNumber").attr("placeholder", "Phone number can not be empty!");
+     	
      	}else{
      		$("#editPhoneNumber").removeClass("is-invalid");
      	}
     	if (address == null || address == ""){
      		$("#editAddress").addClass("is-invalid");
-     		$("#editAddress").attr("placeholder", "Address can not be empty!");
+  
      	}else{
      		$("#editAddress").removeClass("is-invalid");
      	}
@@ -211,6 +217,7 @@ function passValidation(patientsPassword){
 				phoneNumber : $("#editPhoneNumber").val()
 			
 		}
+		console.log(formData)
 		if (firstName != "" && lastName != "" && country !="" && city!="" && address!="" && phoneNumber != ""){
 		 $.ajax({
 	        	type: 'PUT',
@@ -220,19 +227,28 @@ function passValidation(patientsPassword){
 	        	dataType: 'json',
 	        	contentType: "application/json",
 			    dataType: "json",
-			    success:function(data) {
-			        alert('Patient saved!');},
-			   error : function(e) {
-			            alert("Error!")
-			            console.log("ERROR: ", e);
-			          }
+			    statusCode: {
+   			    	200: function(){showMessage("Saved!", "palegreen");
+   	        			console.log("200 OK");
+   	    		},
+   	    		204:function(){
+   	    			console.log("204 No Content");
+   	    			showMessage("Something went wrong. Try again.", "antiquewhite");
+   	    			
+   	    		}
+   			    }
+			    
 	        });
 		}
 		
     });
 		
 		
-
+    function showMessage(message, color) {
+    	$("#message_bar").css("background", color);
+    	$("#message_bar").text(message);
+    	$("#message_bar").slideDown().delay(1500).slideUp();
+    }
     function unauthorized(){
     	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
     }

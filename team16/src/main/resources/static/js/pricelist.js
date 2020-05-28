@@ -23,58 +23,112 @@ $(document).ready(function(){
 	  });
 	
 	
-	$('[data-toggle="tooltip"]').tooltip();
-	var actions = $("table td:last-child").html();
-	// Append table with add row form on add new button click
-    $(".add-new").click(function(){
-		$(this).attr("disabled", "disabled");
-		var index = $("table tbody tr:last-child").index();
-        var row = '<tr>' +
-            '<td><input type="text" class="form-control"></td>' +
-            '<td><input type="text" class="form-control"></td>' +
-			'<td>' + actions + '</td>' +
-        '</tr>';
-    	$("table").append(row);		
-		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+	  var actions = $("table td:last-child").html();
+	  // Append table with add row form on add new button click
+	    $(".add-new").click(function(){
+	      var actions = $("table td:last-child").html();
+	    $(this).attr("disabled", "disabled");
+	    var index = $("table tbody tr:nth-child(0)").index();
+	        var row = '<tr>' +
+	            '<td><input type="text" class="form-control" name="name" id="type"></td>' +
+	            '<td><input type="text" class="form-control" name="price" id="price"></td>' +
+	              '<td>' + actions + '</td>' +
+	        '</tr>';
+	      $("table").prepend(row);    
+	    $("table tbody tr").eq(index + 1).find(".add").toggle();
+	    });
     
     
 	// Add row on add button click
-	$(document).on("click", ".add", function(){
-		var empty = false;
-		var input = $(this).parents("tr").find('input[type="text"]');
-        input.each(function(){
-			if(!$(this).val()){
-				$(this).addClass("error");
-				empty = true;
-			} else{
-                $(this).removeClass("error");
-            }
-		});
-		$(this).parents("tr").find(".error").first().focus();
-		if(!empty){
-			input.each(function(){
-				$(this).parent("td").html($(this).val());
-			});			
-			$(this).parents("tr").find(".add, .edit").toggle();
-			$(".add-new").removeAttr("disabled");
-		}		
-    });
-	// Edit row on edit button click
-	$(document).on("click", ".edit", function(){		
-        $(this).parents("tr").find("td:not(:last-child)").each(function(){
-			$(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-		});		
-		$(this).parents("tr").find(".add, .edit").toggle();
-		$(".add-new").attr("disabled", "disabled");
-    });
+	    $(document).on("click", ".add", function(){
+	        var empty = false;
+	        var input = $(this).parents("tr").find('input[type="text"]');
+	            input.each(function(){
+	          if(!$(this).val()){
+	            $(this).addClass("error");
+	            empty = true;
+	          } else{
+	                    $(this).removeClass("error");
+	                }
+	        });
+	        $(this).parents("tr").find(".error").first().focus();
+	        if(!empty){
+	          var dataPrice = [];
+	          input.each(function(){
+	            dataPrice.push($(this).val());
+	          });     
+	          $.ajax({
+	            type: 'POST',
+	            url: 'pricelistItemApi/addPricelistItem',
+	            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	            data : JSON.stringify({
+	              "name" : dataPrice[0],
+	              "price" : dataPrice[1]
+	            }),
+	            contentType: "application/json; charset=utf-8",
+	            dataType: "json",
+	            statusCode: {
+	              200: function(responseObject, textStatus, jqXHR) {
+	                console.log("PricelistItem - add() - 200 OK");
+	                showMessage("Pricelist item successfully added!", "palegreen");
+	                input.each(function(){
+	                  $(this).parent("td").html($(this).val());
+	                }); 
+	                $(this).parents("tr").find(".add").toggle();
+	                $(".add-new").removeAttr("disabled");
+	                
+	              },
+	              400: function(responseObject, textStatus, jqXHR) {
+	                console.log("PricelistItem - add() - 400 Bad request");
+	                showMessage("Pricelist item with inserted name already exists!", "antiquewhite");
+	              },
+	    		  403: function(responseObject, textStatus, jqXHR) {
+	    			console.log("403 Unauthorized");
+	    			unauthorized();
+	    		  }
+	            }
+	          });
+	        }   
+	        });
+	
+
 	// Delete row on delete button click
 	$(document).on("click", ".delete", function(){
+		var id = $(this).parents("td").attr('id');
+		
+        
+        $.ajax({
+            type: 'DELETE',
+            url: 'pricelistItemApi/deletePricelistItem/' + id,
+            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            statusCode: {
+              200: function(responseObject, textStatus, jqXHR) {
+                console.log("Pricelist item - delete() - 200 OK");
+                showMessage("Pricelist item successfully deleted!", "palegreen"); 
+              },
+              400: function(responseObject, textStatus, jqXHR) {
+                console.log("Pricelist item - delete() - 400 Bad request");
+                showMessage("Something went wrong!", "antiquewhite");
+              },
+      		403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		}
+            }
+          });
         $(this).parents("tr").remove();
 		$(".add-new").removeAttr("disabled");
     });
 });
+
+
+function showMessage(message, color) {
+	  $("#message_bar").css("background", color);
+	  $("#message_bar").text(message);
+	  $("#message_bar").slideDown().delay(1500).slideUp();
+	}
 
 function pricelistAllOK(pricelistItemList) {
 	  var table = $("#pricelistBody");
@@ -83,14 +137,12 @@ function pricelistAllOK(pricelistItemList) {
 	  console.log(pricelistItemList);
 	  $.each(pricelistItemList, function(i, val) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
-	    if(val.appointmentType != undefined){
-	    row.append("<td id=\""+i+"\">" + val.appointmentType + "</td>");
-	    row.append("<td id=\""+i+"\">" + val.price + "$</td>");
-	    row.append("<td id=\""+i+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
-		                            "<a class=\"edit\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +
-		                            "<a class=\"delete\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
-	    table.append(row);
-	    }
+	    row.append("<td class=\"appointmentType\" id=\""+val.id+"\">" + val.appointmentType + "</td>");
+	    row.append("<td class=\"price\" id=\""+val.id+"\">" + val.price + "$</td>");
+	    row.append("<td id=\""+val.id+"\">" + "<a class=\"add\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
+                "<a class=\"delete\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
+table.append(row);
+
 	  });
 }
 
@@ -99,7 +151,7 @@ function pricelistAllOK(pricelistItemList) {
 	  table.empty();
 	  
 	  var row = $("<tr></tr>");
-	  row.append("<td class='pl-1'>There are no medications in system.</td>");
+	  row.append("<td class='pl-1'>There are no pricelist items in system.</td>");
 	  
 	  table.append(row);
 	}

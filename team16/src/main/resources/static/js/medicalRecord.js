@@ -6,7 +6,6 @@ $( document ).ready(function() {
 
     	url: '/patientApi/medicalRecord',
 
-    	url: '/patientApi/findOneByEmail',
 	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 
     	statusCode: {
@@ -27,20 +26,25 @@ $( document ).ready(function() {
   
 });
     function loadPatientInfoAllOK(patient) {
-    	console.log(patient.firstName);
+    	console.log(patient.fullName);
+    	var birthday = patient.birthday;
+    	var date = new Date(birthday);
+    	var day = date.getDay()-1;
+    	var month = date.getMonth()+1;
+    	var year = date.getFullYear();
     	
-    	$("#fullName").val(patient.firstName + " "+ patient.lastName);
-    	$("#birthday").val(patient.medicalRecord.birthday);
-    	$("#gender").val(patient.medicalRecord.gender);
-    	$("#weight").val(patient.medicalRecord.weight);
-    	$("#height").val(patient.medicalRecord.height);
-    	$("#bloodType").val(patient.medicalRecord.bloodType);
+    	$("#fullName").val(patient.fullName);
+    	$("#birthday").val(day+'-'+month+'-'+year);
+    	$("#gender").val(patient.gender);
+    	$("#weight").val(patient.weight + " kg");
+    	$("#height").val(patient.height+ " cm");
+    	$("#bloodType").val(patient.bloodType);
     	var allergiesTable = $("#allergiesBody");
     	allergiesTable.empty();
     	
-    	if(patient.medicalRecord.allergies != null){
+    	if(patient.allergies != null){
     		
-        	$.each(patient.medicalRecord.allergies,function(i,val){
+        	$.each(patient.allergies,function(i,val){
         		var row = $("<tr></tr>");
         		row.append("<td>"+val+"</td>");
         		allergiesTable.append(row);
@@ -54,8 +58,8 @@ $( document ).ready(function() {
     	var medicationsTable = $("#medicationsBody");
     	medicationsTable.empty();
     	
-    	if(patient.medicalRecord.perscriptions != null){
-    		$.each(patient.medicalRecord.perscriptions,function(i,val){
+    	if(patient.perscription != null){
+    		$.each(patient.perscription,function(i,val){
     			 var row = $("<tr></tr>");
 
      		    row.append("<td>" + val.name + "</td>");

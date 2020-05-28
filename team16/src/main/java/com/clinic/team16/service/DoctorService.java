@@ -1,10 +1,12 @@
 package com.clinic.team16.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.clinic.team16.beans.Clinic;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.repository.DoctorRepository;
 
@@ -22,9 +24,16 @@ public class DoctorService {
 	public Doctor findOneByEmail(String email) {
 		return doctorRepository.findOneByEmail(email);
 	}
+	
 
+	public Doctor findOneByDoctorID(long id) {
+		return doctorRepository.findOneByid(id);
+	}
 	public List<Doctor> findAll() {
 		return this.doctorRepository.findAll();
+	}
+	public Doctor save(Doctor d) {
+		return this.doctorRepository.save(d);
 	}
 	
 	

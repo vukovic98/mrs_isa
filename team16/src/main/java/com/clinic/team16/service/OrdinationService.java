@@ -18,4 +18,19 @@ public class OrdinationService {
 	public List<Ordination> findAll() {
 		return ordinationRepository.findAll();
 	}
+
+	public Ordination findOneByName(String name) {
+		// TODO Auto-generated method stub
+		return ordinationRepository.findOneByName(name);
+	}
+
+	public Ordination save(Ordination ord) {
+		// TODO Auto-generated method stub
+		return ordinationRepository.save(ord);
+	}
+
+	public void delete(Ordination or) {
+		ordinationRepository.delete(or);
+		
+	}
 }

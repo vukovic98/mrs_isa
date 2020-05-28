@@ -21,4 +21,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long > 
 			nativeQuery = true
 			)
 	public List<Appointment> findByDoctor(long id);
+
+
+	@Query(
+			value = "SELECT * FROM appointment WHERE appointment.appointment_id = ?1",
+			nativeQuery = true)
+	public Appointment findOneById(long id);
 }

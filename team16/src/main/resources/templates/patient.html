@@ -8,14 +8,14 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/style.css">
-  <script src="/js/validate.js"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
+<div id="message_bar" class="text-center" vertical-align="top">message</div>
 
-
-  <header id="header">
+  <header  id="header" style="z-index: 9000;">
     <p class="pt-1 pl-3 mb-0" style="float: left;font-size: x-large;">
       Patient
     </p>
@@ -101,37 +101,42 @@
                   <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">First Name</span>
                 </div>
                   <input type="text" style="background-color: white;" class="form-control" aria-label="FirstName" id="editFirstName" aria-describedby="inputGroup-sizing-default" >
-                  
+                   <div class="invalid-feedback">First Name can not be empty.</div>
                 </div>
                 <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Last Name</span>
                 </div>
                   <input type="text" style="background-color: white;" class="form-control" aria-label="LastName" id="editLastName" aria-describedby="inputGroup-sizing-default" >
+               	  <div class="invalid-feedback">Last Name can not be empty.</div>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Country</span>
                   </div>
                   <input type="text" style="background-color: white;" class="form-control" aria-label="Country" id="editCountry" aria-describedby="inputGroup-sizing-default" >
+                	 <div class="invalid-feedback">Country can not be empty.</div>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">City</span>
                   </div>
                   <input type="text" style="background-color: white;" class="form-control" aria-label="City" id="editCity" aria-describedby="inputGroup-sizing-default" >
+                	 <div class="invalid-feedback">City can not be empty.</div>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Address</span>
                   </div>
                   <input type="text" style="background-color: white;" class="form-control" aria-label="Address" id="editAddress" aria-describedby="inputGroup-sizing-default" >
+               		 <div class="invalid-feedback">Address can not be empty.</div>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default" style="width: 150px;">Phone number</span>
                   </div>
                   <input type="text" style="background-color: white;" class="form-control" aria-label="Phone number" id="editPhoneNumber" aria-describedby="inputGroup-sizing-default" >
+                	 <div class="invalid-feedback">Phone number can not be empty.</div>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
@@ -162,6 +167,7 @@
               <div class="form-group">
                 <label>Password</label>
                 <input type="password" class="form-control" id="oldPassword">
+                <div class="invalid-feedback"> Wrong password.</div>
               </div>
               <div class="form-group">
                 <label>New Password</label>
@@ -170,6 +176,7 @@
               <div class="form-group">
                 <label>Confirm Password</label>
                 <input type="password" class="form-control" id="confirmedPassword">
+                 <div class="invalid-feedback"> Please make sure your passwords match.</div>
               </div>
             </div>
             <button type="submit" class="btn btn-primary" id="changePassword">Change</button>
@@ -180,34 +187,7 @@
     </div>
     
   </div>
-  <!-- 
-<script type="text/javascript">
-$("#patientEditForm").validate({
-	rules: {
-		editFirstnName: "required"
-	},
-	messages: {
-		editFirstName: "Please enter your firstname"
-		/*lastname: "Please enter your lastname",
-		username: {
-			required: "Please enter a username",
-			minlength: "Your username must consist of at least 2 characters"
-		},
-		password: {
-			required: "Please provide a password",
-			minlength: "Your password must be at least 5 characters long"
-		},
-		confirm_password: {
-			required: "Please provide a password",
-			minlength: "Your password must be at least 5 characters long",
-			equalTo: "Please enter the same password as above"
-		},
-		email: "Please enter a valid email address",
-		agree: "Please accept our policy",
-		topic: "Please select at least 2 topics"*/
-	}
-});
-</script> -->
+
 
   <script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

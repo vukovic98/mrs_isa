@@ -13,4 +13,5 @@ public interface PricelistRepository extends JpaRepository<Pricelist, Long>{
 			value = "SELECT * FROM pricelist WHERE pricelist.pricelist_id = ?1",
 			nativeQuery = true)
 	public Pricelist findById(long id);
+	public Pricelist findOneByPricelistId(long pricelistId);
 }

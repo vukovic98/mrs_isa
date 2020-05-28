@@ -29,9 +29,9 @@ function clinicsAllOK(clinicsList) {
 	  
 	    var row = $("<tr class=\"clinic-table-text\" title=\"Click for more information\" id=\""+i+"\"></tr>");
 
-	    row.append("<td id=\""+val.clinicID+"\">" + val.name + "</td>");
-	    row.append("<td id=\""+val.clinicID+"\">" + val.address + "</td>");
-	    row.append("<td id=\""+val.clinicID+"\"> 10 </td>");
+	    row.append("<td style=\"font-size:20px\">" + val.name + "</td>");
+	    row.append("<td style=\"font-size:20px\">"+ val.address + "</td>");
+	    row.append("<td style=\"font-size:20px\">"+ val.averageGrade +"</td>");
 
 
 	    table.append(row);

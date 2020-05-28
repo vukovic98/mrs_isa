@@ -6,15 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.clinic.team16.beans.Pricelist;
-import com.clinic.team16.repository.PricelistRepository;
+import com.clinic.team16.beans.PricelistItem;
+import com.clinic.team16.repository.AppointmentRepository;import com.clinic.team16.repository.PricelistRepository;
 
 @Service
 public class PricelistService {
 
 	@Autowired
 	private PricelistRepository pricelistRepository;
-	
-	public ArrayList<Pricelist> findAll() {
+public Pricelist findOneByPricelistId(long pricelistId) {
+		return pricelistRepository.findOneByPricelistId(pricelistId);
+	}public ArrayList<Pricelist> findAll() {
 		return (ArrayList<Pricelist>) this.pricelistRepository.findAll();
 	}
 	
@@ -24,5 +26,4 @@ public class PricelistService {
 	
 	public void save(Pricelist t) {
 		this.pricelistRepository.save(t);
-	}
-}
+	}}

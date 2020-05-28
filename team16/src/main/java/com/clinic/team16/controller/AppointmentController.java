@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.MedicalReport;
 import com.clinic.team16.beans.DTO.AppointmentDTO;
+import com.clinic.team16.beans.DTO.AppointmentHistoryDTO;
 import com.clinic.team16.beans.DTO.CalendarDataDTO;
 import com.clinic.team16.beans.DTO.MedicalReportDTO;
 import com.clinic.team16.service.AppointmentService;
@@ -123,4 +124,5 @@ public class AppointmentController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
 }

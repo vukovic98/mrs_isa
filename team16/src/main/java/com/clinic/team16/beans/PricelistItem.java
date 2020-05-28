@@ -16,6 +16,10 @@ public class PricelistItem {
 	@Column(name = "PricelistItem_ID", nullable = false)
 	private long pricelistItemId;
 
+	public long getPricelistItemId() {
+		return pricelistItemId;
+	}
+
 	@Column(name = "name", nullable = false)
 	private String appointmentType;
 
