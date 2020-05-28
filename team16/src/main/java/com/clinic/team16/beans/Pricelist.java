@@ -36,6 +36,10 @@ public class Pricelist {
 		this.clinics = clinics;
 	}
 
+	public void addClinic(Clinic a) {
+		this.clinics.add(a);
+	}
+	
 	public List<Clinic> getClinics() {
 		return clinics;
 	}

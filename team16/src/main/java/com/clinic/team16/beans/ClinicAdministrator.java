@@ -24,6 +24,17 @@ public class ClinicAdministrator extends User {
 	public ClinicAdministrator() {
 
 	}
+	
+	
+
+	public ClinicAdministrator(String email, String password, String firstName, String lastName, String address,
+			String city, String country, String phoneNumber, String insuranceNumber, Role role, Clinic clinic) {
+		super(email, password, firstName, lastName, address, city, country, phoneNumber, insuranceNumber, role);
+		this.clinic = clinic;
+		this.leaveRequests = null;
+	}
+
+
 
 	public ClinicAdministrator(Clinic clinic, ArrayList<LeaveRequest> leaveRequests) {
 		super();

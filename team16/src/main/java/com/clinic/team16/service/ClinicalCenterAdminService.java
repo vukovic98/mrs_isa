@@ -1,5 +1,7 @@
 package com.clinic.team16.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +20,13 @@ public class ClinicalCenterAdminService {
 	
 	public ClinicalCenterAdministrator save(ClinicalCenterAdministrator a) {
 		return this.adminRepository.save(a);
+	}
+	
+	public ArrayList<ClinicalCenterAdministrator> findAll() {
+		return (ArrayList<ClinicalCenterAdministrator>) this.adminRepository.findAll();
+	}
+	
+	public ClinicalCenterAdministrator findOneByEmail(String email) {
+		return this.adminRepository.findOneByEmail(email);
 	}
 }

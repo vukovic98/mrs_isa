@@ -17,4 +17,12 @@ public class ClinicService {
 	public List<Clinic> findAll() {
 		return this.clinicRepository.findAll();
 	}
+	
+	public Clinic findOneByName(String name) {
+		return this.clinicRepository.findOneByName(name);
+	}
+	
+	public void save(Clinic c) {
+		this.clinicRepository.save(c);
+	}
 }

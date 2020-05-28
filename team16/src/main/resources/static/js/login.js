@@ -206,6 +206,11 @@ function showMessage(message, color) {
 function whereToGo(user) {
 	var jwt = user.jwt;
 	sessionStorage.setItem('token', jwt);
+		if(user.role == "USER") {
+			console.log("USAO");
+			window.location.href = "/clinicalCenterAdminInitial";
+		}
+	
 		if(user.role == "CLINICAL_CENTER_ADMINISTRATOR") {
 			console.log("USAO");
 			window.location.href = "/clinicalCenterAdmin";

@@ -9,15 +9,16 @@
 </head>
 
 <body>
-
-	<header id="header" style="z-index: 9999;">
+	<div id="message_bar" class="text-center">message</div>
+	<header id="header" style="z-index: 9000;">
 		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Clinical center administrator</p>
-	<nav class="links" style="--items: 5;">
+	<nav class="links" style="--items: 6;">
 		<a th:href="@{/clinicalCenterAdmin}">Registration requests</a>
 		<a class="selected" th:href="@{/clinics}">Clinics</a>
 		<a th:href="@{/clinicalAdmins}">Clinic Administrators</a>
 		<a th:href="@{/medications}">Medications</a>
 		<a th:href="@{/diagnosis}">Diagnosis</a>
+		<a th:href="@{/centerAdmins}">Clinical center admins</a>
 		<a th:href="@{/}" class="my_logout"></span></a>
 	</nav>
 </header>
@@ -32,7 +33,7 @@
 					  <input type="text" id="myInput" class="form-control" placeholder="Search clinics..." aria-label="Clinic" aria-describedby="basic-addon2" onkeyup="myFunction()">
 					</div>
 					<div class="col-sm-2 text-right pr-0 fl-right">
-                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                        <button id="addClinic" type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
                     </div>
 	        </div>
 	        <div class="ow_auto h-75">
@@ -44,6 +45,56 @@
 			</div>
 		</div>
 		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" role="dialog">
+	  <div class="modal-dialog w-50" role="document" style="margin-top: 58px; max-width: none !important;">
+	    <div class="modal-content">
+	      <div class="modal-body">
+	        <div class="card text-center">
+			  <div class="card-header">
+			    Clinics information
+			  </div>
+			  <div class="card-body">
+				
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend" style="width: 35%;">
+				    <span class="input-group-text w_available" id="basic-addon1">Name</span>
+				  </div>
+				  <input type="text" id="clinicName" class="form-control" placeholder="Clinic name" aria-label="Clinic name" aria-describedby="basic-addon1">
+				</div>
+
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend" style="width: 35%;">
+				    <span class="input-group-text w_available" id="basic-addon1">Address</span>
+				  </div>
+				  <input type="text" id="clinicAddress" class="form-control" placeholder="Clinic address" aria-label="Clinic address" aria-describedby="basic-addon1">
+				</div>
+
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend" style="width: 35%;">
+				    <span class="input-group-text w_available" id="basic-addon1">Description</span>
+				  </div>
+				  <textarea rows="4" id="clinicDescription" placeholder="Description" style="resize: none; width: 65%;"></textarea>
+				</div>
+
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend" style="width: 35%;">
+				    <span class="input-group-text w_available" id="basic-addon1">Pricelist</span>
+				  </div>
+				  <select id="clinicPricelist" placeholder="Pricelist" class="form-control"></select>
+				</div> 
+
+			  </div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" id="submitClinic" class="btn btn-primary" data-dismiss="modal">Submit</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 
 

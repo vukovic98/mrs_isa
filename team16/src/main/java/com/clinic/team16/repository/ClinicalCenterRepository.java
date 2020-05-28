@@ -13,4 +13,9 @@ public interface ClinicalCenterRepository extends JpaRepository<ClinicalCenter, 
 			value = "SELECT * FROM clinical_center WHERE clinic_id = ?1",
 			nativeQuery = true)
 	public ClinicalCenter findByClinicId(long id);
+	
+	@Query(
+			value = "SELECT * FROM clinical_center WHERE clinical_center.name = ?1",
+			nativeQuery = true)
+	public ClinicalCenter findByName(String name);
 }
