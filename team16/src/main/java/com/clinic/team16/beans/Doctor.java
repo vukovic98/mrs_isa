@@ -144,16 +144,12 @@ public class Doctor extends User {
 	}
 
 	public Grade addGrade(Patient p,int grade) {
-		
 		for(Grade g : this.grades) {
 			if(g.getPatient().getEmail().equalsIgnoreCase(p.getEmail())) {
 				g.setGradeNumber(grade);
 				return g;				
-				
 			}
 		}
-		
-	
 		Grade g = new Grade(grade, p);
 		this.grades.add(g);
 		return g;

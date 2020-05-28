@@ -161,21 +161,17 @@ public class Clinic {
 		this.grades = grades;
 	}
 	
-	public void addGrade(Grade grade) {
-		boolean exists = false;
-		
+public Grade addGrade(Patient p,int grade) {	
 		for(Grade g : this.grades) {
-			if(g.getPatient().getEmail().equalsIgnoreCase(grade.getPatient().getEmail())) {
-				g.setGradeNumber(grade.getGradeNumber());
-				exists = true;
+			if(g.getPatient().getEmail().equalsIgnoreCase(p.getEmail())) {
+				g.setGradeNumber(grade);
+				return g;				
 			}
 		}
 		
-		if(!exists) {
-			//Grade g = new Grade(0,number, p);
-
-			this.grades.add(grade);
-		}
+		Grade g = new Grade(grade, p);
+		this.grades.add(g);
+		return g;
 	}
 
 }

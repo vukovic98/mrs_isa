@@ -70,10 +70,7 @@ public class DoctorController {
 		long id = doctorID;
 		Doctor found = this.doctorService.findOneByDoctorID(id);
 		Patient p = this.patientService.findOneByEmail("p@p");
-		boolean exists = false;
-		
 		if(found!=null && p != null) {
-			
 		    Grade g = found.addGrade(p,Integer.parseInt(grade));
 			gradeService.save(g);
 			doctorService.save(found);

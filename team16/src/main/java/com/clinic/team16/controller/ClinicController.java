@@ -57,16 +57,14 @@ public class ClinicController {
 		Clinic c = this.clinicService.findOneByClinicID(id);
 		Patient p = this.patientService.findOneByEmail("p@p");
 		if(c!= null && p != null) {
-			Grade g = new Grade(Integer.parseInt(grade), p);
-			c.addGrade(g);
+			Grade g = c.addGrade(p, Integer.parseInt(grade));
 			gradeService.save(g);
 			clinicService.save(c);
 			patientService.save(p);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		else
-			System.out.println("LOSINAAAAAA");
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 }
