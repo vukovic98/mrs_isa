@@ -65,6 +65,14 @@ function loadClinicsAllOK(clinics){
 		  });
 }
 
+$("#searchButton").click(function(){
+	var appType = $("#appointmentTypes").val();
+	var avgGrade = $("#avgGrade").val();
+	var date = $("date").val();
+	console.log(appType+" "+ avgGrade+" "+date);
+	
+});
+
 
 function unauthorized(){
 	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");

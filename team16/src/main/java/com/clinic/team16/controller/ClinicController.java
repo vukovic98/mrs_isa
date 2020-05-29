@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Clinic;
+import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.Patient;
+import com.clinic.team16.beans.PricelistItem;
+import com.clinic.team16.beans.DTO.ClinicFilterDTO;
 import com.clinic.team16.beans.DTO.ClinicInfoDTO;
 import com.clinic.team16.beans.DTO.RateDTO;
 import com.clinic.team16.service.AppointmentService;
@@ -49,6 +52,36 @@ public class ClinicController {
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	@GetMapping(path="/findAppointments/{appType}&{date}&{avgGrade}", consumes = "application/json")
+	public ResponseEntity<List<ClinicFilterDTO>> findAppointments(@PathVariable String appType, @PathVariable String date, @PathVariable String avgGrade) {
+		List<Clinic> list = this.clinicService.filterClinics(appType);
+		List<ClinicFilterDTO> dtoList = new ArrayList<ClinicFilterDTO>();
+		double price = 0.0;
+		boolean hasAvailableDoctor = false;
+		if(list != null) {
+			for(Clinic c : list) {
+				for(PricelistItem pli: c.getPricelist().getPricelistItems()) {
+					if(pli.getName().equalsIgnoreCase(appType)) {
+						price = pli.getPrice();
+						break;
+					}
+				}
+				if(Math.ceil(c.getAverageGrade())==Double.parseDouble(avgGrade)) {
+					for(Doctor d:c.getDoctors()) {
+						
+					}
+					if(hasAvailableDoctor) {
+						dtoList.add(new ClinicFilterDTO(c.getClinicID(),c.getName(),c.getAddress(),c.getAverageGrade(),appType,price));
+					}
+				}
+			}
+			return new ResponseEntity<List<ClinicFilterDTO>>(dtoList, HttpStatus.OK);
+		}
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	
 	
 	@PutMapping(path="/rateClinic/{clinicID}&{grade}", consumes = "application/json")
 	public ResponseEntity<HttpStatus> rateClinic(@PathVariable("clinicID") long clinicID, @PathVariable("grade") String grade) {

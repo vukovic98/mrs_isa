@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.clinic.team16.beans.Clinic;
@@ -23,7 +24,11 @@ public class ClinicService {
 		
 		return clinicRepository.findOneByClinicID(i);
 	}
-
+ 
+	public List<Clinic> filterClinics(String appType){
+		return clinicRepository.filterClinics(appType);
+		
+	}
 	public Clinic save(Clinic c) {
 	
 		return this.clinicRepository.save(c);
