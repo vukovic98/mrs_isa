@@ -381,7 +381,7 @@ a.my_logout:hover {
 
 .links {
 	display: grid;
-	grid-template-columns: repeat(var(- -items), 1fr) 60px;
+	grid-template-columns: repeat(var(--items), 1fr) 60px;
 	position: relative;
 }
 
@@ -390,8 +390,8 @@ a.my_logout:hover {
 	transition: all .5s;
 	position: absolute;
 	bottom: 0;
-	left: var(- -left, calc(100%/ var(- -items)* (var(- -index)- 1)));
-	width: var(- -width, calc(100%/ var(- -items))); -
+	left: var(--left, calc(100%/ var(--items)* (var(--index)- 1)));
+	width: var(--width, calc(100%/ var(--items))); -
 	-index: 0;
 }
 

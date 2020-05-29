@@ -23,7 +23,7 @@ public class ClinicalCenterAdminService {
 	}
 	
 	public ArrayList<ClinicalCenterAdministrator> findAll() {
-		return (ArrayList<ClinicalCenterAdministrator>) this.adminRepository.findAll();
+		return (ArrayList<ClinicalCenterAdministrator>) this.adminRepository.findAllAdmins();
 	}
 	
 	public ClinicalCenterAdministrator findOneByEmail(String email) {
