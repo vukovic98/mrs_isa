@@ -37,26 +37,27 @@ public class ClinicController {
 
 	@Autowired
 	private PatientService patientService;
-
+	
 	@Autowired
-	public ResponseEntity<List<ClinicInfoDTO>> findAll() {
-		List<Clinic> list = this.clinicService.findAll();
-		List<ClinicInfoDTO> daoList = new ArrayList<ClinicInfoDTO>();
-		for (Clinic c : list) {
-				daoList.add(new ClinicInfoDTO(c.getClinicID() ,c.getName(), c.getAddress(), c.getDescription(),c.getAverageGrade()));
+	private PricelistService pricelistService;
+	
+	@Autowired
+	private GradeService gradeService;
 
-
-
-
+	@GetMapping(path = "/findAll")
+	public ResponseEntity<ArrayList<ClinicInfoDTO>> findAll() {
+		ArrayList<Clinic> list = this.clinicService.findAll();
+		if (list != null) {
+			ArrayList<ClinicInfoDTO> daoList = new ArrayList<ClinicInfoDTO>();
+			for (Clinic c : list) {
+				daoList.add(new ClinicInfoDTO(c.getClinicID(), c.getName(), c.getAddress(), c.getDescription(),
+						c.getAverageGrade()));
 			}
-		if(list != null)
-			return new ResponseEntity<List<ClinicInfoDTO>>(daoList, HttpStatus.OK);
-		
+				return new ResponseEntity<ArrayList<ClinicInfoDTO>>(daoList, HttpStatus.OK);
 		} else
-		 else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
 
+	}
 
 	@PostMapping(path = "/addClinic", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addClinic(@RequestBody ClinicAddDTO clinic) {

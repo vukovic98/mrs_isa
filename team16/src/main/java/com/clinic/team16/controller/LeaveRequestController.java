@@ -10,7 +10,10 @@ import com.clinic.team16.service.LeaveRequestService;
 @RestController
 @RequestMapping("/leaveRequestApi")
 public class LeaveRequestController {
+	
 	@Autowired
 	LeaveRequestService leaveRequestService;
 
+	
+	
 }

@@ -1,6 +1,6 @@
 package com.clinic.team16.service;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,8 @@ public class ClinicService {
 	@Autowired
 	private ClinicRepository clinicRepository;
 
-	public List<Clinic> findAll() {
-		return this.clinicRepository.findAll();
+	public ArrayList<Clinic> findAll() {
+		return (ArrayList<Clinic>) this.clinicRepository.findAll();
 	}
 
 	public Clinic findOneByClinicID(long i) {
