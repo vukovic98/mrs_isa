@@ -56,7 +56,7 @@ public class UserController {
 		} catch (BadCredentialsException e) {
 			return new ResponseEntity<UserLoginDTO>(new UserLoginDTO(null, null, null), HttpStatus.UNAUTHORIZED);
 		}
-		UserDetails ua = userService.loadUserByUsername(u.getEmail());
+UserDetails ua = userService.loadUserByUsername(u.getEmail());
 
 		if (ua != null) {
 			User user = new User(u.getEmail(), ua.getPassword());
@@ -64,8 +64,7 @@ public class UserController {
 			return new ResponseEntity<UserLoginDTO>(new UserLoginDTO(jwtToken, u.getEmail(), user.getRole().toString()),
 					HttpStatus.OK);
 		} else
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);	}
 
 	@GetMapping(path = "/sendMail")
 	public String sendMail() throws MessagingException {
