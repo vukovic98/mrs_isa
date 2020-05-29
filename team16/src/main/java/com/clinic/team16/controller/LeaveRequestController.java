@@ -1,6 +1,5 @@
 package com.clinic.team16.controller;
 
- 
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +16,23 @@ import com.clinic.team16.service.LeaveRequestService;
 @RestController
 @RequestMapping("/leaveRequestApi")
 public class LeaveRequestController {
-	
+
 	@Autowired
 	LeaveRequestService leaveRequestService;
 
-@GetMapping(path = "/findAllApprovedLeaves")
+	@GetMapping(path = "/findAllApprovedLeaves")
 	public ResponseEntity<ArrayList<LeaveRequestDTO>> findAllApprovedLeaves() {
 		ArrayList<LeaveRequest> list = this.leaveRequestService.findAllApprovedLeaves();
-		
-		if(list != null) {
+
+		if (list != null) {
 			ArrayList<LeaveRequestDTO> dtoList = new ArrayList<>();
-			
-			for(LeaveRequest l : list) {
+
+			for (LeaveRequest l : list) {
 				dtoList.add(new LeaveRequestDTO(l.getDateFrom(), l.getDateTo()));
 			}
-			
+
 			return new ResponseEntity<ArrayList<LeaveRequestDTO>>(dtoList, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}}}
+	}
+}

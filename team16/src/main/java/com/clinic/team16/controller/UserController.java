@@ -1,9 +1,7 @@
 package com.clinic.team16.controller;
 
-import java.util.List;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,28 +11,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.clinic.team16.JWT.JwtToken;
 
-import com.clinic.team16.beans.Patient;
 
-import com.clinic.team16.beans.Role;
 import com.clinic.team16.beans.User;
 import com.clinic.team16.beans.DTO.UserAuthDTO;
 import com.clinic.team16.beans.DTO.UserLoginDTO;
-import com.clinic.team16.service.AppointmentService;
-import com.clinic.team16.service.ClinicalCenterService;
 import com.clinic.team16.service.UserService;
 
 @RestController
