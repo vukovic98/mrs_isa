@@ -39,6 +39,39 @@ function calendarEventsAllOK(events) {
 	  eventList.push(ev);
   });
   console.log(eventList);
+  
+  $.ajax ({
+      type: 'GET',
+      url: '/leaveRequestApi/findAllApprovedLeaves',
+	  headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+      statusCode: {
+        200: function(responseObject, textStatus, jqXHR) {
+          console.log("Calendar events - leaves - 200 OK");
+          
+          $.each(responseObject, function(i, val) {
+        	  var text = "Date from: " + val.dateFrom + "\nDate to: " + val.dateTo;
+        	  
+        	  var ev = {
+        			  start: val.dateFrom,
+        			  end: val.dateTo,
+        			  title: "Leave",
+        			  color: '#eee',
+        			  data: {data: text}
+        	  }
+        	  
+        	  eventList.push(ev);
+          });
+        },
+        204: function(responseObject, textStatus, jqXHR) {
+          console.log("Calendar events - leaves - 204 No Content");
+        },
+		403: function(responseObject, textStatus, jqXHR) {
+			console.log("403 Unauthorized");
+			unauthorized();
+		}
+      }
+    });
+  
    $('.event-calendar').equinox({
       events: eventList,
     });
