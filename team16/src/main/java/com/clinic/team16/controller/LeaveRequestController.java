@@ -35,4 +35,4 @@ public class LeaveRequestController {
 			return new ResponseEntity<ArrayList<LeaveRequestDTO>>(dtoList, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}}}
+	}}

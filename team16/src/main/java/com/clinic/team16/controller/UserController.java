@@ -58,10 +58,11 @@ public class UserController {
 			return new ResponseEntity<UserLoginDTO>(new UserLoginDTO(null, null, null), HttpStatus.UNAUTHORIZED);
 		}
 
-		UserDetails ua = userService.loadUserByUsername(u.getEmail());
+		User ua = userService.findOneByEmail(u.getEmail());
 
 		if (ua != null) {
-			User user = new User(u.getEmail(), ua.getPassword());
+			User user = new User(u.getEmail(), ua.getPassword(),ua.getFirstName(),ua.getLastName(),ua.getAddress(),ua.getCity(),ua.getCountry(),ua.getPhoneNumber(),ua.getInsuranceNumber(),ua.getRole());
+
 			final String jwtToken = jwtTokenUtility.generateToken(user);
 			return new ResponseEntity<UserLoginDTO>(new UserLoginDTO(jwtToken, u.getEmail(), user.getRole().toString()),
 					HttpStatus.OK);
