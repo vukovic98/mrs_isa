@@ -30,7 +30,7 @@ function calendarEventsAllOK(events) {
     var text = "Patient: " + val.patient + ";\nStart: " + val.date.substring(10, 16) + "h;\nDate: " + val.date.substring(0, 10)
     + ";\nType: " + val.appointmentType;
 	  var ev = {
-		    start: val.date,
+		      start: val.date,
 	        end: val.date,
 	        title: val.appointmentType,
 	        color: '#eee',
@@ -46,21 +46,21 @@ function calendarEventsAllOK(events) {
 	  headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
       statusCode: {
         200: function(responseObject, textStatus, jqXHR) {
-          console.log("Calendar events - leaves - 200 OK");
-          $.each(responseObject, function(i, val) {
-        	 var text = "Date from: " + val.dateFrom + "\nDate to: " + val.dateTo;
-        	 var ev = {
-        			start: val.dateFrom,
-        			end: val.dateTo,
-        			title: "Leave",
-        			color: '#eee',
-        			data: {data: text}
-        	 }
-        	 eventList.push(ev);
+          console.log("Calendar events - 200 OK");
+          $.each(events, function(i, val) {
+        	    var text = "Date from: " + val.dateFrom + "\nDate to: " + val.dateTo;
+        		  var ev = {
+        			    start: val.dateFrom,
+        		        end: val.dateTo,
+        		        title: "Leave",
+        		        color: '#eee',
+        		        data: {data: text}
+        		  }
+        		  eventList.push(ev);
           });
         },
         204: function(responseObject, textStatus, jqXHR) {
-          console.log("Calendar events - leaves - 204 No Content");
+          console.log("Calendar events - 204 No Content");
         },
 		403: function(responseObject, textStatus, jqXHR) {
 			console.log("403 Unauthorized");
@@ -68,8 +68,6 @@ function calendarEventsAllOK(events) {
 		}
       }
     });
-  
-   console.log(eventList);
    $('.event-calendar').equinox({
       events: eventList,
     });
