@@ -11,7 +11,11 @@ import com.clinic.team16.beans.ClinicalCenter;
 
 @Repository
 public interface ClinicRepository extends JpaRepository<Clinic, Long> {
-
+	
+	@Query(
+			value = "SELECT * FROM clinic where clinic.name = ?1",
+			nativeQuery = true)
+	public Clinic findOneByName(String name);
 	public Clinic findOneByClinicID(long id);
 
 	@Query(

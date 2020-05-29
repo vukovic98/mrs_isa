@@ -10,6 +10,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Embeddable
 public class ClinicalCenterAdministrator extends User {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "ClinicalCenter_ID")
@@ -28,6 +33,20 @@ public class ClinicalCenterAdministrator extends User {
 	public ClinicalCenterAdministrator() {
 		super();
 	}
+	
+	
+
+	public ClinicalCenterAdministrator(String email, String password, String firstName, String lastName, String address,
+			String city, String country, String phoneNumber, String insuranceNumber, Role role,
+			ClinicalCenter clinicalCenter, List<RegistrationRequest> registrationRequest,
+			List<AppointmentRequest> appointmentRequest) {
+		super(email, password, firstName, lastName, address, city, country, phoneNumber, insuranceNumber, role);
+		this.clinicalCenter = clinicalCenter;
+		this.registrationRequest = registrationRequest;
+		this.appointmentRequest = appointmentRequest;
+	}
+
+
 
 	public ClinicalCenterAdministrator(ClinicalCenter clinicalCenter,
 			ArrayList<RegistrationRequest> registrationRequest, ArrayList<AppointmentRequest> appointmentRequest) {
