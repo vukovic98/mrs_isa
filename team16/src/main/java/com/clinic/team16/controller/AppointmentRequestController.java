@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.service.AppointmentRequestService;
-import com.clinic.team16.service.AppointmentService;
 
 @RestController
 @RequestMapping("/appointmentRequestApi")

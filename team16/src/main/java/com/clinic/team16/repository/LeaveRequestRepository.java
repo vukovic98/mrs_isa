@@ -12,7 +12,7 @@ import com.clinic.team16.beans.LeaveRequest;
 public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Long>{
 
 	@Query(
-			value = "SELECT * FROM leave_request WHERE leave_request.approved = true",
+			value = "SELECT * FROM leave_request WHERE leave_request.approved = true AND leave_request.user_id = ?1",
 			nativeQuery = true)
-	public List<LeaveRequest> findAllApprovedLeaves();
+	public List<LeaveRequest> findAllApprovedLeavesByUser(long id);
 }

@@ -23,4 +23,8 @@ public class NurseService{	@Autowired
 	public Nurse findOneByEmail(String email) {
 		return this.nurseRepository.findOneByEmail(email);
 	}
+	
+	public Nurse save(Nurse n) {
+		return this.nurseRepository.save(n);
+	}
 }

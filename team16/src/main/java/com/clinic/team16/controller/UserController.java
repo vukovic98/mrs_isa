@@ -1,6 +1,5 @@
 package com.clinic.team16.controller;
 
-
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.JWT.JwtToken;
-
 
 import com.clinic.team16.beans.User;
 import com.clinic.team16.beans.DTO.UserAuthDTO;
@@ -32,7 +29,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private JwtToken jwtTokenUtility;
 
@@ -50,7 +47,8 @@ public class UserController {
 		User ua = userService.findOneByEmail(u.getEmail());
 
 		if (ua != null) {
-			User user = new User(u.getEmail(), ua.getPassword(),ua.getFirstName(),ua.getLastName(),ua.getAddress(),ua.getCity(),ua.getCountry(),ua.getPhoneNumber(),ua.getInsuranceNumber(),ua.getRole());
+			User user = new User(u.getEmail(), ua.getPassword(), ua.getFirstName(), ua.getLastName(), ua.getAddress(),
+					ua.getCity(), ua.getCountry(), ua.getPhoneNumber(), ua.getInsuranceNumber(), ua.getRole());
 
 			final String jwtToken = jwtTokenUtility.generateToken(user);
 			return new ResponseEntity<UserLoginDTO>(new UserLoginDTO(jwtToken, u.getEmail(), user.getRole().toString()),
@@ -66,17 +64,4 @@ public class UserController {
 
 		return ("SENT!");
 	}
-	/*
-	 * @PostMapping(path = "/validateUser", consumes = "application/json") public
-	 * ResponseEntity<User> validateUser(@RequestBody User u) {
-	 * System.out.println(u.getEmail()); System.out.println(u.getPassword()); User k
-	 * = userService.findOneByEmail(u.getEmail()); boolean ok = false;
-	 * 
-	 * if(k != null) { if(u.getPassword().equals(k.getPassword())) { if(k instanceof
-	 * Patient) { if(((Patient) k).getMedicalRecord() != null) ok = true; else ok =
-	 * false; } else { ok = true; } } else { ok = false; } }
-	 * 
-	 * if(ok) { return new ResponseEntity<User>(k, HttpStatus.OK); } else { return
-	 * new ResponseEntity<User>(k, HttpStatus.BAD_REQUEST); }
-	 */
 }

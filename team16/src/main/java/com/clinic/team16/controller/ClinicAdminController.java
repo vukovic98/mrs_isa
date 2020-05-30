@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Clinic;
@@ -49,18 +51,19 @@ public class ClinicAdminController {
 
 	@GetMapping(path = "/findOneByEmail")
 	public ResponseEntity<ClinicAdministrator> findOneByEmail() {
-
-		ClinicAdministrator found = this.clinicAdminService.findOneByEmail("s@s");
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator found = this.clinicAdminService.findOneByEmail(currentUser);
 		System.out.println("PROSLO");
 		if (found != null)
 			return new ResponseEntity<ClinicAdministrator>(found, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-@PutMapping(path = "/updateAdmin", consumes = "application/json")
+
+	@PutMapping(path = "/updateAdmin", consumes = "application/json")
 	public ResponseEntity<ClinicAdministrator> updatePatient(@RequestBody User p) {
-		
-		ClinicAdministrator found = this.clinicAdminService.findOneByEmail("s@s");
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator found = this.clinicAdminService.findOneByEmail(currentUser);
 
 		if (found != null) {
 			found.setFirstName(p.getFirstName());
@@ -70,13 +73,15 @@ public class ClinicAdminController {
 			found.setCountry(p.getCountry());
 			found.setPhoneNumber(p.getPhoneNumber());
 			final ClinicAdministrator updatedAdmin = clinicAdminService.save(found);
-		    return ResponseEntity.ok(updatedAdmin);
+			return ResponseEntity.ok(updatedAdmin);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}@PostMapping(path = "/addAdmin", consumes = "application/json")
+	}
+
+	@PostMapping(path = "/addAdmin", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addAdmin(@RequestBody ClinicAdminFullInfo admin) {
 		Clinic c = this.clinicService.findOneByName(admin.getClinic());
-		
+
 		if (c != null) {
 			System.out.println("NASAO KLINIKU.");
 			ClinicAdministrator found = this.clinicAdminService.findOneByEmail(admin.getEmail());
@@ -94,39 +99,39 @@ public class ClinicAdminController {
 					return new ResponseEntity<>(HttpStatus.OK);
 				else
 					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			} else 
+			} else
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			
+
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-	}	
+	}
+
 	@GetMapping(path = "/findPassword")
 	public ResponseEntity<String> findPassword() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator found = this.clinicAdminService.findOneByEmail(currentUser);
 
-		ClinicAdministrator found = this.clinicAdminService.findOneByEmail("s@s");
-		 
 		if (found != null) {
 			String p = found.getPassword();
 			return new ResponseEntity<String>(p, HttpStatus.OK);
 
-		}
-		else
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-	
-	@PutMapping(path = "/changePassword", consumes = "application/json")
-	public ResponseEntity<ClinicAdministrator> changePassword(@RequestBody String p) {
-		
-		ClinicAdministrator found = this.clinicAdminService.findOneByEmail("s@s");
-
-		if (found != null) {
-			
-			found.setPassword(p.substring(1, p.length()-1));
-			final ClinicAdministrator updatedAdmin = clinicAdminService.save(found);
-		    return ResponseEntity.ok(updatedAdmin);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
+	@PutMapping(path = "/changePassword", consumes = "application/json")
+	public ResponseEntity<ClinicAdministrator> changePassword(@RequestBody String p) {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator found = this.clinicAdminService.findOneByEmail(currentUser);
+
+		if (found != null) {
+
+			found.setPassword(p.substring(1, p.length() - 1));
+			final ClinicAdministrator updatedAdmin = clinicAdminService.save(found);
+			return ResponseEntity.ok(updatedAdmin);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
 }

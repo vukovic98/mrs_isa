@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-
 import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.ClinicalCenterAdministrator;
 import com.clinic.team16.beans.MedicalRecord;
@@ -25,7 +24,6 @@ import com.clinic.team16.beans.DTO.PatientDTO;
 import com.clinic.team16.beans.DTO.PatientInfoDTO;
 import com.clinic.team16.beans.DTO.PatientMedicalRecordDTO;
 import com.clinic.team16.beans.DTO.UserDTO;
-import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicalCenterAdminService;
 import com.clinic.team16.service.MedicalRecordService;
 import com.clinic.team16.service.PatientService;
@@ -53,9 +51,6 @@ public class PatientController {
 
 	@Autowired
 	private MedicalRecordService medicalRecordService;
-	
-	@Autowired
-	private AppointmentService appointmentService;
 
 	@GetMapping(path = "/findAll")
 	public ResponseEntity<List<PatientInfoDTO>> findAll() {
@@ -77,28 +72,28 @@ public class PatientController {
 
 	@GetMapping(path = "/findOneByEmail")
 	public ResponseEntity<Patient> findOneByEmail() {
-
-		Patient found = this.patientService.findOneByEmail("p@p");
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Patient found = this.patientService.findOneByEmail(currentUser);
 		System.out.println("PROSLO");
 		if (found != null)
 			return new ResponseEntity<Patient>(found, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	@GetMapping(path = "/findPatientsPassword")
 	public ResponseEntity<String> findPatientsPassword() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Patient found = this.patientService.findOneByEmail(currentUser);
 
-		Patient found = this.patientService.findOneByEmail("p@p");
-		 
 		if (found != null) {
 			String p = found.getPassword();
 			return new ResponseEntity<String>(p, HttpStatus.OK);
 
-		}
-		else
+		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+
 	@PostMapping(path = "/findModalByEmail", consumes = "application/json")
 	public ResponseEntity<UserDTO> findModalByEmail(@RequestBody User u) {
 
@@ -112,10 +107,11 @@ public class PatientController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+
 	@PutMapping(path = "/updatePatient", consumes = "application/json")
 	public ResponseEntity<HttpStatus> updatePatient(@RequestBody Patient p) {
-		
-		Patient found = this.patientService.findOneByEmail("p@p");
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Patient found = this.patientService.findOneByEmail(currentUser);
 
 		if (found != null) {
 			found.setFirstName(p.getFirstName());
@@ -124,22 +120,30 @@ public class PatientController {
 			found.setCity(p.getCity());
 			found.setCountry(p.getCountry());
 			found.setPhoneNumber(p.getPhoneNumber());
-			final Patient updatedPatient = patientService.save(found);
-		    //return ResponseEntity.ok(updatedPatient);
-			return new ResponseEntity<>(HttpStatus.OK);
+			Patient updatedPatient = patientService.save(found);
+
+			if (updatedPatient != null)
+				return new ResponseEntity<>(HttpStatus.OK);
+			else
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+
 	@PutMapping(path = "/changePassword", consumes = "application/json")
 	public ResponseEntity<HttpStatus> changePassword(@RequestBody String p) {
-		
-		Patient found = this.patientService.findOneByEmail("p@p");
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Patient found = this.patientService.findOneByEmail(currentUser);
 
 		if (found != null) {
-			
-			found.setPassword(p.substring(1, p.length()-1));
-			final Patient updatedPatient = patientService.save(found);
-		    return  new ResponseEntity<>(HttpStatus.OK);
+
+			found.setPassword(p.substring(1, p.length() - 1));
+			Patient updatedPatient = patientService.save(found);
+
+			if (updatedPatient != null)
+				return new ResponseEntity<>(HttpStatus.OK);
+			else
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -167,7 +171,6 @@ public class PatientController {
 
 			this.registrationRequestService.save(r);
 			this.clinicalCenterAdminService.save(a);
-			
 
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
@@ -198,35 +201,32 @@ public class PatientController {
 		}
 
 	}
+
 	@GetMapping(path = "/medicalRecord")
 	public ResponseEntity<PatientMedicalRecordDTO> medicalRecord() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Patient found = this.patientService.findOneByEmail(currentUser);
 
-		Patient found = this.patientService.findOneByEmail("p@p");
-	
 		if (found != null) {
 			String name = found.getFirstName() + " " + found.getLastName();
-			
-			
-			PatientMedicalRecordDTO record = new PatientMedicalRecordDTO(name,
-					found.getMedicalRecord().getGender(),
-					found.getMedicalRecord().getBirthday().toString(),
-					found.getMedicalRecord().getHeight(),
-					found.getMedicalRecord().getWeight(),
-					found.getMedicalRecord().getBloodType(),
-					found.getMedicalRecord().getAllergies(),
-					found.getMedicalRecord().getPerscriptions());
-			 
+
+			PatientMedicalRecordDTO record = new PatientMedicalRecordDTO(name, found.getMedicalRecord().getGender(),
+					found.getMedicalRecord().getBirthday().toString(), found.getMedicalRecord().getHeight(),
+					found.getMedicalRecord().getWeight(), found.getMedicalRecord().getBloodType(),
+					found.getMedicalRecord().getAllergies(), found.getMedicalRecord().getPerscriptions());
+
 			return new ResponseEntity<PatientMedicalRecordDTO>(record, HttpStatus.OK);
-		} 
-		else {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);}
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 	}
+
 	@GetMapping(path = "/patientInfo")
 	public ResponseEntity<PatientDTO> patientInfo() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Patient found = this.patientService.findOneByEmail(currentUser);
 
-		Patient found = this.patientService.findOneByEmail("p@p");
-	
-		if (found != null) {		
+		if (found != null) {
 			PatientDTO patient = new PatientDTO();
 			patient.setAddress(found.getAddress());
 			patient.setCity(found.getCity());
@@ -237,67 +237,67 @@ public class PatientController {
 			patient.setInsurance(found.getInsuranceNumber());
 			patient.setPassword(found.getPassword());
 			patient.setPhone(found.getPhoneNumber());
-			 
+
 			return new ResponseEntity<PatientDTO>(patient, HttpStatus.OK);
-		} 
-		else {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);}
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 	}
+
 	@GetMapping(path = "/appointmentHistory")
 	public ResponseEntity<List<AppointmentHistoryDTO>> appointmentHistory() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Patient found = this.patientService.findOneByEmail(currentUser);
 
-		Patient found = this.patientService.findOneByEmail("p@p");
-	   
-	   
 		if (found != null) {
-			 List<Appointment> apps = new ArrayList<>();
-			 apps = found.getAppointments();
-		
-			 List<AppointmentHistoryDTO> appHistory = new ArrayList<AppointmentHistoryDTO>();
-			 if(apps != null && apps.size()>0) {
-				 	for (Appointment a : apps) {
-						AppointmentHistoryDTO ah = new AppointmentHistoryDTO();
-						ah.setAppointmentID(a.getAppointmentId());
-						ah.setClinicID(a.getDoctor().getClinic().getClinicID());
-						ah.setDoctorID(a.getDoctor().getId());
-						ah.setDatetime(a.getDateTime().toString());
-						ah.setAppointmentType(a.getPricelistItems().getName());
-						ah.setClinic(a.getDoctor().getClinic().getName());
-						ah.setDoctor(a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName() );
-						appHistory.add(ah);
-					}	 	
-			 }	
-			 return new ResponseEntity<List<AppointmentHistoryDTO>>(appHistory, HttpStatus.OK);
-		} 
-		else {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);}
-		
+			List<Appointment> apps = new ArrayList<>();
+			apps = found.getAppointments();
+
+			List<AppointmentHistoryDTO> appHistory = new ArrayList<AppointmentHistoryDTO>();
+			if (apps != null && apps.size() > 0) {
+				for (Appointment a : apps) {
+					AppointmentHistoryDTO ah = new AppointmentHistoryDTO();
+					ah.setAppointmentID(a.getAppointmentId());
+					ah.setClinicID(a.getDoctor().getClinic().getClinicID());
+					ah.setDoctorID(a.getDoctor().getId());
+					ah.setDatetime(a.getDateTime().toString());
+					ah.setAppointmentType(a.getPricelistItems().getName());
+					ah.setClinic(a.getDoctor().getClinic().getName());
+					ah.setDoctor(a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName());
+					appHistory.add(ah);
+				}
+			}
+			return new ResponseEntity<List<AppointmentHistoryDTO>>(appHistory, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+
 	}
+
 	@PostMapping(path = "/findModalByID", consumes = "application/json")
 	public ResponseEntity<AppointmentHistoryDTO> findModalByID(@RequestBody Appointment a) {
 		long id = a.getAppointmentId();
 		AppointmentHistoryDTO app = new AppointmentHistoryDTO();
-		Patient found = this.patientService.findOneByEmail("p@p");
-		
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Patient found = this.patientService.findOneByEmail(currentUser);
+
 		if (found != null) {
-			if(found.getAppointments().size() >0) {
+			if (found.getAppointments().size() > 0) {
 				for (Appointment ap : found.getAppointments()) {
-					if (ap.getAppointmentId()==id) {
+					if (ap.getAppointmentId() == id) {
 						app.setClinicID(ap.getDoctor().getClinic().getClinicID());
 						app.setDoctorID(ap.getDoctor().getId());
 						app.setClinic(ap.getDoctor().getClinic().getName());
-						app.setDoctor(ap.getDoctor().getFirstName()+" "+ ap.getDoctor().getLastName());
+						app.setDoctor(ap.getDoctor().getFirstName() + " " + ap.getDoctor().getLastName());
 					}
 				}
 			}
 			return new ResponseEntity<AppointmentHistoryDTO>(app, HttpStatus.OK);
-		}
-		else {
+		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
 		}
 
 	}
-	
 
 }

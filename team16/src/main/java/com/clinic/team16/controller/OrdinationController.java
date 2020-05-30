@@ -14,17 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.Clinic;
 import com.clinic.team16.beans.Ordination;
 import com.clinic.team16.beans.OrdinationType;
-import com.clinic.team16.beans.Pricelist;
-import com.clinic.team16.beans.PricelistItem;
 import com.clinic.team16.beans.DTO.OrdinationAddDTO;
 import com.clinic.team16.beans.DTO.OrdinationDTO;
-import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicService;
-import com.clinic.team16.service.ClinicalCenterService;
 import com.clinic.team16.service.OrdinationService;
 
 @RestController
@@ -33,24 +28,23 @@ public class OrdinationController {
 
 	@Autowired
 	private OrdinationService ordinationService;
-	
+
 	@Autowired
 	private ClinicService clinicService;
-	
-	@GetMapping(path = "/findAll") 
+
+	@GetMapping(path = "/findAll")
 	public ResponseEntity<List<OrdinationDTO>> findAll() {
 		List<Ordination> list = this.ordinationService.findAll();
 		List<OrdinationDTO> dtoList = new ArrayList<OrdinationDTO>();
-		if(list != null) {
+		if (list != null) {
 			for (Ordination ordination : list) {
 				dtoList.add(new OrdinationDTO(ordination.getName(), ordination.getType()));
 			}
 			return new ResponseEntity<List<OrdinationDTO>>(dtoList, HttpStatus.OK);
-		}
-		else
+		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	@PostMapping(path = "/addOrdination", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addPricelistItem(@RequestBody OrdinationAddDTO ord) {
 		Ordination o = ordinationService.findOneByName(ord.getName());
@@ -73,15 +67,14 @@ public class OrdinationController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
+
 	@DeleteMapping(path = "/deleteOrdination/{id}", consumes = "application/json")
 	public ResponseEntity<HttpStatus> deleteMedication(@PathVariable("id") String id) {
 		System.out.println(id);
 		Ordination or = ordinationService.findOneByName(id);
-		
+
 		if (or != null) {
-			
+
 			or.setClinic(null);
 			this.ordinationService.delete(or);
 

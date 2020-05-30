@@ -1,12 +1,11 @@
 package com.clinic.team16.controller;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,8 +20,6 @@ import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.Pricelist;
 import com.clinic.team16.beans.DTO.ClinicAddDTO;
 import com.clinic.team16.beans.DTO.ClinicInfoDTO;
-import com.clinic.team16.beans.DTO.RateDTO;
-import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicService;
 import com.clinic.team16.service.GradeService;
 import com.clinic.team16.service.PatientService;
@@ -87,9 +84,10 @@ public class ClinicController {
 	@PutMapping(path = "/rateClinic/{clinicID}&{grade}", consumes = "application/json")
 	public ResponseEntity<HttpStatus> rateClinic(@PathVariable("clinicID") long clinicID,
 			@PathVariable("grade") String grade) {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		long id = clinicID;
 		Clinic c = this.clinicService.findOneByClinicID(id);
-		Patient p = this.patientService.findOneByEmail("p@p");
+		Patient p = this.patientService.findOneByEmail(currentUser);
 		if (c != null && p != null) {
 			Grade g = c.addGrade(p, Integer.parseInt(grade));
 			gradeService.save(g);

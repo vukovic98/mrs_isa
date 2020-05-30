@@ -3,7 +3,7 @@ $( document ).ready(function() {
     
     $.ajax ({
       type: 'GET',
-      url: '/appointmentApi/findAllAppointments',
+      url: '/appointmentApi/findAllDoctorAppointments',
 	  headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
       statusCode: {
         200: function(responseObject, textStatus, jqXHR) {
@@ -42,13 +42,14 @@ function calendarEventsAllOK(events) {
   
   $.ajax ({
       type: 'GET',
-      url: '/leaveRequestApi/findAllApprovedLeaves',
+      url: '/leaveRequestApi/findAllApprovedLeavesForUser',
 	  headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
       statusCode: {
         200: function(responseObject, textStatus, jqXHR) {
-          console.log("Calendar events - 200 OK");
-          $.each(events, function(i, val) {
-        	    var text = "Date from: " + val.dateFrom + "\nDate to: " + val.dateTo;
+          console.log("Calendar events leaves - 200 OK");
+          $.each(responseObject, function(i, val) {
+        	  	console.log(val);
+        	    var text = "Date from: " + val.dateFrom + ";\nDate to: " + val.dateTo;
         		  var ev = {
         			    start: val.dateFrom,
         		        end: val.dateTo,
@@ -58,18 +59,19 @@ function calendarEventsAllOK(events) {
         		  }
         		  eventList.push(ev);
           });
+          
+          $('.event-calendar').equinox({
+              events: eventList,
+            });
         },
         204: function(responseObject, textStatus, jqXHR) {
-          console.log("Calendar events - 204 No Content");
+          console.log("Calendar events leaves - 204 No Content");
         },
 		403: function(responseObject, textStatus, jqXHR) {
 			console.log("403 Unauthorized");
 			unauthorized();
 		}
       }
-    });
-   $('.event-calendar').equinox({
-      events: eventList,
     });
  
 }

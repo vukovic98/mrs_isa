@@ -14,7 +14,11 @@ public class LeaveRequestService {
 	@Autowired
     private LeaveRequestRepository leaveRequestRepositroy;
 	
-	public ArrayList<LeaveRequest> findAllApprovedLeaves() {
-		return (ArrayList<LeaveRequest>) this.leaveRequestRepositroy.findAllApprovedLeaves();
+	public ArrayList<LeaveRequest> findAllApprovedLeavesForUser(long id) {
+		return (ArrayList<LeaveRequest>) this.leaveRequestRepositroy.findAllApprovedLeavesByUser(id);
+	}
+	
+	public LeaveRequest save(LeaveRequest l) {
+		return this.leaveRequestRepositroy.save(l);
 	}
 }

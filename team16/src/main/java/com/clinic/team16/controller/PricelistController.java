@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Pricelist;
-import com.clinic.team16.service.AppointmentService;
-import com.clinic.team16.service.ClinicalCenterService;
 import com.clinic.team16.service.PricelistService;
 
 @RestController
