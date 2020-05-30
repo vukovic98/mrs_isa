@@ -37,24 +37,19 @@
 				<div class="card-body">
 					<form id="filterForm">
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-4">
 								<label for="sel1">Pick a date</label>
 								<input class="form-control" type="date" id="date">
 							</div>
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-4">
 								<label>Appointment Type</label>
 								<select class="form-control" id="appointmentTypes" aria-placeholder="Appointment Type">
 								
 								</select>
 							</div>
 						
-							<div class="form-group col-md-6">
-								<label for="sel1">Location</label>
-								<select class="form-control" id="locations">
-									
-								</select>
-							</div>
-							<div class="form-group col-md-6">
+							
+							<div class="form-group col-md-4">
 								<label for="sel1">Average Rating</label>
 								<select class="form-control" id="avgGrade">
 								<option>1</option>
@@ -69,32 +64,30 @@
 									<option>10</option>
 								</select>
 							</div>
-							
-							
 						</div>
 						<div class="col text-center">
-					 <button type="submit" class="btn btn-primary" id="searchButton" >Search</button>
+					 <button type="button" class="btn btn-primary" id="searchButton" >Search</button>
 					</div>
 					</form>
 				</div>
 			</div>
-			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="myTable">
+			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="clinics">
 				<thead>
 					<tr>
-						<th data-sortable="true" data-field="dateAndTime" style="width: 33.33%;">Clinic
+						<th data-sortable="true" data-field="name" style="width: 33.33%;">Clinic
 						</th>
-						<th data-sortable="true" data-field="appointmentType" style="width: 33.33%;">Address
+						<th data-sortable="true" data-field="address" style="width: 33.33%;">Address
 						</th>
-						<th data-sortable="true" data-field="clinic" style="width: 33.33%;">Average Rating
+						<th data-sortable="true" data-field="averageGrade" style="width: 33.33%;">Average Rating
 						</th>
-						<th data-sortable="true" data-field="clinic" style="width: 33.33%;">Appointment Type
+						<th data-sortable="true" data-field="appointmentType" style="width: 33.33%;">Appointment Type
 						</th>
-						<th data-sortable="true" data-field="clinic" style="width: 33.33%;">Price
+						<th data-sortable="true" data-field="price" style="width: 33.33%;">Price
 						</th>
 
 					</tr>
 				</thead>
-				<tbody id="appointmentHistoryBody">
+				<tbody id="clinicsBody">
 
 				</tbody>
 			</table>

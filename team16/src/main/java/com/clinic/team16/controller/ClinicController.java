@@ -1,5 +1,8 @@
 package com.clinic.team16.controller;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.Clinic;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
+import com.clinic.team16.beans.LeaveRequest;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.Pricelist;
 import com.clinic.team16.beans.PricelistItem;
@@ -101,12 +106,13 @@ public class ClinicController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-@GetMapping(path="/findAppointments/{appType}&{date}&{avgGrade}", consumes = "application/json")
-	public ResponseEntity<List<ClinicFilterDTO>> findAppointments(@PathVariable String appType, @PathVariable String date, @PathVariable String avgGrade) {
+	@GetMapping("/findAppointments/{appType}&{date}&{avgGrade}")
+	public ResponseEntity<List<ClinicFilterDTO>> findAppointments(@PathVariable String appType, @PathVariable String date, @PathVariable String avgGrade) throws ParseException {
 		List<Clinic> list = this.clinicService.filterClinics(appType);
 		List<ClinicFilterDTO> dtoList = new ArrayList<ClinicFilterDTO>();
 		double price = 0.0;
-		boolean hasAvailableDoctor = false;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date dateDate = sdf.parse(date);
 		if(list != null) {
 			for(Clinic c : list) {
 				for(PricelistItem pli: c.getPricelist().getPricelistItems()) {
@@ -115,19 +121,34 @@ public class ClinicController {
 						break;
 					}
 				}
-				if(Math.ceil(c.getAverageGrade())==Double.parseDouble(avgGrade)) {
+				if(Math.ceil(c.getAverageGrade()) == Double.parseDouble(avgGrade)) {
+					
+					int doctorsAvailable = 0;
 					for(Doctor d:c.getDoctors()) {
-						
+						List<Appointment> apps = d.getAppointments();
+						List<LeaveRequest> leaves = d.getLeaveRequests();
+						if(leaves.size()>0 && leaves != null) {
+							for(LeaveRequest l:leaves) {
+								if(l.isApproved()) {
+									boolean isBetween = l.getDateFrom().compareTo(dateDate) * dateDate.compareTo(l.getDateTo()) > 0;
+									if(!isBetween)
+										doctorsAvailable++;
+								}
+						}
+						}
 					}
-					if(hasAvailableDoctor) {
+					System.out.println(doctorsAvailable);
+					if (doctorsAvailable > 0) {
 						dtoList.add(new ClinicFilterDTO(c.getClinicID(),c.getName(),c.getAddress(),c.getAverageGrade(),appType,price));
-					}
+						}
 				}
 			}
-			return new ResponseEntity<List<ClinicFilterDTO>>(dtoList, HttpStatus.OK);
-		}
+				return new ResponseEntity<List<ClinicFilterDTO>>(dtoList, HttpStatus.OK);
+			}
+
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 }
+	
