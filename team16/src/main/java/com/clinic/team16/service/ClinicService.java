@@ -1,8 +1,10 @@
 package com.clinic.team16.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.clinic.team16.beans.Clinic;
@@ -22,7 +24,11 @@ public class ClinicService {
 
 		return clinicRepository.findOneByClinicID(i);
 	}
-
+ 
+	public List<Clinic> filterClinics(String appType){
+		return clinicRepository.filterClinics(appType);
+		
+	}
 	public Clinic findOneByName(String name) {
 		return this.clinicRepository.findOneByName(name);
 	}
