@@ -150,5 +150,8 @@ public class Control {
 		   return "makeAppointment";
 	   }
 	   
-
+	   @RequestMapping(value = "/clinicPage")
+	   public String clinicPage() {
+		   return "clinicPage";
+	   }
 }

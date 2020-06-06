@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.Clinic;
+import com.clinic.team16.beans.ClinicAdministrator;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.LeaveRequest;
@@ -29,6 +30,7 @@ import com.clinic.team16.beans.PricelistItem;
 import com.clinic.team16.beans.DTO.ClinicAddDTO;
 import com.clinic.team16.beans.DTO.ClinicFilterDTO;
 import com.clinic.team16.beans.DTO.ClinicInfoDTO;
+import com.clinic.team16.service.ClinicAdminService;
 import com.clinic.team16.service.ClinicService;
 import com.clinic.team16.service.GradeService;
 import com.clinic.team16.service.PatientService;
@@ -49,6 +51,9 @@ public class ClinicController {
 
 	@Autowired
 	private GradeService gradeService;
+	
+	@Autowired
+	private ClinicAdminService adminService;
 
 	@GetMapping(path = "/findAll")
 	public ResponseEntity<ArrayList<ClinicInfoDTO>> findAll() {
@@ -152,4 +157,29 @@ public class ClinicController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
+	
+	@GetMapping(path = "/getClinicGrade/{clinicID}")
+	public ResponseEntity<ClinicInfoDTO> clinicGrade(@PathVariable("clinicID") long clinicID){
+		Clinic c = this.clinicService.findOneByClinicID(clinicID);
+		if(c != null) {
+			ClinicInfoDTO cdt = new ClinicInfoDTO(clinicID, c.getName(), c.getAddress(), c.getDescription(), c.getAverageGrade());
+			
+			return new ResponseEntity<ClinicInfoDTO>(cdt,HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping(path = "/getCurrentClinic")
+	public ResponseEntity<Long> currentClinic(){
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+		
+		if( ca != null) {
+			return new ResponseEntity<Long>(ca.getId(),HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
+	}
+	
 }

@@ -25,7 +25,7 @@ $(document).ready(function(){
 	  
 	  $.ajax({
 		    type: 'GET',
-		    url: 'appointmentApi/findAllAppointments',
+		    url: 'appointmentApi/findAll',
 		    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 		    statusCode: {
 		      200: function(responseObject, textStatus, jqXHR) {
@@ -203,7 +203,7 @@ function roomsAllOK(roomsList) {
 	}
 	
 	function appointmentsAllOK(appointmentList) {
-		  var table = $("#appointmentsBody");
+		  var table = $("#modalAppointmentsBody");
 		  table.empty();
 
 		  
@@ -231,12 +231,12 @@ function roomsAllOK(roomsList) {
 			document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
 		}
 
-function myFunction() {
+function roomFunction() {
 	  // Declare variables
 	  var input, filter, table, tr, td, i, txtValue;
-	  input = document.getElementById("myInput");
+	  input = document.getElementById("roomInput");
 	  filter = input.value.toUpperCase();
-	  table = document.getElementById("myTable");
+	  table = document.getElementById("roomTable");
 	  tr = table.getElementsByTagName("tr");
 
 	  // Loop through all table rows, and hide those who don't match the search query
