@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.clinic.team16.beans.Appointment;
+import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.ClinicalCenterAdministrator;
 import com.clinic.team16.beans.MedicalRecord;
 

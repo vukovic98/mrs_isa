@@ -19,6 +19,9 @@ public class Clinic {
 
 	@Column(name = "Address", nullable = false)
 	private String address;
+	
+	@Column(name = "City", nullable = false)
+	private String city;
 
 	@Column(name = "Description", nullable = false)
 	private String description;
@@ -64,6 +67,22 @@ public class Clinic {
 		this.doctors = doctors;
 		this.nurses = nurses;
 		this.grades = grades;
+	}
+	
+	public Clinic(String name, String address, String description, ArrayList<Ordination> ordinations,
+			Pricelist pricelist, ArrayList<ClinicAdministrator> clinicAdministrators, ArrayList<Doctor> doctors,
+			ArrayList<Nurse> nurses, ArrayList<Grade> grades, String city) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.description = description;
+		this.ordinations = ordinations;
+		this.pricelist = pricelist;
+		this.clinicAdministrators = clinicAdministrators;
+		this.doctors = doctors;
+		this.nurses = nurses;
+		this.grades = grades;
+		this.city = city;
 	}
 
 	public long getClinicID() {

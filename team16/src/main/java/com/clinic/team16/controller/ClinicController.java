@@ -1,6 +1,5 @@
 package com.clinic.team16.controller;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Appointment;
+import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.Clinic;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
@@ -91,7 +91,7 @@ public class ClinicController {
 	}
 
 	@GetMapping("/findAppointments/{appType}&{date}&{avgGrade}")
-	public ResponseEntity<List<ClinicFilterDTO>> findAppointments(@PathVariable String appType,
+	public ResponseEntity<List<ClinicFilterDTO>> findAppointments(@PathVariable AppointmentType appType,
 			@PathVariable String date, @PathVariable String avgGrade) throws ParseException {
 		List<Clinic> list = this.clinicService.filterClinics(appType);
 		List<ClinicFilterDTO> dtoList = new ArrayList<ClinicFilterDTO>();
@@ -101,7 +101,7 @@ public class ClinicController {
 		if (list != null) {
 			for (Clinic c : list) {
 				for (PricelistItem pli : c.getPricelist().getPricelistItems()) {
-					if (pli.getName().equalsIgnoreCase(appType)) {
+					if (pli.getName() == appType) {
 						price = pli.getPrice();
 						break;
 					}

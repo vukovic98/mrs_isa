@@ -1,9 +1,7 @@
 package com.clinic.team16.beans;
-import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -20,8 +18,8 @@ public class PricelistItem {
 		return pricelistItemId;
 	}
 
-	@Column(name = "name", nullable = false)
-	private String appointmentType;
+	@Enumerated(EnumType.STRING)
+	private AppointmentType appointmentType;
 
 	@Column(name = "price", nullable = false)
 	private double price;
@@ -35,18 +33,18 @@ public class PricelistItem {
 		super();
 	}
 
-	public PricelistItem(String appointmentType, double price, Pricelist pricelist) {
+	public PricelistItem(AppointmentType appointmentType, double price, Pricelist pricelist) {
 		super();
 		this.appointmentType = appointmentType;
 		this.price = price;
 		this.pricelist = pricelist;
 	}
 
-	public String getName() {
+	public AppointmentType getName() {
 		return appointmentType;
 	}
 
-	public void setName(String appointmentType) {
+	public void setName(AppointmentType appointmentType) {
 		this.appointmentType = appointmentType;
 	}
 

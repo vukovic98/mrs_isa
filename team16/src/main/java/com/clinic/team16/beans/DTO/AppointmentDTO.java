@@ -2,20 +2,22 @@ package com.clinic.team16.beans.DTO;
 
 import java.util.Date;
 
+import com.clinic.team16.beans.AppointmentType;
+
 public class AppointmentDTO {
 	private long id;
 	private String datetime;
 	private double duration;
 	private String doctor;
 	private String patient;
-	private String appointmentType;
+	private AppointmentType appointmentType;
 	private String price;
 	private String roomNo;
 	public AppointmentDTO() {
 		super();
 	}
 	public AppointmentDTO(long id, String datetime, double duration, String doctor, String patient,
-			String appointmentType, String price, String roomNo) {
+			AppointmentType appointmentType, String price, String roomNo) {
 		super();
 		this.id = id;
 		this.datetime = datetime;
@@ -56,10 +58,10 @@ public class AppointmentDTO {
 	public void setPatient(String patient) {
 		this.patient = patient;
 	}
-	public String getAppointmentType() {
+	public AppointmentType getAppointmentType() {
 		return appointmentType;
 	}
-	public void setAppointmentType(String appointmentType) {
+	public void setAppointmentType(AppointmentType appointmentType) {
 		this.appointmentType = appointmentType;
 	}
 	public String getPrice() {

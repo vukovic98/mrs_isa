@@ -3,45 +3,64 @@ package com.clinic.team16.beans;
 import java.util.*;
 import javax.persistence.*;
 
+
 @Entity
 @Embeddable
 public class Doctor extends User {
-
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Clinic_ID")
 	public Clinic clinic;
-
 
 	@ElementCollection
 	@CollectionTable(name = "doctor_appointments", joinColumns = @JoinColumn(name = "doctor_id"))
 	public List<Appointment> appointments;
 
-
 	@ElementCollection
 	@CollectionTable(name = "doctor_leaveRequests", joinColumns = @JoinColumn(name = "doctor_id"))
 	public List<LeaveRequest> leaveRequests;
-	
+
 	@ElementCollection
 	@CollectionTable(name = "doctor_grades", joinColumns = @JoinColumn(name = "doctor_id"))
 	public List<Grade> grades;
+
+	@Enumerated(EnumType.STRING)
+	private AppointmentType speciality;
 
 	public Doctor() {
 		super();
 	}
 
-	public Doctor(Clinic clinic, ArrayList<Appointment> appointment, ArrayList<LeaveRequest> leaveRequests, ArrayList<Grade> grades) {
+	public Doctor(Clinic clinic, ArrayList<Appointment> appointment, ArrayList<LeaveRequest> leaveRequests,
+			ArrayList<Grade> grades) {
 		super();
 		this.clinic = clinic;
 		this.appointments = appointment;
 		this.leaveRequests = leaveRequests;
 		this.grades = grades;
+	}
+
+	public Doctor(Clinic clinic, ArrayList<Appointment> appointment, ArrayList<LeaveRequest> leaveRequests,
+			ArrayList<Grade> grades, AppointmentType appType) {
+		super();
+		this.clinic = clinic;
+		this.appointments = appointment;
+		this.leaveRequests = leaveRequests;
+		this.grades = grades;
+		this.speciality = appType;
+	}
+
+	public AppointmentType getSpecialty() {
+		return speciality;
+	}
+
+	public void setSpecialty(AppointmentType specialty) {
+		this.speciality = specialty;
 	}
 
 	public Clinic getClinic() {
@@ -68,16 +87,15 @@ public class Doctor extends User {
 
 	public double getAverageGrade() {
 		double avg = 0;
-		if(this.grades.size() > 0) {
-			for (Grade g :this.grades) {
+		if (this.grades.size() > 0) {
+			for (Grade g : this.grades) {
 				avg += g.getGradeNumber();
 			}
-			return Math.round(avg/this.grades.size());
-		}
-		else {
+			return Math.round(avg / this.grades.size());
+		} else {
 			return 0;
 		}
-		
+
 	}
 
 	public void addAppointment(Appointment newAppointment) {
@@ -101,15 +119,11 @@ public class Doctor extends User {
 			}
 	}
 
-	
-
 	public List<LeaveRequest> getLeaveRequests() {
 		if (leaveRequests == null)
 			leaveRequests = new ArrayList<LeaveRequest>();
 		return leaveRequests;
 	}
-
-	
 
 	public void addLeaveRequest(LeaveRequest newLeaveRequest) {
 		if (newLeaveRequest == null)
@@ -130,10 +144,8 @@ public class Doctor extends User {
 			}
 	}
 
-	
-	
 	public List<Grade> getGrades() {
-		if(grades==null) {
+		if (grades == null) {
 			grades = new ArrayList<Grade>();
 		}
 		return grades;
@@ -143,11 +155,11 @@ public class Doctor extends User {
 		this.grades = grades;
 	}
 
-	public Grade addGrade(Patient p,int grade) {
-		for(Grade g : this.grades) {
-			if(g.getPatient().getEmail().equalsIgnoreCase(p.getEmail())) {
+	public Grade addGrade(Patient p, int grade) {
+		for (Grade g : this.grades) {
+			if (g.getPatient().getEmail().equalsIgnoreCase(p.getEmail())) {
 				g.setGradeNumber(grade);
-				return g;				
+				return g;
 			}
 		}
 		Grade g = new Grade(grade, p);

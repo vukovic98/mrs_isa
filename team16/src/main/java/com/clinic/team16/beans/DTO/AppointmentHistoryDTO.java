@@ -1,11 +1,11 @@
 package com.clinic.team16.beans.DTO;
 
-import com.clinic.team16.beans.Doctor;
+import com.clinic.team16.beans.AppointmentType;
 
 public class AppointmentHistoryDTO {
 	private long appointmentID;
 	private String datetime;
-	private String appointmentType;
+	private AppointmentType appointmentType;
 	private String doctor;
 	private long clinicID;
 	private long doctorID;
@@ -24,10 +24,10 @@ public class AppointmentHistoryDTO {
 	public void setDatetime(String datetime) {
 		this.datetime = datetime;
 	}
-	public String getAppointmentType() {
+	public AppointmentType getAppointmentType() {
 		return appointmentType;
 	}
-	public void setAppointmentType(String appointmentType) {
+	public void setAppointmentType(AppointmentType appointmentType) {
 		this.appointmentType = appointmentType;
 	}
 	public String getDoctor() {
@@ -45,7 +45,7 @@ public class AppointmentHistoryDTO {
 
 	
 
-public AppointmentHistoryDTO(long appointmentID, String datetime, String appointmentType, String doctor,
+public AppointmentHistoryDTO(long appointmentID, String datetime, AppointmentType appointmentType, String doctor,
 			long clinicID, long doctorID, String clinic) {
 		super();
 		this.appointmentID = appointmentID;

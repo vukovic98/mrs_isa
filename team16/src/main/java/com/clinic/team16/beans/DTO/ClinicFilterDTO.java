@@ -1,16 +1,18 @@
 package com.clinic.team16.beans.DTO;
 
+import com.clinic.team16.beans.AppointmentType;
+
 public class ClinicFilterDTO {
 	private long clinicID;
 	private String name;
 	private String address;
 	private double averageGrade;
-	private String appointmentType;
+	private AppointmentType appointmentType;
 	private double price;
 	public ClinicFilterDTO() {
 		
 	}
-	public ClinicFilterDTO(long clinicID, String name, String address, double averageGrade, String appointmentType,
+	public ClinicFilterDTO(long clinicID, String name, String address, double averageGrade, AppointmentType appointmentType,
 			double price) {
 		super();
 		this.clinicID = clinicID;
@@ -44,10 +46,10 @@ public class ClinicFilterDTO {
 	public void setAverageGrade(double averageGrade) {
 		this.averageGrade = averageGrade;
 	}
-	public String getAppointmentType() {
+	public AppointmentType getAppointmentType() {
 		return appointmentType;
 	}
-	public void setAppointmentType(String appointmentType) {
+	public void setAppointmentType(AppointmentType appointmentType) {
 		this.appointmentType = appointmentType;
 	}
 	public double getPrice() {
