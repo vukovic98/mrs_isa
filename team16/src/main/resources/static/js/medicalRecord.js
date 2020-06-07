@@ -55,23 +55,30 @@ $( document ).ready(function() {
     		allergiesList.append("<h6>There are no allergies found</h6>");
     	}
     	
-    	var medicationsTable = $("#medicationsBody");
-    	medicationsTable.empty();
-    	
+    	var medicationsTable = $("#medicationsTable");
     	if(patient.perscription != null){
-    		$.each(patient.perscription,function(i,val){
-    			 var row = $("<tr></tr>");
+    		medicationsTable.bootstrapTable(
+    			  {
+    				  data: patient.perscription,
+    				  columns: [{
+    				    field: 'name',
+    				    title: 'Name',
+    				    sortable: true
+    				  }, {
+    				    field: 'code',
+    				    title: 'Code',
+    				    sortable: true
+    				  }]
+    				}
+    	  
+    	  );}
+    	else{
+			medicationsTable.append("<tr><td colspan=\"2\">There are no perscriptions found</td></tr>");
+		}
+    	
+    	
 
-     		    row.append("<td>" + val.name + "</td>");
-     		    row.append("<td>" + val.code + "</td>");
-
-     		    medicationsTable.append(row);
-     		
-    	});}
-
-    		else{
-    			medicationsTable.append("<tr><td colspan=\"2\">There are no perscriptions found</td></tr>");
-    		}
+    		
 
     	}
     	 

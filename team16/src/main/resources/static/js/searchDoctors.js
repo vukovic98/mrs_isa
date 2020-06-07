@@ -1,49 +1,45 @@
 $( document ).ready(function() {
   console.log("ready");
-
-  $.ajax({
-    type: 'GET',
-    url: 'clinicApi/findAll',
-    statusCode: {
-      200: function(responseObject, textStatus, jqXHR) {
-        console.log("Clinics - findAll() - 200 OK");
-        clinicsAllOK(responseObject);
-      },
-      204: function(responseObject, textStatus, jqXHR) {
-        console.log("Clinics - findAll() - 204 No Content");
-        clinicsAllNO(responseObject);
-      }
-    }
+  var atrs = sessionStorage.getItem('appParam').split("&");;
+  console.log(atrs);
+  var clinicID = atrs[0];
+  var appType = atrs[1];
+  var date = atrs[2];
+  
+  $.ajax ({
+  	type: 'GET',
+  	url: 'clinicApi/findAllAppointmentDoctors/' + clinicID + "&" + appType + "&" + date,
+	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+  	statusCode: {
+  		200: function(responseObject, textStatus, jqXHR) {
+  			console.log("200 OK");
+  			sessionStorage.setItem('appParam', "");
+  			showDoctors(responseObject);
+  		},
+  		204: function(responseObject, textStatus, jqXHR) {
+  			console.log("204 No Content");
+  		},
+		403: function(responseObject, textStatus, jqXHR) {
+			console.log("403 Unauthorized");
+			unauthorized();
+		}
+  	}
   });
 });
 
-function clinicsAllOK(clinicsList) {
- 
-  var table = $("#doctorsTableBody");
-  table.empty();
-  
-  $.each(doctorsList, function(i, val) {
-    var row = $("<tr  title=\"Click for more information\" id=\""+i+"\"></tr>");
-
-    row.append("<td>" + val.name + "</td>");
-    row.append("<td>" + "10" + "</td>");
-    row.append("<td> 10:30,15:30 </td>");
-
-
-    table.append(row);
-  });
-  
+function showDoctors(doctors) {
+	var table = $("#doctorsTableBody");
+	table.empty();
+	$.each(doctors,function(i,val){
+		var row = $("<tr></tr>");
+		row.append("<td >" + val.firstName + " " + val.lastName + "</td>");
+		row.append("<td >" + val.averageGrade + "</td>");
+		var selectt="<td><select><option  disabled selected>Select term</option><option>15:20</option></select></td>";
+		row.append(selectt);
+		table.append(row);	
+	  });
 }
 
-function clinicsAllNO(responseObject) {
-  var table = $("#allClinicsTableBody");
-  table.empty();
-  
-  var row = $("<tr></tr>");
-  row.append("<td class='pl-1'>There is no clinics in the system</td>");
-  
-  table.append(row);
-}
 function searchDoctors() {
 	// Declare variables
 	var input, filter, table, tr, td, i, j, txtValue;

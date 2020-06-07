@@ -4,7 +4,12 @@ public enum AppointmentType {
 	ORTHOPEDIA,
 	GENERAL,
 	CHEMICAL,
-	PSIHOLOGY,
+	PSIHOLOGY{
+	    @Override
+	    public String toString() {
+	      return "PSIHOLOGY";
+	    }
+	  },
 	NEUROLOGICAL,
 	PLASTICS,
 	CARDIO,

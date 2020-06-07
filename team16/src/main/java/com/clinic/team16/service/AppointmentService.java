@@ -1,13 +1,12 @@
 package com.clinic.team16.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.clinic.team16.beans.Appointment;
-import com.clinic.team16.beans.Patient;
 import com.clinic.team16.repository.AppointmentRepository;
 
 @Service
@@ -16,7 +15,9 @@ public class AppointmentService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 
-	
+	public ArrayList<Appointment> findByDoctorAndDate(String date, Long doctor_id) {
+		return (ArrayList<Appointment>) this.appointmentRepository.findByDoctorAndDate(date, doctor_id);
+	}
 	
 	public List<Appointment> findAll() {
 		return this.appointmentRepository.findAll();

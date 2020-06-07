@@ -6,6 +6,7 @@ public class ClinicInfoDTO {
 	private String address;
 	private String description;
 	private double averageGrade;
+	private String city;
 
 	public double getAverageGrade() {
 		return averageGrade;
@@ -20,13 +21,22 @@ public class ClinicInfoDTO {
 
 	
 
-	public ClinicInfoDTO(long clinicID, String name, String address, String description, double averageGrade) {
+	public ClinicInfoDTO(long clinicID, String name, String address, String description, double averageGrade, String city) {
 		super();
 		this.clinicID = clinicID;
 		this.name = name;
 		this.address = address;
 		this.description = description;
 		this.averageGrade = averageGrade;
+		this.city = city;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public long getClinicID() {

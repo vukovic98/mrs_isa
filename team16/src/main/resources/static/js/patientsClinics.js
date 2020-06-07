@@ -23,11 +23,31 @@ $( document ).ready(function() {
 });
 
 function clinicsAllOK(clinicsList) {
-  var table = $("#allClinicsTableBody");
-  table.empty();
-  $.each(clinicsList, function(i, val) {
+  var table = $("#allClinicsTable");
+  table.bootstrapTable(
+		  {
+			  data: clinicsList,
+			  pagination: true,
+			  columns: [{
+			    field: 'name',
+			    title: 'Clinic',
+			    sortable: true
+			  }, {
+			    field: 'address',
+			    title: 'Address',
+			    sortable: true
+			  }, {
+			    field: 'averageGrade',
+			    title: 'Average grade',
+			    sortable: true
+			  }]
+			}
+  
+  );
+
+ /* $.each(clinicsList, function(i, val) {
 	  
-	    var row = $("<tr class=\"clinic-table-text\" title=\"Click for more information\" id=\""+i+"\"></tr>");
+	    var row = $("<tr title=\"Click for more information\" id=\""+i+"\"></tr>");
 
 	    row.append("<td style=\"font-size:20px\">" + val.name + "</td>");
 	    row.append("<td style=\"font-size:20px\">"+ val.address + "</td>");
@@ -35,7 +55,7 @@ function clinicsAllOK(clinicsList) {
 
 
 	    table.append(row);
-	  });
+	  });*/
 
 }
 

@@ -20,6 +20,11 @@ public class Control {
 		   return "doctor";
 	   }
 	   
+	   @RequestMapping(value="/searchDoctors")
+	   public String searchDoctors() {
+		   return "searchDoctors";
+	   }
+	   
 	   @RequestMapping(value = "/clinicalCenterAdminInitial")
 	   public String clinicalCenterAdminInitial() {
 		   return "clinicalCenterAdminInitial";
@@ -150,5 +155,8 @@ public class Control {
 		   return "makeAppointment";
 	   }
 	   
-
+	   @RequestMapping(value = "/clinicPage")
+	   public String clinicPage() {
+		   return "clinicPage";
+	   }
 }
