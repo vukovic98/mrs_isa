@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.JWT.JwtToken;
-
+import com.clinic.team16.beans.Role;
 import com.clinic.team16.beans.User;
 import com.clinic.team16.beans.DTO.UserAuthDTO;
 import com.clinic.team16.beans.DTO.UserLoginDTO;
@@ -41,7 +41,7 @@ public class UserController {
 		try {
 			authManager.authenticate(new UsernamePasswordAuthenticationToken(u.getEmail(), u.getPassword()));
 		} catch (BadCredentialsException e) {
-			return new ResponseEntity<UserLoginDTO>(new UserLoginDTO(null, null, null), HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<UserLoginDTO>(new UserLoginDTO(null, null, null), HttpStatus.FORBIDDEN);
 		}
 
 		User ua = userService.findOneByEmail(u.getEmail());
@@ -63,5 +63,18 @@ public class UserController {
 		this.userService.sendMail();
 
 		return ("SENT!");
+	}
+	
+	@GetMapping(path = "/getRole")
+	public ResponseEntity<Role> getRole() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		User u = this.userService.findOneByEmail(currentUser);
+		
+		if(u != null) {
+			return new ResponseEntity<Role>(u.getRole(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 	}
 }

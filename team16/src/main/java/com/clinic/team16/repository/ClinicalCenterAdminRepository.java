@@ -20,7 +20,7 @@ public interface ClinicalCenterAdminRepository extends JpaRepository<ClinicalCen
 	
 	
 	@Query(
-			value = "SELECT * FROM clinical_center_administrator WHERE role = 'CLINICAL_CENTER_ADMINISTRATOR'",
+			value = "SELECT * FROM clinical_center_administrator WHERE role IN ('CLINICAL_CENTER_ADMINISTRATOR', 'MAIN_CLINICAL_CENTER_ADMINISTRATOR') ",
 			nativeQuery = true)
 	public List<ClinicalCenterAdministrator> findAllAdmins();
 }

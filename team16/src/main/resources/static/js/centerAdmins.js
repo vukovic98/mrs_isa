@@ -3,6 +3,28 @@ $( document ).ready(function() {
     
     $.ajax ({
     	type: 'GET',
+    	url: 'userApi/getRole',
+    	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+    	statusCode: {
+    		200: function(responseObject, textStatus, jqXHR) {
+    			console.log("ClinicalCenterAdmins - findAll() - 200 OK");
+    			
+    			if(responseObject == "MAIN_CLINICAL_CENTER_ADMINISTRATOR")
+    				$("#addingAdmin").css('display', 'block');
+    		},
+    		204: function(responseObject, textStatus, jqXHR) {
+    			console.log("ClinicalCenterAdmins - findAll() - 204 No Content");
+    			showMessage("Something went wrong!", "antiquewhite");
+    		},
+    		403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		}
+    	}
+    });
+    
+    $.ajax ({
+    	type: 'GET',
     	url: 'centerAdminApi/findAll',
     	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     	statusCode: {

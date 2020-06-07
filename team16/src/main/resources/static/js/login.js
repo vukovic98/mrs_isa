@@ -39,7 +39,10 @@ $(document).ready(function(e) {
 			            console.log("usao");
 			            whereToGo(responseObject);
 			        },
-			        400: function(responseObject, textStatus, errorThrown) {
+			        204: function(responseObject, textStatus, errorThrown) {
+			            showMessage("There is no user with these credentials!", "antiquewhite");
+			        },
+			        403: function(responseObject, textStatus, errorThrown) {
 			            showMessage("There is no user with these credentials!", "antiquewhite");
 			        }           
 			    }
@@ -211,7 +214,7 @@ function whereToGo(user) {
 			window.location.href = "/clinicalCenterAdminInitial";
 		}
 	
-		if(user.role == "CLINICAL_CENTER_ADMINISTRATOR") {
+		if(user.role == "CLINICAL_CENTER_ADMINISTRATOR" || user.role == "MAIN_CLINICAL_CENTER_ADMINISTRATOR") {
 			console.log("USAO");
 			window.location.href = "/clinicalCenterAdmin";
 		}
