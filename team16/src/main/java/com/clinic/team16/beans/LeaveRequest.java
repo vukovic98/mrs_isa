@@ -40,6 +40,10 @@ public class LeaveRequest {
 		this.user = user;
 	}
 
+	public long getLeaveRequestId() {
+		return leaveRequestId;
+	}
+
 	public Date getDateFrom() {
 		return dateFrom;
 	}
