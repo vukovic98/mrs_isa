@@ -55,7 +55,7 @@ function doctorAllOK(doctorList) {
 		var row = $("<tr id=\""+i+"\"></tr>");
 
 		row.append("<td class=\"w-50 modalDoctor\" id=\""+val.email+"\">" + val.firstName + " " + val.lastName + "</td>");
-		row.append("<td class=\"w-50 text-right\"><button type=\"button\" class=\"btn btn-outline-primary\">Review</button><button type=\"button\" class=\"btn btn-outline-danger\">Fire</button></td>");
+		row.append("<td class=\"w-50 text-right\"><button type=\"button\" class=\"btn btn-outline-primary mr-3\">Review</button><button type=\"button\" class=\"btn btn-outline-danger\">Fire</button></td>");
 
 		table.append(row);
 	});
