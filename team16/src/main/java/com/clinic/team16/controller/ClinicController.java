@@ -176,7 +176,21 @@ public class ClinicController {
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
 		
 		if( ca != null) {
-			return new ResponseEntity<Long>(ca.getId(),HttpStatus.OK);
+			return new ResponseEntity<Long>(ca.getClinic().getClinicID(),HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
+	}
+	
+	@GetMapping(path = "/getCurrentClinicInfo")
+	public ResponseEntity<ClinicInfoDTO> currentClinicInfo(){
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+		ClinicInfoDTO cl;
+		Clinic currCl = clinicService.findOneByClinicID(ca.getClinic().getClinicID());
+		cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(), currCl.getDescription(), currCl.getAverageGrade());
+		if( currCl != null) {
+			return new ResponseEntity<ClinicInfoDTO>(cl,HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		

@@ -33,6 +33,9 @@
 		<div class="jumbotron bg-light">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item"><a class="nav-link active"
+					id="profile-tab" data-toggle="tab" href="#profileInfo" role="tab"
+					aria-controls="home" aria-selected="true">Clinic info</a></li>
+				<li class="nav-item"><a class="nav-link"
 					id="appointments-tab" data-toggle="tab" href="#appointments"
 					role="tab" aria-controls="home" aria-selected="true">Appointments</a></li>
 				<li class="nav-item"><a class="nav-link" id="rooms-tab"
@@ -46,7 +49,41 @@
 					aria-selected="false">Doctors</a></li>
 			</ul>
 			<div class="tab-content" id="myTabContent">
-				<div class="tab-pane fade show active" id="appointments"
+				<div class="tab-pane fade show active" id="profileInfo"
+					role="tabpanel" aria-labelledby="profile-tab">
+					<br>
+					<form id="clinicProfileForm">
+						<div class="col-xs-12 col-sm-12 pl-0 pt-1 pr-0">
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="inputGroup-sizing-default"
+										style="width: 150px;">Clinic name</span>
+								</div>
+								<input type="text" class="form-control" aria-label="Name"
+									id="name" aria-describedby="inputGroup-sizing-default"
+									readonly>
+							</div>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="inputGroup-sizing-default"
+										style="width: 150px;">Address</span>
+								</div>
+								<input type="text" class="form-control" aria-label="Address"
+									id="clinicAddress" aria-describedby="inputGroup-sizing-default"
+									readonly>
+							</div>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="inputGroup-sizing-default"
+										style="width: 150px;">Description</span>
+								</div>
+								<input type="text" class="form-control" aria-label="Description"
+									id="desc" aria-describedby="inputGroup-sizing-default" readonly>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="tab-pane fade" id="appointments"
 					role="tabpanel" aria-labelledby="appointments-tab">
 					<h1 class="mb-0 col-md-9 fl-left" style="z-index: 0;">Appointments</h1>
 
@@ -200,6 +237,7 @@
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
 	<script type="application/javascript" th:src="@{js/clinicAdmin.js}"></script>
+	<script type="application/javascript" th:src="@{js/clinicPage.js}"></script>
 	<script type="application/javascript" th:src="@{js/doctors.js}"></script>
 	<script type="application/javascript" th:src="@{js/rooms.js}"></script>
 	<script type="application/javascript"

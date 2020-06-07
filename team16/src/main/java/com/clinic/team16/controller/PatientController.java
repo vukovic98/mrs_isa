@@ -22,6 +22,7 @@ import com.clinic.team16.beans.User;
 
 import com.clinic.team16.beans.DTO.AppointmentHistoryDTO;
 import com.clinic.team16.beans.DTO.PatientDTO;
+import com.clinic.team16.beans.DTO.PatientDoctorDTO;
 import com.clinic.team16.beans.DTO.PatientInfoDTO;
 import com.clinic.team16.beans.DTO.PatientMedicalRecordDTO;
 import com.clinic.team16.beans.DTO.UserDTO;
@@ -67,6 +68,23 @@ public class PatientController {
 				}
 			}
 			return new ResponseEntity<List<PatientInfoDTO>>(dtoList, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping(path = "/findAllForList")
+	public ResponseEntity<List<PatientDoctorDTO>> findAllForList() {
+		List<Patient> list = this.patientService.findAll();
+		List<PatientDoctorDTO> dtoList = new ArrayList<PatientDoctorDTO>();
+
+		if (list != null) {
+			for (Patient p : list) {
+				if (p.getMedicalRecord() != null) {
+					String name = p.getFirstName() + " " + p.getLastName();
+					dtoList.add(new PatientDoctorDTO(p.getInsuranceNumber(), name, p.getPhoneNumber()));
+				}
+			}
+			return new ResponseEntity<List<PatientDoctorDTO>>(dtoList, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
