@@ -47,11 +47,11 @@ public class LeaveRequestService {
 			MimeMessageHelper helper = new MimeMessageHelper(msg, true);
 
 			helper.setTo("mrs.isa2020@gmail.com");
-			helper.setSubject("DIV Clinical Center");
+			helper.setSubject("DIV Clinical Center - Leave Approved");
 
 			StringBuffer sb = new StringBuffer();
 
-			sb.append("<h2>Your leave request has been accepted!</h2><br>");
+			sb.append("<h2>Your leave request has been approved!</h2><br>");
 			sb.append(String.format("<h3>Start date: <b>%s</b>, end date: <b>%s</b></h3> <br><br>",start,end));
 
 			helper.setText(sb.toString(), true);
@@ -60,6 +60,45 @@ public class LeaveRequestService {
 			System.out.println("SENT ACCEPTED MAIL!");
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	@Async
+	public void sendDeclinedMail(String reason, String from, String to) {
+		try {
+			MimeMessage msg = this.javaMailSender.createMimeMessage();
+
+	        // true = multipart message
+	        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+
+	        helper.setTo("mrs.isa2020@gmail.com");
+
+	        helper.setSubject("DIV Clinical Center - Leave Declined");
+	        
+	        StringBuffer sb = new StringBuffer();
+
+	        sb.append("<h2>We are sorry, your leave request was declined.</h2><br>");
+			sb.append(String.format("<h3>Start date: <b>%s</b>, end date: <b>%s</b></h3> <br><br>",from,to));
+	        sb.append("<h3>Management cites this as a reason:</h3> <br><br>");
+	        sb.append("\"<i>" + reason + "</i>\"");
+	        
+
+	        helper.setText(sb.toString(), true);
+
+	        this.javaMailSender.send(msg);
+	        
+	        System.out.println("SENT DECLINED MAIL!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean delete(LeaveRequest l) {
+		try {
+			this.leaveRequestRepositroy.delete(l);
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 }

@@ -24,6 +24,15 @@ public class LeaveRequestDTO {
 		this.dateTo = dateTo;
 	}
 
+	
+	public LeaveRequestDTO(String name, String email, String dateFrom, String dateTo) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.dateFrom = dateFrom;
+		this.dateTo = dateTo;
+	}
+
 	public String getDateFrom() {
 		return dateFrom;
 	}

@@ -56,7 +56,7 @@ $( document ).ready(function() {
     	console.log($(this).parent().parent().attr('id'));
     	
     	var leaveId = $(this).parent().parent().attr('id');
-    	
+    	$("#transfer").text(leaveId);
         $.ajax ({
         	type: 'GET',
         	url: 'leaveRequestApi/findOneById/' + leaveId,
@@ -83,7 +83,7 @@ $( document ).ready(function() {
     });
 
      $(document).on('click', '#declineFinal', function () {
-        var email = $("#modalDecEmail").text();
+        var leaveId = $("#transfer").text();
         var reason = $("#reasonArea").val();
     	$.ajax({
     		type: 'POST',
@@ -114,35 +114,25 @@ $( document ).ready(function() {
 
     $(document).on('click', '.modalTD', function () {
 
-        var email = $(this).attr('id');
+    	var leaveId = $(this).attr('id');
         console.log("UDJE MODAL");
-        $.ajax({
-        	type: 'POST',
-        	url: 'patientApi/findModalByEmail',
+        $.ajax ({
+        	type: 'GET',
+        	url: 'leaveRequestApi/findOneById/' + leaveId,
         	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
-        	dataType: 'json',
-        	data: JSON.stringify({
-        		"email": email 
-        	}),
-        	contentType: "application/json; charset=utf-8",
-		    dataType: "json",
-        	success: function(patient) {
-        		$("#modalName").text(patient.name);
-		        $("#modalEmail").text(patient.email);
-		        $("#modalAddress").text(patient.address);
-		        $("#modalPhone").text(patient.phone);
-		        $("#modalCity").text(patient.city);
-		        $("#modalCountry").text(patient.country);
-		        $("#modalInsNumber").text(patient.insurance);
-		        
-		        $("#exampleModal").modal();
+        	success: function(leave){
+        		$("#modalName").text(leave.name);
+        		$("#modalEmail").text(leave.email);
+        		$("#modalDateFrom").text(leave.dateFrom);
+        		$("#modalDateTo").text(leave.dateTo);
+        		
+        		$("#exampleModal").modal();
         	}
         });
-    });
 });
-
+});
 function declineModalOK(response){
-    $("#modalDecName").text($(this).parent().parent().find("td:first").text());
+    $("#modalDecName").text(response.name);
     $("#modalDecFrom").text(response.dateFrom);
     $("#modalDecTo").text(response.dateTo);
     $("#declineModal").modal();

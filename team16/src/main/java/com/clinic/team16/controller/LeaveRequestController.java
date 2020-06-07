@@ -149,6 +149,28 @@ public class LeaveRequestController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
+	@PostMapping(path = "/declineRequest")
+	public ResponseEntity<HttpStatus> declineRequest(@RequestBody LeaveRequestIdDTO reqId) throws MessagingException {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+		LeaveRequest p = this.leaveRequestService.findOneById(Long.valueOf(reqId.getId()));
+		String reason = reqId.getReason();
+		if (p != null) {
+			p.setApproved(false);
+			p.setUser(null);
+			leaveRequestService.save(p);
+			boolean ok = leaveRequestService.delete(p);
+			if(ok)
+			{
+				this.leaveRequestService.sendDeclinedMail(reason, formatter.format(p.getDateFrom()), formatter.format(p.getDateTo()));
+
+			return new ResponseEntity<>(HttpStatus.OK);
+			}else
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
 	@GetMapping(path = "/findOneById/{id}")
 	public ResponseEntity<LeaveRequestDTO> findOneById(@PathVariable("id") long leaveId)
 	{
@@ -158,7 +180,7 @@ public class LeaveRequestController {
 
 		if (p != null) {
 			
-			return new ResponseEntity<LeaveRequestDTO>(new LeaveRequestDTO(formatter.format(p.getDateFrom()), formatter.format(p.getDateTo())),HttpStatus.OK);
+			return new ResponseEntity<LeaveRequestDTO>(new LeaveRequestDTO(p.getUser().getFirstName() + " " + p.getUser().getLastName(),p.getUser().getEmail(),formatter.format(p.getDateFrom()), formatter.format(p.getDateTo())),HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
