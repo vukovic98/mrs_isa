@@ -1,7 +1,6 @@
 package com.clinic.team16.controller;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,19 +15,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
-import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.Clinic;
-import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
-import com.clinic.team16.beans.LeaveRequest;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.Pricelist;
 import com.clinic.team16.beans.PricelistItem;
 import com.clinic.team16.beans.DTO.ClinicAddDTO;
 import com.clinic.team16.beans.DTO.ClinicFilterDTO;
 import com.clinic.team16.beans.DTO.ClinicInfoDTO;
+import com.clinic.team16.beans.DTO.DoctorDTO;
 import com.clinic.team16.service.ClinicService;
 import com.clinic.team16.service.GradeService;
 import com.clinic.team16.service.PatientService;
@@ -57,7 +56,7 @@ public class ClinicController {
 			ArrayList<ClinicInfoDTO> daoList = new ArrayList<ClinicInfoDTO>();
 			for (Clinic c : list) {
 				daoList.add(new ClinicInfoDTO(c.getClinicID(), c.getName(), c.getAddress(), c.getDescription(),
-						c.getAverageGrade()));
+						c.getAverageGrade(), c.getCity()));
 			}
 			return new ResponseEntity<ArrayList<ClinicInfoDTO>>(daoList, HttpStatus.OK);
 		} else
@@ -90,49 +89,56 @@ public class ClinicController {
 		}
 	}
 
-	@GetMapping("/findAppointments/{appType}&{date}&{avgGrade}")
+	@GetMapping("/findAppointments/{appType}&{date}&{avgGrade}&{location}")
 	public ResponseEntity<List<ClinicFilterDTO>> findAppointments(@PathVariable AppointmentType appType,
-			@PathVariable String date, @PathVariable String avgGrade) throws ParseException {
-		List<Clinic> list = this.clinicService.filterClinics(appType);
+			@PathVariable String date, @PathVariable String avgGrade, @PathVariable String location)
+			throws ParseException {
+		List<Clinic> list = this.clinicService.filterClinics(appType.toString());
 		List<ClinicFilterDTO> dtoList = new ArrayList<ClinicFilterDTO>();
 		double price = 0.0;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		java.util.Date dateDate = sdf.parse(date);
 		if (list != null) {
 			for (Clinic c : list) {
+				System.out.println("ima");
 				for (PricelistItem pli : c.getPricelist().getPricelistItems()) {
 					if (pli.getName() == appType) {
 						price = pli.getPrice();
 						break;
 					}
 				}
-				if (Math.ceil(c.getAverageGrade()) == Double.parseDouble(avgGrade)) {
 
-					int doctorsAvailable = 0;
-					for (Doctor d : c.getDoctors()) {
-						List<Appointment> apps = d.getAppointments();
-						List<LeaveRequest> leaves = d.getLeaveRequests();
-						if (leaves.size() > 0 && leaves != null) {
-							for (LeaveRequest l : leaves) {
-								if (l.isApproved()) {
-									boolean isBetween = l.getDateFrom().compareTo(dateDate)
-											* dateDate.compareTo(l.getDateTo()) > 0;
-									if (!isBetween)
-										doctorsAvailable++;
-								}
-							}
-						}
+				boolean rightGrade = false;
+
+				if (!avgGrade.equalsIgnoreCase("null")) {
+					if (Math.ceil(c.getAverageGrade()) >= Double.parseDouble(avgGrade)) {
+						rightGrade = true;
 					}
-					System.out.println(doctorsAvailable);
-					if (doctorsAvailable > 0) {
+				} else {
+					rightGrade = true;
+				}
+
+				boolean rightLocation = false;
+
+				if (!location.equalsIgnoreCase("null")) {
+					if (c.getCity().equalsIgnoreCase(location)) {
+						rightLocation = true;
+					}
+				} else {
+					rightLocation = true;
+				}
+
+				if (rightGrade && rightLocation) {
+					ArrayList<DoctorDTO> doctors = this.clinicService.filterDoctors(c, appType, date);
+					if (doctors.size() != 0) {
 						dtoList.add(new ClinicFilterDTO(c.getClinicID(), c.getName(), c.getAddress(),
 								c.getAverageGrade(), appType, price));
 					}
 				}
 			}
 			return new ResponseEntity<List<ClinicFilterDTO>>(dtoList, HttpStatus.OK);
+
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
 	}
 
 	@PutMapping(path = "/rateClinic/{clinicID}&{grade}", consumes = "application/json")
@@ -150,6 +156,20 @@ public class ClinicController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+
+	
+	@GetMapping(path = "/findAllAppointmentDoctors/{clinicID}&{appType}&{date}")
+	public ResponseEntity<ArrayList<DoctorDTO>> findAllAppointmentDoctors(@PathVariable long clinicID,
+			@PathVariable AppointmentType appType, @PathVariable String date) {
+		Clinic c = this.clinicService.findOneByClinicID(clinicID);
+		
+		ArrayList<DoctorDTO> doctors = this.clinicService.filterDoctors(c, appType, date);
+		
+		if(doctors != null)
+			return new ResponseEntity<ArrayList<DoctorDTO>>(doctors, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 }

@@ -46,12 +46,16 @@
 	    		now = Date.now();
 	    		console.log(val);
 	    		var date = formatDate(d);
-	    		row.append("<td class=\"w-50\">" + date + "</td>");
-	    		row.append("<td class=\"w-50\">" + val.appointmentType + "</td>");
-	    		row.append("<td class=\"w-50 clinicTD\" id=\""+val.clinicID+"\">" + val.clinic + "</td>");
-	    		row.append("<td class=\"w-50 doctorTD\"id=\""+val.doctorID+"\" >" + val.doctor + "</td>");
-	    		row.append("<td class=\"w-50\">" + "No" + "</td>");
-	    		row.append("<td class=\"w-50 modalTD\" id="+val.appointmentID+" align=\"center\"><button type=\"button\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Click to rate clinic and doctor\" class=\"btn btn-indigo btn-sm m-0\"><i class=\"fa fa-star\"></i></button></td>");
+	    		row.append("<td >" + date + "</td>");
+	    		row.append("<td >" + val.appointmentType + "</td>");
+	    		row.append("<td class=\"clinicTD\" id=\""+val.clinicID+"\">" + val.clinic + "</td>");
+	    		row.append("<td class=\" doctorTD\"id=\""+val.doctorID+"\" >" + val.doctor + "</td>");
+	    		if (date > now){
+	    			row.append("<td >" + "No" + "</td>");}
+	    		else{
+	    			row.append("<td >" + "Yes" + "</td>");
+	    		}
+	    		row.append("<td class=\" modalTD\" id="+val.appointmentID+" align=\"center\"><button type=\"button\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Click to rate clinic and doctor\" class=\"btn btn-indigo btn-sm m-0\"><i class=\"fa fa-star\"></i></button></td>");
 	    		table.append(row);
 	    	});
     	}

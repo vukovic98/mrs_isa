@@ -12,6 +12,25 @@ $( document ).ready(function() {
     		},
     		204: function(responseObject, textStatus, jqXHR) {
     			console.log("204 No Content");
+	
+    		},
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+    	}
+    });
+    $.ajax ({
+    	type: 'GET',
+    	url: '/clinicApi/findAll',
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+    	statusCode: {
+    		200: function(responseObject, textStatus, jqXHR) {
+    			console.log("200 OK");
+    			loadLocationsAllOK(responseObject);
+    		},
+    		204: function(responseObject, textStatus, jqXHR) {
+    			console.log("204 No Content");
 
     			
     		},
@@ -22,17 +41,41 @@ $( document ).ready(function() {
     	}
     });
     
+    $(document).on('click', '.selectClinicBtn', function () {
+    	var btnID = $(this).attr('id');
+    	sessionStorage.setItem("appParam", btnID);
+    	console.log("prvo " + btnID);
+    	window.location.href = "/searchDoctors";
+    });
 });
 
+function loadLocationsAllOK(clinics){
+	var select = $("#locations");
+	  select.empty();
+	  var klinike = [];
+	  select.append("	<option disabled selected>Select location...</option>");
+	  $.each(clinics,function(i,val){
+		 if (!klinike.includes(val.city.toUpperCase())) {
+			 klinike.push(val.city.toUpperCase())
+		 } 
+	  });
+	  $.each(klinike, function(i, val) {
+		  
+		  var option = $("<option>"+val+"</option>");
+		  select.append(option);
+		  });
+	
+}
 
 function loadAppointmentTypesAllOK(pricelistItems){
 	 var select = $("#appointmentTypes");
 	  select.empty();
-	 
-	  $.each(pricelistItems, function(i, val) {
-		   
+	 select.append("<option disabled selected>Select appointment type...</option>");
+	 $.each(pricelistItems, function(i, val) {
+		   if(val.appointmentType != "SURGERY"){
 		    var option = $("<option>"+val.appointmentType+"</option>");
 		    select.append(option);
+		   }
 		  });
 }
 
@@ -49,27 +92,48 @@ function popuniTabelu(){
 	var avgGrade = $("#avgGrade").val();
 	var dateControl = document.querySelector('input[type="date"]');
 	console.log("datum: "+dateControl.value);
-	$.ajax ({
-    	type: 'GET',
-    	url: '/clinicApi/findAppointments/'+appType+"&"+dateControl.value+"&"+avgGrade,
-    	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
-    	statusCode: {
-    		200: function(responseObject, textStatus, jqXHR) {
-    			console.log("200 OK "+responseObject);
-    			
-    			loadAvailableClinicsAllOK(responseObject);
-    		},
-    		204: function(responseObject, textStatus, jqXHR) {
-    			console.log("204 No Content");
-    			loadAvailableClinicsNO();
-    		},
-    		403: function(responseObject, textStatus, jqXHR) {
-    			console.log("403 Unauthorized");
-    			unauthorized();
-    		}
-    	}
-    });
-}
+	var location =  $("#locations").val(); 
+	if (appType == null || appType == "" ){
+		$("#appointmentTypes").addClass("is-invalid");
+	}
+	else
+		{
+		$("#appointmentTypes").removeClass("is-invalid");
+		}
+	if (dateControl.value== null || dateControl.value == "" ){
+		$("#date").addClass("is-invalid");
+	}
+	else
+		{
+		$("#date").removeClass("is-invalid");
+		}
+	if(appType != null && appType!="" && dateControl.value!=null && dateControl.value != ""){
+		$.ajax ({
+	    	type: 'GET',
+	    	url: '/clinicApi/findAppointments/'+appType+"&"+dateControl.value+"&"+avgGrade+"&"+location,
+	    	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    	statusCode: {
+	    		200: function(responseObject, textStatus, jqXHR) {
+	    			console.log("200 OK "+responseObject);
+	    			
+	    			loadAvailableClinicsAllOK(responseObject);
+	    		},
+	    		204: function(responseObject, textStatus, jqXHR) {
+	    			console.log("204 No Content");
+	    			loadAvailableClinicsNO();
+	    		},
+	    		403: function(responseObject, textStatus, jqXHR) {
+	    			console.log("403 Unauthorized");
+	    			unauthorized();
+	    		}
+	    	}
+	    });
+		var attr = 
+		sessionStorage.setItem('appDate', dateControl.value);
+	}
+	console.log(avgGrade);
+	console.log(location);
+	}
 function loadAvailableClinicsAllOK(clinics){
 	console.log(clinics)
 	var table = $("#clinicsBody");
@@ -81,14 +145,18 @@ function loadAvailableClinicsAllOK(clinics){
 			row.append("<td>"+val.address+"</td>");
 			row.append("<td>"+val.averageGrade+"</td>");
 			row.append("<td>"+val.appointmentType+"</td>");
-			row.append("<td>"+val.price+"</td>");
+			row.append("<td>"+val.price+"$</td>");
+			var date = sessionStorage.getItem('appDate');
+			var id = val.clinicID + "&" + val.appointmentType + "&" + date;
+			row.append("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-primary selectClinicBtn\" id=\"" + id + "\" >Select clinic</button></td>");
 			table.append(row);
+			sessionStorage.setItem('appDate', "");
 		});
 	}
 	else{
 		var row = $("<tr></tr>");
 
-		row.append("<td class=\"w-50 text-center\" colspan=\"5\"> There are no available clinics.</td>");
+		row.append("<td class=\"w-50 text-center\" colspan=\"6\"> There are no available clinics.</td>");
 		table.append(row);	
 	}
 }

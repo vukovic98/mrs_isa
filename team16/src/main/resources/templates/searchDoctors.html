@@ -22,16 +22,16 @@
 </head>
 
 <body>
-	<header id="header" style="z-index: 9999;">
+	<header id="header" style="z-index: 9000;">
 		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">
 			Patient</p>
 		<nav class="links" style="--items: 5;">
 			<a th:href="@{/patient}">Profile</a> 
 			<a th:href="@{/medicalRecord}">Medical Record</a> 
-			<a th:href="@{/appointmentHistory}">Appointment History</a> <a
-				th:href="@{/patientsClinics}">Clinics</a> <a class="selected"
-				th:href="@{/makeAppointment}">Make An Appointment</a> <a
-				th:href="@{/}" class="my_logout"></span></a>
+			<a th:href="@{/appointmentHistory}">Appointment History</a> 
+			<a th:href="@{/patientsClinics}">Clinics</a> 
+			<a class="selected"	th:href="@{/makeAppointment}">Make An Appointment</a> 
+			<a th:href="@{/}" class="my_logout"></span></a>
 		</nav>
 	</header>
 
@@ -53,9 +53,12 @@
 							<tr>
 								<th data-sortable="true" data-field="name" style="width: 40%;">Name</th>
 								<th data-sortable="true" data-field="avgRate"
-									style="width: 10%;">Average Rating</th>
+									>Average Rating</th>
 								<th data-sortable="true" data-field="address"
-									style="width: 50%;">Available Terms</th>
+									>Available Terms</th>
+								<th data-sortable="true" data-field="address"
+									>&nbsp</th>
+									
 
 							</tr>
 
