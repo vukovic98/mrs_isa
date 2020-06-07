@@ -20,11 +20,10 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.Clinic;
-<<<<<<< HEAD
-=======
+
 import com.clinic.team16.beans.ClinicAdministrator;
 import com.clinic.team16.beans.Doctor;
->>>>>>> ec0a9f3aa9445bc823f3055524202a1a29127774
+
 import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.Pricelist;
@@ -32,11 +31,11 @@ import com.clinic.team16.beans.PricelistItem;
 import com.clinic.team16.beans.DTO.ClinicAddDTO;
 import com.clinic.team16.beans.DTO.ClinicFilterDTO;
 import com.clinic.team16.beans.DTO.ClinicInfoDTO;
-<<<<<<< HEAD
+
 import com.clinic.team16.beans.DTO.DoctorDTO;
-=======
+
 import com.clinic.team16.service.ClinicAdminService;
->>>>>>> ec0a9f3aa9445bc823f3055524202a1a29127774
+
 import com.clinic.team16.service.ClinicService;
 import com.clinic.team16.service.GradeService;
 import com.clinic.team16.service.PatientService;
@@ -171,7 +170,7 @@ public class ClinicController {
 	}
 
 	
-<<<<<<< HEAD
+
 	@GetMapping(path = "/findAllAppointmentDoctors/{clinicID}&{appType}&{date}")
 	public ResponseEntity<ArrayList<DoctorDTO>> findAllAppointmentDoctors(@PathVariable long clinicID,
 			@PathVariable AppointmentType appType, @PathVariable String date) {
@@ -185,12 +184,12 @@ public class ClinicController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-=======
+
 	@GetMapping(path = "/getClinicGrade/{clinicID}")
 	public ResponseEntity<ClinicInfoDTO> clinicGrade(@PathVariable("clinicID") long clinicID){
 		Clinic c = this.clinicService.findOneByClinicID(clinicID);
 		if(c != null) {
-			ClinicInfoDTO cdt = new ClinicInfoDTO(clinicID, c.getName(), c.getAddress(), c.getDescription(), c.getAverageGrade());
+			ClinicInfoDTO cdt = new ClinicInfoDTO(clinicID, c.getName(), c.getAddress(), c.getDescription(), c.getAverageGrade(),c.getCity());
 			
 			return new ResponseEntity<ClinicInfoDTO>(cdt,HttpStatus.OK);
 		} else {
@@ -216,13 +215,12 @@ public class ClinicController {
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
 		ClinicInfoDTO cl;
 		Clinic currCl = clinicService.findOneByClinicID(ca.getClinic().getClinicID());
-		cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(), currCl.getDescription(), currCl.getAverageGrade());
+		cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(), currCl.getDescription(), currCl.getAverageGrade(),currCl.getCity());
 		if( currCl != null) {
 			return new ResponseEntity<ClinicInfoDTO>(cl,HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
 	}
-	
->>>>>>> ec0a9f3aa9445bc823f3055524202a1a29127774
+
 }
