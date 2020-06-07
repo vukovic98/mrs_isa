@@ -37,6 +37,11 @@ function clinicsAllOK(clinicsList) {
 			    title: 'Address',
 			    sortable: true
 			  }, {
+				    field: 'city',
+				    title: 'City',
+				    sortable: true
+				  }, 
+			  {
 			    field: 'averageGrade',
 			    title: 'Average grade',
 			    sortable: true
