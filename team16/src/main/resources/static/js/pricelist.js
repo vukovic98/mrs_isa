@@ -159,12 +159,12 @@ table.append(row);
 		document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
 	}
 
-function myFunction() {
+function pricelistFunction() {
 	  // Declare variables
 	  var input, filter, table, tr, td, i, txtValue;
-	  input = document.getElementById("myInput");
+	  input = document.getElementById("pricelistInput");
 	  filter = input.value.toUpperCase();
-	  table = document.getElementById("myTable");
+	  table = document.getElementById("pricelistTable");
 	  tr = table.getElementsByTagName("tr");
 
 	  // Loop through all table rows, and hide those who don't match the search query

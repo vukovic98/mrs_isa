@@ -26,8 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().cors().disable().authorizeRequests().antMatchers("/searchDoctors", "/clinicalCenterAdminInitial", "/centerAdmins" ,"/userApi/validateUser","/","/doctor","/doctorAppointments","/workSchedule","/doctorProfile","/nurse","/patient","/clinicalCenterAdmin","/clinicAdmin","/businessReports","/doctors","/rooms","/pricelist","/predefinedAppointments","/clinics","/clinicalAdmins","/medications","/medicalRecord","/patientsClinics","/appointmentHistory","/diagnosis","/medicalReports","/workCalendar","/leaveRequest","/nurseProfile","/makeAppointment","/patientApi/signUpUser","/patientApi/activateAccount").permitAll().antMatchers("/resources/**").permitAll().anyRequest().authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.addFilterBefore(jwtReqFilter, UsernamePasswordAuthenticationFilter.class);
+		http.csrf().disable().cors().disable().authorizeRequests().antMatchers("/searchDoctors","/clinicalCenterAdminInitial", "/centerAdmins" ,"/userApi/validateUser","/","/doctor","/doctorAppointments","/workSchedule","/doctorProfile","/nurse","/patient","/clinicalCenterAdmin","/clinicAdmin","/businessReports","/doctors","/rooms","/pricelist","/predefinedAppointments","/clinics","/clinicalAdmins","/medications","/medicalRecord","/patientsClinics","/appointmentHistory","/diagnosis","/medicalReports","/workCalendar","/leaveRequest","/nurseProfile","/makeAppointment","/patientApi/signUpUser","/patientApi/activateAccount","/clinicPage").permitAll().antMatchers("/resources/**").permitAll().anyRequest().authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);		http.addFilterBefore(jwtReqFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 	@Autowired
 	private UserService userDetailService;

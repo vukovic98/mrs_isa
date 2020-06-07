@@ -4,7 +4,7 @@ $(document).ready(function(){
 
   $.ajax({
     type: 'GET',
-    url: 'patientApi/findAll',
+    url: 'patientApi/findAllForList',
     headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     statusCode: {
       200: function(responseObject, textStatus, jqXHR) {
@@ -24,17 +24,35 @@ $(document).ready(function(){
 });
 
 function patientsAllOK(medicationsList) {
-  var table = $("#patientBody");
+  var table = $("#usersTable");
   table.empty();
 
   console.log(medicationsList);
-  $.each(medicationsList, function(i, val) {
+  /*$.each(medicationsList, function(i, val) {
     var row = $("<tr id=\""+i+"\"></tr>");
-    row.append("<td id=\""+val.id+"\">" + val.insurance + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.name + "</td>");
+    row.append("<td id=\"id\">" + val.insurance + "</td>");
+    row.append("<td id=\"name\">" + val.name + "</td>");
     row.append("<td id=\""+val.id+"\">" + val.phone + "</td>");
     table.append(row);
-  });
+  });*/
+  
+  table.bootstrapTable({
+	  data: medicationsList,
+	  pagination: true,
+	  search: true,
+	  columns: [{
+	    field: 'insurance',
+	    title: 'Insurance number',
+	    sortable: true
+	  }, {
+	    field: 'name',
+	    title: 'Name',
+	    sortable: true
+	  }, {
+	    field: 'phone',
+	    title: 'Phone number'
+	  }]
+	})
 }
 
 function patientsAllNO(responseObject) {
