@@ -122,7 +122,7 @@
 									aria-describedby="basic-addon2" onkeyup="roomFunction()">
 							</div>
 							<div class="col-sm-2 text-right pr-0">
-								<button type="button" class="btn btn-info add-new-rooms">
+								<button id="addRoomBtn" type="button" class="btn btn-info add-new-rooms">
 									<i class="fa fa-plus"></i> Add New
 								</button>
 							</div>
@@ -238,6 +238,44 @@
 				<div class="modal-footer">
 					<button type="button" id="modalApproveBtn" class="btn btn-primary"
 						data-dismiss="modal">Approve</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal end -->
+
+	<!-- Modal -->
+	<div class="modal fade" id="addRoomModal" role="dialog">
+		<div class="modal-dialog" role="document" style="margin-top: 60px;">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="card text-center">
+						<div class="card-header">Add room</div>
+						<div class="card-body">
+							<div class="col-xs-12 col-sm-12 pl-0">
+								<p id="reportId" style="display: none;"></p>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend" style="width: 30%;">
+										<span class="input-group-text w_available" id="clinicSPAN">Name</span>
+									</div>
+									<input type="text" id="roomNameInput" class="form-control"
+										aria-describedby="basic-addon1" required>
+								</div>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend" style="width: 30%;">
+										<span class="input-group-text w_available" id="doctorSPAN">Type</span>
+									</div>
+									<select id="roomTypeInput" class="form-control"><option value="EXAM">Examination</option><option value="OPERATION">Operation</option></select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="roomCreateModalBtn" class="btn btn-primary"
+						data-dismiss="modal">Create</button>
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">Close</button>
 				</div>

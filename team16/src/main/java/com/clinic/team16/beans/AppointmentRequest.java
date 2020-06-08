@@ -45,6 +45,10 @@ public class AppointmentRequest {
 		return approved;
 	}
 
+	public long getAppointmentRequestId() {
+		return appointmentRequestId;
+	}
+
 	public void setApproved(Boolean approved) {
 		this.approved = approved;
 	}

@@ -34,7 +34,6 @@ import com.clinic.team16.beans.DTO.MedicalReportDTO;
 import com.clinic.team16.beans.DTO.PatientMedicalRecordDTO;
 
 import com.clinic.team16.service.AppointmentRequestService;
-
 import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicalCenterAdminService;
 import com.clinic.team16.service.DoctorService;
@@ -214,5 +213,24 @@ public class AppointmentController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-
+	/*
+	@GetMapping(path = "/findAllPredefined")
+	public ResponseEntity<List<AppointmentDTO>> findAllPredefined() {
+		List<Appointment> list = this.appointmentService.findAllPredefined();
+		List<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		if (list != null) {
+			for (Appointment a : list) {
+				String doctor = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
+				String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
+				dtoList.add(new AppointmentDTO(a.getAppointmentId(), formatter.format(a.getDateTime()), a.getDuration(),
+						doctor, patient, a.getPricelistItems().getName(),
+						String.valueOf(a.getPricelistItems().getPrice()),
+						String.valueOf(a.getOrdination().getNumber())));
+			}
+			return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+*/
 }

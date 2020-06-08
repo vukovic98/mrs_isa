@@ -32,338 +32,85 @@
 		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Clinic
 			administrator</p>
 		<nav class="links" style="--items: 5;">
-			<a th:href="@{/clinicAdmin}">Profile</a> <a
-				th:href="@{/clinicPage}">Clinic</a> <a th:href="@{/businessReports}">Business
-				reports</a> <a th:href="@{/leaveRequestAdmin}">Leave requests</a> <a th:href="@{clinicAppointmentRequests}" class="selected">Appointment requests</a> <a th:href="@{/}" class="my_logout"></a>
+			<a th:href="@{/clinicAdmin}">Profile</a> <a th:href="@{/clinicPage}">Clinic</a>
+			<a th:href="@{/businessReports}">Business reports</a> <a
+				th:href="@{/leaveRequestAdmin}">Leave requests</a> <a
+				th:href="@{clinicAppointmentRequests}" class="selected">Appointment
+				requests</a> <a th:href="@{/}" class="my_logout"></a>
 		</nav>
 	</header>
 
 
 	<div class="container" style="margin-top: 85px;">
 		<div class="jumbotron bg-light">
-			<h1 class="mb-4" id="patientFullName"></h1>
-			<ul class="nav nav-pills pt-3" id="myTab">
-				<li class="nav-item" id="about"><a class="nav-link active"
-					data-toggle="pill" href="#admin">About</a></li>
-				<li class="nav-item" id="editProfile"><a class="nav-link "
-					data-toggle="pill" href="#editClinicAdminProfile">Edit Profile</a>
-				</li>
-				<li class="nav-item"><a class="nav-link" data-toggle="pill"
-					href="#changePasswordTab">Change Password</a></li>
-			</ul>
-
-
-
-			<div class="tab-content">
-
-				<div class="tab-pane active" id="admin">
-					<br>
-					<form id="clinicAdminProfileForm">
-						<div class="col-xs-12 col-sm-12 pl-0 pt-1 pr-0">
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Name</span>
-								</div>
-								<input type="text" class="form-control" aria-label="Name"
-									id="fullName" aria-describedby="inputGroup-sizing-default"
-									readonly>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Country</span>
-								</div>
-								<input type="text" class="form-control" aria-label="Country"
-									id="country" aria-describedby="inputGroup-sizing-default"
-									readonly>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">City</span>
-								</div>
-								<input type="text" class="form-control" aria-label="City"
-									id="city" aria-describedby="inputGroup-sizing-default" readonly>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Address</span>
-								</div>
-								<input type="text" class="form-control" aria-label="Address"
-									id="address" aria-describedby="inputGroup-sizing-default"
-									readonly>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Phone number</span>
-								</div>
-								<input type="text" class="form-control"
-									aria-label="Phone number" id="phoneNumber"
-									aria-describedby="inputGroup-sizing-default" readonly>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Insurance number</span>
-								</div>
-								<input type="text" class="form-control"
-									aria-label="Insurance number" id="insNumber"
-									aria-describedby="inputGroup-sizing-default" readonly>
-							</div>
-						</div>
-					</form>
-				</div>
-
-				<div class="tab-pane" id="editClinicAdminProfile">
-
-
-					<form id="clinicAdminEditForm">
-						<div class="col-xs-12 col-sm-12 pl-0 pt-4 pr-0">
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">First Name</span>
-								</div>
-								<input type="text" style="background-color: white;"
-									class="form-control" aria-label="FirstName" id="editFirstName"
-									aria-describedby="inputGroup-sizing-default">
-								<div class="invalid-feedback">First Name can not be empty.</div>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Last Name</span>
-								</div>
-								<input type="text" style="background-color: white;"
-									class="form-control" aria-label="LastName" id="editLastName"
-									aria-describedby="inputGroup-sizing-default">
-								<div class="invalid-feedback">Last Name can not be empty.</div>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Country</span>
-								</div>
-								<input type="text" style="background-color: white;"
-									class="form-control" aria-label="Country" id="editCountry"
-									aria-describedby="inputGroup-sizing-default">
-								<div class="invalid-feedback">Country can not be empty.</div>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">City</span>
-								</div>
-								<input type="text" style="background-color: white;"
-									class="form-control" aria-label="City" id="editCity"
-									aria-describedby="inputGroup-sizing-default">
-								<div class="invalid-feedback">City can not be empty.</div>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Address</span>
-								</div>
-								<input type="text" style="background-color: white;"
-									class="form-control" aria-label="Address" id="editAddress"
-									aria-describedby="inputGroup-sizing-default">
-								<div class="invalid-feedback">Address can not be empty.</div>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Phone number</span>
-								</div>
-								<input type="text" style="background-color: white;"
-									class="form-control" aria-label="Phone number"
-									id="editPhoneNumber"
-									aria-describedby="inputGroup-sizing-default">
-								<div class="invalid-feedback">Phone number can not be
-									empty.</div>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Insurance number</span>
-								</div>
-								<input type="text" class="form-control"
-									aria-label="Insurance number" id="editInsNumber"
-									aria-describedby="inputGroup-sizing-default" readonly>
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Email</span>
-								</div>
-								<input type="text" class="form-control" aria-label="Email"
-									id="editEmail" aria-describedby="inputGroup-sizing-default"
-									readonly>
-							</div>
-						</div>
-						<div class="text-right">
-							<button style="width: 15%" ; type="submit" id="saveAdmin"
-								class="btn btn-primary">Save</button>
-						</div>
-					</form>
-
-
-					<div class="col-md-3" style="float: left;"></div>
-				</div>
-
-
-				<div class="tab-pane" id="changePasswordTab">
-					<form id="clinicAdminEditPasswordForm">
-						<div class="pt-3">
-							<div class="form-group">
-								<label>Password</label> <input type="password"
-									class="form-control" id="oldPassword">
-								<div class="invalid-feedback">Wrong password.</div>
-							</div>
-							<div class="form-group">
-								<label>New Password</label> <input type="password"
-									class="form-control" id="newPassword">
-							</div>
-							<div class="form-group">
-								<label>Confirm Password</label> <input type="password"
-									class="form-control" id="confirmedPassword">
-								<div class="invalid-feedback">Please make sure your
-									passwords match.</div>
-							</div>
-						</div>
-						<button type="submit" class="btn btn-primary" id="changePassword">Change</button>
-					</form>
-				</div>
-			</div>
+			<table class="table table-bordered" id="requestTable">
+				<thead>
+					<tr>
+						<th>Patient</th>
+						<th>Appointment date</th>
+						<th>Doctor</th>
+						<th>&nbsp</th>
+					</tr>
+				</thead>
+				<tbody id="requestsBody">
+				</tbody>
+			</table>
 
 		</div>
 
 	</div>
 
-
 	<!-- Modal -->
-	<div class="modal fade" id="userModal" role="dialog">
-		<div class="modal-dialog" role="document">
+	<div class="modal fade" id="ordinationModal" role="dialog">
+		<div class="modal-dialog" role="document" style="margin-top: 60px;">
 			<div class="modal-content">
 				<div class="modal-body">
 					<div class="card text-center">
-						<div class="card-header">User information</div>
+						<div class="card-header">Available rooms</div>
 						<div class="card-body">
-							<ul class="list-group">
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									Name
-									<p id="modalName" class="mb-0">
-										<i>John Doe</i>
-									</p>
-								</li>
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									Email
-									<p id="modalEmail" class="mb-0">
-										<i>s@s</i>
-									</p>
-								</li>
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									Address
-									<p id="modalAddress" class="mb-0">
-										<i>Vitkovac 103, Kraljevo</i>
-									</p>
-								</li>
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									Phone
-									<p id="modalPhone" class="mb-0">
-										<i>0605873456</i>
-									</p>
-								</li>
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									City
-									<p id="modalCity" class="mb-0">
-										<i>Kraljevo</i>
-									</p>
-								</li>
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									Country
-									<p id="modalCountry" class="mb-0">
-										<i>Serbia</i>
-									</p>
-								</li>
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									Insurance Number
-									<p id="modalInsNumber" class="mb-0">
-										<i>1213141516171</i>
-									</p>
-								</li>
-							</ul>
+							<div class="col-xs-12 col-sm-12 pl-0">
+								<p id="reportId" style="display: none;"></p>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend" style="width: 30%;">
+										<span class="input-group-text w_available" id="clinicSPAN">Doctor</span>
+									</div>
+									<input type="text" id="doctorModal" class="form-control"
+										aria-describedby="basic-addon1" readonly>
+								</div>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend" style="width: 30%;">
+										<span class="input-group-text w_available" id="doctorSPAN">Date</span>
+									</div>
+									<input type="text" id="dateModal" class="form-control"
+										aria-describedby="basic-addon1" readonly>
+								</div>
+								<div class="jumbotron bg-light">
+									<table>
+										<thead>
+											<tr>
+												<th>Patient</th>
+												<th>Appointment date</th>
+												<th>Doctor</th>
+												<th>Available rooms</th>
+												<th>&nbsp</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
+					<button type="button" id="modalApproveBtn" class="btn btn-primary"
+						data-dismiss="modal">Approve</button>
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<!-- Modal -->
-	<div class="modal fade" id="clinicModal" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-body">
-					<div class="card text-center">
-						<div class="card-header">Clinic information</div>
-						<div class="card-body">
-							<ul class="list-group">
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									Name
-									<p id="name" class="mb-0">
-										<i>The best clinic</i>
-									</p>
-								</li>
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									Address
-									<p id="address" class="mb-0">
-										<i>Vitkovac 103, Kraljevo</i>
-									</p>
-								</li>
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									Description
-									<p id="phone" class="mb-0">
-										<i>A very nice clinic.</i>
-									</p>
-								</li>
-								<li
-									class="list-group-item d-flex justify-content-between align-items-center">
-									<button type="button" class="btn btn-primary">Ordinations</button>
-									<button type="button" class="btn btn-primary"
-										onclick="modalOrdinationsShow()">Admins</button>
-									<button type="button" class="btn btn-primary"
-										onclick="modalOrdinationsShow()">Doctors</button>
-									<button type="button" class="btn btn-primary"
-										onclick="modalOrdinationsShow()">Nurses</button>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	<!-- Modal end -->
 
 
 	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
@@ -375,7 +122,8 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
-	<script type="application/javascript" th:src="@{js/clinicAdmin.js}"></script>
+	<script type="application/javascript"
+		th:src="@{js/clinicAppointmentRequests.js}"></script>
 </body>
 
 </html>

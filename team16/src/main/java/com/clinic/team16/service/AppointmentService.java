@@ -52,4 +52,9 @@ public class AppointmentService {
 		
 		return exists;
 	}
+/*
+	public List<Appointment> findAllPredefined() {
+		return this.appointmentRepository.findAllPredefined();
+	}
+	*/
 }
