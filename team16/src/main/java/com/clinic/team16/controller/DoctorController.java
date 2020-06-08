@@ -21,7 +21,8 @@ import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.DTO.DoctorDTO;
-import com.clinic.team16.service.DoctorService;
+import com.clinic.team16.beans.DTO.DoctorLeaveDTO;
+import com.clinic.team16.service.ClinicService;import com.clinic.team16.service.DoctorService;
 import com.clinic.team16.service.GradeService;
 import com.clinic.team16.service.PatientService;
 
@@ -35,6 +36,9 @@ public class DoctorController {
 	PatientService patientService;
 	@Autowired
 	GradeService gradeService;
+	
+	@Autowired
+	ClinicService clinicService;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Doctor> createDoctor(@RequestBody Doctor doctor) throws Exception{
@@ -96,5 +100,28 @@ public class DoctorController {
 		}
 		else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@GetMapping(path = "/findAllForClinic/{clinicID}") 
+	public ResponseEntity<List<Doctor>> findAllForClinic(@PathVariable("clinicID") long clinicID) {
+		List<Doctor> list = this.doctorService.findAll();
+		
+		if(list != null)
+			return new ResponseEntity<List<Doctor>>(list, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	
+	@GetMapping(path = "/findCurrent")
+	public ResponseEntity<DoctorLeaveDTO> findCurrent() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Doctor found = this.doctorService.findOneByEmail(currentUser);
+		System.out.println("PROSLO");
+		if(found != null) {
+			return new ResponseEntity<DoctorLeaveDTO>(new DoctorLeaveDTO(found.getFirstName()+" "+found.getLastName(), found.getEmail(), found.getCity(), found.getCountry(), found.getAddress(), found.getPhoneNumber(), found.getClinic().getName()), HttpStatus.OK);
+		}
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
