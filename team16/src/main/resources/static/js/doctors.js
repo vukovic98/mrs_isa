@@ -50,7 +50,7 @@ $( document ).ready(function() {
 function doctorAllOK(doctorList) {
 	var table = $("#doctorBody");
 	table.empty();
-	
+	console.log(doctorList);
 	$.each(doctorList, function(i, val) {
 		var row = $("<tr id=\""+i+"\"></tr>");
 
