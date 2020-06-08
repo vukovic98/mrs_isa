@@ -20,6 +20,12 @@ public class Control {
 		   return "leaveRequestAdmin";
 	   }
 	   
+		
+	   @RequestMapping(value = "/clinicAppointmentRequests")
+	   public String clinicAppointmentRequests() {
+		   return "clinicAppointmentRequests";
+	   }
+	   
 	   @RequestMapping(value = "/doctor")
 	   public String doctor() {
 		   return "doctor";

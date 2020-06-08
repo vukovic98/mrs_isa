@@ -21,6 +21,7 @@ import com.clinic.team16.beans.MedicalReport;
 import com.clinic.team16.beans.DTO.AppointmentDTO;
 import com.clinic.team16.beans.DTO.CalendarDataDTO;
 import com.clinic.team16.beans.DTO.MedicalReportDTO;
+import com.clinic.team16.beans.DTO.PatientMedicalRecordDTO;
 import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.DoctorService;
 
@@ -138,6 +139,17 @@ public class AppointmentController {
 			System.out.println(a.getMedicalReport().getMedication());
 			System.out.println(a.getDoctor().getClinic().getName());
 			return new ResponseEntity<MedicalReportDTO>(mDTO, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@GetMapping(path = "/findAppointmentPatientById/{appId}")
+	public ResponseEntity<PatientMedicalRecordDTO> findAppPatById(@PathVariable("appId") long appointmentID){
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Appointment a = appointmentService.findOneById(appointmentID);
+		if(a != null) {
+			PatientMedicalRecordDTO dto = new PatientMedicalRecordDTO(a.getPatient().getFirstName() + " " + a.getPatient().getLastName(), a.getPatient().getMedicalRecord().getGender(), formatter.format(a.getPatient().getMedicalRecord().getBirthday()), a.getPatient().getMedicalRecord().getHeight(), a.getPatient().getMedicalRecord().getWeight(), a.getPatient().getMedicalRecord().getBloodType(), a.getPatient().getMedicalRecord().getAllergies(), a.getPatient().getMedicalRecord().getPerscriptions());
+			return new ResponseEntity<PatientMedicalRecordDTO>(dto,HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
