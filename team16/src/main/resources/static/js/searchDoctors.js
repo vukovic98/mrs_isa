@@ -1,6 +1,6 @@
 $( document ).ready(function() {
   console.log("ready");
-  var atrs = sessionStorage.getItem('appParam').split("&");;
+  var atrs = sessionStorage.getItem('appParam').split("&");
   console.log(atrs);
   var clinicID = atrs[0];
   var appType = atrs[1];

@@ -1,5 +1,6 @@
 package com.clinic.team16.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,7 @@ import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.DTO.DoctorDTO;
 import com.clinic.team16.beans.DTO.DoctorLeaveDTO;
-import com.clinic.team16.service.ClinicService;
-import com.clinic.team16.service.DoctorService;
+import com.clinic.team16.service.ClinicService;import com.clinic.team16.service.DoctorService;
 import com.clinic.team16.service.GradeService;
 import com.clinic.team16.service.PatientService;
 
@@ -50,9 +50,25 @@ public class DoctorController {
 	@GetMapping(path = "/findAll") 
 	public ResponseEntity<List<Doctor>> findAll() {
 		List<Doctor> list = this.doctorService.findAll();
-		
+			
 		if(list != null)
 			return new ResponseEntity<List<Doctor>>(list, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping(path = "/findAllDoctorsDTOByClinic/{clinicID}") 
+	public ResponseEntity<ArrayList<DoctorDTO>> findAllDoctorsDTO(@PathVariable long clinicID) {
+		List<Doctor> list = this.doctorService.findAllByClinic(clinicID);
+			
+		if(list != null) {
+			ArrayList<DoctorDTO> dtoList = new ArrayList<>();
+			
+			for(Doctor d : list)
+				dtoList.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail()));
+			
+			return new ResponseEntity<ArrayList<DoctorDTO>>(dtoList, HttpStatus.OK);
+		}
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -68,6 +84,7 @@ public class DoctorController {
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
 	@PutMapping(path="/rateDoctor/{doctorID}&{grade}", consumes="application/json")
 	public ResponseEntity<HttpStatus> rateDoctor(@PathVariable("doctorID") long doctorID, @PathVariable("grade") String grade) {
 		long id = doctorID;

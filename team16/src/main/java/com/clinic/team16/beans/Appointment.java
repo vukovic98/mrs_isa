@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Embeddable
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
 public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +47,9 @@ public class Appointment {
 	@JoinColumn(name = "PricelisItem_ID")
 	public PricelistItem pricelistItems;
 
+	@Column(name = "Price")
+	public double price;
+
 	public Appointment() {
 
 	}
@@ -64,6 +67,15 @@ public class Appointment {
 		this.doctor = doctor;
 		this.patient = patient;
 		this.pricelistItems = pricelistItems;
+		this.price = this.pricelistItems.getPrice();
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public long getAppointmentId() {

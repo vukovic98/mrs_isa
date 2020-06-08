@@ -1,13 +1,18 @@
 package com.clinic.team16.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,14 +21,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Appointment;
+import com.clinic.team16.beans.AppointmentRequest;
+import com.clinic.team16.beans.ClinicalCenterAdministrator;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.MedicalReport;
+import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.DTO.AppointmentDTO;
+import com.clinic.team16.beans.DTO.AppointmentRequestDTO;
 import com.clinic.team16.beans.DTO.CalendarDataDTO;
 import com.clinic.team16.beans.DTO.MedicalReportDTO;
+
 import com.clinic.team16.beans.DTO.PatientMedicalRecordDTO;
+
+import com.clinic.team16.service.AppointmentRequestService;
+
 import com.clinic.team16.service.AppointmentService;
+import com.clinic.team16.service.ClinicalCenterAdminService;
 import com.clinic.team16.service.DoctorService;
+import com.clinic.team16.service.PatientService;
 
 @RestController
 @RequestMapping("/appointmentApi")
@@ -34,6 +49,15 @@ public class AppointmentController {
 
 	@Autowired
 	private DoctorService doctorService;
+
+	@Autowired
+	private ClinicalCenterAdminService clinicalCenterAdminService;
+	
+	@Autowired
+	private AppointmentRequestService appointmentRequestService;
+	
+	@Autowired
+	private PatientService patientService;
 
 	@GetMapping(path = "/findAll")
 	public ResponseEntity<List<AppointmentDTO>> findAll() {
@@ -142,6 +166,43 @@ public class AppointmentController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+/*
+	@Transactional(readOnly = true)
+	@PostMapping(path = "/addAppointment", consumes = "application/json")
+	public ResponseEntity<HttpStatus> addAppointment(@RequestBody AppointmentRequestDTO request) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Doctor d = this.doctorService.findOneByEmail(request.getDoctor());
+		Patient p = this.patientService.findOneByEmail(request.getEmail());
+		ClinicalCenterAdministrator admin = this.clinicalCenterAdminService.findMainClinicalCenterAdmin();
+		
+		boolean exists = true;
+
+		if (d != null) {
+			try {
+				exists = this.appointmentService.checkIfAppointmentExists(d, sdf.parse(request.getDateTime()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+			if (!exists) {
+				//dodavanje appointmenta
+				try {
+					AppointmentRequest appReq = new AppointmentRequest(false, sdf.parse(request.getDateTime()), admin, null);
+					this.appointmentRequestService.save(appReq);
+					
+					Appointment app = new Appointment(0, sdf.parse(request.getDateTime()), 0, null, null, appReq, d, p, pricelistItems);
+				} catch (ParseException e) {
+					return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				}
+			} else {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return null;
+	}*/
 
 	@GetMapping(path = "/findAppointmentPatientById/{appId}")
 	public ResponseEntity<PatientMedicalRecordDTO> findAppPatById(@PathVariable("appId") long appointmentID){

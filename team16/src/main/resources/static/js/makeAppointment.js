@@ -20,6 +20,7 @@ $( document ).ready(function() {
 			}
     	}
     });
+    
     $.ajax ({
     	type: 'GET',
     	url: '/clinicApi/findAll',
@@ -45,11 +46,38 @@ $( document ).ready(function() {
     	var btnID = $(this).attr('id');
     	sessionStorage.setItem("appParam", btnID);
     	console.log("prvo " + btnID);
-    	window.location.href = "/searchDoctors";
+    	
+    	window.location.href = "/clinicPage";
     });
 });
 
 function loadLocationsAllOK(clinics){
+	//tabela klinika
+	var clinicsHead = $("#clinicsHead");
+	clinicsHead.empty();
+	var row = $("<tr></tr>");
+	row.append("<th>Clinics name</th>");
+	row.append("<th>Address</th>");
+	row.append("<th>Average grade</th>");
+	row.append("<th>&nbsp</th>");
+
+	clinicsHead.append(row);
+	
+	var clinicsBody = $("#clinicsBody");
+	clinicsBody.empty();
+	
+	$.each(clinics,function(i,val){
+		var row = $("<tr id=\""+i+"\"></tr>");
+		row.append("<td >" + val.name + "</td>");
+		row.append("<td >" + val.address + ", " + val.city + "</td>");
+		row.append("<td >" + val.averageGrade + "</td>");
+		
+		var btn = "<td class=\"text-center\" id=\"" + val.name + "\"><button id=\"btnCLinicPage\" type=\"button\" class=\"btn btn-primary\">Select clinic</button></td>";
+		row.append(btn);
+		clinicsBody.append(row);	
+	  });
+	
+	
 	var select = $("#locations");
 	  select.empty();
 	  var klinike = [];
@@ -62,7 +90,7 @@ function loadLocationsAllOK(clinics){
 	  $.each(klinike, function(i, val) {
 		  
 		  var option = $("<option>"+val+"</option>");
-		  select.append(option);
+		   select.append(option);
 		  });
 	
 }
@@ -135,7 +163,19 @@ function popuniTabelu(){
 	console.log(location);
 	}
 function loadAvailableClinicsAllOK(clinics){
-	console.log(clinics)
+	var clinicsHead = $("#clinicsHead");
+	clinicsHead.empty();
+	var row = $("<tr></tr>");
+	row.append("<th>Clinics name</th>");
+	row.append("<th>Address</th>");
+	row.append("<th>Average grade</th>");
+	row.append("<th>Appointment type</th>");
+	row.append("<th>Price</th>");
+	row.append("<th>&nbsp</th>");
+
+	clinicsHead.append(row);
+	
+	
 	var table = $("#clinicsBody");
 	table.empty();
 	if(clinics.length != 0){
@@ -164,7 +204,7 @@ function loadAvailableClinicsNO(){
 	var table = $("#clinicsBody");
 	table.empty();
 	var row = $("<tr></tr>");
-	row.append("<td class=\"w-50 text-center\" colspan=\"5\"> Could not load clinics.</td>");
+	row.append("<td class=\"text-center\" colspan=\"5\"> Could not load clinics.</td>");
 	table.append(row);	
 }
 function unauthorized(){
