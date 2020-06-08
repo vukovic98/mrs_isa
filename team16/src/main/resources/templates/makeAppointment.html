@@ -19,11 +19,10 @@
 		<p class="pt-1 pl-3 mb-0" style="float: left;font-size: x-large;">
 			Patient
 		</p>
-		<nav class="links" style="--items: 5;">
+		<nav class="links" style="--items: 4;">
 			<a th:href="@{/patient}">Profile</a>
 			<a th:href="@{/medicalRecord}">Medical Record</a>
 			<a th:href="@{/appointmentHistory}">Appointment History</a>
-			<a th:href="@{/patientsClinics}">Clinics</a>
 			<a class="selected" th:href="@{/makeAppointment}">Make An Appointment</a>
 			<a th:href="@{/}" class="my_logout"></span></a>
 		</nav>
@@ -78,27 +77,16 @@
 					</form>
 				</div>
 			</div>
-			<table data-toggle="table" class="table table-hover mt-4 pt-4" id="clinics">
-				<thead>
-					<tr>
-						<th data-sortable="true" data-field="name" style="width: 33.33%;">Clinic
-						</th>
-						<th data-sortable="true" data-field="address" style="width: 33.33%;">Address
-						</th>
-						<th data-sortable="true" data-field="averageGrade" style="width: 33.33%;">Average Rating
-						</th>
-						<th data-sortable="true" data-field="appointmentType" style="width: 33.33%;">Appointment Type
-						</th>
-						<th data-sortable="true" data-field="price" style="width: 33.33%;">Price
-						</th>
-						<th data-field="price" style="width: 33.33%;">&nbsp
-						</th>
-					</tr>
+			<div>
+			<table class="table table-hover table-bordered mt-4 pt-4" id="clinics">
+				<thead id="clinicsHead">
+					
 				</thead>
 				<tbody id="clinicsBody">
 
 				</tbody>
 			</table>
+			</div>
 		</div>
 	</div>
 

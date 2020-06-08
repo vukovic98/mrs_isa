@@ -1,5 +1,6 @@
 package com.clinic.team16.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,10 @@ public class DoctorService {
 		return doctorRepository.findOneByEmail(email);
 	}
 	
-
+	public ArrayList<Doctor> findAllByClinic(long id) {
+		return this.doctorRepository.findAllByClinic(id);
+	}
+	
 	public Doctor findOneByDoctorID(long id) {
 		return doctorRepository.findOneByid(id);
 	}
