@@ -51,7 +51,8 @@ public class ClinicService {
 		ArrayList<DoctorDTO> doctors = new ArrayList<>();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date dateDate = null;
-
+		
+		
 		try {
 			dateDate = sdf.parse(date);
 		} catch (ParseException e) {
@@ -63,7 +64,8 @@ public class ClinicService {
 			System.out.println(d.getFirstName() + "-------------------");
 			if (d.getSpecialty() == appType) {
 				List<LeaveRequest> leaves = d.getLeaveRequests();
-
+				ArrayList<String> frontDates = new ArrayList<>();
+				
 				boolean leavesOk = true;
 				boolean appointmentsOk = false;
 
@@ -83,18 +85,57 @@ public class ClinicService {
 				System.out.println(leavesOk);
 
 				// appointments
-				ArrayList<Appointment> apps = this.appointmentService.findByDoctorAndDate(sdf.format(dateDate),
-						d.getId());
+				ArrayList<Appointment> apps = this.appointmentService.findByDoctorAndDate(sdf.format(dateDate), d.getId());
 				System.out.println(apps.size());
 				if (apps.size() < 15) {
 					appointmentsOk = true;
+					
+					
+					
+					//slobdni termini
+					ArrayList<String> possTerms = new ArrayList<>();
+			            
+					possTerms.add("08:00"); 
+					possTerms.add("08:30"); 
+					possTerms.add("09:00");
+					possTerms.add("09:30");
+					possTerms.add("10:00"); 
+					possTerms.add("10:30"); 
+					possTerms.add("11:00");
+					possTerms.add("11:30");
+					possTerms.add("12:00"); 
+					possTerms.add("12:30"); 
+					possTerms.add("13:00");
+					possTerms.add("14:00"); 
+					possTerms.add("14:30"); 
+					possTerms.add("15:00");
+					possTerms.add("15:30");
+			            
+			         
+			        //2020-06-18 06:05:00.000000
+			        for(Appointment a : apps) {
+			        	String time = a.getDateTime().toString().substring(11, 16);
+			        	System.out.println(time + "****************************");
+			        	if(possTerms.contains(time)) {
+			        		System.out.println("UDJE" + time);
+			        		possTerms.remove(time);
+			        	}
+			        }
+			        
+			        for(String p : possTerms) {
+			        	String finalDate = date + " " + p;
+		        		frontDates.add(finalDate);
+			        }
+					
 				} else {
 					appointmentsOk = false;
 				}
 				System.out.println(appointmentsOk);
+				
+				
 
 				if (leavesOk && appointmentsOk) {
-					doctors.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade()));
+					doctors.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail(), frontDates));
 				}
 
 			}

@@ -77,4 +77,14 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	@GetMapping(path = "/getCurrentUser")
+	public ResponseEntity<String> getCurrentUser() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		if(currentUser != "")
+			return new ResponseEntity<String>(currentUser, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 }

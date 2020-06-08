@@ -15,9 +15,25 @@ public class Control {
 		   return "redirect:index";
 	   }
 	
+	   @RequestMapping(value = "/leaveRequestAdmin")
+	   public String leaveRequestAdmin() {
+		   return "leaveRequestAdmin";
+	   }
+	   
+		
+	   @RequestMapping(value = "/clinicAppointmentRequests")
+	   public String clinicAppointmentRequests() {
+		   return "clinicAppointmentRequests";
+	   }
+	   
 	   @RequestMapping(value = "/doctor")
 	   public String doctor() {
 		   return "doctor";
+	   }
+	   
+	   @RequestMapping(value = "/doctorLeave")
+	   public String doctorLeave() {
+		   return "doctorLeave";
 	   }
 	   
 	   @RequestMapping(value="/searchDoctors")

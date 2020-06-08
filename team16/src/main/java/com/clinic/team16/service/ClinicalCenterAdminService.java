@@ -29,4 +29,8 @@ public class ClinicalCenterAdminService {
 	public ClinicalCenterAdministrator findOneByEmail(String email) {
 		return this.adminRepository.findOneByEmail(email);
 	}
+	
+	public ClinicalCenterAdministrator findMainClinicalCenterAdmin() {
+		return this.adminRepository.findMainCLinicalCenterAdmin();
+	}
 }

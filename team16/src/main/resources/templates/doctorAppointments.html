@@ -22,7 +22,7 @@
 
 	<header id="header" style="z-index: 999">
 		<p class="pt-1 pl-3 mb-0" style="float: left; font-size: x-large;">Doctor</p>
-		<nav class="links" style="--items: 4;">
+		<nav class="links" style="--items: 5;">
 			<a th:href="@{/doctor}">Clinic patients</a> <a class="selected"
 				th:href="@{/doctorAppointments}">My appointments</a> <a
 				th:href="@{/workSchedule}">Work schedule</a> <a
@@ -63,9 +63,7 @@
 								<li
 									class="list-group-item d-flex justify-content-between align-items-center">
 									Patient name
-									<p id="name" class="mb-0">
-										<i>John Doe</i>
-									</p>
+									<p id="name" class="mb-0"></p>
 								</li>
 								<li
 									class="list-group-item d-flex justify-content-between align-items-center">
@@ -73,20 +71,16 @@
 								</li>
 								<li
 									class="list-group-item d-flex justify-content-between align-items-center">
-									<p class="w-50 text-left">Perscriptions</p> <select
-									class="form-control w-50 " multiple>
-										<option>Ibuprofen</option>
-										<option>Xanax</option>
-										<option>Paracetamol</option>
+									<p class="w-50 text-left">Prescriptions</p> <select
+									class="form-control w-50 " multiple id="medicine">
+
 								</select>
 								</li>
 								<li
 									class="list-group-item d-flex justify-content-between align-items-center">
 									<p class="w-50 text-left">Diagnosis</p> <select
-									class="form-control w-50 " multiple>
-										<option>Common cold</option>
-										<option>Athlete's foot</option>
-										<option>Viral infection</option>
+									class="form-control w-50 " multiple id="diagnoses">
+
 								</select>
 								</li>
 							</ul>

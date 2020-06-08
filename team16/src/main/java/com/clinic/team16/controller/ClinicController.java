@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.Clinic;
 
 import com.clinic.team16.beans.ClinicAdministrator;
-import com.clinic.team16.beans.Doctor;
 
 import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.Patient;
@@ -215,12 +212,24 @@ public class ClinicController {
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
 		ClinicInfoDTO cl;
 		Clinic currCl = clinicService.findOneByClinicID(ca.getClinic().getClinicID());
-		cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(), currCl.getDescription(), currCl.getAverageGrade(),currCl.getCity());
+		
 		if( currCl != null) {
+			cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(), currCl.getDescription(), currCl.getAverageGrade(),currCl.getCity());
 			return new ResponseEntity<ClinicInfoDTO>(cl,HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@GetMapping(path = "/getClinicInfo/{clinicID}")
+	public ResponseEntity<ClinicInfoDTO> getClinicInfoById(@PathVariable long clinicID) {
+		Clinic currCl = clinicService.findOneByClinicID(clinicID);
 		
+		if( currCl != null) {
+			 ClinicInfoDTO cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(), currCl.getDescription(), 
+					 currCl.getAverageGrade(),currCl.getCity());
+			return new ResponseEntity<ClinicInfoDTO>(cl,HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 }
