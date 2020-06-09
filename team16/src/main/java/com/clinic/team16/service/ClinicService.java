@@ -49,6 +49,7 @@ public class ClinicService {
 
 	public ArrayList<DoctorDTO> filterDoctors(Clinic c, AppointmentType appType, String date) {
 		ArrayList<DoctorDTO> doctors = new ArrayList<>();
+		System.out.println("DATUM: "+date);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date dateDate = null;
 		

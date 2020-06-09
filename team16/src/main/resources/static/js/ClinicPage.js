@@ -1,5 +1,11 @@
 $( document ).ready(function() {
-	
+	var filter = sessionStorage.getItem("filter");
+	console.log(filter);
+	var now = currentDate();
+    $("#dateF").attr("min",now);
+	if (filter == "ne"){
+		$("#filterDiv").css("display","none");
+	}
 	$.ajax ({
     	type: 'GET',
     	url: 'userApi/getRole',
@@ -118,19 +124,82 @@ $( document ).ready(function() {
     				$("#li_appointments").css('display', 'none');
     				
     				var atrs = sessionStorage.getItem('appParam');
-    				var clinicID = undefined;
-    				var appType = undefined;
-    				var date = undefined;
-    				
-    				if(atrs.includes("&")) {
-    					var attrs2 = atrs.split("&");
-    					clinicID = attrs2[0];
-    					appType = attrs2[1];
-        				date = attrs2[2];
-    				} else {
-    					clinicID = atrs;
-    				}
+    			//---------------ako filtrira klinike------------------------
+    			if (atrs.includes("&")){
+    				    var attrs2 = atrs.split("&");
+	    				var clinicID = attrs2[0];
+	    				var appType = attrs2[1];
+	    				var date = attrs2[2];
+	    				
+	    				$.ajax({
+	    				    type: 'GET',
+	    				    url: 'clinicApi/getClinicInfo/' + clinicID,
+	    				    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    				    statusCode: {
+	    				      200: function(responseObject, textStatus, jqXHR) {
+	    				    	 $("#clinicName").text(responseObject.name);
+	    				    	 $("#profileInfo").removeClass("show");
+	    				    	 $("#profileInfo").removeClass("active");
+	    				    	 $("#profile-tab").removeClass("active");
+	    				    	 
+	    				    	 $("#doctor").addClass("show");
+	    				    	 $("#doctor").addClass("active");
+	    				    	 $("#doctor-tab").addClass("active");
+	    				    	 clinicOK(responseObject);
+	    				      },
+	    				      204: function(responseObject, textStatus, jqXHR) {
 	
+	    				      },
+	    						403: function(responseObject, textStatus, jqXHR) {
+	    							console.log("403 Unauthorized");
+	    							unauthorized();
+	    						}
+	    				    }
+	    				  });
+	    				//!!!mislim da ovaj deo ne treba!!! dole
+	    				if(appType == undefined) {
+		    				$.ajax ({
+			    		    	type: 'GET',
+			    		    	url: 'doctorApi/findAllDoctorsDTOByClinic/' + clinicID,
+			    			    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+			    		    	statusCode: {
+			    		    		200: function(responseObject, textStatus, jqXHR) {
+			    		    			console.log("Doctors - findAll() - 200 OK");
+			    		    			doctorAllOK(responseObject);
+			    		    		},
+			    		    		204: function(responseObject, textStatus, jqXHR) {
+			    		    			console.log("Doctors - findAll() - 204 No Content");
+			    		    			doctorAllNO(responseObject);
+			    		    		},
+			    					403: function(responseObject, textStatus, jqXHR) {
+			    						console.log("403 Unauthorized");
+			    						unauthorized();
+			    					}
+			    		    	}
+			    		    }); //!!!mislim da ovaj deo ne treba!!! gore
+	    				} else {
+	    					$.ajax ({
+	    					  	type: 'GET',
+	    					  	url: 'clinicApi/findAllAppointmentDoctors/' + clinicID + "&" + appType + "&" + date,
+	    						headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    					  	statusCode: {
+	    					  		200: function(responseObject, textStatus, jqXHR) {
+	    					  			console.log("200 OK");
+	    					  			var odakle = 1;
+	    					  			showDoctors(responseObject,odakle);
+	    					  		},
+	    					  		204: function(responseObject, textStatus, jqXHR) {
+	    					  			console.log("204 No Content");
+	    					  		},
+	    							403: function(responseObject, textStatus, jqXHR) {
+	    								console.log("403 Unauthorized");
+	    								unauthorized();
+	    							}
+	    					  	}
+	    					  });
+	    				}
+    			} else { //-------------------ako ne filtrira klinike-----------------------
+    				var clinicID = atrs;
     				$.ajax({
     				    type: 'GET',
     				    url: 'clinicApi/getClinicInfo/' + clinicID,
@@ -156,52 +225,51 @@ $( document ).ready(function() {
     						}
     				    }
     				  });
-    				
-    				if(appType == undefined) {
-	    				$.ajax ({
-		    		    	type: 'GET',
-		    		    	url: 'doctorApi/findAllDoctorsDTOByClinic/' + clinicID,
-		    			    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
-		    		    	statusCode: {
-		    		    		200: function(responseObject, textStatus, jqXHR) {
-		    		    			console.log("Doctors - findAll() - 200 OK");
-		    		    			doctorAllOK(responseObject);
-		    		    		},
-		    		    		204: function(responseObject, textStatus, jqXHR) {
-		    		    			console.log("Doctors - findAll() - 204 No Content");
-		    		    			doctorAllNO(responseObject);
-		    		    		},
-		    					403: function(responseObject, textStatus, jqXHR) {
-		    						console.log("403 Unauthorized");
-		    						unauthorized();
-		    					}
-		    		    	}
-		    		    });
-    				} else {
-    					$.ajax ({
-    					  	type: 'GET',
-    					  	url: 'clinicApi/findAllAppointmentDoctors/' + clinicID + "&" + appType + "&" + date,
-    						headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
-    					  	statusCode: {
-    					  		200: function(responseObject, textStatus, jqXHR) {
-    					  			console.log("200 OK");
-    					  			showDoctors(responseObject);
-    					  		},
-    					  		204: function(responseObject, textStatus, jqXHR) {
-    					  			console.log("204 No Content");
-    					  		},
+    				$.ajax ({
+	    		    	type: 'GET',
+	    		    	url: 'doctorApi/findAllDoctorsDTOByClinic/' + clinicID,
+	    			    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    		    	statusCode: {
+	    		    		200: function(responseObject, textStatus, jqXHR) {
+	    		    			console.log("Doctors - findAll() - 200 OK");
+	    		    			listDoctorOfClinic(responseObject);
+	    		    		},
+	    		    		204: function(responseObject, textStatus, jqXHR) {
+	    		    			console.log("Doctors - findAll() - 204 No Content");
+	    		    			listDoctorOfClinicNoContet(responseObject);
+	    		    		},
+	    					403: function(responseObject, textStatus, jqXHR) {
+	    						console.log("403 Unauthorized");
+	    						unauthorized();
+	    					}
+	    		    	}
+	    		    });
+    				 $.ajax ({
+    				    	type: 'GET',
+    				    	url: '/pricelistItemApi/findAllAppointmentTypes',
+    					    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+    				    	statusCode: {
+    				    		200: function(responseObject, textStatus, jqXHR) {
+    				    			console.log("200 OK");
+    				    			loadAppointmentTypesAllOK(responseObject);
+    				    		},
+    				    		204: function(responseObject, textStatus, jqXHR) {
+    				    			console.log("204 No Content");
+    					
+    				    		},
     							403: function(responseObject, textStatus, jqXHR) {
     								console.log("403 Unauthorized");
     								unauthorized();
     							}
-    					  	}
-    					  });
-    				}
+    				    	}
+    				    });
+    				    
+    				
     			}
     				
-    		},
+    		}},
     		204: function(responseObject, textStatus, jqXHR) {
-    			console.log("ClinicalCenterAdmins - findAll() - 204 No Content");
+    			console.log("Role - findAll() - 204 No Content");
     			showMessage("Something went wrong!", "antiquewhite");
     		},
     		403: function(responseObject, textStatus, jqXHR) {
@@ -209,7 +277,21 @@ $( document ).ready(function() {
     			unauthorized();
     		}
     	}
+    	
     });
+	function currentDate() {
+	    var d = new Date(),
+	        month = '' + (d.getMonth() + 1),
+	        day = '' + d.getDate(),
+	        year = d.getFullYear();
+
+	    if (month.length < 2) 
+	        month = '0' + month;
+	    if (day.length < 2) 
+	        day = '0' + day;
+
+	    return [year, month, day].join('-');
+	}
 	
 	$(document).on("click", "#btnMakeApp", function(){
 		var selTerm = $(this).closest("tr").find("select option:selected").val();
@@ -257,6 +339,40 @@ $( document ).ready(function() {
 		  		200: function(responseObject, textStatus, jqXHR) {
 		  			console.log("200 OK");
 		  			user = responseObject;
+		  			console.log(user);
+		  			var doctor = $("#doctorSPAN").attr('name');
+		  			var clinic = $("#clinicModal").val();
+		  			var dateTime = $("#dateTime").val();
+		  			var examType = $("#examType").val();
+		  			
+		  			$.ajax ({
+		  			  	type: 'POST',
+		  			  	url: 'appointmentApi/addAppointment',
+		  			  	data : JSON.stringify({
+		  					"email" : user,
+		  					"doctor" : doctor,
+		  					"dateTime" : dateTime,
+		  					"examType": examType
+		  				}),
+		  				contentType: "application/json; charset=utf-8",
+		  			    dataType: "json",
+		  				headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+		  			  	statusCode: {
+		  			  		200: function(responseObject, textStatus, jqXHR) {
+		  			  			console.log("200 OK");
+		  			  			showMessage("Appointment request successfully submited!", "palegreen");
+		  			  		},
+		  			  		204: function(responseObject, textStatus, jqXHR) {
+		  			  			console.log("204 No Content");
+		  			  			showMessage("Something went wrong!", "antiquewhite");
+		  			  			window.setTimeout(function(){location.reload()},1500);
+		  			  		},
+		  					403: function(responseObject, textStatus, jqXHR) {
+		  						console.log("403 Unauthorized");
+		  						unauthorized();
+		  					}
+		  			  	}
+		  			});
 		  		},
 		  		204: function(responseObject, textStatus, jqXHR) {
 		  			console.log("204 No Content");
@@ -268,38 +384,6 @@ $( document ).ready(function() {
 		  	}
 		});
 		
-		var doctor = $("#doctorSPAN").attr('name');
-		var clinic = $("#clinicModal").val();
-		var dateTime = $("#dateTime").val();
-		var examType = $("#examType").val();
-		
-		$.ajax ({
-		  	type: 'POST',
-		  	url: 'appointmentApi/addAppointment',
-		  	data : JSON.stringify({
-				"email" : user,
-				"doctor" : doctor,
-				"dateTime" : dateTime,
-				"examType": examType
-			}),
-			contentType: "application/json; charset=utf-8",
-		    dataType: "json",
-			headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
-		  	statusCode: {
-		  		200: function(responseObject, textStatus, jqXHR) {
-		  			console.log("200 OK");
-		  			showMessage("Appointment request successfully submited!", "palegreen");
-		  		},
-		  		204: function(responseObject, textStatus, jqXHR) {
-		  			console.log("204 No Content");
-		  			showMessage("Something went wrong!", "antiquewhite");
-		  		},
-				403: function(responseObject, textStatus, jqXHR) {
-					console.log("403 Unauthorized");
-					unauthorized();
-				}
-		  	}
-		});
 	});
 	
 	//----------------------------------ROOMS TABLE
@@ -531,9 +615,125 @@ $( document ).ready(function() {
 	
 	//----------------------------------PRICELIST TABLE
 	
-});
+});//-----------------------zatvara se .ready()
+//---------------------------------------------listanje svih doktora odredjenje klinike---------------------------
+function loadAppointmentTypesAllOK(pricelistItem){
+	//popuni select za apptype
+	 var select = $("#appointmentTypeF");
+	 select.empty();
+	 select.append("<option disabled selected>Select appointment type...</option>");
+	 $.each(pricelistItem, function(i, val) {
+		   if(val.appointmentType != "SURGERY"){
+		    var option = $("<option>"+val.appointmentType+"</option>");
+		    select.append(option);
+		   }
+		  });
+}
+$("#applyFilter").click(function(){
+	
+	var appType = $("#appointmentTypeF").val();
+	var date = document.querySelector('input[type="date"]');
+	var clinicID = sessionStorage.getItem('clinicID');
+    sessionStorage.setItem("appParam", clinicID+"&"+appType+"&"+date.value);
+	if (appType == null || appType == "" ){
+		$("#appointmentTypeF").addClass("is-invalid");
+	}
+	else
+		{
+		$("#appointmentTypeF").removeClass("is-invalid");
+		}
+	if (date.value== null || date.value == "" ){
+		$("#dateF").addClass("is-invalid");
+	}
+	else
+		{
+		$("#dateF").removeClass("is-invalid");
+		}
+	if(appType != null && appType!="" && date.value!=null && date.value != ""){
+		$.ajax ({
+		  	type: 'GET',
+		  	url: 'clinicApi/findAllAppointmentDoctors/' + clinicID + "&" + appType + "&" + date.value,
+			headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+		  	statusCode: {
+		  		200: function(responseObject, textStatus, jqXHR) {
+		  			console.log("200 OK");
+		  			var odakle = 2;
+		  			showDoctors(responseObject,odakle);
+		  		},
+		  		204: function(responseObject, textStatus, jqXHR) {
+		  			console.log("204 No Content");
+		  		},
+				403: function(responseObject, textStatus, jqXHR) {
+					console.log("403 Unauthorized");
+					unauthorized();
+				}
+		  	}
+		  });
+		var attr = 
+		sessionStorage.setItem('appDate', date.value);
+	
+	}
+	});
 
-function showDoctors(doctors) {
+function searchDoctors(){
+	// Declare variables
+	var input, filter, table, tr, td, i, j, txtValue;
+	input = document.getElementById("myInput");
+	filter = input.value.toUpperCase();
+	table = document.getElementById("doctorTable");
+	tr = table.getElementsByTagName("tr");
+
+
+	// Loop through all table rows, and hide those who don't match the search query
+	for (i = 0; i < tr.length; i++) {
+		let rowTds = tr[i].getElementsByTagName("td")
+		for (j = 0; j < 2; j++) {
+			td = tr[i].getElementsByTagName("td")[j];
+			if (td) {
+				if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+					tr[i].style.display = "";
+					break; // this will break the row looping on j after making the row visible.
+				} else {
+					tr[i].style.display = "none";
+				}
+			}
+		}
+
+	}
+}
+
+function listDoctorOfClinic(doctors){
+	//svi doktori : ime prez prosecna ocena bez list slobodnih termina
+	//tek ako pritisne i search dolaze i slobodni termini
+	var tableHead = $("#doctorHead");
+	tableHead.empty();
+	var row = $("<tr></tr>");
+	row.append("<th style=\"width: 50%;\">Name</th>");
+	row.append("<th style=\"width: 50%;\">Average grade</th>");
+	
+
+	tableHead.append(row);	
+	
+	
+	var table = $("#doctorBody");
+	table.empty();
+	$.each(doctors,function(i,val){
+		var row = $("<tr id=\""+i+"\"></tr>");
+		row.append("<td >" + val.firstName + " " + val.lastName + "</td>");
+		row.append("<td >" + val.averageGrade + "</td>");
+	
+		table.append(row);	
+	  });
+	
+	var btn = "<button id=\"btnBack\" type=\"button\" title=\"Back\" class=\"btn btn-secondary btn-lg\"><i class=\"fa fa-arrow-left\" aria-hidden=\"true\"></i></button></td>";
+	$("#jumbotron").append(btn);
+	
+}
+function listDoctorOfClinicNoContent(doctors){
+	//nema doktora
+}
+function showDoctors(doctors,odakle) {
+	
 	var tableHead = $("#doctorHead");
 	tableHead.empty();
 	var row = $("<tr></tr>");
@@ -551,7 +751,7 @@ function showDoctors(doctors) {
 		var row = $("<tr id=\""+i+"\"></tr>");
 		row.append("<td >" + val.firstName + " " + val.lastName + "</td>");
 		row.append("<td >" + val.averageGrade + "</td>");
-		var selectt="<td><select><option disabled selected>Choose term</option>";
+		var selectt="<td align=\"center\"><select class=\"select\"><option disabled selected>Choose term</option>";
 		
 		  $.each(val.terms, function(i, val) {
 			  selectt = selectt + "<option>" + val.substring(11, 16) + "</option>"
@@ -564,15 +764,17 @@ function showDoctors(doctors) {
 		row.append(btn);
 		table.append(row);	
 	  });
-	
+	if (odakle == 1){
 	var btn = "<button id=\"btnBack\" type=\"button\" title=\"Back\" class=\"btn btn-secondary btn-lg\"><i class=\"fa fa-arrow-left\" aria-hidden=\"true\"></i></button></td>";
-	$("#jumbotron").append(btn);
+	$("#jumbotron").append(btn);}
 }
 
 function clinicOK(clinic){
 	$("#name").val(clinic.name);
 	$("#clinicAddress").val(clinic.address + ", " + clinic.city);
 	$("#desc").val(clinic.description);
+	var attr = sessionStorage.setItem('clinicID', clinic.clinicID);
+	
 }
 function doctorAllOK(doctorList) {
 	var table = $("#doctorBody");

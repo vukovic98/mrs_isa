@@ -1,5 +1,7 @@
 package com.clinic.team16.controller;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,7 +10,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.TransientObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +30,7 @@ import com.clinic.team16.beans.ClinicalCenterAdministrator;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.MedicalReport;
 import com.clinic.team16.beans.Patient;
+import com.clinic.team16.beans.PricelistItem;
 import com.clinic.team16.beans.DTO.AppointmentDTO;
 import com.clinic.team16.beans.DTO.AppointmentRequestDTO;
 import com.clinic.team16.beans.DTO.CalendarDataDTO;
@@ -48,10 +53,10 @@ public class AppointmentController {
 
 	@Autowired
 	private ClinicalCenterAdminService clinicalCenterAdminService;
-	
+
 	@Autowired
 	private AppointmentRequestService appointmentRequestService;
-	
+
 	@Autowired
 	private PatientService patientService;
 
@@ -128,6 +133,7 @@ public class AppointmentController {
 
 		if (list != null) {
 			for (Appointment a : list) {
+				if (a.getMedicalReport() != null) {
 				if (a.getMedicalReport().getApproved() == false
 						&& a.getMedicalReport().getNurse().getEmail().equalsIgnoreCase(currentUser)) {
 					String doctor = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
@@ -136,7 +142,7 @@ public class AppointmentController {
 							a.getMedicalReport().getDetails(), doctor, patient, a.getDoctor().getClinic().getName(),
 							a.getMedicalReport().getMedication(), a.getMedicalReport().getDiagnosis(),
 							a.getMedicalReport().getNurse().getId()));
-				}
+				}}
 			}
 			return new ResponseEntity<List<MedicalReportDTO>>(dtoList, HttpStatus.OK);
 		} else
@@ -162,18 +168,25 @@ public class AppointmentController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-/*
-	@Transactional(readOnly = true)
+
+	@Transactional(rollbackFor = Exception.class)
 	@PostMapping(path = "/addAppointment", consumes = "application/json")
-	public ResponseEntity<HttpStatus> addAppointment(@RequestBody AppointmentRequestDTO request) {
+	public ResponseEntity<HttpStatus> addAppointment(@RequestBody AppointmentRequestDTO request) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Doctor d = this.doctorService.findOneByEmail(request.getDoctor());
 		Patient p = this.patientService.findOneByEmail(request.getEmail());
 		ClinicalCenterAdministrator admin = this.clinicalCenterAdminService.findMainClinicalCenterAdmin();
-		
+		PricelistItem found = null;
+
 		boolean exists = true;
 
 		if (d != null) {
+			for (PricelistItem pI : d.getClinic().getPricelist().getPricelistItems()) {
+				if (pI.getName() == request.getExamType()) {
+					found = pI;
+				}
+			}
+
 			try {
 				exists = this.appointmentService.checkIfAppointmentExists(d, sdf.parse(request.getDateTime()));
 			} catch (ParseException e) {
@@ -182,22 +195,42 @@ public class AppointmentController {
 			}
 
 			if (!exists) {
-				//dodavanje appointmenta
+				// dodavanje appointmenta
 				try {
-					AppointmentRequest appReq = new AppointmentRequest(false, sdf.parse(request.getDateTime()), admin, null);
-					this.appointmentRequestService.save(appReq);
-					
-					Appointment app = new Appointment(0, sdf.parse(request.getDateTime()), 0, null, null, appReq, d, p, pricelistItems);
+					if (this.appointmentService.checkUniqueConstraint(sdf.parse(request.getDateTime()), d.getId())) {
+						AppointmentRequest appReq = new AppointmentRequest(false, sdf.parse(request.getDateTime()),
+								admin, null);
+						this.appointmentRequestService.save(appReq);
+
+						admin.addAppointmentRequest(appReq);
+						this.clinicalCenterAdminService.save(admin);
+
+						Appointment app = new Appointment(0, sdf.parse(request.getDateTime()), 0, null, null, appReq, d,
+								p, found);
+
+						p.addAppointment(app);
+						this.appointmentService.save(app);
+
+						System.out.println("NASTAVI");
+						this.patientService.save(p);
+
+						appReq.setAppointment(app);
+						this.appointmentRequestService.save(appReq);
+						
+						return new ResponseEntity<>(HttpStatus.OK);
+					} else {
+						return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+					}
+
 				} catch (ParseException e) {
-					return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+					e.printStackTrace();
 				}
 			} else {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return null;
-	}*/
+	}
 
 }

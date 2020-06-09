@@ -283,6 +283,7 @@ public class PatientController {
 					ah.setAppointmentType(a.getPricelistItems().getName());
 					ah.setClinic(a.getDoctor().getClinic().getName());
 					ah.setDoctor(a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName());
+					ah.setApproved(a.appointmentRequest.getApproved());
 					appHistory.add(ah);
 				}
 			}

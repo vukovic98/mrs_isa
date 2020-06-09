@@ -39,23 +39,32 @@
     	
     	if(appointments.length != 0){
 	    	$.each(appointments, function(i, val) {
-	    		console.log(val.appointmentID);
+	    		
 	    		var row = $("<tr id=\""+val.appointmentID+"\"></tr>");
 	    		var d = new Date(val.datetime);
+	    		var date = formatDate(d);
+	    		//za approved i held
 	    		var now = new Date();
 	    		now = Date.now();
-	    		console.log(val);
-	    		var date = formatDate(d);
+	    		var inDate = new Date(val.datetime);
+	    		
 	    		row.append("<td >" + date + "</td>");
 	    		row.append("<td >" + val.appointmentType + "</td>");
 	    		row.append("<td class=\"clinicTD\" id=\""+val.clinicID+"\">" + val.clinic + "</td>");
 	    		row.append("<td class=\" doctorTD\"id=\""+val.doctorID+"\" >" + val.doctor + "</td>");
-	    		if (date > now){
-	    			row.append("<td >" + "No" + "</td>");}
-	    		else{
-	    			row.append("<td >" + "Yes" + "</td>");
+	    		if (val.approved){
+	    			row.append("<td >" + "Yes" + "</td>");}
+	    		else {
+	    			row.append("<td >" + "No" + "</td>");
 	    		}
-	    		row.append("<td class=\" modalTD\" id="+val.appointmentID+" align=\"center\"><button type=\"button\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Click to rate clinic and doctor\" class=\"btn btn-indigo btn-sm m-0\"><i class=\"fa fa-star\"></i></button></td>");
+	    		
+	    		if (val.approved && inDate < now){
+	    			row.append("<td >" + "Yes" + "</td>");
+		    		row.append("<td class=\" modalTD\" id="+val.appointmentID+" align=\"center\"><button type=\"button\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Click to rate clinic and doctor\" class=\"btn btn-indigo btn-sm m-0\"><i class=\"fa fa-star\"></i></button></td>");}
+	    		else {
+	    			row.append("<td >" + "No" + "</td>");
+	    			row.append("<td >" + "" + "</td>");
+	    		}
 	    		table.append(row);
 	    	});
     	}

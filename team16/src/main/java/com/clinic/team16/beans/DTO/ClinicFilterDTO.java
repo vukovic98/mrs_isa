@@ -9,6 +9,25 @@ public class ClinicFilterDTO {
 	private double averageGrade;
 	private AppointmentType appointmentType;
 	private double price;
+	private String city;
+	
+	public ClinicFilterDTO(long clinicID, String name, String address, double averageGrade,
+			AppointmentType appointmentType, double price, String city) {
+		super();
+		this.clinicID = clinicID;
+		this.name = name;
+		this.address = address;
+		this.averageGrade = averageGrade;
+		this.appointmentType = appointmentType;
+		this.price = price;
+		this.city = city;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
 	public ClinicFilterDTO() {
 		
 	}

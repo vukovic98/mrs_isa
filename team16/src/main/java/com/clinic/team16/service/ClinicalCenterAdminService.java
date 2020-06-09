@@ -1,5 +1,6 @@
 package com.clinic.team16.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ClinicalCenterAdminService {
 	}
 	
 	public ClinicalCenterAdministrator save(ClinicalCenterAdministrator a) {
-		return this.adminRepository.save(a);
+			return this.adminRepository.save(a);
 	}
 	
 	public ArrayList<ClinicalCenterAdministrator> findAll() {
