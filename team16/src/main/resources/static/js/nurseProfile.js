@@ -38,5 +38,11 @@ function nurseAllOK(nurse) {
 }
 
 function nurseAllNO(responseObject) {
-	alert("ERROR!");
+	Swal.fire({
+		  position: 'center',
+		  icon: 'error',
+		  title: 'Something went wrong!',
+		  showConfirmButton: false,
+		  timer: 1500
+		})
 }

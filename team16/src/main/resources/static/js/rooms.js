@@ -98,7 +98,13 @@ $(document).ready(function(){
             statusCode: {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 200 OK");
-                showMessage("Ordination successfully added!", "palegreen");
+                Swal.fire({
+          		  position: 'center',
+          		  icon: 'success',
+          		  title: 'Ordination successfully added!',
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		})
                 input.each(function(){
                   $(this).parent("td").html($(this).val());
                 }); 
@@ -111,7 +117,13 @@ $(document).ready(function(){
               },
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 400 Bad request");
-                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+                Swal.fire({
+          		  position: 'center',
+          		  icon: 'error',
+          		  title: 'Ordination with inserted name already exists!',
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		})
               },
     		  403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
@@ -149,11 +161,23 @@ $(document).ready(function(){
             statusCode: {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - delete() - 200 OK");
-                showMessage("Ordination successfully deleted!", "palegreen"); 
+                Swal.fire({
+          		  position: 'center',
+          		  icon: 'success',
+          		  title: 'Ordination successfully deleted!',
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		})
               },
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - delete() - 400 Bad request");
-                showMessage("Something went wrong!", "antiquewhite");
+                Swal.fire({
+          		  position: 'center',
+          		  icon: 'error',
+          		  title: 'Something went wrong!',
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		})
               },
       		403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
