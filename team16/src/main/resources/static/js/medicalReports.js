@@ -47,12 +47,24 @@ $(document).ready(function () {
 			    statusCode: {
 		    		200: function(responseObject, textStatus, jqXHR) {
 		    			console.log("MedicalReports - findAllMedicalReports() - 200 OK");
-		    			showMessage("Medical report successfully approved!", "palegreen");
+		    			Swal.fire({
+		    				  position: 'center',
+		    				  icon: 'success',
+		    				  title: 'Medical report successfully approved!',
+		    				  showConfirmButton: false,
+		    				  timer: 1500
+		    				})
 		    			window.setTimeout(function(){location.reload()},1500)
 		    		},
 		    		400: function(responseObject, textStatus, jqXHR) {
 		    			console.log("MedicalRecords - findAllMedicalReports() - 204 No Content");
-		    			showMessage("Something went wrong!", "antiquewhite");
+		    			Swal.fire({
+		    				  position: 'center',
+		    				  icon: 'error',
+		    				  title: 'Something went wrong!',
+		    				  showConfirmButton: false,
+		    				  timer: 1500
+		    				})
 		    		},
 					403: function(responseObject, textStatus, jqXHR) {
 						console.log("403 Unauthorized");
@@ -107,11 +119,6 @@ $(document).ready(function () {
     });
 });
 
-function showMessage(message, color) {
-	$("#message_bar").css("background", color);
-	$("#message_bar").text(message);
-	$("#message_bar").slideDown().delay(1500).slideUp();
-}
 
 function reportsAllOK(reportList) {
 	var table = $("#reportsBody");

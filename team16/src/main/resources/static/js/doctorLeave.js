@@ -54,11 +54,23 @@ $( document ).ready(function() {
     	    	statusCode: {
     	    		200: function(responseObject, textStatus, jqXHR) {
     	    			console.log("LeaveRequest - addLeaveRequest() - 200 OK");
-    	    			showMessage("Leave request successfully submited!", "palegreen");
+    	    			Swal.fire({
+			        		  position: 'center',
+			        		  icon: 'success',
+			        		  title: 'Leave request successfully submited!',
+			        		  showConfirmButton: false,
+			        		  timer: 1500
+			        		})
     	    		},
     	    		400: function(responseObject, textStatus, jqXHR) {
     	    			console.log("LeaveRequest - addLeaveRequest() - 400 Bad request");
-    	    			showMessage("Something went wrong!", "antiquewhite");
+    	    			Swal.fire({
+			        		  position: 'center',
+			        		  icon: 'error',
+			        		  title: 'Something went wrong!',
+			        		  showConfirmButton: false,
+			        		  timer: 1500
+			        		})
     	    		},
     				403: function(responseObject, textStatus, jqXHR) {
     					console.log("403 Unauthorized");

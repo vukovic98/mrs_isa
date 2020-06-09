@@ -35,6 +35,9 @@ import com.clinic.team16.beans.DTO.AppointmentDTO;
 import com.clinic.team16.beans.DTO.AppointmentRequestDTO;
 import com.clinic.team16.beans.DTO.CalendarDataDTO;
 import com.clinic.team16.beans.DTO.MedicalReportDTO;
+
+import com.clinic.team16.beans.DTO.PatientMedicalRecordDTO;
+
 import com.clinic.team16.service.AppointmentRequestService;
 import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicalCenterAdminService;
@@ -233,4 +236,51 @@ public class AppointmentController {
 		return null;
 	}
 
+	@GetMapping(path = "/findAppointmentPatientById/{appId}")
+	public ResponseEntity<PatientMedicalRecordDTO> findAppPatById(@PathVariable("appId") long appointmentID){
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Appointment a = appointmentService.findOneById(appointmentID);
+		if(a != null) {
+			PatientMedicalRecordDTO dto = new PatientMedicalRecordDTO(a.getPatient().getFirstName() + " " + a.getPatient().getLastName(), a.getPatient().getMedicalRecord().getGender(), formatter.format(a.getPatient().getMedicalRecord().getBirthday()), a.getPatient().getMedicalRecord().getHeight(), a.getPatient().getMedicalRecord().getWeight(), a.getPatient().getMedicalRecord().getBloodType(), a.getPatient().getMedicalRecord().getAllergies(), a.getPatient().getMedicalRecord().getPerscriptions());
+			return new ResponseEntity<PatientMedicalRecordDTO>(dto,HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping(path = "/findAllForRoom/{roomId}")
+	public ResponseEntity<List<AppointmentDTO>> findAllForRoom(@PathVariable("roomId") long roomId){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		List<Appointment> list = appointmentService.findAllForOrdination(roomId);
+		List<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
+		if(list != null) {
+			for (Appointment appointment : list) {
+				dtoList.add(new AppointmentDTO(appointment.getAppointmentId(), sdf.format(appointment.getDateTime()), appointment.getDuration(), appointment.getDoctor().getFirstName() + " " + appointment.getDoctor().getLastName(), appointment.getPatient().getEmail(), appointment.getPricelistItems().getName(),  String.valueOf(appointment.getPricelistItems().getPrice()), String.valueOf(roomId)));
+			}
+			
+			return new ResponseEntity<List<AppointmentDTO>>(dtoList,HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	
+	/*
+	@GetMapping(path = "/findAllPredefined")
+	public ResponseEntity<List<AppointmentDTO>> findAllPredefined() {
+		List<Appointment> list = this.appointmentService.findAllPredefined();
+		List<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		if (list != null) {
+			for (Appointment a : list) {
+				String doctor = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
+				String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
+				dtoList.add(new AppointmentDTO(a.getAppointmentId(), formatter.format(a.getDateTime()), a.getDuration(),
+						doctor, patient, a.getPricelistItems().getName(),
+						String.valueOf(a.getPricelistItems().getPrice()),
+						String.valueOf(a.getOrdination().getNumber())));
+			}
+			return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+*/
 }

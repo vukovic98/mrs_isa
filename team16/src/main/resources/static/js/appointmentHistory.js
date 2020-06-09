@@ -82,12 +82,13 @@
     	
     
     function loadPatientInfoNO(patient){
-    	showMessage("Patient Not Found","antiquewhite");	
-    }
-    function showMessage(message, color) {
-    	$("#message_bar2").css("background", color);
-    	$("#message_bar2").text(message);
-    	$("#message_bar2").slideDown().delay(1500).slideUp();
+    	Swal.fire({
+  		  position: 'center',
+  		  icon: 'error',
+  		  title: 'Patient not found!',
+  		  showConfirmButton: false,
+  		  timer: 1500
+  		})	
     }
     
 
@@ -135,13 +136,25 @@
 		    statusCode :{
 		    	200:function(){
 		    		console.log("200 OK");
-		    		showMessage("Rated!", "palegreen");
+		    		Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'success',
+		        		  title: 'Rated!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
 		    		
 
 		    	},
 		    	204:function(){
 		    		console.log("204 No Content");
-		    		showMessage("Something went wrong. Try again.", "antiquewhite");
+		    		Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'error',
+		        		  title: 'Something went wrong, please try again!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
 		    	}
 		    } 
 			    	
@@ -160,13 +173,25 @@
 		    statusCode :{
 		    	200:function(){
 		    		console.log("200 OK");
-		    		showMessage("Rated!", "palegreen");
+		    		Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'success',
+		        		  title: 'Rated!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
 		    		
 
 		    	},
 		    	400:function(){
 		    		console.log("400 No Content");
-		    		showMessage("Something went wrong. Try again.", "antiquewhite");
+		    		Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'error',
+		        		  title: 'Something went wrong, please try again!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
 		    	}
 		    } 
 			    	

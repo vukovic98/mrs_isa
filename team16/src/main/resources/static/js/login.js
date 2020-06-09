@@ -40,10 +40,22 @@ $(document).ready(function(e) {
 			            whereToGo(responseObject);
 			        },
 			        204: function(responseObject, textStatus, errorThrown) {
-			            showMessage("There is no user with these credentials!", "antiquewhite");
+			        	Swal.fire({
+			        		  position: 'center',
+			        		  icon: 'error',
+			        		  title: 'There is no user with these credentials!',
+			        		  showConfirmButton: false,
+			        		  timer: 1500
+			        		})
 			        },
 			        403: function(responseObject, textStatus, errorThrown) {
-			            showMessage("There is no user with these credentials!", "antiquewhite");
+			        	Swal.fire({
+			        		  position: 'center',
+			        		  icon: 'error',
+			        		  title: 'There is no user with these credentials!',
+			        		  showConfirmButton: false,
+			        		  timer: 1500
+			        		})
 			        }           
 			    }
 			});
@@ -128,7 +140,13 @@ $(document).ready(function(e) {
 		if(repeatPass != null && repeatPass != "" && pass != null && pass != "") {
 			if(pass != repeatPass){
 				$("#passRepeatSignUp").addClass("is-invalid");
-				showMessage("Passwords don't match!", "antiquewhite");
+				Swal.fire({
+	        		  position: 'center',
+	        		  icon: 'error',
+	        		  title: "Passwords don't match!",
+	        		  showConfirmButton: false,
+	        		  timer: 1500
+	        		})
 			}
 			else{
 				$("#passRepeatSignUp").removeClass("is-invalid");
@@ -161,16 +179,34 @@ $(document).ready(function(e) {
 			    statusCode: {
 			        200: function(responseObject, textStatus, jqXHR) {
 			            console.log("usao");
-			            showMessage("Registration request successfully submited!", "palegreen");
+			            Swal.fire({
+			        		  position: 'center',
+			        		  icon: 'success',
+			        		  title: 'Registration request successfully submited!',
+			        		  showConfirmButton: false,
+			        		  timer: 1500
+			        		})
 			        },
 			        400: function(responseObject, textStatus, errorThrown) {
-			            showMessage("User with given email already exists!", "antiquewhite");
+			            Swal.fire({
+			        		  position: 'center',
+			        		  icon: 'error',
+			        		  title: 'User with given email already exists!',
+			        		  showConfirmButton: false,
+			        		  timer: 1500
+			        		})
 			        },         
 			    }
 			});
 
 		} else {
-			showMessage("All inputs are mandatory!", "antiquewhite");
+			Swal.fire({
+      		  position: 'center',
+      		  icon: 'error',
+      		  title: 'All inputs are mandatory!',
+      		  showConfirmButton: false,
+      		  timer: 1500
+      		})
 		}
 	});
 
@@ -199,12 +235,6 @@ $(document).ready(function(e) {
 		});
 	});
 });
-
-function showMessage(message, color) {
-	$("#message_bar").css("background", color);
-	$("#message_bar").text(message);
-	$("#message_bar").slideDown().delay(1500).slideUp();
-}
 
 function whereToGo(user) {
 	var jwt = user.jwt;

@@ -21,7 +21,38 @@ $(document).ready(function(){
 				}
 		    }
 		  });
-  
+	    $(document).on('click', '#reportBtn', function () {
+	    	console.log($(this).parent().parent().attr('id'));
+	    	
+	    	var appointmentId = $(this).parent().parent().attr('id');
+	    	$("#transfer").text(leaveId);
+	        $.ajax ({
+	        	type: 'POST',
+	    		data: JSON.stringify({
+	    			"id": leaveId
+	    		}),
+	        	url: 'appointmentApi/findReportById',
+	        	headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	        	statusCode: {
+	        		200: function(responseObject, textStatus, jqXHR) {
+	        			console.log("RegistrationRequests - findAll() - 200 OK");
+	        			declineModalOK(responseObject);
+	        		},
+	        		204: function(responseObject, textStatus, jqXHR) {
+	        			console.log("RegistrationRequests - findAll() - 204 No Content");
+	        			declineModalNO(responseObject);
+	        		},
+	        		403: function(responseObject, textStatus, jqXHR) {
+	        			console.log("403 Unauthorized");
+	        			unauthorized();
+	        		}
+	        	}
+	        });
+	    	
+	    	
+
+
+	    });
 });
 
 function appointmentsAllOK(appointmentsList) {
@@ -33,7 +64,7 @@ function appointmentsAllOK(appointmentsList) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
 	    row.append("<td class=\"w-25\" id=\""+val.id+"\">" + val.datetime + "</td>");
 	    row.append("<td class=\"w-25\" id=\""+val.id+"\">" + val.patient +"</td>");
-	    row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" class=\"btn btn-outline-primary\">Start</button><button type=\"button\" onclick=\"modalShow()\" class=\"btn btn-outline-secondary\">Report</button></td>");
+	    row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" class=\"btn btn-outline-primary\">Start</button><button type=\"button\" id=\"reportBtn\" class=\"btn btn-outline-secondary\">Report</button></td>");
 
 	    table.append(row);
 	    

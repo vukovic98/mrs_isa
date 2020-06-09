@@ -21,6 +21,7 @@ public class AppointmentService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 
+	
 	public ArrayList<Appointment> findByDoctorAndDate(String date, Long doctor_id) {
 		return (ArrayList<Appointment>) this.appointmentRepository.findByDoctorAndDate(date, doctor_id);
 	}
@@ -68,5 +69,14 @@ public class AppointmentService {
 		}
 		
 		return exists;
+	}
+/*
+	public List<Appointment> findAllPredefined() {
+		return this.appointmentRepository.findAllPredefined();
+	}
+	*/
+
+	public List<Appointment> findAllForOrdination(long roomId) {
+		return appointmentRepository.findAllForOrdination(roomId);
 	}
 }

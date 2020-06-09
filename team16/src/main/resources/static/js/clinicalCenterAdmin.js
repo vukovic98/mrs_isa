@@ -132,7 +132,13 @@ function unauthorized(){
 }
 
 function declineNO() {
-	alert("Something went wrong!");
+	Swal.fire({
+		  position: 'center',
+		  icon: 'error',
+		  title: 'Something went wrong!',
+		  showConfirmButton: false,
+		  timer: 1500
+		})
 }
 
 function acceptAllOK() {
@@ -140,7 +146,13 @@ function acceptAllOK() {
 }
 
 function acceptNO() {
-	alert("Something went wrong!");
+	Swal.fire({
+		  position: 'center',
+		  icon: 'error',
+		  title: 'Something went wrong!',
+		  showConfirmButton: false,
+		  timer: 1500
+		})
 }
 
 function regReqAllOK(regReqList) {

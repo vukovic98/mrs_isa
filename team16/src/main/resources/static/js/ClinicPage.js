@@ -35,7 +35,7 @@ $( document ).ready(function() {
     				
     				$.ajax ({
 	    		    	type: 'GET',
-	    		    	url: 'doctorApi/findAll',
+	    		    	url: 'doctorApi/findAllDoctorsDTOCurrentClinic',
 	    			    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 	    		    	statusCode: {
 	    		    		200: function(responseObject, textStatus, jqXHR) {
@@ -55,7 +55,7 @@ $( document ).ready(function() {
     				
     				$.ajax({
     				    type: 'GET',
-    				    url: 'ordinationApi/findAll',
+    				    url: 'ordinationApi/findAllCurrentClinicRooms',
     				    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     				    statusCode: {
     				      200: function(responseObject, textStatus, jqXHR) {
@@ -293,6 +293,50 @@ $( document ).ready(function() {
 	    return [year, month, day].join('-');
 	}
 	
+	$(document).on("click", "#addRoomBtn", function(){
+		$("#addRoomModal").modal();
+	});
+	
+	$(document).on("click", "#roomCreateModalBtn", function(){
+		var name = $("#roomNameInput").val();
+		var type = $("#roomTypeInput").val();
+		
+        $.ajax({
+            type: 'POST',
+            url: 'ordinationApi/addOrdination',
+            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+            data : JSON.stringify({
+              "name" : name,
+              "type" : type
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            statusCode: {
+              200: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - add() - 200 OK");
+                showMessage("Ordination successfully added!", "palegreen");
+          	  var table = $("#roomsBody");
+        	  
+        	    var row = $("<tr id=\""+name+"\"></tr>");
+        	    row.append("<td class=\"w-25\" id=\""+name+"\">" + name + "</td>");
+        	    row.append("<td class=\"w-25\" id=\""+name+"\">" + type +"</td>");
+
+        	    table.append(row);
+        	    
+        	      
+              },
+              400: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - add() - 400 Bad request");
+                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+              },
+    		  403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		  }
+            }
+          });
+	});
+	
 	$(document).on("click", "#btnMakeApp", function(){
 		var selTerm = $(this).closest("tr").find("select option:selected").val();
 		console.log("sel term: "+selTerm);
@@ -391,7 +435,7 @@ $( document ).ready(function() {
 	$('[data-toggle="tooltip"]').tooltip();
 	  var actions = $("#roomTable td:last-child").html();
 	  // Append table with add row form on add new button click
-	    $(".add-new-rooms").click(function(){
+	  /*  $(".add-new-rooms").click(function(){
 	      var actions = $("#roomTable td:last-child").html();
 	    $(this).attr("disabled", "disabled");
 	    var index = $("#roomTable tbody tr:nth-child(0)").index();
@@ -403,7 +447,7 @@ $( document ).ready(function() {
 	        '</tr>';
 	      $("#roomTable").prepend(row);    
 	    $("#roomTable tbody tr").eq(index + 1).find(".add-room").toggle();
-	    });
+	    });*/
 	// Add row on add button click
 
 	
@@ -814,8 +858,8 @@ function roomsAllOK(roomsList) {
 	  $.each(roomsList, function(i, val) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
 
-	    row.append("<td id=\""+val.id+"\">" + val.name + "</td>");
-	    row.append("<td id=\""+val.id+"\">" + val.type + "</td>");
+	    row.append("<td id=\""+val.ordId+"\">" + val.name + "</td>");
+	    row.append("<td id=\""+val.ordId+"\">" + val.type + "</td>");
 	    row.append("<td class=\"but\"><button class=\"btn btn-primary\" type=\"button\" data-toggle=\"modal\" data-target=\"#exampleModal\" aria-expanded=\"false\" aria-controls=\"exampleModal\">Appointments</button></td>");
 	    row.append("<td id=\""+val.name+"\">" + "<a class=\"add-room\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
 		                            "<a class=\"edit-room\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +

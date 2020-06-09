@@ -7,6 +7,28 @@ public class AppointmentRequestDTO {
 	private String doctor; //email njegov
 	private String dateTime;
 	private AppointmentType examType;
+	private String onlyTime;
+	public String getOnlyTime() {
+		return onlyTime;
+	}
+	public void setOnlyTime(String onlyTime) {
+		this.onlyTime = onlyTime;
+	}
+	private String examType;	private long requestId;
+	public String getPatientName() {
+		return patientName;
+	}
+	public void setPatientName(String patientName) {
+		this.patientName = patientName;
+	}
+	public String getDoctorName() {
+		return doctorName;
+	}
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
+	}
+	private String patientName;
+	private String doctorName;
 	
 	public AppointmentRequestDTO() {
 		super();
@@ -41,6 +63,33 @@ public class AppointmentRequestDTO {
 	}
 	public void setExamType(AppointmentType examType) {
 		this.examType = examType;
+	}
+	public AppointmentRequestDTO(String email, String doctor, String dateTime, String examType, String patientName,
+			String doctorName) {
+		super();
+		this.email = email;
+		this.doctor = doctor;
+		this.dateTime = dateTime;
+		this.examType = examType;
+		this.patientName = patientName;
+		this.doctorName = doctorName;
+	}
+	public long getRequestId() {
+		return requestId;
+	}
+	public void setRequestId(long requestId) {
+		this.requestId = requestId;
+	}
+	public AppointmentRequestDTO(String email, String doctor, String dateTime, String examType, long requestId,
+			String patientName, String doctorName) {
+		super();
+		this.email = email;
+		this.doctor = doctor;
+		this.dateTime = dateTime;
+		this.examType = examType;
+		this.requestId = requestId;
+		this.patientName = patientName;
+		this.doctorName = doctorName;
 	}
 
 }

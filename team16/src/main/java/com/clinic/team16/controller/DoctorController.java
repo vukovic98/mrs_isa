@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinic.team16.beans.ClinicAdministrator;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.DTO.DoctorDTO;
 import com.clinic.team16.beans.DTO.DoctorLeaveDTO;
+import com.clinic.team16.service.ClinicAdminService;
 import com.clinic.team16.service.ClinicService;import com.clinic.team16.service.DoctorService;
 import com.clinic.team16.service.GradeService;
 import com.clinic.team16.service.PatientService;
@@ -36,6 +38,9 @@ public class DoctorController {
 	PatientService patientService;
 	@Autowired
 	GradeService gradeService;
+	
+	@Autowired
+	ClinicAdminService adminService;
 	
 	@Autowired
 	ClinicService clinicService;
@@ -73,6 +78,24 @@ public class DoctorController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
+	
+	@GetMapping(path = "/findAllDoctorsDTOCurrentClinic") 
+	public ResponseEntity<ArrayList<DoctorDTO>> findAllDoctorsDTOCurrentClinic() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+		List<Doctor> list = this.doctorService.findAllByClinic(ca.getClinic().getClinicID());
+			
+		if(list != null) {
+			ArrayList<DoctorDTO> dtoList = new ArrayList<>();
+			
+			for(Doctor d : list)
+				dtoList.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail()));
+			
+			return new ResponseEntity<ArrayList<DoctorDTO>>(dtoList, HttpStatus.OK);
+		}
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 	
 	@GetMapping(path = "/findOneByEmail")
 	public ResponseEntity<Doctor> findOneByEmail(@RequestParam String email) {
