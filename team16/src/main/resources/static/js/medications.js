@@ -69,7 +69,13 @@ $(document).ready(function(){
         statusCode: {
           200: function(responseObject, textStatus, jqXHR) {
             console.log("Medications - add() - 200 OK");
-            showMessage("Medication successfully added!", "palegreen");
+            Swal.fire({
+      		  position: 'center',
+      		  icon: 'success',
+      		  title: 'Medication successfully added!',
+      		  showConfirmButton: false,
+      		  timer: 1500
+      		})
             input.each(function(){
               $(this).parent("td").html($(this).val());
             }); 
@@ -79,7 +85,13 @@ $(document).ready(function(){
           },
           400: function(responseObject, textStatus, jqXHR) {
             console.log("Medications - add() - 400 Bad request");
-            showMessage("Medication with inserted code already exists!", "antiquewhite");
+            Swal.fire({
+      		  position: 'center',
+      		  icon: 'error',
+      		  title: 'Medication with inserted code already exists!',
+      		  showConfirmButton: false,
+      		  timer: 1500
+      		})
           },
 		  403: function(responseObject, textStatus, jqXHR) {
 			console.log("403 Unauthorized");
@@ -104,11 +116,23 @@ $(document).ready(function(){
             statusCode: {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Medications - delete() - 200 OK");
-                showMessage("Medication successfully deleted!", "palegreen"); 
+                Swal.fire({
+          		  position: 'center',
+          		  icon: 'success',
+          		  title: 'Medication successfully deleted!',
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		})
               },
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Medications - delete() - 400 Bad request");
-                showMessage("Something went wrong!", "antiquewhite");
+                Swal.fire({
+          		  position: 'center',
+          		  icon: 'error',
+          		  title: 'Something went wrong!',
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		})
               },
       		403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
@@ -121,13 +145,6 @@ $(document).ready(function(){
         $(".add-new").removeAttr("disabled");
     });
 });
-
-
-function showMessage(message, color) {
-  $("#message_bar").css("background", color);
-  $("#message_bar").text(message);
-  $("#message_bar").slideDown().delay(1500).slideUp();
-}
 
 function medicationsAllOK(medicationsList) {
   var table = $("#medicationsBody");

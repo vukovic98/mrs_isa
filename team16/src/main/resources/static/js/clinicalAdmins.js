@@ -151,26 +151,38 @@ $( document ).ready(function() {
             statusCode: {
                 200: function(responseObject, textStatus, jqXHR) {
                     console.log("usao");
-                    showMessage("New clinical Admin successfully added!", "palegreen");
+                    Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'success',
+		        		  title: 'New clinical admin successfully added!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
                     window.setTimeout(function(){location.reload()},1500);
                 },
                 400: function(responseObject, textStatus, errorThrown) {
-                    showMessage("User with given email already exists!", "antiquewhite");
+                	Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'error',
+		        		  title: 'User with given email already exists!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
                 },         
             }
         });
 
       } else {
-        showMessage("All inputs are mandatory!", "antiquewhite");
+    	  Swal.fire({
+    		  position: 'center',
+    		  icon: 'error',
+    		  title: 'All inputs are mandatory!',
+    		  showConfirmButton: false,
+    		  timer: 1500
+    		})
       }
   });
 });
-
-function showMessage(message, color) {
-  $("#message_bar").css("background", color);
-  $("#message_bar").text(message);
-  $("#message_bar").slideDown().delay(1500).slideUp();
-}
 
 function clinicAdminsAllOK(clinicAdminsList) {
   var table = $("#clinicAdminsBody");

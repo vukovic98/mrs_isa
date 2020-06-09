@@ -140,12 +140,25 @@ function passValidation(patientsPassword){
    	        	contentType: "application/json",
    			    dataType: "json",
    			    statusCode: {
-   			    	200: function(){showMessage("Password changed!", "palegreen");
+   			    	200: function(){
+   			    		Swal.fire({
+   			   		  position: 'center',
+   			   		  icon: 'success',
+   			   		  title: 'Password changed!',
+   			   		  showConfirmButton: false,
+   			   		  timer: 1500
+   			   		})
    	        			console.log("200 OK");
    	    		},
    	    		204:function(){
    	    			console.log("204 No Content");
-   	    			showMessage("Couldn't change password!", "antiquewhite");
+   	    			Swal.fire({
+   	    			  position: 'center',
+   	    			  icon: 'error',
+   	    			  title: 'Something went wrong!',
+   	    			  showConfirmButton: false,
+   	    			  timer: 1500
+   	    			})
    	    			
    	    		}
    			    }
@@ -228,12 +241,25 @@ function passValidation(patientsPassword){
 	        	contentType: "application/json",
 			    dataType: "json",
 			    statusCode: {
-   			    	200: function(){showMessage("Saved!", "palegreen");
+   			    	200: function(){
+   			    		Swal.fire({
+	   			   		  position: 'center',
+	   			   		  icon: 'success',
+	   			   		  title: 'Saved',
+	   			   		  showConfirmButton: false,
+	   			   		  timer: 1500
+	   			   		})
    	        			console.log("200 OK");
    	    		},
    	    		204:function(){
    	    			console.log("204 No Content");
-   	    			showMessage("Something went wrong. Try again.", "antiquewhite");
+   	    			Swal.fire({
+   	    			  position: 'center',
+   	    			  icon: 'error',
+   	    			  title: 'Something went wrong, please try again!',
+   	    			  showConfirmButton: false,
+   	    			  timer: 1500
+   	    			})
    	    			
    	    		}
    			    }
@@ -243,12 +269,6 @@ function passValidation(patientsPassword){
 		
     });
 		
-		
-    function showMessage(message, color) {
-    	$("#message_bar").css("background", color);
-    	$("#message_bar").text(message);
-    	$("#message_bar").slideDown().delay(1500).slideUp();
-    }
     function unauthorized(){
     	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
     }

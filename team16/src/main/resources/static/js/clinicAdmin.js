@@ -139,10 +139,22 @@ function passValidation(Password){
    	        	contentType: "application/json",
    			    dataType: "json",
    			    success: function(data){
-   			    	showMessage("Password changed!", "palegreen");
+   			    	Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'success',
+		        		  title: 'Password changed!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
    			    },
    			   error : function(e) {
-   				showMessage("Couldn't change password!", "antiquewhite");
+   				Swal.fire({
+	        		  position: 'center',
+	        		  icon: 'error',
+	        		  title: "Couldn't change password!",
+	        		  showConfirmButton: false,
+	        		  timer: 1500
+	        		})
    			            console.log("ERROR: ", e);
    			          }
    	        });}
@@ -222,23 +234,29 @@ function passValidation(Password){
 	        	contentType: "application/json",
 			    dataType: "json",
 			    success : 
-   			    	showMessage("Saved!", "palegreen")
+			    	Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'success',
+		        		  title: 'Saved!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
    			    ,
 			   error : function(e) {
-				        showMessage("Something went wrong. Try again.", "antiquewhite");
+				   Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'error',
+		        		  title: 'Something went wrong, please try again!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
 			            console.log("ERROR: ", e);
 			          }
 	        });
 		}
 		
     });
-		
-		
-    function showMessage(message, color) {
-    	$("#message_bar").css("background", color);
-    	$("#message_bar").text(message);
-    	$("#message_bar").slideDown().delay(1500).slideUp();
-    }
+
     function unauthorized(){
     	document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
     }

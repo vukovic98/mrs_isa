@@ -70,7 +70,13 @@ $(document).ready(function(){
 	            statusCode: {
 	              200: function(responseObject, textStatus, jqXHR) {
 	                console.log("PricelistItem - add() - 200 OK");
-	                showMessage("Pricelist item successfully added!", "palegreen");
+	                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'success',
+	          		  title: 'Pricelist item successfully added!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})
 	                input.each(function(){
 	                  $(this).parent("td").html($(this).val());
 	                }); 
@@ -80,7 +86,13 @@ $(document).ready(function(){
 	              },
 	              400: function(responseObject, textStatus, jqXHR) {
 	                console.log("PricelistItem - add() - 400 Bad request");
-	                showMessage("Pricelist item with inserted name already exists!", "antiquewhite");
+	                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'error',
+	          		  title: 'Pricelist item with inserted name already exist!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})
 	              },
 	    		  403: function(responseObject, textStatus, jqXHR) {
 	    			console.log("403 Unauthorized");
@@ -106,11 +118,23 @@ $(document).ready(function(){
             statusCode: {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Pricelist item - delete() - 200 OK");
-                showMessage("Pricelist item successfully deleted!", "palegreen"); 
+                Swal.fire({
+          		  position: 'center',
+          		  icon: 'success',
+          		  title: 'Pricelist item successfully deleted!',
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		})
               },
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Pricelist item - delete() - 400 Bad request");
-                showMessage("Something went wrong!", "antiquewhite");
+                Swal.fire({
+          		  position: 'center',
+          		  icon: 'error',
+          		  title: 'Something went wrong!',
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		})
               },
       		403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
@@ -123,12 +147,6 @@ $(document).ready(function(){
     });
 });
 
-
-function showMessage(message, color) {
-	  $("#message_bar").css("background", color);
-	  $("#message_bar").text(message);
-	  $("#message_bar").slideDown().delay(1500).slideUp();
-	}
 
 function pricelistAllOK(pricelistItemList) {
 	  var table = $("#pricelistBody");

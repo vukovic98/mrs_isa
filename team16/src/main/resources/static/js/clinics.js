@@ -94,26 +94,39 @@ $( document ).ready(function() {
             statusCode: {
                 200: function(responseObject, textStatus, jqXHR) {
                     console.log("usao");
-                    showMessage("New clinic successfully added!", "palegreen");
+                    Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'success',
+		        		  title: 'New clinic successfully added!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
                     window.setTimeout(function(){location.reload()},1500);
                 },
                 400: function(responseObject, textStatus, errorThrown) {
-                    showMessage("Clinic with inserted name already exists!", "antiquewhite");
+                	Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'error',
+		        		  title: 'Clinic with inserted name already exists!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
                 },         
             }
         });
 
       } else {
-        showMessage("All inputs are mandatory!", "antiquewhite");
+    	  Swal.fire({
+    		  position: 'center',
+    		  icon: 'error',
+    		  title: 'All inputs are mandatory!',
+    		  showConfirmButton: false,
+    		  timer: 1500
+    		})
       }
     });
 });
 
-function showMessage(message, color) {
-  $("#message_bar").css("background", color);
-  $("#message_bar").text(message);
-  $("#message_bar").slideDown().delay(1500).slideUp();
-}
 
 function clinicsAllOK(clinicsList) {
   var table = $("#clinicsTableBody");

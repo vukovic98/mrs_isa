@@ -21,7 +21,13 @@ $( document ).ready(function() {
           if(repeat != null && repeat != "" && pass != null && pass != "") {
             if(pass != repeat){
               $("#repeatPassword").addClass("is-invalid");
-              showMessage("Passwords don't match!", "antiquewhite");
+              Swal.fire({
+        		  position: 'center',
+        		  icon: 'error',
+        		  title: "Passwords don't match",
+        		  showConfirmButton: false,
+        		  timer: 1500
+        		})
             }
             else{
               $("#repeatPassword").removeClass("is-invalid");
@@ -47,7 +53,13 @@ $( document ).ready(function() {
               },
               204: function(responseObject, textStatus, jqXHR) {
                 console.log("ChangePassword - 204 No Content");
-                showMessage("Something went wrong!", "antiquewhite");
+                Swal.fire({
+	        		  position: 'center',
+	        		  icon: 'error',
+	        		  title: 'Something went wrong!',
+	        		  showConfirmButton: false,
+	        		  timer: 1500
+	        		})
               },
               403: function(responseObject, textStatus, jqXHR) {
                 console.log("403 Unauthorized");
@@ -59,12 +71,6 @@ $( document ).ready(function() {
        
     });
 });
-
-function showMessage(message, color) {
-    $("#message_bar").css("background", color);
-    $("#message_bar").text(message);
-    $("#message_bar").slideDown().delay(1500).slideUp();
-}
 
 function unauthorized(){
   document.write("<html><head></head><body>UNAUTHORIZED</body></html>");
