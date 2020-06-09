@@ -32,6 +32,11 @@ public class OrdinationService {
 		return ordinationRepository.findOneByNameInClinic(name, clinicId);
 	}
 
+	public Ordination findOneByNumber(int number) {
+		return ordinationRepository.findOneByNumber(number);
+	}
+	
+	
 	public Ordination save(Ordination ord) {
 		// TODO Auto-generated method stub
 		return ordinationRepository.save(ord);

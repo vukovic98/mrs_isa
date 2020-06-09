@@ -18,6 +18,10 @@ public class AppointmentService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 
+	public void save(Appointment a) {
+		appointmentRepository.save(a);
+	}
+	
 	public ArrayList<Appointment> findByDoctorAndDate(String date, Long doctor_id) {
 		return (ArrayList<Appointment>) this.appointmentRepository.findByDoctorAndDate(date, doctor_id);
 	}
@@ -57,4 +61,8 @@ public class AppointmentService {
 		return this.appointmentRepository.findAllPredefined();
 	}
 	*/
+
+	public List<Appointment> findAllForOrdination(long roomId) {
+		return appointmentRepository.findAllForOrdination(roomId);
+	}
 }

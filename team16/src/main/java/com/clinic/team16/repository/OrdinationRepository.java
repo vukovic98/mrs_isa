@@ -18,6 +18,8 @@ public interface OrdinationRepository extends JpaRepository<Ordination, Integer>
 			nativeQuery = true)
 	public Ordination findOneByNameInClinic(String name, Long clinicId);
 
+	public Ordination findOneByNumber(int number);
+
 	
 
 }

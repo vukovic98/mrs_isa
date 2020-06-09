@@ -213,6 +213,23 @@ public class AppointmentController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@GetMapping(path = "/findAllForRoom/{roomId}")
+	public ResponseEntity<List<AppointmentDTO>> findAllForRoom(@PathVariable("roomId") long roomId){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		List<Appointment> list = appointmentService.findAllForOrdination(roomId);
+		List<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
+		if(list != null) {
+			for (Appointment appointment : list) {
+				dtoList.add(new AppointmentDTO(appointment.getAppointmentId(), sdf.format(appointment.getDateTime()), appointment.getDuration(), appointment.getDoctor().getFirstName() + " " + appointment.getDoctor().getLastName(), appointment.getPatient().getEmail(), appointment.getPricelistItems().getName(),  String.valueOf(appointment.getPricelistItems().getPrice()), String.valueOf(roomId)));
+			}
+			
+			return new ResponseEntity<List<AppointmentDTO>>(dtoList,HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	
 	/*
 	@GetMapping(path = "/findAllPredefined")
 	public ResponseEntity<List<AppointmentDTO>> findAllPredefined() {

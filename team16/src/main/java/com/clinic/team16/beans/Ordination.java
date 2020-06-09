@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class Ordination {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "Ordination_Number", nullable = false)
 	private int number;
 

@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Appointment;
+import com.clinic.team16.beans.AppointmentRequest;
+import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.Clinic;
 import com.clinic.team16.beans.ClinicAdministrator;
 import com.clinic.team16.beans.Ordination;
@@ -27,6 +29,7 @@ import com.clinic.team16.beans.OrdinationType;
 import com.clinic.team16.beans.DTO.AppointmentRequestDTO;
 import com.clinic.team16.beans.DTO.OrdinationAddDTO;
 import com.clinic.team16.beans.DTO.OrdinationDTO;
+import com.clinic.team16.service.AppointmentRequestService;
 import com.clinic.team16.service.ClinicAdminService;
 import com.clinic.team16.service.ClinicService;
 import com.clinic.team16.service.OrdinationService;
@@ -43,6 +46,9 @@ public class OrdinationController {
 
 	@Autowired
 	private ClinicAdminService adminService;
+	
+	@Autowired
+	private AppointmentRequestService requestService;
 	
 	@GetMapping(path = "/findAll")
 	public ResponseEntity<List<OrdinationDTO>> findAll() {
@@ -124,6 +130,41 @@ public class OrdinationController {
 		}else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@GetMapping(path = "/findAllFreeForRequest/{reqId}")
+	public ResponseEntity<List<OrdinationDTO>> findAllFree(@PathVariable("reqId") long reqId) throws ParseException{
+		///SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+		System.out.println(ca.getClinic().getName());
+		List<Ordination> list = ca.getClinic().getOrdinations();
+		
+		List<OrdinationDTO> finalList = new ArrayList<OrdinationDTO>();
+		AppointmentRequest ar = requestService.findOneByAppointmentRequestId(reqId);
+		if(list != null) {
+			boolean available = true;
+			for (Ordination ordination : list) {
+				for (Appointment a : ordination.getAppointments()) {
+					if(a.getDateTime().equals(ar.getAppointment().getDateTime())) {
+						available = false;
+						break;
+					}
+				}
+				if(available) {
+					if(ordination.getType().equals(OrdinationType.OPERATION)) {
+						if(ar.getAppointment().getPricelistItems().getName().equals(AppointmentType.SURGERY))
+							finalList.add(new OrdinationDTO(ordination.getName(), ordination.getType(),ordination.getNumber()));
+					}else {
+						if(!ar.getAppointment().getPricelistItems().getName().equals(AppointmentType.SURGERY))
+							finalList.add(new OrdinationDTO(ordination.getName(), ordination.getType(),ordination.getNumber()));
+					}
+				}
+			}
+			return new ResponseEntity<List<OrdinationDTO>>(finalList,HttpStatus.OK);
+		}else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
 	
 	@GetMapping(path = "/findAllCurrentClinicRooms")
 	public ResponseEntity<List<OrdinationDTO>> findAllCurrentClinicRooms(){

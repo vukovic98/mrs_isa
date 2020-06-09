@@ -4,6 +4,13 @@ public class AppointmentRequestDTO {
 	private String email;
 	private String doctor; //email njegov
 	private String dateTime;
+	private String onlyTime;
+	public String getOnlyTime() {
+		return onlyTime;
+	}
+	public void setOnlyTime(String onlyTime) {
+		this.onlyTime = onlyTime;
+	}
 	private String examType;
 	private long requestId;
 	public String getPatientName() {

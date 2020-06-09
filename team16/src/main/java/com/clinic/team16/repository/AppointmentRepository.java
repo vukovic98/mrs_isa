@@ -37,4 +37,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long > 
 			value = "SELECT * FROM appointment WHERE appointment.appointment_request_id IN (SELECT appointment_request_id FROM appointment_request WHERE ",
 			nativeQuery = true)
 	public List<Appointment> findAllPredefined(Long clinic_id);
+
+	
+	@Query(
+			value = "SELECT * FROM appointment WHERE appointment.ordination_id = ?1",
+			nativeQuery = true)
+	public List<Appointment> findAllForOrdination(long roomId);
 }
