@@ -517,46 +517,100 @@ $( document ).ready(function() {
 	
 	// Edit row on edit button click
 	$(document).on("click", ".edit-room", function(){		
-      $(this).parents("tr").find("td:not(:last-child)").each(function(){
-			if($(this).is("td:first-child")){
-			$(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-			}else if($(this).is(".but")){
-			
-			}else{
-			$(this).html('<select id="type"><option value="OPERATION">OPERATION</option><option value="EXAM">EXAM</option></select>');
-			}
-		});		
-		$(this).parents("tr").find(".add-room, .edit-room").toggle();
-		$(".add-new-rooms").attr("disabled", "disabled");
+
+		var num = $(this).parents("tr").attr("id");
+		
+		
+		
+        $.ajax({
+            type: 'GET',
+            url: 'ordinationApi/findOneByNumber/' + num,
+            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            statusCode: {
+              200: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - add() - 200 OK");
+                if(responseObject.hasAppointments == true)
+                	showMessage("Editing rooms with appointments is not allowed!", "red");
+                else{
+                $("#roomNameInputEdit").val(responseObject.name);
+                $("#editRoomModal").modal();
+                }
+                
+              },
+              400: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - add() - 400 Bad request");
+                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+              },
+    		  403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		  }
+            }
+          });
+		
+		
+		
+		
+		
+		
   });
+	
+	
+	
 	// Delete row on delete button click
 	$(document).on("click", ".delete-room", function(){
-		var id = $(this).parents("td").attr('id');
+		var id = $(this).parents("tr").attr('id');
 		
-      $.ajax({
-          type: 'DELETE',
-          url: 'ordinationApi/deleteOrdination/' + id,
-          headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
-          contentType: "application/json; charset=utf-8",
-          dataType: "json",
-          statusCode: {
-            200: function(responseObject, textStatus, jqXHR) {
-              console.log("Ordination - delete() - 200 OK");
-              showMessage("Ordination successfully deleted!", "palegreen"); 
-            },
-            400: function(responseObject, textStatus, jqXHR) {
-              console.log("Ordination - delete() - 400 Bad request");
-              showMessage("Something went wrong!", "antiquewhite");
-            },
-    		403: function(responseObject, textStatus, jqXHR) {
-  			console.log("403 Unauthorized");
-  			unauthorized();
-  		}
-          }
-        });
+        $.ajax({
+            type: 'GET',
+            url: 'ordinationApi/findOneByNumber/' + id,
+            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            statusCode: {
+              200: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - add() - 200 OK");
+                if(responseObject.hasAppointments == true)
+                	showMessage("Deleting rooms with appointments is not allowed!", "red");
+                else{
+                    $.ajax({
+                        type: 'DELETE',
+                        url: 'ordinationApi/deleteOrdination/' + id,
+                        headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        statusCode: {
+                          200: function(responseObject, textStatus, jqXHR) {
+                            console.log("Ordination - delete() - 200 OK");
+                            showMessage("Ordination successfully deleted!", "palegreen"); 
+                          },
+                          400: function(responseObject, textStatus, jqXHR) {
+                            console.log("Ordination - delete() - 400 Bad request");
+                            showMessage("Something went wrong!", "antiquewhite");
+                          },
+                  		403: function(responseObject, textStatus, jqXHR) {
+                			console.log("403 Unauthorized");
+                			unauthorized();
+                		}
+                        }
+                      });
+                }
+                
+              },
+              400: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - add() - 400 Bad request");
+                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+              },
+    		  403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		  }
+            }
+          });
 		
-      $(this).parents("tr").remove();
-		$(".add-new-rooms").removeAttr("disabled");
+		
   });
 	
 	//----------------------------------ROOMS TABLE
@@ -908,12 +962,12 @@ function roomsAllOK(roomsList) {
 
 	  
 	  $.each(roomsList, function(i, val) {
-	    var row = $("<tr id=\""+i+"\"></tr>");
+	    var row = $("<tr id=\""+val.ordId+"\"></tr>");
 
 	    row.append("<td id=\""+val.ordId+"\">" + val.name + "</td>");
 	    row.append("<td id=\""+val.ordId+"\">" + val.type + "</td>");
 	    row.append("<td class=\"but\"><button class=\"btn btn-primary\" type=\"button\" data-toggle=\"modal\" data-target=\"#exampleModal\" aria-expanded=\"false\" aria-controls=\"exampleModal\">Appointments</button></td>");
-	    row.append("<td id=\""+val.name+"\">" + "<a class=\"add-room\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
+	    row.append("<td id=\""+val.name+"\">" +
 		                            "<a class=\"edit-room\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +
 		                            "<a class=\"delete-room\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
 	    table.append(row);

@@ -317,7 +317,48 @@
 			</div>
 		</div>
 	</div>
-	<!-- Modal end -->	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	<!-- Modal end -->	
+	
+	<!-- Modal -->
+	<div class="modal fade" id="editRoomModal" role="dialog">
+		<div class="modal-dialog" role="document" style="margin-top: 60px;">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="card text-center">
+						<div class="card-header">Edit room</div>
+						<div class="card-body">
+							<div class="col-xs-12 col-sm-12 pl-0">
+								<p id="reportId" style="display: none;"></p>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend" style="width: 30%;">
+										<span class="input-group-text w_available" id="clinicSPAN">Name</span>
+									</div>
+									<input type="text" id="roomNameInputEdit" class="form-control"
+										aria-describedby="basic-addon1" required>
+								</div>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend" style="width: 30%;">
+										<span class="input-group-text w_available" id="doctorSPAN">Type</span>
+									</div>
+									<select id="roomTypeInputEdit" class="form-control"><option value="EXAM">Examination</option><option value="OPERATION">Operation</option></select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="roomEditModalBtn" class="btn btn-primary"
+						data-dismiss="modal">Create</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal end -->	
+	
+	
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"

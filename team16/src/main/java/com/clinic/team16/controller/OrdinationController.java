@@ -93,15 +93,25 @@ public class OrdinationController {
 	}
 
 	@DeleteMapping(path = "/deleteOrdination/{id}", consumes = "application/json")
+	@Transactional
 	public ResponseEntity<HttpStatus> deleteMedication(@PathVariable("id") String id) {
 		System.out.println(id);
-		Ordination or = ordinationService.findOneByName(id);
-
+		Ordination or = ordinationService.findOneByNumber(Integer.valueOf(id));
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+		
 		if (or != null) {
-
+			Clinic cl = clinicService.findOneByClinicID(ca.getClinic().getClinicID());
+			
+			cl.getOrdinations().remove(or);
+			this.clinicService.save(cl);
 			or.setClinic(null);
+			this.ordinationService.save(or);
+			
 			this.ordinationService.delete(or);
-
+			
+			
+			
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -180,6 +190,19 @@ public class OrdinationController {
 			}
 			return new ResponseEntity<List<OrdinationDTO>>(dtoList,HttpStatus.OK);
 		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
+	}
+	
+	@GetMapping(path = "/findOneByNumber/{number}")
+	public ResponseEntity<OrdinationDTO> findOneByNumber(@PathVariable int number){
+		
+		Ordination o = ordinationService.findOneByNumber(number);
+		if(o != null) {
+			OrdinationDTO ret = new OrdinationDTO(o.getName(), o.getType(), o.getNumber());
+			ret.setHasAppointments(!o.getAppointments().isEmpty());
+			return new ResponseEntity<OrdinationDTO>(ret,HttpStatus.OK);
+		}else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 	}
