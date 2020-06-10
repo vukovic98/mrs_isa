@@ -781,7 +781,7 @@ $("#applyFilter").click(function(){
 function searchDoctors(){
 	// Declare variables
 	var input, filter, table, tr, td, i, j, txtValue;
-	input = document.getElementById("myInput");
+	input = document.getElementById("searchDoc");
 	filter = input.value.toUpperCase();
 	table = document.getElementById("doctorTable");
 	tr = table.getElementsByTagName("tr");
@@ -929,6 +929,12 @@ function initMap(latV, lon) {
     });
   }
 function doctorAllOK(doctorList) {
+	$("#filterDiv").css("display","none");
+	//titleDoctors
+	$("#titleDoctors").text("Search doctors");
+	//searchDoc
+	$("#searchDoc").attr("placeholder","Search doctors by name...");
+
 	var table = $("#doctorBody");
 	table.empty();
 	console.log(doctorList);
