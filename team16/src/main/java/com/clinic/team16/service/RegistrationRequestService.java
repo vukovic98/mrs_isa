@@ -3,8 +3,10 @@ package com.clinic.team16.service;
 import java.util.List;
 
 import javax.mail.internet.MimeMessage;
+import javax.persistence.LockModeType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -27,6 +29,7 @@ public class RegistrationRequestService {
 		return this.registrationRequestRepository.findAllUnapproved();
 	}
 
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	public RegistrationRequest save(RegistrationRequest p) {
 		return this.registrationRequestRepository.save(p);
 	}

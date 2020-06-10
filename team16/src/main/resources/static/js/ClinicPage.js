@@ -21,6 +21,7 @@ $( document ).ready(function() {
     				    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     				    statusCode: {
     				      200: function(responseObject, textStatus, jqXHR) {
+    				    	  $("#clinicName").text(responseObject.name);
     				    	 clinicOK(responseObject);
     				      },
     				      204: function(responseObject, textStatus, jqXHR) {
@@ -371,6 +372,10 @@ $( document ).ready(function() {
 	
 	$(document).on("click", "#btnBack", function(){
 		window.location.href = "/makeAppointment";
+	});
+	//klinike admin nayad
+	$(document).on("click", "#btnBackAdmin", function(){
+		window.location.href = "/clinicAdmin";
 	});
 	
 	$(document).on("click", "#modalApproveBtn", function(){
@@ -819,7 +824,54 @@ function clinicOK(clinic){
 	$("#desc").val(clinic.description);
 	var attr = sessionStorage.setItem('clinicID', clinic.clinicID);
 	
+	$.ajax({
+	    type: 'POST',
+	    url: 'clinicApi/createMap/' + $("#clinicAddress").val(),
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    statusCode: {
+	      200: function(responseObject, textStatus, jqXHR) {
+	        console.log("Clinics - map() - 200 OK");
+	        console.log(responseObject);
+	        var obj = JSON.parse(responseObject);
+	        console.log(obj.results);
+	        var latV = obj.results[0].geometry.location.lat;
+	        var lonV = obj.results[0].geometry.location.lng;
+	        
+	        console.log(latV + " " + lonV);
+	        
+	        initMap(latV, lonV);
+	      },
+	      204: function(responseObject, textStatus, jqXHR) {
+	        console.log("Clinics - map() - 204 No Content");
+	        clinicsAllNO(responseObject);
+	      },
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+	    }
+	  });
+	var btn = "<button id=\"btnBackAdmin\" type=\"button\" title=\"Back\" class=\"btn btn-secondary btn-lg\"><i class=\"fa fa-arrow-left\" aria-hidden=\"true\"></i></button></td>";
+	$("#jumbotron").append(btn);
+
+	
 }
+
+function initMap(latV, lon) {
+    var myLatLng = {lat: latV, lng: lon};
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: myLatLng,
+      disableDefaultUI: true
+    });
+
+    var marker = new google.maps.Marker({
+      position: myLatLng,
+      map: map,
+      title: 'Hello World!'
+    });
+  }
 function doctorAllOK(doctorList) {
 	var table = $("#doctorBody");
 	table.empty();

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.JWT.JwtToken;
+import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.Role;
 import com.clinic.team16.beans.User;
 import com.clinic.team16.beans.DTO.UserAuthDTO;
@@ -51,10 +52,17 @@ public class UserController {
 					ua.getCity(), ua.getCountry(), ua.getPhoneNumber(), ua.getInsuranceNumber(), ua.getRole());
 
 			final String jwtToken = jwtTokenUtility.generateToken(user);
+			if (ua instanceof Patient) {
+				Patient p = (Patient) ua;
+				if(p.getMedicalRecord() == null)
+					return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
 			return new ResponseEntity<UserLoginDTO>(new UserLoginDTO(jwtToken, u.getEmail(), user.getRole().toString()),
 					HttpStatus.OK);
+
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
 	}
 
 	@GetMapping(path = "/sendMail")
@@ -64,25 +72,25 @@ public class UserController {
 
 		return ("SENT!");
 	}
-	
+
 	@GetMapping(path = "/getRole")
 	public ResponseEntity<Role> getRole() {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-		
+
 		User u = this.userService.findOneByEmail(currentUser);
-		
-		if(u != null) {
+
+		if (u != null) {
 			return new ResponseEntity<Role>(u.getRole(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
-	
+
 	@GetMapping(path = "/getCurrentUser")
 	public ResponseEntity<String> getCurrentUser() {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		if(currentUser != "")
+
+		if (currentUser != "")
 			return new ResponseEntity<String>(currentUser, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

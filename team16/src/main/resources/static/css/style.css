@@ -3,6 +3,11 @@ body {
 	background-repeat: no-repeat;
 }
 
+#map {
+  height: 50%;
+  width: 50%;
+}
+
 .info {
 	background-image: url(/images/info.png);
 	background-repeat: no-repeat;
