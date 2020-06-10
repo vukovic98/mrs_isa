@@ -117,11 +117,11 @@ $( document ).ready(function() {
     			} else if(responseObject == "PATIENT"){
     				$("#price").css('display', 'none');
     				$("#rooms").css('display', 'none');
-    				$("#appointments").css('display', 'none');
+    				//$("#appointments").css('display', 'none');
     				
     				$("#li_price").css('display', 'none');
     				$("#li_rooms").css('display', 'none');
-    				$("#li_appointments").css('display', 'none');
+    				//$("#li_appointments").css('display', 'none');
     				
     				var atrs = sessionStorage.getItem('appParam');
     			//---------------ako filtrira klinike------------------------
