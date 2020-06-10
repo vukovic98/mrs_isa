@@ -48,7 +48,7 @@ public class Appointment {
 	public PricelistItem pricelistItems;
 
 	@Column(name = "Price")
-	public double price;
+	public Double price;
 
 	public Appointment() {
 

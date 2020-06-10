@@ -54,6 +54,7 @@ $( document ).ready(function() {
       var address = $("#clinicAddress").val();
       var desc = $("#clinicDescription").val();
       var pricelist = $("#clinicPricelist").val();
+      var city = $("#clinicCity").val();
 
       if(name == null || name == "") {
         $("#clinicName").addClass("is-invalid");
@@ -66,6 +67,12 @@ $( document ).ready(function() {
       } else {
         $("#clinicAddress").removeClass("is-invalid");
       }
+      
+      if(city == null || city == "") {
+          $("#clinicCity").addClass("is-invalid");
+        } else {
+          $("#clinicCity").removeClass("is-invalid");
+        }
 
       if(desc == null) {
         desc = "";
@@ -77,7 +84,8 @@ $( document ).ready(function() {
         $("#clinicPricelist").removeClass("is-invalid");
       }
 
-      if(name != null && name != "" && address != "" && address != null && desc != null && pricelist != null &&
+      if(name != null && name != "" && address != "" && address != null &&
+    		  city != null && city != "" && desc != null && pricelist != null &&
         pricelist != "") {
         $.ajax({
           type : 'POST',
@@ -87,7 +95,8 @@ $( document ).ready(function() {
             "name": name,
             "address": address,
             "description": desc,
-            "pricelist": pricelist
+            "pricelist": pricelist,
+            "city": city
           }),
           contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -111,6 +120,7 @@ $( document ).ready(function() {
 		        		  showConfirmButton: false,
 		        		  timer: 1500
 		        		})
+		        		window.setTimeout(function(){location.reload()},1500);
                 },         
             }
         });

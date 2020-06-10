@@ -15,6 +15,11 @@
 	href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXySxAYZiompb27Oq1f3XD6vrL4jpp3AU&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
 </head>
 
 <body>
@@ -50,8 +55,8 @@
 				<div class="tab-pane fade show active" id="profileInfo"
 					role="tabpanel" aria-labelledby="profile-tab">
 					<br>
-					<form id="clinicProfileForm">
-						<div class="col-xs-12 col-sm-12 pl-0 pt-1 pr-0">
+					<form id="clinicProfileForm" class="col-md-12 fl-left">
+						<div class="col-md-6 pl-0 pt-1 pr-0 fl-left">
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
 									<span class="input-group-text" id="inputGroup-sizing-default"
@@ -64,21 +69,23 @@
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
 									<span class="input-group-text" id="inputGroup-sizing-default"
+										style="width: 150px;">Description</span>
+								</div>
+								<input type="text" class="form-control" aria-label="Description"
+									id="desc" aria-describedby="inputGroup-sizing-default" readonly>
+							</div>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="inputGroup-sizing-default"
 										style="width: 150px;">Address</span>
 								</div>
 								<input type="text" class="form-control" aria-label="Address"
 									id="clinicAddress" aria-describedby="inputGroup-sizing-default"
 									readonly>
 							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inputGroup-sizing-default"
-										style="width: 150px;">Description</span>
-								</div>
-								<input type="text" class="form-control" aria-label="Description"
-									id="desc" aria-describedby="inputGroup-sizing-default" readonly>
 							</div>
-						</div>
+							<div id="map" class="col-md-5 fl-right"></div>
+						
 					</form>
 				</div>
 				<div class="tab-pane fade" id="appointments"
@@ -310,7 +317,48 @@
 			</div>
 		</div>
 	</div>
-	<!-- Modal end -->	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	<!-- Modal end -->	
+	
+	<!-- Modal -->
+	<div class="modal fade" id="editRoomModal" role="dialog">
+		<div class="modal-dialog" role="document" style="margin-top: 60px;">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="card text-center">
+						<div class="card-header">Edit room</div>
+						<div class="card-body">
+							<div class="col-xs-12 col-sm-12 pl-0">
+								<p id="reportId" style="display: none;"></p>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend" style="width: 30%;">
+										<span class="input-group-text w_available" id="clinicSPAN">Name</span>
+									</div>
+									<input type="text" id="roomNameInputEdit" class="form-control"
+										aria-describedby="basic-addon1" required>
+								</div>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend" style="width: 30%;">
+										<span class="input-group-text w_available" id="doctorSPAN">Type</span>
+									</div>
+									<select id="roomTypeInputEdit" class="form-control"><option value="EXAM">Examination</option><option value="OPERATION">Operation</option></select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="roomEditModalBtn" class="btn btn-primary"
+						data-dismiss="modal">Create</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal end -->	
+	
+	
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -322,6 +370,7 @@
 		crossorigin="anonymous"></script>
 	<script type="application/javascript" th:src="@{js/clinicAdmin.js}"></script>
 	<script type="application/javascript" th:src="@{js/clinicPage.js}"></script>
+	<script type="application/javascript" th:src="@{js/map.js}"></script>
 </body>
 
 </html>

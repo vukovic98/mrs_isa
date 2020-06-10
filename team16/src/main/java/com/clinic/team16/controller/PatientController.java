@@ -11,7 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.clinic.team16.beans.Appointment;
-import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.ClinicalCenterAdministrator;
 import com.clinic.team16.beans.MedicalRecord;
 
@@ -184,7 +183,7 @@ public class PatientController {
 		Patient ok = this.patientService.save(p);
 
 		if (ok != null) {
-			ClinicalCenterAdministrator a = this.clinicalCenterAdminService.finOneById(1);
+			ClinicalCenterAdministrator a = this.clinicalCenterAdminService.findMainClinicalCenterAdmin();
 			RegistrationRequest r = new RegistrationRequest(false, p, a);
 			a.addRegistrationRequest(r);
 
@@ -211,8 +210,6 @@ public class PatientController {
 				this.patientService.save(p);
 			}
 
-			attributes.addFlashAttribute("flashAttribute", "activateAccount");
-			attributes.addAttribute("attribute", "activateAccount");
 			return new RedirectView("/");
 
 		} else {

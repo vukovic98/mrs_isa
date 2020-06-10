@@ -5,15 +5,25 @@ public class ClinicAddDTO {
 	private String address;
 	private String description;
 	private long pricelist;
+	private String city;
 
 	public ClinicAddDTO() {
 	}
 
-	public ClinicAddDTO(String name, String address, String description, long pricelist) {
+	public ClinicAddDTO(String name, String address, String description, long pricelist, String city) {
 		this.name = name;
 		this.address = address;
 		this.description = description;
 		this.pricelist = pricelist;
+		this.city = city;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getName() {
