@@ -22,7 +22,7 @@ $( document ).ready(function() {
     				    statusCode: {
     				      200: function(responseObject, textStatus, jqXHR) {
     				    	  $("#clinicName").text(responseObject.name);
-    				    	 clinicOK(responseObject);
+    				    	 clinicOK(responseObject,2);
     				      },
     				      204: function(responseObject, textStatus, jqXHR) {
 
@@ -146,7 +146,7 @@ $( document ).ready(function() {
 	    				    	 $("#doctor").addClass("show");
 	    				    	 $("#doctor").addClass("active");
 	    				    	 $("#doctor-tab").addClass("active");
-	    				    	 clinicOK(responseObject);
+	    				    	 clinicOK(responseObject,1);
 	    				      },
 	    				      204: function(responseObject, textStatus, jqXHR) {
 	
@@ -215,7 +215,7 @@ $( document ).ready(function() {
     				    	 $("#doctor").addClass("show");
     				    	 $("#doctor").addClass("active");
     				    	 $("#doctor-tab").addClass("active");
-    				    	 clinicOK(responseObject);
+    				    	 clinicOK(responseObject,1);
     				      },
     				      204: function(responseObject, textStatus, jqXHR) {
 
@@ -869,10 +869,11 @@ function showDoctors(doctors,odakle) {
 	  });
 	if (odakle == 1){
 	var btn = "<button id=\"btnBack\" type=\"button\" title=\"Back\" class=\"btn btn-secondary btn-lg\"><i class=\"fa fa-arrow-left\" aria-hidden=\"true\"></i></button></td>";
-	$("#jumbotron").append(btn);}
+	$("#jumbotron").append(btn);
+	}
 }
 
-function clinicOK(clinic){
+function clinicOK(clinic,odakle){
 	$("#name").val(clinic.name);
 	$("#clinicAddress").val(clinic.address + ", " + clinic.city);
 	$("#desc").val(clinic.description);
@@ -905,8 +906,9 @@ function clinicOK(clinic){
 			}
 	    }
 	  });
+	if(odakle == 2){
 	var btn = "<button id=\"btnBackAdmin\" type=\"button\" title=\"Back\" class=\"btn btn-secondary btn-lg\"><i class=\"fa fa-arrow-left\" aria-hidden=\"true\"></i></button></td>";
-	$("#jumbotron").append(btn);
+	$("#jumbotron").append(btn);}
 
 	
 }
