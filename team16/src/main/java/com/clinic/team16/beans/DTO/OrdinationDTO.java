@@ -6,6 +6,7 @@ public class OrdinationDTO {
 private String name;
 private OrdinationType type;
 private int ordId;
+private boolean hasAppointments;
 public String getName() {
 	return name;
 }
@@ -38,6 +39,14 @@ public OrdinationDTO(String name, OrdinationType type, int ordId) {
 	this.type = type;
 	this.ordId = ordId;
 }
+public boolean isHasAppointments() {
+	return hasAppointments;
+}
+public void setHasAppointments(boolean hasAppointments) {
+	this.hasAppointments = hasAppointments;
+}
+
+
 
 
 
