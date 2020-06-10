@@ -83,6 +83,10 @@ public class ClinicalCenterAdministrator extends User {
 	public void addRegistrationRequest(RegistrationRequest newRegistrationRequest) {
 			this.registrationRequest.add(newRegistrationRequest);
 	}
+	
+	public void addAppointmentRequest(AppointmentRequest a) {
+		this.appointmentRequest.add(a);
+	}
 
 	public void removeRegistrationRequest(RegistrationRequest oldRegistrationRequest) {
 				this.registrationRequest.remove(oldRegistrationRequest);

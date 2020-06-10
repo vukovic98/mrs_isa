@@ -10,7 +10,26 @@ public class AppointmentHistoryDTO {
 	private long clinicID;
 	private long doctorID;
 	private String clinic;
+	private boolean approved;
 	
+	public AppointmentHistoryDTO(long appointmentID, String datetime, AppointmentType appointmentType, String doctor,
+			long clinicID, long doctorID, String clinic, boolean approved) {
+		super();
+		this.appointmentID = appointmentID;
+		this.datetime = datetime;
+		this.appointmentType = appointmentType;
+		this.doctor = doctor;
+		this.clinicID = clinicID;
+		this.doctorID = doctorID;
+		this.clinic = clinic;
+		this.approved = approved;
+	}
+	public boolean isApproved() {
+		return approved;
+	}
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
 	public long getAppointmentID() {
 		return appointmentID;
 	}

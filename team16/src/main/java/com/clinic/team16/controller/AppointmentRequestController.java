@@ -44,7 +44,7 @@ public class AppointmentRequestController {
 			List<AppointmentRequestDTO> dtoList = new ArrayList<AppointmentRequestDTO>();
 			
 			for (AppointmentRequest areq : list) {
-				dtoList.add(new AppointmentRequestDTO(areq.getAppointment().getPatient().getEmail(), areq.getAppointment().getDoctor().getEmail(), formatter.format(areq.getAppointment().getDateTime()), areq.getAppointment().getPricelistItems().getName().name(),areq.getAppointmentRequestId(),areq.getAppointment().getPatient().getFirstName() + " " + areq.getAppointment().getPatient().getLastName(),areq.getAppointment().getDoctor().getFirstName() + " " + areq.getAppointment().getDoctor().getLastName() ));
+				dtoList.add(new AppointmentRequestDTO(areq.getAppointment().getPatient().getEmail(), areq.getAppointment().getDoctor().getEmail(), formatter.format(areq.getAppointment().getDateTime()), areq.getAppointment().getPricelistItems().getName(),areq.getAppointmentRequestId(),areq.getAppointment().getPatient().getFirstName() + " " + areq.getAppointment().getPatient().getLastName(),areq.getAppointment().getDoctor().getFirstName() + " " + areq.getAppointment().getDoctor().getLastName() ));
 				
 			}
 			return new ResponseEntity<List<AppointmentRequestDTO>>(dtoList,HttpStatus.OK);
@@ -61,7 +61,7 @@ public class AppointmentRequestController {
 			List<AppointmentRequestDTO> dtoList = new ArrayList<AppointmentRequestDTO>();
 			
 			for (AppointmentRequest areq : list) {
-				dtoList.add(new AppointmentRequestDTO(areq.getAppointment().getPatient().getEmail(), areq.getAppointment().getDoctor().getEmail(), formatter.format(areq.getAppointment().getDateTime()), areq.getAppointment().getPricelistItems().getName().name(),areq.getAppointmentRequestId(),areq.getAppointment().getPatient().getFirstName() + " " + areq.getAppointment().getPatient().getLastName(),areq.getAppointment().getDoctor().getFirstName() + " " + areq.getAppointment().getDoctor().getLastName() ));
+				dtoList.add(new AppointmentRequestDTO(areq.getAppointment().getPatient().getEmail(), areq.getAppointment().getDoctor().getEmail(), formatter.format(areq.getAppointment().getDateTime()), areq.getAppointment().getPricelistItems().getName(),areq.getAppointmentRequestId(),areq.getAppointment().getPatient().getFirstName() + " " + areq.getAppointment().getPatient().getLastName(),areq.getAppointment().getDoctor().getFirstName() + " " + areq.getAppointment().getDoctor().getLastName() ));
 				
 			}
 			return new ResponseEntity<List<AppointmentRequestDTO>>(dtoList,HttpStatus.OK);
@@ -78,7 +78,7 @@ public class AppointmentRequestController {
 		AppointmentRequest areq = appointmentRequestService.findOneByAppointmentRequestId(requestId);
 		
 		if(areq != null) {
-			AppointmentRequestDTO dto = new AppointmentRequestDTO(areq.getAppointment().getPatient().getEmail(), areq.getAppointment().getDoctor().getFirstName() + " " + areq.getAppointment().getDoctor().getLastName(), formatter.format(areq.getAppointment().getDateTime()), areq.getAppointment().getPricelistItems().getName().name(),areq.getAppointmentRequestId(),areq.getAppointment().getPatient().getFirstName() + " " + areq.getAppointment().getPatient().getLastName(),areq.getAppointment().getDoctor().getFirstName() + " " + areq.getAppointment().getDoctor().getLastName() );
+			AppointmentRequestDTO dto = new AppointmentRequestDTO(areq.getAppointment().getPatient().getEmail(), areq.getAppointment().getDoctor().getFirstName() + " " + areq.getAppointment().getDoctor().getLastName(), formatter.format(areq.getAppointment().getDateTime()), areq.getAppointment().getPricelistItems().getName(),areq.getAppointmentRequestId(),areq.getAppointment().getPatient().getFirstName() + " " + areq.getAppointment().getPatient().getLastName(),areq.getAppointment().getDoctor().getFirstName() + " " + areq.getAppointment().getDoctor().getLastName() );
 			dto.setOnlyTime(formatterTime.format(areq.getAppointment().getDateTime()));
 			return new ResponseEntity<AppointmentRequestDTO>(dto,HttpStatus.OK);
 		} else

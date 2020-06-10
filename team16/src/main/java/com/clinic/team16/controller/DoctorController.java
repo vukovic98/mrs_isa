@@ -147,4 +147,5 @@ public class DoctorController {
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+
 }

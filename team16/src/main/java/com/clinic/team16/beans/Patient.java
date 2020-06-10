@@ -1,4 +1,5 @@
 package com.clinic.team16.beans;
+
 import java.util.*;
 
 import javax.persistence.*;
@@ -9,24 +10,20 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Embeddable
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
 public class Patient extends User {
 
-	
 	@ElementCollection
 	@CollectionTable(name = "patient_appointments", joinColumns = @JoinColumn(name = "patient_id"))
 	public List<Appointment> appointments;
 
-
-	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "MedicalRecord_ID")
 	public MedicalRecord medicalRecord;
 
 	public Patient() {
 		super();
 	}
-	
-	
 
 	public Patient(String email, String password, String firstName, String lastName, String address, String city,
 			String country, String phoneNumber, String insuranceNumber, Role role) {
@@ -40,11 +37,10 @@ public class Patient extends User {
 		this.setPhoneNumber(phoneNumber);
 		this.setInsuranceNumber(insuranceNumber);
 		this.setRole(role);
-		this.appointments = null;
+		this.appointments = new ArrayList<Appointment>();
 		this.medicalRecord = null;
-		
-	}
 
+	}
 
 	public Patient(ArrayList<Appointment> appointments, MedicalRecord medicalRecord) {
 		super();
@@ -66,17 +62,10 @@ public class Patient extends User {
 		return this.appointments;
 	}
 
-	
-
 	public void addAppointment(Appointment newAppointment) {
-		if (newAppointment == null)
-			return;
-		if (this.appointments == null)
-			this.appointments = new ArrayList<Appointment>();
-		if (!this.appointments.contains(newAppointment)) {
-			this.appointments.add(newAppointment);
 
-		}
+		this.appointments.add(newAppointment);
+
 	}
 
 	public void removeAppointment(Appointment oldAppointment) {
@@ -89,5 +78,4 @@ public class Patient extends User {
 			}
 	}
 
-	
 }

@@ -135,10 +135,11 @@ public class ClinicController {
 				}
 
 				if (rightGrade && rightLocation) {
+					System.out.println("DATUM U /findapp :"+date);
 					ArrayList<DoctorDTO> doctors = this.clinicService.filterDoctors(c, appType, date);
 					if (doctors.size() != 0) {
 						dtoList.add(new ClinicFilterDTO(c.getClinicID(), c.getName(), c.getAddress(),
-								c.getAverageGrade(), appType, price));
+								c.getAverageGrade(), appType, price, c.getCity()));
 					}
 				}
 			}

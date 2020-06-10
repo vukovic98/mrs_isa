@@ -1,9 +1,12 @@
 package com.clinic.team16.beans.DTO;
 
+import com.clinic.team16.beans.AppointmentType;
+
 public class AppointmentRequestDTO {
 	private String email;
 	private String doctor; //email njegov
 	private String dateTime;
+	private AppointmentType examType;
 	private String onlyTime;
 	public String getOnlyTime() {
 		return onlyTime;
@@ -11,8 +14,7 @@ public class AppointmentRequestDTO {
 	public void setOnlyTime(String onlyTime) {
 		this.onlyTime = onlyTime;
 	}
-	private String examType;
-	private long requestId;
+	private String examType;	private long requestId;
 	public String getPatientName() {
 		return patientName;
 	}
@@ -31,7 +33,7 @@ public class AppointmentRequestDTO {
 	public AppointmentRequestDTO() {
 		super();
 	}
-	public AppointmentRequestDTO(String email, String doctor, String dateTime, String examType) {
+	public AppointmentRequestDTO(String email, String doctor, String dateTime, AppointmentType examType) {
 		super();
 		this.email = email;
 		this.doctor = doctor;
@@ -56,10 +58,10 @@ public class AppointmentRequestDTO {
 	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
-	public String getExamType() {
+	public AppointmentType getExamType() {
 		return examType;
 	}
-	public void setExamType(String examType) {
+	public void setExamType(AppointmentType examType) {
 		this.examType = examType;
 	}
 	public AppointmentRequestDTO(String email, String doctor, String dateTime, String examType, String patientName,

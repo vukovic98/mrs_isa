@@ -1,11 +1,14 @@
 package com.clinic.team16.service;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.clinic.team16.beans.Appointment;
@@ -18,9 +21,6 @@ public class AppointmentService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 
-	public void save(Appointment a) {
-		appointmentRepository.save(a);
-	}
 	
 	public ArrayList<Appointment> findByDoctorAndDate(String date, Long doctor_id) {
 		return (ArrayList<Appointment>) this.appointmentRepository.findByDoctorAndDate(date, doctor_id);
@@ -40,6 +40,20 @@ public class AppointmentService {
 
 	public Appointment findOneById(long id) {
 		return this.appointmentRepository.findOneById(id);
+	}
+	
+	public boolean checkUniqueConstraint(Date date, long id) {
+		System.out.println("SIZE: " + this.appointmentRepository.checkUniqueConstraint(date, id).size());
+		return this.appointmentRepository.checkUniqueConstraint(date, id).size() == 0 ? true : false;
+	}
+	
+	public boolean save(Appointment a){
+		Appointment ap = this.appointmentRepository.save(a); 
+		
+		if(ap != null)
+			return true;
+		else
+			return false;
 	}
 	
 	public boolean checkIfAppointmentExists(Doctor d, Date date) {

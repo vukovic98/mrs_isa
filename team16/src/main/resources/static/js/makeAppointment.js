@@ -1,6 +1,7 @@
 $( document ).ready(function() {
     console.log( "ready!" );
-
+    var now = currentDate();
+    $("#date").attr("min",now);
     $.ajax ({
     	type: 'GET',
     	url: '/pricelistItemApi/findAllAppointmentTypes',
@@ -46,7 +47,14 @@ $( document ).ready(function() {
     	var btnID = $(this).attr('id');
     	sessionStorage.setItem("appParam", btnID);
     	console.log("prvo " + btnID);
-    	
+    	sessionStorage.setItem("filter", "ne");
+    	window.location.href = "/clinicPage";
+    });
+    
+    $(document).on('click', '.cLinicPageButton', function () {
+    	var clinicID = $(this).attr('id');
+    	sessionStorage.setItem("appParam",clinicID);
+    	sessionStorage.setItem("filter", "da");
     	window.location.href = "/clinicPage";
     });
 });
@@ -72,7 +80,7 @@ function loadLocationsAllOK(clinics){
 		row.append("<td >" + val.address + ", " + val.city + "</td>");
 		row.append("<td >" + val.averageGrade + "</td>");
 		
-		var btn = "<td class=\"text-center\" id=\"" + val.name + "\"><button id=\"btnCLinicPage\" type=\"button\" class=\"btn btn-primary\">Select clinic</button></td>";
+		var btn = "<td class=\"text-center\" ><button id=\"" + val.clinicID + "\" type=\"button\" class=\"btn btn-primary cLinicPageButton\">Select clinic</button></td>";
 		row.append(btn);
 		clinicsBody.append(row);	
 	  });
@@ -143,7 +151,7 @@ function popuniTabelu(){
 	    	statusCode: {
 	    		200: function(responseObject, textStatus, jqXHR) {
 	    			console.log("200 OK "+responseObject);
-	    			
+	    			sessionStorage.setItem('appDate', dateControl.value);
 	    			loadAvailableClinicsAllOK(responseObject);
 	    		},
 	    		204: function(responseObject, textStatus, jqXHR) {
@@ -156,8 +164,8 @@ function popuniTabelu(){
 	    		}
 	    	}
 	    });
-		var attr = 
-		sessionStorage.setItem('appDate', dateControl.value);
+		
+	
 	}
 	console.log(avgGrade);
 	console.log(location);
@@ -182,7 +190,7 @@ function loadAvailableClinicsAllOK(clinics){
 		$.each(clinics,function(i,val){
 			var row = $("<tr id=\""+val.clinicID+"\"></tr>");
 			row.append("<td>"+val.name+"</td>");
-			row.append("<td>"+val.address+"</td>");
+			row.append("<td>"+val.address+ ", " + val.city+"</td>");
 			row.append("<td>"+val.averageGrade+"</td>");
 			row.append("<td>"+val.appointmentType+"</td>");
 			row.append("<td>"+val.price+"$</td>");
@@ -190,7 +198,7 @@ function loadAvailableClinicsAllOK(clinics){
 			var id = val.clinicID + "&" + val.appointmentType + "&" + date;
 			row.append("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-primary selectClinicBtn\" id=\"" + id + "\" >Select clinic</button></td>");
 			table.append(row);
-			sessionStorage.setItem('appDate', "");
+			//sessionStorage.setItem('appDate', "");
 		});
 	}
 	else{
@@ -199,6 +207,19 @@ function loadAvailableClinicsAllOK(clinics){
 		row.append("<td class=\"w-50 text-center\" colspan=\"6\"> There are no available clinics.</td>");
 		table.append(row);	
 	}
+}
+function currentDate() {
+    var d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
 }
 function loadAvailableClinicsNO(){
 	var table = $("#clinicsBody");

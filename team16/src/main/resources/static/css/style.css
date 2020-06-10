@@ -346,7 +346,10 @@ a.my_logout:hover {
 	background-image: linear-gradient(to bottom, #c6c6c6, transparent);
 	color: #black;
 }
-
+.select {
+    border: 0;
+    width: 100%;
+}
 .links>a {
 	color: black;
 	padding: .75em;
