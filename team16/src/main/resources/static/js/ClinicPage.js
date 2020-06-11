@@ -3,6 +3,7 @@ $( document ).ready(function() {
 	console.log(filter);
 	var now = currentDate();
     $("#dateF").attr("min",now);
+    $("#datePredef").attr("min",now);
 	if (filter == "ne"){
 		$("#filterDiv").css("display","none");
 	}
@@ -76,12 +77,12 @@ $( document ).ready(function() {
     				  
     				  $.ajax({
     					    type: 'GET',
-    					    url: 'appointmentApi/findAll',
+    					    url: 'appointmentApi/findAllPredefinedCurrent',
     					    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     					    statusCode: {
     					      200: function(responseObject, textStatus, jqXHR) {
     					        console.log("Appointments - findAll() - 200 OK");
-    					        appointmentsAllOK(responseObject);
+    					        predefAppointmentsAllOK(responseObject);
     					      },
     					      204: function(responseObject, textStatus, jqXHR) {
     					        console.log("Appointments - findAll() - 204 No Content");
@@ -114,6 +115,27 @@ $( document ).ready(function() {
     					    }
     					  });
     				
+    				  
+     				 $.ajax ({
+ 				    	type: 'GET',
+ 				    	url: '/pricelistItemApi/findAllAppointmentTypes',
+ 					    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+ 				    	statusCode: {
+ 				    		200: function(responseObject, textStatus, jqXHR) {
+ 				    			console.log("200 OK");
+ 				    			loadAppointmentTypesPredefAllOK(responseObject);
+ 				    		},
+ 				    		204: function(responseObject, textStatus, jqXHR) {
+ 				    			console.log("204 No Content");
+ 					
+ 				    		},
+ 							403: function(responseObject, textStatus, jqXHR) {
+ 								console.log("403 Unauthorized");
+ 								unauthorized();
+ 							}
+ 				    	}
+ 				    });
+    				  
     			} else if(responseObject == "PATIENT"){
     				$("#price").css('display', 'none');
     				$("#rooms").css('display', 'none');
@@ -727,6 +749,20 @@ function loadAppointmentTypesAllOK(pricelistItem){
 		   }
 		  });
 }
+
+function loadAppointmentTypesPredefAllOK(pricelistItem){
+	//popuni select za apptype
+	 var select = $("#appointmentTypePredef");
+	 select.empty();
+	 select.append("<option disabled selected>Select appointment type...</option>");
+	 $.each(pricelistItem, function(i, val) {
+		   if(val.appointmentType != "SURGERY"){
+		    var option = $("<option>"+val.appointmentType+"</option>");
+		    select.append(option);
+		   }
+		  });
+}
+
 $("#applyFilter").click(function(){
 	
 	var appType = $("#appointmentTypeF").val();
@@ -959,24 +995,163 @@ function appointmentsAllNO(responseObject) {
 }
 
 
-function appointmentsAllOK(appointmentsList) {
-  var table = $("#appointmentsBody");
+function predefAppointmentsAllOK(appointmentsList) {
+  var table = $(".carousel-inner");
   table.empty();
-
+  var first = true;
   console.log(appointmentsList);
+  
+  
+  var amount = Math.floor(appointmentsList.length/3) + 1;
+  var j;
+  for (j = 0; j < amount; j++) {
+	  var row = $("<div class=\"carousel-item\" id=\"item"+j+"\"></div>");
+	  table.append(row);
+	}
+  
   $.each(appointmentsList, function(i, val) {
-    var row = $("<tr id=\""+i+"\"></tr>");
-    if(val.appointmentType != undefined) {
-    row.append("<td id=\""+val.id+"\">" + val.datetime + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.appointmentType + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.roomNo + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.doctor + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.duration + " min</td>");
-    row.append("<td id=\""+val.id+"\">" + val.price + "$</td>");
-    table.append(row);
-    }
+	    var rowAdd = $("#item"+Math.floor(i/3)); 
+		var card = $("<div class=\"card\" style=\"width: 18rem; float: left;\"></div>");
+		var cardBody = $("<div class=\"card-body\"></div>")
+		cardBody.append("<h5 class=\"card-title\">"+val.datetime+"</h5>");
+		cardBody.append("<p class=\"card-text\"><b>Doctor: </b>"+val.doctor+"<br><b>Ordination:</b>"+val.roomName+"<br><b>Type: </b>"+val.appointmentType+"<br><b>Price: </b><s>"+val.price+"</s> "+(val.price*val.discount).toFixed(2)+"</p>");
+
+		card.append(cardBody);
+	    
+		rowAdd.append(card);
+
+
   });
+  
+  $('.carousel-item').first().addClass('active');
+  
+  var controlLeft = $("<a class=\"carousel-control-prev\" href=\"#carouselExampleControls\" role=\"button\" data-slide=\"prev\"><span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"></span><span class=\"sr-only\">Previous</span></a>");
+  var controlRight = $("<a class=\"carousel-control-next\" href=\"#carouselExampleControls\" role=\"button\" data-slide=\"next\"><span class=\"carousel-control-next-icon\" aria-hidden=\"true\"></span><span class=\"sr-only\">Next</span></a>");
+  
+  var car = $("#carouselExampleControls");
+  car.append(controlLeft);
+  car.append(controlRight);
+  
+  
 }
+
+$("#filterPredef").click(function(){
+
+	var date = $("#datePredef").val();
+	var time = $("#timePredef option:selected").text();
+	
+	var type = $("#appointmentTypePredef").val();
+	var disc = $("#discountPredef option:selected").text();
+	
+	$("#dateModalPredef").val(date + " " + time);
+	$("#typeModalPredef").val(type);
+	$("#discountModalPredef").val(disc);
+	
+	
+    $.ajax({
+    	type: 'GET',
+    	url: '/ordinationApi/findAllFreeForDateTime',
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    data: {
+	    	"date" : date+ " "+time
+	    },
+    	statusCode: {
+    		200: function(responseObject, textStatus, jqXHR) {
+    			console.log("200 OK");
+    			var select = $("#roomPredef");
+    			$.each(responseObject, function(i, val) {
+    				var option = "<option value=\""+val.ordId+"\">"+val.name+"</option>";
+    				select.append(option);
+    				
+    			});
+    			$("#predefinedModal").modal();
+    		},
+    		204: function(responseObject, textStatus, jqXHR) {
+    			console.log("204 No Content");    			
+    		},
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+    	}
+    });
+    
+    $.ajax({
+    	type: 'GET',
+    	url: '/doctorApi/findAllFreeForDateTime',
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    data: {
+	    	"date" : date+ " "+time,
+	    	"type" : type
+	    },
+    	statusCode: {
+    		200: function(responseObject, textStatus, jqXHR) {
+    			console.log("200 OK");
+    			var select = $("#doctorPredef");
+    			$.each(responseObject, function(i, val) {
+    				var option = "<option value=\""+val.email+"\">"+val.firstName+" " + val.lastName+"</option>";
+    				select.append(option);
+    				
+    			});
+    			$("#predefinedModal").modal();
+    		},
+    		204: function(responseObject, textStatus, jqXHR) {
+    			console.log("204 No Content");    			
+    		},
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+    	}
+    });
+    
+	
+});
+
+$("#modalApprovePredefBtn").click(function(){
+	
+	var date = $("#datePredef").val();
+	var time = $("#timePredef option:selected").text();
+	
+	var doc = $("#doctorPredef").val();
+	
+    $.ajax({
+    	type: 'POST',
+    	url: '/appointmentApi/addPredefinedAppointment',
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    data: JSON.stringify({
+	    	"email" : doc,
+	    	"examType" : $("#typeModalPredef").val(),
+	    	"dateTime" : date+ " "+time,
+	    	"discount" : $("#discountPredef").val(),
+	    	"ordId" : $("#roomPredef").val()
+	    }),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+    	statusCode: {
+    		200: function(responseObject, textStatus, jqXHR) {
+    			console.log("200 OK");
+                Swal.fire({
+	        		  position: 'center',
+	        		  icon: 'success',
+	        		  title: 'New predefined appointment successfully added!',
+	        		  showConfirmButton: false,
+	        		  timer: 1500
+	        		})
+	        		
+	        		window.setTimeout(function(){location.reload()},1500);
+    		},
+    		204: function(responseObject, textStatus, jqXHR) {
+    			console.log("204 No Content");    			
+    		},
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+    	}
+    });
+});
+
 
 function pricelistAllOK(pricelistItemList) {
 	  var table = $("#pricelistBody");

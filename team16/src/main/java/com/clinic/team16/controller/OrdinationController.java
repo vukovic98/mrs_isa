@@ -3,6 +3,7 @@ package com.clinic.team16.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Appointment;
@@ -206,4 +208,38 @@ public class OrdinationController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 	}
+	
+	
+	@GetMapping(path = "/findAllFreeForDateTime",params = {"date"})
+	public ResponseEntity<List<OrdinationDTO>> findAllFreeForDateTime(@RequestParam("date") String date) throws ParseException{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		System.out.println(date);
+		Date d = sdf.parse(date);
+		
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+		System.out.println(ca.getClinic().getName());
+		List<Ordination> list = ca.getClinic().getOrdinations();
+		List<OrdinationDTO> finalList = new ArrayList<OrdinationDTO>();
+		if(list != null) {
+			boolean available = true;
+			for (Ordination ordination : list) {
+				for (Appointment a : ordination.getAppointments()) {
+					if(sdf.format(a.getDateTime()).equals(sdf.format(d))){
+
+						available = false;
+						break;
+					}
+				}
+				if(available) {
+					if(!ordination.getType().equals(OrdinationType.OPERATION)) {
+							finalList.add(new OrdinationDTO(ordination.getName(), ordination.getType(),ordination.getNumber()));
+					}
+				}
+			}
+			return new ResponseEntity<List<OrdinationDTO>>(finalList,HttpStatus.OK);
+		}else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
 }

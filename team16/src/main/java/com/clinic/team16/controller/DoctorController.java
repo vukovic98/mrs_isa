@@ -1,6 +1,9 @@
 package com.clinic.team16.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.ClinicAdministrator;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
@@ -147,5 +151,24 @@ public class DoctorController {
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@GetMapping(path = "/findAllFreeForDateTime", params = {"date","type"})
+	public ResponseEntity<List<DoctorDTO>> findAllFreeForDateTime(@RequestParam("date") String date, @RequestParam("type") String type) throws ParseException{
+		AppointmentType at = AppointmentType.valueOf(type);
+		
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+		
+		List<DoctorDTO> dtoList = clinicService.filterDoctorsPredef(ca.getClinic(), at, date);
+		
+		if(dtoList != null) {
+			return new ResponseEntity<List<DoctorDTO>>(dtoList,HttpStatus.OK);
+			
+		}
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
+	}
+	
 
 }
