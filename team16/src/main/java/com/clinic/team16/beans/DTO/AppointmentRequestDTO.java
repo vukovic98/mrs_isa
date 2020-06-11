@@ -79,7 +79,7 @@ public class AppointmentRequestDTO {
 	public void setExamType(AppointmentType examType) {
 		this.examType = examType;
 	}
-	public AppointmentRequestDTO(String email, String doctor, String dateTime, AppointmentType examType, String patientName,
+	public AppointmentRequestDTO(String email, String doctor, String dateTime, AppointmentType examType, String patientName,String doctorName) {
 		super();
 		this.email = email;
 		this.doctor = doctor;
