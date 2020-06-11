@@ -22,7 +22,7 @@ $( document ).ready(function() {
     				    statusCode: {
     				      200: function(responseObject, textStatus, jqXHR) {
     				    	  $("#clinicName").text(responseObject.name);
-    				    	 clinicOK(responseObject);
+    				    	 clinicOK(responseObject,2);
     				      },
     				      204: function(responseObject, textStatus, jqXHR) {
 
@@ -118,11 +118,11 @@ $( document ).ready(function() {
     			} else if(responseObject == "PATIENT"){
     				$("#price").css('display', 'none');
     				$("#rooms").css('display', 'none');
-    				$("#appointments").css('display', 'none');
+    				//$("#appointments").css('display', 'none');
     				
     				$("#li_price").css('display', 'none');
     				$("#li_rooms").css('display', 'none');
-    				$("#li_appointments").css('display', 'none');
+    				//$("#li_appointments").css('display', 'none');
     				
     				var atrs = sessionStorage.getItem('appParam');
     			//---------------ako filtrira klinike------------------------
@@ -146,7 +146,7 @@ $( document ).ready(function() {
 	    				    	 $("#doctor").addClass("show");
 	    				    	 $("#doctor").addClass("active");
 	    				    	 $("#doctor-tab").addClass("active");
-	    				    	 clinicOK(responseObject);
+	    				    	 clinicOK(responseObject,1);
 	    				      },
 	    				      204: function(responseObject, textStatus, jqXHR) {
 	
@@ -215,7 +215,7 @@ $( document ).ready(function() {
     				    	 $("#doctor").addClass("show");
     				    	 $("#doctor").addClass("active");
     				    	 $("#doctor-tab").addClass("active");
-    				    	 clinicOK(responseObject);
+    				    	 clinicOK(responseObject,1);
     				      },
     				      204: function(responseObject, textStatus, jqXHR) {
 
@@ -781,7 +781,7 @@ $("#applyFilter").click(function(){
 function searchDoctors(){
 	// Declare variables
 	var input, filter, table, tr, td, i, j, txtValue;
-	input = document.getElementById("myInput");
+	input = document.getElementById("searchDoc");
 	filter = input.value.toUpperCase();
 	table = document.getElementById("doctorTable");
 	tr = table.getElementsByTagName("tr");
@@ -869,10 +869,11 @@ function showDoctors(doctors,odakle) {
 	  });
 	if (odakle == 1){
 	var btn = "<button id=\"btnBack\" type=\"button\" title=\"Back\" class=\"btn btn-secondary btn-lg\"><i class=\"fa fa-arrow-left\" aria-hidden=\"true\"></i></button></td>";
-	$("#jumbotron").append(btn);}
+	$("#jumbotron").append(btn);
+	}
 }
 
-function clinicOK(clinic){
+function clinicOK(clinic,odakle){
 	$("#name").val(clinic.name);
 	$("#clinicAddress").val(clinic.address + ", " + clinic.city);
 	$("#desc").val(clinic.description);
@@ -905,8 +906,9 @@ function clinicOK(clinic){
 			}
 	    }
 	  });
+	if(odakle == 2){
 	var btn = "<button id=\"btnBackAdmin\" type=\"button\" title=\"Back\" class=\"btn btn-secondary btn-lg\"><i class=\"fa fa-arrow-left\" aria-hidden=\"true\"></i></button></td>";
-	$("#jumbotron").append(btn);
+	$("#jumbotron").append(btn);}
 
 	
 }
@@ -927,6 +929,12 @@ function initMap(latV, lon) {
     });
   }
 function doctorAllOK(doctorList) {
+	$("#filterDiv").css("display","none");
+	//titleDoctors
+	$("#titleDoctors").text("Search doctors");
+	//searchDoc
+	$("#searchDoc").attr("placeholder","Search doctors by name...");
+
 	var table = $("#doctorBody");
 	table.empty();
 	console.log(doctorList);

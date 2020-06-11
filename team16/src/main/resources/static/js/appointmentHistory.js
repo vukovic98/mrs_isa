@@ -71,7 +71,7 @@
     	else{
     		var row = $("<tr></tr>");
 
-    		row.append("<td class=\"w-50 text-center\" colspan=\"4\"> There are no appointments to show.</td>");
+    		row.append("<td class=\"w-50 text-center\" colspan=\"7\"> There are no appointments to show.</td>");
     		table.append(row);
     	}
     }
