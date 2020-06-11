@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.AppointmentRequest;
+import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.Clinic;
 import com.clinic.team16.beans.ClinicAdministrator;
 import com.clinic.team16.beans.ClinicalCenterAdministrator;
@@ -379,7 +380,7 @@ public class AppointmentController {
 					dtoList.add(new AppointmentDTO(a.getAppointmentId(), formatter.format(a.getDateTime()),
 							a.getDuration(), doctor, null, a.getPricelistItems().getName(),
 							String.valueOf(a.getPricelistItems().getPrice()),
-							String.valueOf(a.getOrdination().getNumber()), a.getOrdination().getName(), a.discount));
+							String.valueOf(a.getOrdination().getNumber()), a.getOrdination().getName(), a.getDiscount()));
 				}
 			}
 			return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
@@ -397,6 +398,7 @@ public class AppointmentController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		if (list != null) {
 			for (Appointment appointment : list) {
+				
 				dtoList.add(new AppointmentDTO(appointment.getAppointmentId(), sdf.format(appointment.getDateTime()),
 						appointment.getDuration(),
 						appointment.getDoctor().getFirstName() + " " + appointment.getDoctor().getLastName(),
@@ -408,7 +410,46 @@ public class AppointmentController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	@GetMapping(path = "/findAllPredefinedForPatient/{clinicId}")
+	public ResponseEntity<List<AppointmentDTO>> findAllPredefinedForPatient(@PathVariable("clinicId") long clinicId) {
+		List<Appointment> list = this.appointmentService.findAllPredefined();
+		List<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
 
+		Clinic cl = clinicService.findOneByClinicID(clinicId);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		if (list != null) {
+			for (Appointment appointment : list) {
+				if(cl.getClinicID() == clinicId) {
+					dtoList.add(new AppointmentDTO(appointment.getAppointmentId(), sdf.format(appointment.getDateTime()),
+							appointment.getDuration(),
+							appointment.getDoctor().getFirstName() + " " + appointment.getDoctor().getLastName(),
+							"", appointment.getPricelistItems().getName(),
+							String.valueOf(appointment.getPricelistItems().getPrice()), String.valueOf(appointment.getOrdination().getNumber()),appointment.getOrdination().getName(), appointment.getDiscount()));}
+			}
+
+			return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@PostMapping(path = "/schedulePredefinedAppointment/{appId}", consumes = "application/json")
+	public ResponseEntity<HttpStatus> schedulePredefinedAppointment(@PathVariable long appId) {
+		long id = appId;
+		String patientsEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+		Patient p = this.patientService.findOneByEmail(patientsEmail);
+		Appointment a = this.appointmentService.findOneById(id);
+	
+		if (a != null && p!= null) {
+			System.out.println("AAAAALO");
+			a.setPatient(p);
+			this.appointmentService.save(a);
+			p.addAppointment(a);
+			this.patientService.save(p);
+			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 	/*
 	@GetMapping(path = "/findAllPredefined")
 	public ResponseEntity<List<AppointmentDTO>> findAllPredefined() {
