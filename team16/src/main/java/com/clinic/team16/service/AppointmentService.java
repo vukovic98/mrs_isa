@@ -70,11 +70,11 @@ public class AppointmentService {
 		
 		return exists;
 	}
-/*
+
 	public List<Appointment> findAllPredefined() {
 		return this.appointmentRepository.findAllPredefined();
 	}
-	*/
+	
 
 	public List<Appointment> findAllForOrdination(long roomId) {
 		return appointmentRepository.findAllForOrdination(roomId);

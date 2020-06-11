@@ -49,6 +49,9 @@ public class Appointment {
 
 	@Column(name = "Price")
 	public Double price;
+	
+	@Column(name = "Discount")
+	public Double discount;
 
 	public Appointment() {
 
@@ -68,6 +71,24 @@ public class Appointment {
 		this.patient = patient;
 		this.pricelistItems = pricelistItems;
 		this.price = this.pricelistItems.getPrice();
+		this.discount = null;
+	}
+	
+	public Appointment(long appointmentId, Date dateTime, double duration, Ordination ordination,
+			MedicalReport medicalReport, AppointmentRequest appointmentRequest, Doctor doctor, Patient patient,
+			PricelistItem pricelistItems, double disc) {
+		super();
+		this.appointmentId = appointmentId;
+		this.dateTime = dateTime;
+		this.duration = duration;
+		this.ordination = ordination;
+		this.medicalReport = medicalReport;
+		this.appointmentRequest = appointmentRequest;
+		this.doctor = doctor;
+		this.patient = patient;
+		this.pricelistItems = pricelistItems;
+		this.price = this.pricelistItems.getPrice();
+		this.discount = disc;
 	}
 
 	public double getPrice() {
