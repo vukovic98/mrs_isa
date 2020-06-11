@@ -49,9 +49,23 @@ public class Appointment {
 
 	@Column(name = "Price")
 	public Double price;
+
+
 	
 	@Column(name = "Discount")
-	public Double discount;
+	private Double discount;
+	
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
 
 	public Appointment() {
 
