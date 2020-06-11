@@ -40,6 +40,8 @@ public class DoctorService {
 		return this.doctorRepository.save(d);
 	}
 	
-	
+	public void delete(Doctor d) {
+		this.doctorRepository.delete(d);
+	}
 	
 }

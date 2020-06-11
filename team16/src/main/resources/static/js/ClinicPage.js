@@ -320,6 +320,173 @@ $( document ).ready(function() {
 		$("#addRoomModal").modal();
 	});
 	
+	$(document).on("click", "#addDoctorBtn", function(){
+		$("#addDoctor").modal();
+	});
+	
+	
+	$(document).on("click", "#fireButton", function(){
+		var id = $(this).parents("tr").attr("id");
+        $.ajax({
+            type: 'DELETE',
+            url: 'doctorApi/deleteDoctor/' + id,
+            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            statusCode: {
+              200: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - delete() - 200 OK");
+                
+                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'success',
+	          		  title: 'Doctor deleted successfully!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})
+	          		
+	          		window.setTimeout(function(){location.reload()},1500);
+                
+              },
+              400: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - delete() - 400 Bad request");
+                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'error',
+	          		  title: 'Removing a doctor with appointemtns is not allowed!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})
+	          		
+	          		
+              },
+      		403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		}
+            }
+          });
+		
+		
+	});
+	
+	
+	
+	$(document).on("click", "#addDoctorModalBtn", function(){
+		var err = false;
+		if($("#firstNameSignUp").val() == null || $("#firstNameSignUp").val() == ""){
+			err = true;
+			$("#firstNameSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#lastNameSignUp").val() == null || $("#lastNameSignUp").val() == ""){
+			err = true;
+			$("#lastNameSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#citySignUp").val() == null || $("#citySignUp").val() == ""){
+			err = true;
+			$("#citySignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#countrySignUp").val() == null || $("#countrySignUp").val() == ""){
+			err = true;
+			$("#countrySignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#addressSignUp").val() == null || $("#addressSignUp").val() == ""){
+			err = true;
+			$("#addressSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#insNumberSignUp").val() == null || $("#insNumberSignUp").val() == ""){
+			err = true;
+			$("#insNumberSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#phoneSignUp").val() == null || $("#phoneSignUp").val() == ""){
+			err = true;
+			$("#phoneSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#emailSignUp").val() == null || $("#emailSignUp").val() == ""){
+			err = true;
+			$("#emailSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#passSignUp").val() == null || $("#passSignUp").val() == ""){
+			err = true;
+			$("#passSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#passRepeatSignUp").val() == null || $("#passRepeatSignUp").val() == ""){
+			err = true;
+			$("#passRepeatSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		
+		if($("#passSignUp").val() != $("#passRepeatSignUp").val()){
+			err = true;
+            Swal.fire({
+        		  position: 'center',
+        		  icon: 'error',
+        		  title: 'The passwords do not match!',
+        		  showConfirmButton: false,
+        		  timer: 1500
+        		})
+        		
+		}else
+			err = false;
+		
+		if(err != true){
+	        $.ajax({
+	            type: 'POST',
+	            url: 'doctorApi/addDoctor',
+	            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	            data : JSON.stringify({
+	              "email" : $("#emailSignUp").val(),
+	              "password" : $("#passSignUp").val(),
+	              "firstName" : $("#firstNameSignUp").val(),
+	              "lastName" : $("#lastNameSignUp").val(),
+	              "address" : $("#addressSignUp").val(),
+	              "city" : $("#citySignUp").val(),
+	              "country" : $("#countrySignUp").val(),
+	              "phoneNumber" : $("#phoneSignUp").val(),
+	              "insuranceNumber" : $("#insNumberSignUp").val()
+	            }),
+	            contentType: "application/json; charset=utf-8",
+	            dataType: "json",
+	            statusCode: {
+	              200: function(responseObject, textStatus, jqXHR) {
+	                console.log("Ordination - add() - 200 OK");
+	                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'success',
+	          		  title: 'New doctor successfully added!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})
+	          		
+	          		window.setTimeout(function(){location.reload()},1500);
+	          		
+	              },
+	              400: function(responseObject, textStatus, jqXHR) {
+	                console.log("Ordination - add() - 400 Bad request");
+	                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+	              },
+	    		  403: function(responseObject, textStatus, jqXHR) {
+	    			console.log("403 Unauthorized");
+	    			unauthorized();
+	    		  }
+	            }
+	          });
+			
+	        
+	        
+		}
+		
+	});
+	
 	$(document).on("click", "#roomCreateModalBtn", function(){
 		var name = $("#roomNameInput").val();
 		var type = $("#roomTypeInput").val();
@@ -554,9 +721,16 @@ $( document ).ready(function() {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 200 OK");
                 if(responseObject.hasAppointments == true)
-                	showMessage("Editing rooms with appointments is not allowed!", "red");
+                    Swal.fire({
+  	        		  position: 'center',
+  	        		  icon: 'error',
+  	        		  title: 'Editing rooms with booked appointments is not allowed!',
+  	        		  showConfirmButton: false,
+  	        		  timer: 1500
+  	        		})
                 else{
                 $("#roomNameInputEdit").val(responseObject.name);
+                $("#roomIdEdit").text(num);
                 $("#editRoomModal").modal();
                 }
                 
@@ -579,7 +753,46 @@ $( document ).ready(function() {
 		
   });
 	
-	
+	$(document).on("click", "#roomEditModalBtn", function(){
+		var id = $(this).parents("tr").attr('id');
+        $.ajax({
+            type: 'PUT',
+            url: 'ordinationApi/editOrdination',
+            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+            data : JSON.stringify({
+              "name" : $("#roomNameInputEdit").val(),
+              "type" : $("#roomTypeInputEdit").val(),
+              "ordId" : $("#roomIdEdit").text()
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            statusCode: {
+              200: function(responseObject, textStatus, jqXHR) {
+                console.log("PricelistItem - add() - 200 OK");
+                Swal.fire({
+	        		  position: 'center',
+	        		  icon: 'success',
+	        		  title: 'Room successfully edited!',
+	        		  showConfirmButton: false,
+	        		  timer: 1500
+	        		})
+	        		
+	        		window.setTimeout(function(){location.reload()},1500);
+                
+              },
+              400: function(responseObject, textStatus, jqXHR) {
+                console.log("PricelistItem - add() - 400 Bad request");
+                showMessage("Pricelist item with inserted name already exists!", "antiquewhite");
+              },
+    		  403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		  }
+            }
+          });
+		
+		
+	});
 	
 	// Delete row on delete button click
 	$(document).on("click", ".delete-room", function(){
@@ -975,10 +1188,10 @@ function doctorAllOK(doctorList) {
 	table.empty();
 	console.log(doctorList);
 	$.each(doctorList, function(i, val) {
-		var row = $("<tr id=\""+i+"\"></tr>");
+		var row = $("<tr id=\""+val.id+"\"></tr>");
 
 		row.append("<td class=\"w-50 modalDoctor\" id=\""+val.email+"\">" + val.firstName + " " + val.lastName + "</td>");
-		row.append("<td class=\"w-50 text-right\"><button type=\"button\" class=\"btn btn-outline-primary mr-3\">Review</button><button type=\"button\" class=\"btn btn-outline-danger\">Fire</button></td>");
+		row.append("<td class=\"w-50 text-right\"><button type=\"button\" class=\"btn btn-outline-primary mr-3\">Review</button><button type=\"button\" class=\"btn btn-outline-danger\" id=\"fireButton\">Fire</button></td>");
 
 		table.append(row);
 	});
