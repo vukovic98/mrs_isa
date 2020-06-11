@@ -22,7 +22,8 @@ $( document ).ready(function() {
     				    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     				    statusCode: {
     				      200: function(responseObject, textStatus, jqXHR) {
-    				    	 clinicOK(responseObject);
+    				    	  $("#clinicName").text(responseObject.name);
+    				    	 clinicOK(responseObject,2);
     				      },
     				      204: function(responseObject, textStatus, jqXHR) {
 
@@ -139,11 +140,11 @@ $( document ).ready(function() {
     			} else if(responseObject == "PATIENT"){
     				$("#price").css('display', 'none');
     				$("#rooms").css('display', 'none');
-    				$("#appointments").css('display', 'none');
+    				//$("#appointments").css('display', 'none');
     				
     				$("#li_price").css('display', 'none');
     				$("#li_rooms").css('display', 'none');
-    				$("#li_appointments").css('display', 'none');
+    				//$("#li_appointments").css('display', 'none');
     				
     				var atrs = sessionStorage.getItem('appParam');
     			//---------------ako filtrira klinike------------------------
@@ -167,7 +168,7 @@ $( document ).ready(function() {
 	    				    	 $("#doctor").addClass("show");
 	    				    	 $("#doctor").addClass("active");
 	    				    	 $("#doctor-tab").addClass("active");
-	    				    	 clinicOK(responseObject);
+	    				    	 clinicOK(responseObject,1);
 	    				      },
 	    				      204: function(responseObject, textStatus, jqXHR) {
 	
@@ -236,7 +237,7 @@ $( document ).ready(function() {
     				    	 $("#doctor").addClass("show");
     				    	 $("#doctor").addClass("active");
     				    	 $("#doctor-tab").addClass("active");
-    				    	 clinicOK(responseObject);
+    				    	 clinicOK(responseObject,1);
     				      },
     				      204: function(responseObject, textStatus, jqXHR) {
 
@@ -393,6 +394,10 @@ $( document ).ready(function() {
 	
 	$(document).on("click", "#btnBack", function(){
 		window.location.href = "/makeAppointment";
+	});
+	//klinike admin nayad
+	$(document).on("click", "#btnBackAdmin", function(){
+		window.location.href = "/clinicAdmin";
 	});
 	
 	$(document).on("click", "#modalApproveBtn", function(){
@@ -812,7 +817,7 @@ $("#applyFilter").click(function(){
 function searchDoctors(){
 	// Declare variables
 	var input, filter, table, tr, td, i, j, txtValue;
-	input = document.getElementById("myInput");
+	input = document.getElementById("searchDoc");
 	filter = input.value.toUpperCase();
 	table = document.getElementById("doctorTable");
 	tr = table.getElementsByTagName("tr");
@@ -900,17 +905,72 @@ function showDoctors(doctors,odakle) {
 	  });
 	if (odakle == 1){
 	var btn = "<button id=\"btnBack\" type=\"button\" title=\"Back\" class=\"btn btn-secondary btn-lg\"><i class=\"fa fa-arrow-left\" aria-hidden=\"true\"></i></button></td>";
-	$("#jumbotron").append(btn);}
+	$("#jumbotron").append(btn);
+	}
 }
 
-function clinicOK(clinic){
+function clinicOK(clinic,odakle){
 	$("#name").val(clinic.name);
 	$("#clinicAddress").val(clinic.address + ", " + clinic.city);
 	$("#desc").val(clinic.description);
 	var attr = sessionStorage.setItem('clinicID', clinic.clinicID);
 	
+	$.ajax({
+	    type: 'POST',
+	    url: 'clinicApi/createMap/' + $("#clinicAddress").val(),
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    statusCode: {
+	      200: function(responseObject, textStatus, jqXHR) {
+	        console.log("Clinics - map() - 200 OK");
+	        console.log(responseObject);
+	        var obj = JSON.parse(responseObject);
+	        console.log(obj.results);
+	        var latV = obj.results[0].geometry.location.lat;
+	        var lonV = obj.results[0].geometry.location.lng;
+	        
+	        console.log(latV + " " + lonV);
+	        
+	        initMap(latV, lonV);
+	      },
+	      204: function(responseObject, textStatus, jqXHR) {
+	        console.log("Clinics - map() - 204 No Content");
+	        clinicsAllNO(responseObject);
+	      },
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+	    }
+	  });
+	if(odakle == 2){
+	var btn = "<button id=\"btnBackAdmin\" type=\"button\" title=\"Back\" class=\"btn btn-secondary btn-lg\"><i class=\"fa fa-arrow-left\" aria-hidden=\"true\"></i></button></td>";
+	$("#jumbotron").append(btn);}
+
+	
 }
+
+function initMap(latV, lon) {
+    var myLatLng = {lat: latV, lng: lon};
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: myLatLng,
+      disableDefaultUI: true
+    });
+
+    var marker = new google.maps.Marker({
+      position: myLatLng,
+      map: map,
+      title: 'Hello World!'
+    });
+  }
 function doctorAllOK(doctorList) {
+	$("#filterDiv").css("display","none");
+	//titleDoctors
+	$("#titleDoctors").text("Search doctors");
+	//searchDoc
+	$("#searchDoc").attr("placeholder","Search doctors by name...");
+
 	var table = $("#doctorBody");
 	table.empty();
 	console.log(doctorList);

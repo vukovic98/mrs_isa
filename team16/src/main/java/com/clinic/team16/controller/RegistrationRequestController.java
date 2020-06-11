@@ -54,12 +54,14 @@ public class RegistrationRequestController {
 
 		if (p != null) {
 			RegistrationRequest r = this.registrationRequestService.findOneByUserId(p.getId());
-			r.setApproved(true);
 
-			this.registrationRequestService.save(r);
+			if (!r.isApproved()) {
+				r.setApproved(true);
 
-			this.registrationRequestService.sendAcceptedMail(p.getEmail());
+				this.registrationRequestService.save(r);
 
+				this.registrationRequestService.sendAcceptedMail(p.getEmail());
+			}
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -74,16 +76,20 @@ public class RegistrationRequestController {
 
 		if (p != null) {
 			RegistrationRequest r = this.registrationRequestService.findOneByUserId(p.getId());
-			r.setUser(null);
-			r.setClinicalCenterAdministrator(null);
-			this.registrationRequestService.save(r);
 
-			boolean ok = this.registrationRequestService.delete(r);
-			this.patientService.delete(p);
-			if (ok) {
-				this.registrationRequestService.sendDeclinedMail(reason);
+			if (!r.isApproved()) {
+				r.setUser(null);
+				r.setClinicalCenterAdministrator(null);
+				this.registrationRequestService.save(r);
 
-				return new ResponseEntity<>(HttpStatus.OK);
+				boolean ok = this.registrationRequestService.delete(r);
+				this.patientService.delete(p);
+				if (ok) {
+					this.registrationRequestService.sendDeclinedMail(reason);
+
+					return new ResponseEntity<>(HttpStatus.OK);
+				} else
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else

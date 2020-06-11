@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 	  $.ajax({
 		    type: 'GET',
-		    url: 'appointmentApi/findAllDoc/60',
+		    url: 'appointmentApi/findAllCurrDoctorAppointments',
 		    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 		    statusCode: {
 		      200: function(responseObject, textStatus, jqXHR) {
@@ -55,6 +55,20 @@ $(document).ready(function(){
 	    });
 });
 
+function currentDate() {
+    var d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
 function appointmentsAllOK(appointmentsList) {
 	  var table = $("#appointmentsBody");
 	  table.empty();
@@ -64,8 +78,12 @@ function appointmentsAllOK(appointmentsList) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
 	    row.append("<td class=\"w-25\" id=\""+val.id+"\">" + val.datetime + "</td>");
 	    row.append("<td class=\"w-25\" id=\""+val.id+"\">" + val.patient +"</td>");
-	    row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" class=\"btn btn-outline-primary\">Start</button><button type=\"button\" id=\"reportBtn\" class=\"btn btn-outline-secondary\">Report</button></td>");
-
+	    var curr = currentDate();
+	    
+	    if(curr == val.datetime.substring(0, 10))
+	    	row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" class=\"btn btn-primary\">Start appointment</button></td>");
+	    else
+	    	row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" class=\"btn btn-primary\" disabled>Start appointment</button></td>");
 	    table.append(row);
 	    
 	  });

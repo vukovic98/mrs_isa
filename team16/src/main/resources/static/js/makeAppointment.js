@@ -61,6 +61,23 @@ $( document ).ready(function() {
 
 function loadLocationsAllOK(clinics){
 	//tabela klinika
+	/*var clinicsTable = $("#clinics");
+	if(clinics != null){
+		clinicsTable.bootstrapTable(
+			  {
+				  data: clinics,
+				  columns: [{
+				    field: 'name',
+				    title: 'Name',
+				    sortable: true
+				  }, {
+				    field: 'address',
+				    title: 'Address',
+				    sortable: true
+				  }]
+				}
+	  
+	  );}*/
 	var clinicsHead = $("#clinicsHead");
 	clinicsHead.empty();
 	var row = $("<tr></tr>");
@@ -171,6 +188,7 @@ function popuniTabelu(){
 	console.log(location);
 	}
 function loadAvailableClinicsAllOK(clinics){
+
 	var clinicsHead = $("#clinicsHead");
 	clinicsHead.empty();
 	var row = $("<tr></tr>");

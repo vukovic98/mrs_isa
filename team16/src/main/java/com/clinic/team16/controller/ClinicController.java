@@ -1,5 +1,10 @@
 package com.clinic.team16.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +58,7 @@ public class ClinicController {
 
 	@Autowired
 	private GradeService gradeService;
-	
+
 	@Autowired
 	private ClinicAdminService adminService;
 
@@ -81,7 +86,7 @@ public class ClinicController {
 
 			if (p != null) {
 				Clinic c = new Clinic(clinic.getName(), clinic.getAddress(), clinic.getDescription(), null, p, null,
-						null, null, null);
+						null, null, null, clinic.getCity());
 
 				p.addClinic(c);
 				this.clinicService.save(c);
@@ -135,7 +140,7 @@ public class ClinicController {
 				}
 
 				if (rightGrade && rightLocation) {
-					System.out.println("DATUM U /findapp :"+date);
+					System.out.println("DATUM U /findapp :" + date);
 					ArrayList<DoctorDTO> doctors = this.clinicService.filterDoctors(c, appType, date);
 					if (doctors.size() != 0) {
 						dtoList.add(new ClinicFilterDTO(c.getClinicID(), c.getName(), c.getAddress(),
@@ -167,70 +172,116 @@ public class ClinicController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	
-
 	@GetMapping(path = "/findAllAppointmentDoctors/{clinicID}&{appType}&{date}")
 	public ResponseEntity<ArrayList<DoctorDTO>> findAllAppointmentDoctors(@PathVariable long clinicID,
 			@PathVariable AppointmentType appType, @PathVariable String date) {
 		Clinic c = this.clinicService.findOneByClinicID(clinicID);
-		
+
 		ArrayList<DoctorDTO> doctors = this.clinicService.filterDoctors(c, appType, date);
-		
-		if(doctors != null)
+
+		if (doctors != null)
 			return new ResponseEntity<ArrayList<DoctorDTO>>(doctors, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-
 	@GetMapping(path = "/getClinicGrade/{clinicID}")
-	public ResponseEntity<ClinicInfoDTO> clinicGrade(@PathVariable("clinicID") long clinicID){
+	public ResponseEntity<ClinicInfoDTO> clinicGrade(@PathVariable("clinicID") long clinicID) {
 		Clinic c = this.clinicService.findOneByClinicID(clinicID);
-		if(c != null) {
-			ClinicInfoDTO cdt = new ClinicInfoDTO(clinicID, c.getName(), c.getAddress(), c.getDescription(), c.getAverageGrade(),c.getCity());
-			
-			return new ResponseEntity<ClinicInfoDTO>(cdt,HttpStatus.OK);
+		if (c != null) {
+			ClinicInfoDTO cdt = new ClinicInfoDTO(clinicID, c.getName(), c.getAddress(), c.getDescription(),
+					c.getAverageGrade(), c.getCity());
+
+			return new ResponseEntity<ClinicInfoDTO>(cdt, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@GetMapping(path = "/getCurrentClinic")
-	public ResponseEntity<Long> currentClinic(){
+	public ResponseEntity<Long> currentClinic() {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
-		
-		if( ca != null) {
-			return new ResponseEntity<Long>(ca.getClinic().getClinicID(),HttpStatus.OK);
+
+		if (ca != null) {
+			return new ResponseEntity<Long>(ca.getClinic().getClinicID(), HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		
+
 	}
-	
+
 	@GetMapping(path = "/getCurrentClinicInfo")
-	public ResponseEntity<ClinicInfoDTO> currentClinicInfo(){
+	public ResponseEntity<ClinicInfoDTO> currentClinicInfo() {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
 		ClinicInfoDTO cl;
 		Clinic currCl = clinicService.findOneByClinicID(ca.getClinic().getClinicID());
-		
-		if( currCl != null) {
-			cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(), currCl.getDescription(), currCl.getAverageGrade(),currCl.getCity());
-			return new ResponseEntity<ClinicInfoDTO>(cl,HttpStatus.OK);
+
+		if (currCl != null) {
+			cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(), currCl.getDescription(),
+					currCl.getAverageGrade(), currCl.getCity());
+			return new ResponseEntity<ClinicInfoDTO>(cl, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@GetMapping(path = "/getClinicInfo/{clinicID}")
 	public ResponseEntity<ClinicInfoDTO> getClinicInfoById(@PathVariable long clinicID) {
 		Clinic currCl = clinicService.findOneByClinicID(clinicID);
-		
-		if( currCl != null) {
-			 ClinicInfoDTO cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(), currCl.getDescription(), 
-					 currCl.getAverageGrade(),currCl.getCity());
-			return new ResponseEntity<ClinicInfoDTO>(cl,HttpStatus.OK);
+
+		if (currCl != null) {
+			ClinicInfoDTO cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(),
+					currCl.getDescription(), currCl.getAverageGrade(), currCl.getCity());
+			return new ResponseEntity<ClinicInfoDTO>(cl, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+
+	@PostMapping(path = "/createMap/{address}")
+	public ResponseEntity<String> createMap(@PathVariable String address) {
+		address = address.replace(" ", "+");
+		System.out.println("UDJE");
+		
+		String ONE_CALL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+		HttpURLConnection con = null;
+		InputStream is = null;
+
+		try {
+			String url_str = ONE_CALL + address + "&key=AIzaSyAXySxAYZiompb27Oq1f3XD6vrL4jpp3AU";
+			con = (HttpURLConnection) (new URL(url_str)).openConnection();
+			con.setRequestMethod("GET");
+			con.setDoInput(true);
+			con.setDoOutput(true);
+			con.connect();
+
+			// Let's read the response
+			StringBuffer buffer = new StringBuffer();
+			is = con.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			String line = null;
+			while ((line = br.readLine()) != null)
+				buffer.append(line + "\r\n");
+
+			is.close();
+			con.disconnect();
+			System.out.println(buffer.toString());
+			return new ResponseEntity<String>(buffer.toString(), HttpStatus.OK);
+			
+		} catch (Throwable t) {
+			t.printStackTrace();
+		} finally {
+			try {
+				is.close();
+			} catch (Throwable t) {
+			}
+			try {
+				con.disconnect();
+			} catch (Throwable t) {
+			}
+		}
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
 	}
 
 }

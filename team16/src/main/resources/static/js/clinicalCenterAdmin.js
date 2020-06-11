@@ -139,6 +139,7 @@ function declineNO() {
 		  showConfirmButton: false,
 		  timer: 1500
 		})
+	window.setTimeout(function(){location.reload()},1500);
 }
 
 function acceptAllOK() {
