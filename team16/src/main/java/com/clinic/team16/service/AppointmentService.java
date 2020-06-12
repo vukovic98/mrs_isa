@@ -70,7 +70,18 @@ public class AppointmentService {
 		
 		return exists;
 	}
-
+	public boolean checkIfAppointmentIsScheduled(long appointmentId) {
+		boolean isFree = false;
+		Appointment a = this.appointmentRepository.findOneById(appointmentId);
+		if (a.getPatient() == null) {
+			isFree = true;
+		}
+		else {
+			isFree = false;
+		}
+		return isFree;
+	}
+	
 	public List<Appointment> findAllPredefined() {
 		return this.appointmentRepository.findAllPredefined();
 	}

@@ -434,23 +434,39 @@ public class AppointmentController {
 		} else
 			return new ResponseEntity<List<AppointmentDTO>>(HttpStatus.NO_CONTENT);
 	}
-
+	
+	@Transactional
 	@PostMapping(path = "/schedulePredefinedAppointment/{appId}", consumes = "application/json")
 	public ResponseEntity<HttpStatus> schedulePredefinedAppointment(@PathVariable long appId) {
+		
 		long id = appId;
-		String patientsEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-		Patient p = this.patientService.findOneByEmail(patientsEmail);
-		Appointment a = this.appointmentService.findOneById(id);
-	
-		if (a != null && p!= null) {
-			a.setPatient(p);
-			this.appointmentService.save(a);
-			p.addAppointment(a);
-			this.patientService.save(p);
+		boolean isFree = this.appointmentService.checkIfAppointmentIsScheduled(id);
+		if (isFree) {
+			
+			String patientsEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+			Patient p = this.patientService.findOneByEmail(patientsEmail);
+			Appointment a = this.appointmentService.findOneById(id);
+		
+			if (a != null && p!= null) {
+				
+				a.setPatient(p);
+				this.appointmentService.save(a);
+				p.addAppointment(a);
+				this.patientService.save(p);
+				
+				
+			} 
 			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-		} else
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		else {
+			return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
+		}
+		//*****************
+
+		
+			
 	}
+	
 	/*
 	@GetMapping(path = "/findAllPredefined")
 	public ResponseEntity<List<AppointmentDTO>> findAllPredefined() {

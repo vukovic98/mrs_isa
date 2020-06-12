@@ -1430,6 +1430,9 @@ $(document).on("click", "#btnSchedule", function(){
 	  		  showConfirmButton: false,
 	  		  timer: 1500
 	  		});
+	    	window.location.href = "/appointmentHistory";
+
+	        
 	  	//mozda redirekt na appointment history
 	      },
 	      204: function(responseObject, textStatus, jqXHR) {
