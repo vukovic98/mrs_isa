@@ -9,6 +9,7 @@ public class AppointmentRequestDTO {
 	private String dateTime;
 	private AppointmentType examType;
 	private String onlyTime;
+	
 	public String getOnlyTime() {
 		return onlyTime;
 	}
