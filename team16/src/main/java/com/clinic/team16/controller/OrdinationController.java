@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,6 +95,37 @@ public class OrdinationController {
 		}
 	}
 
+	
+	@PutMapping(path = "/editOrdination")
+	@Transactional
+	public ResponseEntity<HttpStatus> editOrdination(@RequestBody OrdinationDTO ordEdit){
+		System.out.println(ordEdit.getOrdId());
+		Ordination or = ordinationService.findOneByNumber(ordEdit.getOrdId());
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+		
+		if (or != null) {
+			Clinic cl = clinicService.findOneByClinicID(ca.getClinic().getClinicID());
+			
+			or.setName(ordEdit.getName());
+			or.setType(ordEdit.getType());
+			
+			
+			
+			cl.getOrdinations().get(cl.getOrdinations().indexOf(or)).setName(ordEdit.getName());
+			cl.getOrdinations().get(cl.getOrdinations().indexOf(or)).setType(ordEdit.getType());
+			
+			this.clinicService.save(cl);
+			this.ordinationService.save(or);
+			
+			
+			
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@DeleteMapping(path = "/deleteOrdination/{id}", consumes = "application/json")
 	@Transactional
 	public ResponseEntity<HttpStatus> deleteMedication(@PathVariable("id") String id) {
