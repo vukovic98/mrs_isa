@@ -86,7 +86,8 @@ $( document ).ready(function() {
     					      },
     					      204: function(responseObject, textStatus, jqXHR) {
     					        console.log("Appointments - findAll() - 204 No Content");
-    					        appointmentsAllNO(responseObject);
+    					        //appointmentsAllNO(responseObject);
+    					        
     					      },
     							403: function(responseObject, textStatus, jqXHR) {
     								console.log("403 Unauthorized");
@@ -153,12 +154,17 @@ $( document ).ready(function() {
  					    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
  					    statusCode: {
  					      200: function(responseObject, textStatus, jqXHR) {
- 					        console.log("Appointments - findAll() - 200 OK");
+ 					        console.log("Predefined appointments for clinic - 200 OK");
  					        predefAppointmentsAllOK(responseObject,1);
  					      },
  					      204: function(responseObject, textStatus, jqXHR) {
- 					        console.log("Appointments - findAll() - 204 No Content");
- 					        appointmentsAllNO(responseObject);
+ 					        console.log("Predefined appointments for clinic - 204 No Content");
+ 					        //appointmentsAllNO(responseObject);
+ 					        $("#carouselExampleControls").css("display","none");
+ 					        $("#predefAppH1").text("There are no predefined appointments.");
+ 					        
+ 					     
+ 					    		
  					      },
  							403: function(responseObject, textStatus, jqXHR) {
  								console.log("403 Unauthorized");
@@ -312,8 +318,14 @@ $( document ).ready(function() {
     		}},
     		204: function(responseObject, textStatus, jqXHR) {
     			console.log("Role - findAll() - 204 No Content");
-    			showMessage("Something went wrong!", "antiquewhite");
-    		},
+    		     Swal.fire({
+   		  		  position: 'center',
+   		  		  icon: 'error',
+   		  		  title: 'Something went wrong!',
+   		  		  showConfirmButton: false,
+   		  		  timer: 1500
+   		  		});
+    			},
     		403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
     			unauthorized();
@@ -356,7 +368,14 @@ $( document ).ready(function() {
             statusCode: {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 200 OK");
-                showMessage("Ordination successfully added!", "palegreen");
+                Swal.fire({
+     		  		  position: 'center',
+     		  		  icon: 'success',
+     		  		  title: 'Ordination successfully added!',
+     		  		  showConfirmButton: false,
+     		  		  timer: 1500
+     		  		});
+              
           	  var table = $("#roomsBody");
         	  
         	    var row = $("<tr id=\""+name+"\"></tr>");
@@ -369,7 +388,14 @@ $( document ).ready(function() {
               },
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 400 Bad request");
-                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+                Swal.fire({
+   		  		  position: 'center',
+   		  		  icon: 'error',
+   		  		  title: 'Ordination with inserted name already exists!',
+   		  		  showConfirmButton: false,
+   		  		  timer: 1500
+   		  		});
+                
               },
     		  403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
@@ -382,7 +408,13 @@ $( document ).ready(function() {
 	$(document).on("click", "#btnMakeApp", function(){
 		var selTerm = $(this).closest("tr").find("select option:selected").val();
 		if ( selTerm == "Choose term"){
-			 showMessage("You must choose exam term!", "antiquewhite");
+			 Swal.fire({
+		  		  position: 'center',
+		  		  icon: 'error',
+		  		  title: 'You must choose exam term!',
+		  		  showConfirmButton: false,
+		  		  timer: 1500
+		  		});
 		}
 		else{
 			var atrs = sessionStorage.getItem('appParam').split("&");
@@ -446,11 +478,25 @@ $( document ).ready(function() {
 		  			  	statusCode: {
 		  			  		200: function(responseObject, textStatus, jqXHR) {
 		  			  			console.log("200 OK");
-		  			  			showMessage("Appointment request successfully submited!", "palegreen");
+		  			  		 Swal.fire({
+		  				  		  position: 'center',
+		  				  		  icon: 'success',
+		  				  		  title: 'Appointment request successfully submited!',
+		  				  		  showConfirmButton: false,
+		  				  		  timer: 1500
+		  				  		});
+		  			  			
 		  			  		},
 		  			  		204: function(responseObject, textStatus, jqXHR) {
 		  			  			console.log("204 No Content");
-		  			  			showMessage("Something went wrong!", "antiquewhite");
+		  			  		 Swal.fire({
+		  				  		  position: 'center',
+		  				  		  icon: 'error',
+		  				  		  title: 'Something went wrong!',
+		  				  		  showConfirmButton: false,
+		  				  		  timer: 1500
+		  				  		});
+		  			  			
 		  			  			window.setTimeout(function(){location.reload()},1500);
 		  			  		},
 		  					403: function(responseObject, textStatus, jqXHR) {
@@ -528,7 +574,13 @@ $( document ).ready(function() {
           statusCode: {
             200: function(responseObject, textStatus, jqXHR) {
               console.log("Ordination - add() - 200 OK");
-              showMessage("Ordination successfully added!", "palegreen");
+              Swal.fire({
+			  		  position: 'center',
+			  		  icon: 'success',
+			  		  title: 'Ordination successfully added!',
+			  		  showConfirmButton: false,
+			  		  timer: 1500
+			  		});
               input.each(function(){
                 $(this).parent("td").html($(this).val());
               }); 
@@ -541,7 +593,14 @@ $( document ).ready(function() {
             },
             400: function(responseObject, textStatus, jqXHR) {
               console.log("Ordination - add() - 400 Bad request");
-              showMessage("Ordination with inserted name already exists!", "antiquewhite");
+              Swal.fire({
+			  		  position: 'center',
+			  		  icon: 'error',
+			  		  title: 'Ordination with inserted name already exists!',
+			  		  showConfirmButton: false,
+			  		  timer: 1500
+			  		});
+             
             },
   		  403: function(responseObject, textStatus, jqXHR) {
   			console.log("403 Unauthorized");
@@ -569,7 +628,13 @@ $( document ).ready(function() {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 200 OK");
                 if(responseObject.hasAppointments == true)
-                	showMessage("Editing rooms with appointments is not allowed!", "red");
+                    Swal.fire({
+  			  		  position: 'center',
+  			  		  icon: 'error',
+  			  		  title: 'Editing rooms with appointments is not allowed!',
+  			  		  showConfirmButton: false,
+  			  		  timer: 1500
+  			  		});
                 else{
                 $("#roomNameInputEdit").val(responseObject.name);
                 $("#editRoomModal").modal();
@@ -578,7 +643,14 @@ $( document ).ready(function() {
               },
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 400 Bad request");
-                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+                Swal.fire({
+			  		  position: 'center',
+			  		  icon: 'error',
+			  		  title: 'Ordination with inserted name already exists!',
+			  		  showConfirmButton: false,
+			  		  timer: 1500
+			  		});
+               
               },
     		  403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
@@ -610,7 +682,14 @@ $( document ).ready(function() {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 200 OK");
                 if(responseObject.hasAppointments == true)
-                	showMessage("Deleting rooms with appointments is not allowed!", "red");
+                    Swal.fire({
+  			  		  position: 'center',
+  			  		  icon: 'error',
+  			  		  title: 'Deleting rooms with appointments is not allowed!',
+  			  		  showConfirmButton: false,
+  			  		  timer: 1500
+  			  		});
+                	
                 else{
                     $.ajax({
                         type: 'DELETE',
@@ -621,11 +700,25 @@ $( document ).ready(function() {
                         statusCode: {
                           200: function(responseObject, textStatus, jqXHR) {
                             console.log("Ordination - delete() - 200 OK");
-                            showMessage("Ordination successfully deleted!", "palegreen"); 
+                            Swal.fire({
+            			  		  position: 'center',
+            			  		  icon: 'success',
+            			  		  title: 'Ordination successfully deleted!',
+            			  		  showConfirmButton: false,
+            			  		  timer: 1500
+            			  		});
+                           
                           },
                           400: function(responseObject, textStatus, jqXHR) {
                             console.log("Ordination - delete() - 400 Bad request");
-                            showMessage("Something went wrong!", "antiquewhite");
+                            Swal.fire({
+          			  		  position: 'center',
+          			  		  icon: 'error',
+          			  		  title: 'Something went wrong!',
+          			  		  showConfirmButton: false,
+          			  		  timer: 1500
+          			  		});
+                          
                           },
                   		403: function(responseObject, textStatus, jqXHR) {
                 			console.log("403 Unauthorized");
@@ -638,7 +731,13 @@ $( document ).ready(function() {
               },
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 400 Bad request");
-                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+                Swal.fire({
+			  		  position: 'center',
+			  		  icon: 'error',
+			  		  title: 'Ordination with inserted name already exists!',
+			  		  showConfirmButton: false,
+			  		  timer: 1500
+			  		});
               },
     		  403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
@@ -701,7 +800,13 @@ $( document ).ready(function() {
 	            statusCode: {
 	              200: function(responseObject, textStatus, jqXHR) {
 	                console.log("PricelistItem - add() - 200 OK");
-	                showMessage("Pricelist item successfully added!", "palegreen");
+	                Swal.fire({
+				  		  position: 'center',
+				  		  icon: 'success',
+				  		  title: 'Pricelist item successfully added!',
+				  		  showConfirmButton: false,
+				  		  timer: 1500
+				  		});
 	                input.each(function(){
 	                  $(this).parent("td").html($(this).val());
 	                }); 
@@ -711,7 +816,13 @@ $( document ).ready(function() {
 	              },
 	              400: function(responseObject, textStatus, jqXHR) {
 	                console.log("PricelistItem - add() - 400 Bad request");
-	                showMessage("Pricelist item with inserted name already exists!", "antiquewhite");
+	                Swal.fire({
+				  		  position: 'center',
+				  		  icon: 'error',
+				  		  title: 'Pricelist item with inserted name already exists!',
+				  		  showConfirmButton: false,
+				  		  timer: 1500
+				  		});
 	              },
 	    		  403: function(responseObject, textStatus, jqXHR) {
 	    			console.log("403 Unauthorized");
@@ -737,11 +848,24 @@ $( document ).ready(function() {
           statusCode: {
             200: function(responseObject, textStatus, jqXHR) {
               console.log("Pricelist item - delete() - 200 OK");
-              showMessage("Pricelist item successfully deleted!", "palegreen"); 
+              Swal.fire({
+		  		  position: 'center',
+		  		  icon: 'success',
+		  		  title: 'Pricelist item successfully deleted!',
+		  		  showConfirmButton: false,
+		  		  timer: 1500
+		  		});
             },
             400: function(responseObject, textStatus, jqXHR) {
               console.log("Pricelist item - delete() - 400 Bad request");
-              showMessage("Something went wrong!", "antiquewhite");
+              Swal.fire({
+   		  		  position: 'center',
+   		  		  icon: 'error',
+   		  		  title: 'Something went wrong!',
+   		  		  showConfirmButton: false,
+   		  		  timer: 1500
+   		  		});
+                
             },
     		403: function(responseObject, textStatus, jqXHR) {
   			console.log("403 Unauthorized");
@@ -1140,7 +1264,7 @@ $(document).on("click", "#btnSchedule", function(){
 	        console.log("204 - Could not schedule appointment.");
 	        Swal.fire({
 		  		  position: 'center',
-		  		  icon: 'success',
+		  		  icon: 'error',
 		  		  title: 'Sorry, you can not schedule appointment.',
 		  		  showConfirmButton: false,
 		  		  timer: 1500
@@ -1260,7 +1384,8 @@ $("#modalApprovePredefBtn").click(function(){
 	        		  timer: 1500
 	        		})
 	        		
-	        		window.setTimeout(function(){location.reload()},1500);
+	       
+                window.setTimeout(function(){location.reload()},1500);
     		},
     		204: function(responseObject, textStatus, jqXHR) {
     			console.log("204 No Content");    			
