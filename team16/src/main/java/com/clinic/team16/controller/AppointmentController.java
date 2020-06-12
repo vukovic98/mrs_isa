@@ -413,24 +413,26 @@ public class AppointmentController {
 	@GetMapping(path = "/findAllPredefinedForPatient/{clinicId}")
 	public ResponseEntity<List<AppointmentDTO>> findAllPredefinedForPatient(@PathVariable("clinicId") long clinicId) {
 		List<Appointment> list = this.appointmentService.findAllPredefined();
-		List<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
+		ArrayList<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
 
 		Clinic cl = clinicService.findOneByClinicID(clinicId);
-
+		System.out.println("klinika "+cl.getClinicID() + " ono sto sam dobila s fronta " + clinicId);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		if (list != null) {
+		if (list.size() > 0) {
 			for (Appointment appointment : list) {
-				if(cl.getClinicID() == clinicId) {
+				if(cl.getClinicID() == appointment.getDoctor().getClinic().getClinicID()) {
+					System.out.println("A VAMO");
 					dtoList.add(new AppointmentDTO(appointment.getAppointmentId(), sdf.format(appointment.getDateTime()),
 							appointment.getDuration(),
 							appointment.getDoctor().getFirstName() + " " + appointment.getDoctor().getLastName(),
 							"", appointment.getPricelistItems().getName(),
-							String.valueOf(appointment.getPricelistItems().getPrice()), String.valueOf(appointment.getOrdination().getNumber()),appointment.getOrdination().getName(), appointment.getDiscount()));}
+							String.valueOf(appointment.getPricelistItems().getPrice()), String.valueOf(appointment.getOrdination().getNumber()),appointment.getOrdination().getName(), appointment.getDiscount()));
+					}
 			}
-
+			System.out.println(list.size()+" LIST SIZE");
 			return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
 		} else
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<List<AppointmentDTO>>(HttpStatus.NO_CONTENT);
 	}
 
 	@PostMapping(path = "/schedulePredefinedAppointment/{appId}", consumes = "application/json")
@@ -441,7 +443,6 @@ public class AppointmentController {
 		Appointment a = this.appointmentService.findOneById(id);
 	
 		if (a != null && p!= null) {
-			System.out.println("AAAAALO");
 			a.setPatient(p);
 			this.appointmentService.save(a);
 			p.addAppointment(a);
