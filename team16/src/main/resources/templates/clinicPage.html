@@ -94,7 +94,7 @@
 				
 				<div class="tab-pane fade" id="appointments" role="tabpanel"
 					aria-labelledby="appointments-tab">
-					<h1 class="mb-0 col-md-9 fl-left" style="z-index: 0;" id="">Predefined
+					<h1 class="mb-0 col-md-9 fl-left" style="z-index: 0;" id="predefAppH1">Predefined
 						appointments</h1>
 
 					<div class="mt-5">
@@ -262,12 +262,23 @@
 									</form>
 								</div>
 							</div>
-							<div class="mt-3">
-								<input type="text" id="myInput" class="form-control"
+							<div class="mt-5">				
+								<div class="row pt-5 pb-1 mr-0 w-100 ml-0">
+									<div class="input-group mb-3 col-md-10 pr-0 pl-0">
+								<input type="text" id="searchDoc" class="form-control"
 									placeholder="Search doctors by name or average grade..."
 									aria-label="Doctors" aria-describedby="basic-addon2"
 									onkeyup="searchDoctors()">
+									</div>
+									<div class="col-sm-2 text-right pr-0">
+								<button id="addDoctorBtn" type="button"
+									class="btn btn-info">
+									<i class="fa fa-plus"></i> Add New
+								</button>
+									</div>
+								</div>
 							</div>
+
 							<table class="table table-hover table-bordered mt-4 pt-4"
 								id="doctorTable">
 								<thead id="doctorHead">
@@ -471,6 +482,58 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Modal end -->
+
+
+				<div class="modal fade" id="addDoctor" role="dialog">
+					<div class="modal-dialog" role="document" style="margin-top: 60px;">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="card text-center">
+									<div class="card-header">Add doctor</div>
+									<div class="card-body">
+										<div class="col-xs-12 col-sm-12 pl-0">
+											<div class="signup">
+												<h2 class="form-title" id="signup">
+												</h2>
+												<div class="form-holder mb-4">
+													<input type="text" class="input form-control"
+														id="firstNameSignUp" placeholder="First name" required />
+													<input type="text" class="input form-control"
+														id="lastNameSignUp" placeholder="Last name" required /> <input
+														type="text" class="input form-control" id="citySignUp"
+														placeholder="City" required /> <input type="text"
+														class="input form-control" id="countrySignUp"
+														placeholder="Country" required /> <input type="text"
+														class="input form-control" id="addressSignUp"
+														placeholder="Address" required /> <input type="text"
+														class="input form-control" id="insNumberSignUp"
+														placeholder="Insurance number" required /> <input
+														type="text" class="input form-control" id="phoneSignUp"
+														placeholder="Phone number" required /> <input
+														type="email" class="input form-control" id="emailSignUp"
+														placeholder="Email" required /> <input type="password"
+														class="input form-control" id="passSignUp"
+														placeholder="Password" required /> <input type="password"
+														class="input form-control" id="passRepeatSignUp"
+														placeholder="Repeat password" required />
+												</div>
+												
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" id="addDoctorModalBtn"
+									class="btn btn-primary">Add</button>
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
 
 			<!-- Modal end -->
 

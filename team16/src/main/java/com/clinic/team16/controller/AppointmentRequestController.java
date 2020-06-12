@@ -96,9 +96,11 @@ public class AppointmentRequestController {
 			approve.setApproved(true);
 			Ordination or = ordinationService.findOneByNumber(body.getOrdId());
 			approve.getAppointment().setOrdination(or);
+			or.getAppointments().add(approve.getAppointment());
 			
 			appointmentRequestService.save(approve);
 			appointmentService.save(approve.getAppointment());
+			ordinationService.save(or);
 			appointmentRequestService.sendAcceptedMail(or.getName(), approve.getAppointment().getDoctor().getFirstName() + " "+ approve.getAppointment().getDoctor().getLastName(), sdf.format(approve.getAppointment().getDateTime()));
 			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 		}else

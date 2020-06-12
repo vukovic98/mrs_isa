@@ -144,7 +144,7 @@ $( document ).ready(function() {
     				
     				$("#li_price").css('display', 'none');
     				$("#li_rooms").css('display', 'none');
-    				//$("#li_appointments").css('display', 'none');
+    				$("#addDoctorBtn").css('display', 'none');
     				
     				var atrs = sessionStorage.getItem('appParam');
     				var clinicId = atrs.split("&")[0];
@@ -351,6 +351,7 @@ $( document ).ready(function() {
 		$("#addRoomModal").modal();
 	});
 	
+	
 	$(document).on("click", "#addDoctorBtn", function(){
 		$("#addDoctor").modal();
 	});
@@ -517,6 +518,7 @@ $( document ).ready(function() {
 		}
 		
 	});
+	
 	
 	$(document).on("click", "#roomCreateModalBtn", function(){
 		var name = $("#roomNameInput").val();
@@ -796,15 +798,14 @@ $( document ).ready(function() {
                 console.log("Ordination - add() - 200 OK");
                 if(responseObject.hasAppointments == true)
                     Swal.fire({
-  	        		  position: 'center',
-  	        		  icon: 'error',
-  	        		  title: 'Editing rooms with booked appointments is not allowed!',
-  	        		  showConfirmButton: false,
-  	        		  timer: 1500
-  	        		})
+  			  		  position: 'center',
+  			  		  icon: 'error',
+  			  		  title: 'Editing rooms with appointments is not allowed!',
+  			  		  showConfirmButton: false,
+  			  		  timer: 1500
+  			  		});
                 else{
                 $("#roomNameInputEdit").val(responseObject.name);
-                $("#roomIdEdit").text(num);
                 $("#editRoomModal").modal();
                 }
                 
@@ -834,46 +835,7 @@ $( document ).ready(function() {
 		
   });
 	
-	$(document).on("click", "#roomEditModalBtn", function(){
-		var id = $(this).parents("tr").attr('id');
-        $.ajax({
-            type: 'PUT',
-            url: 'ordinationApi/editOrdination',
-            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
-            data : JSON.stringify({
-              "name" : $("#roomNameInputEdit").val(),
-              "type" : $("#roomTypeInputEdit").val(),
-              "ordId" : $("#roomIdEdit").text()
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            statusCode: {
-              200: function(responseObject, textStatus, jqXHR) {
-                console.log("PricelistItem - add() - 200 OK");
-                Swal.fire({
-	        		  position: 'center',
-	        		  icon: 'success',
-	        		  title: 'Room successfully edited!',
-	        		  showConfirmButton: false,
-	        		  timer: 1500
-	        		})
-	        		
-	        		window.setTimeout(function(){location.reload()},1500);
-                
-              },
-              400: function(responseObject, textStatus, jqXHR) {
-                console.log("PricelistItem - add() - 400 Bad request");
-                showMessage("Pricelist item with inserted name already exists!", "antiquewhite");
-              },
-    		  403: function(responseObject, textStatus, jqXHR) {
-    			console.log("403 Unauthorized");
-    			unauthorized();
-    		  }
-            }
-          });
-		
-		
-	});
+	
 	
 	// Delete row on delete button click
 	$(document).on("click", ".delete-room", function(){
@@ -1233,7 +1195,7 @@ function showDoctors(doctors,odakle) {
 	var table = $("#doctorBody");
 	table.empty();
 	$.each(doctors,function(i,val){
-		var row = $("<tr id=\""+i+"\"></tr>");
+		var row = $("<tr id=\""+val.id+"\"></tr>");
 		row.append("<td >" + val.firstName + " " + val.lastName + "</td>");
 		row.append("<td >" + val.averageGrade + "</td>");
 		var selectt="<td align=\"center\"><select class=\"select\"><option disabled selected>Choose term</option>";
@@ -1260,6 +1222,9 @@ function clinicOK(clinic,odakle){
 	$("#clinicAddress").val(clinic.address + ", " + clinic.city);
 	$("#desc").val(clinic.description);
 	var attr = sessionStorage.setItem('clinicID', clinic.clinicID);
+	if( odakle == 2){
+		$("#doctorSearchTxt").attr("placeholder","Search doctors by name...");
+	}
 	if(odakle == 1){
 		$("#predefinedAddDiv").css("display","none");
 	}

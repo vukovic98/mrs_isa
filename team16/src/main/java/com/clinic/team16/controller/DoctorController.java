@@ -29,9 +29,11 @@ import com.clinic.team16.beans.ClinicAdministrator;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.Patient;
+import com.clinic.team16.beans.User;
 import com.clinic.team16.beans.DTO.DoctorAddDTO;
 import com.clinic.team16.beans.DTO.DoctorDTO;
 import com.clinic.team16.beans.DTO.DoctorLeaveDTO;
+import com.clinic.team16.beans.DTO.UserDTO;
 import com.clinic.team16.service.ClinicAdminService;
 import com.clinic.team16.service.ClinicService;import com.clinic.team16.service.DoctorService;
 import com.clinic.team16.service.GradeService;
@@ -67,6 +69,20 @@ public class DoctorController {
 			
 		if(list != null)
 			return new ResponseEntity<List<Doctor>>(list, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping(path = "/findCurrentDoc")
+	public ResponseEntity<UserDTO> findOneByEmail() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Doctor found = this.doctorService.findOneByEmail(currentUser);
+		
+		
+		
+		System.out.println("PROSLO");
+		if (found != null)
+			return new ResponseEntity<UserDTO>(new UserDTO( found.getEmail(), found.getCity(), found.getCountry(), found.getAddress(), found.getPhoneNumber(), found.getInsuranceNumber(),found.getFirstName(),found.getLastName()), HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -227,4 +243,23 @@ public class DoctorController {
 	}
 	
 
+	@PutMapping(path = "/updateDoctorMyself", consumes = "application/json")
+	public ResponseEntity<HttpStatus> updatePatient(@RequestBody User p) {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Doctor found = this.doctorService.findOneByEmail(currentUser);
+
+		if (found != null) {
+			found.setFirstName(p.getFirstName());
+			found.setLastName(p.getLastName());
+			found.setAddress(p.getAddress());
+			found.setCity(p.getCity());
+			found.setCountry(p.getCountry());
+			found.setPhoneNumber(p.getPhoneNumber());
+			final Doctor updatedDoc = doctorService.save(found);
+			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+		} else
+			return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
+	}
+	
+	
 }
