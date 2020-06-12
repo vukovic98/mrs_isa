@@ -46,4 +46,6 @@ public class OrdinationService {
 		ordinationRepository.delete(or);
 		
 	}
+	
+	
 }

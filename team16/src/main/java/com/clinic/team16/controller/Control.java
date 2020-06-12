@@ -63,7 +63,7 @@ public class Control {
 	   
 	   @RequestMapping(value = "/doctorProfile")
 	   public String doctorProfile() {
-		   return "doctor";
+		   return "doctorProfile";
 	   }
 	   
 	   @RequestMapping(value = "/nurse")

@@ -999,9 +999,9 @@ function loadAppointmentTypesPredefAllOK(pricelistItem){
 $("#applyFilter").click(function(){
 	
 	var appType = $("#appointmentTypeF").val();
-	var date = document.querySelector('input[type="date"]');
+	var date = $("#dateF").val();
 	var clinicID = sessionStorage.getItem('clinicID');
-    sessionStorage.setItem("appParam", clinicID+"&"+appType+"&"+date.value);
+    sessionStorage.setItem("appParam", clinicID+"&"+appType+"&"+date);
 	if (appType == null || appType == "" ){
 		$("#appointmentTypeF").addClass("is-invalid");
 	}
@@ -1009,17 +1009,17 @@ $("#applyFilter").click(function(){
 		{
 		$("#appointmentTypeF").removeClass("is-invalid");
 		}
-	if (date.value== null || date.value == "" ){
+	if (date == null || date == "" ){
 		$("#dateF").addClass("is-invalid");
 	}
 	else
 		{
 		$("#dateF").removeClass("is-invalid");
 		}
-	if(appType != null && appType!="" && date.value!=null && date.value != ""){
+	if(appType != null && appType!="" && date!=null && date != ""){
 		$.ajax ({
 		  	type: 'GET',
-		  	url: 'clinicApi/findAllAppointmentDoctors/' + clinicID + "&" + appType + "&" + date.value,
+		  	url: 'clinicApi/findAllAppointmentDoctors/' + clinicID + "&" + appType + "&" + date,
 			headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 		  	statusCode: {
 		  		200: function(responseObject, textStatus, jqXHR) {
@@ -1037,7 +1037,7 @@ $("#applyFilter").click(function(){
 		  	}
 		  });
 		var attr = 
-		sessionStorage.setItem('appDate', date.value);
+		sessionStorage.setItem('appDate', date);
 	
 	}
 	});

@@ -77,7 +77,7 @@ function loadRequestsOK(requests){
 		    			console.log("200 OK");
 		    			$("#doctorModal").val(responseObject.doctor);
 		    			$("#dateModal").val(responseObject.dateTime);
-		    			$("#termModal").append(new Option(responseObject.onlyTime,responseObject.onlyTime));
+		    			$("#termModal").val(responseObject.onlyTime);
 		    		},
 		    		204: function(responseObject, textStatus, jqXHR) {
 		    			console.log("204 No Content");
@@ -100,15 +100,32 @@ function loadRequestsOK(requests){
 		    		200: function(responseObject, textStatus, jqXHR) {
 		    			console.log("200 OK");
 		    			var selectRoom = $("#roomSelectModal");
+		    			
+		    			
+		    			
 		    			 $.each(responseObject, function(i, val) {
 		    				 selectRoom.append("<option value=\""+val.ordId+"\">"+val.name+"</option>");
-		    				 
 		    			 });
 		    			 
 		    		},
-		    		204: function(responseObject, textStatus, jqXHR) {
+		    		202: function(responseObject, textStatus, jqXHR) {
 		    			console.log("204 No Content");
-		    			loadRequestsNO(responseObject);
+		                Swal.fire({
+			          		  position: 'center',
+			          		  icon: 'error',
+			          		  title: 'There are no free rooms for this time. Please select a room to view the next available time.',
+			          		  showConfirmButton: true,
+			          		  timer: 1500
+			          		})
+			          		var selectRoom = $("#roomSelectModal");
+			    			 $.each(responseObject, function(i, val) {
+			    				 selectRoom.append("<option id=\""+val.nextTerm+"\" value=\""+val.ordId+"\">"+val.name+"</option>");
+			    			 });
+		                
+		                	
+			          		
+			          		
+			          		
 		    		},
 		    		403: function(responseObject, textStatus, jqXHR) {
 		    			console.log("403 Unauthorized");
@@ -141,8 +158,16 @@ function loadRequestsOK(requests){
 	            statusCode: {
 	              200: function(responseObject, textStatus, jqXHR) {
 	                console.log("Ordination - add() - 200 OK");
-	                showMessage("Ordination successfully added!", "palegreen");
+	                //showMessage("Ordination successfully added!", "palegreen");
 	        	    
+	                Swal.fire({
+		          		  position: 'center',
+		          		  icon: 'success',
+		          		  title: 'Request successfully approved!',
+		          		  showConfirmButton: true,
+		          		  timer: 1500
+		          		})
+	                
 	        	      
 	              },
 	              400: function(responseObject, textStatus, jqXHR) {
@@ -160,31 +185,14 @@ function loadRequestsOK(requests){
 	  
 	  
 	  $("#roomSelectModal").on('change', function() {
-		  console.log($("#roomSelectModal").val());
-		  var idRoom = $("#roomSelectModal").val();
-		    $.ajax ({
-		    	type: 'GET',
-		    	url: 'appointmentApi/findAllForRoom/' + idRoom,
-		        headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
-	            contentType: "application/json; charset=utf-8",
-	            dataType: "json",
-		    	statusCode: {
-		    		200: function(responseObject, textStatus, jqXHR) {
-		    			console.log("200 OK");
-		    			
-		    				 
-		    			 
-		    		},
-		    		204: function(responseObject, textStatus, jqXHR) {
-		    			console.log("204 No Content");
-		    			loadRequestsNO(responseObject);
-		    		},
-		    		403: function(responseObject, textStatus, jqXHR) {
-		    			console.log("403 Unauthorized");
-		    			unauthorized();
-		    		}
-		    	}
-		    });
+		  console.log($("#roomSelectModal option:selected").attr('id'));
+		  
+		  var dateTime = $("#roomSelectModal option:selected").attr('id').split(" ");
+		  
+			$("#dateModal").val(dateTime[0]);
+			$("#termModal").val(dateTime[1]);
+
+		  
 		  
 		});
 }

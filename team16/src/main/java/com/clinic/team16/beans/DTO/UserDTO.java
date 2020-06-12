@@ -79,4 +79,38 @@ public class UserDTO {
 		this.insurance = insurance;
 	}
 
+	
+	private String firstName;
+	private String lastName;
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public UserDTO(String email, String city, String country, String address, String phone, String insurance,
+			String firstName, String lastName) {
+		super();
+		this.email = email;
+		this.city = city;
+		this.country = country;
+		this.address = address;
+		this.phone = phone;
+		this.insurance = insurance;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
+	
 }

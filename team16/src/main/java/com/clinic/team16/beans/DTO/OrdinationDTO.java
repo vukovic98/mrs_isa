@@ -7,6 +7,7 @@ private String name;
 private OrdinationType type;
 private int ordId;
 private boolean hasAppointments;
+private String nextTerm;
 public String getName() {
 	return name;
 }
@@ -45,6 +46,20 @@ public boolean isHasAppointments() {
 public void setHasAppointments(boolean hasAppointments) {
 	this.hasAppointments = hasAppointments;
 }
+public OrdinationDTO(String name, OrdinationType type, int ordId, String nextTerm) {
+	super();
+	this.name = name;
+	this.type = type;
+	this.ordId = ordId;
+	this.nextTerm = nextTerm;
+}
+public String getNextTerm() {
+	return nextTerm;
+}
+public void setNextTerm(String nextTerm) {
+	this.nextTerm = nextTerm;
+}
+
 
 
 
