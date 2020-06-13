@@ -1,6 +1,5 @@
 package com.clinic.team16.service;
 
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,11 @@ public class MedicalReportService {
 
 	public boolean save(MedicalReport m) {
 		try {
-			this.medicalReportRepository.save(m);
-			return true;
+			MedicalReport mO = this.medicalReportRepository.save(m);
+			if(mO != null)
+				return true;
+			else
+				return false;
 		} catch (Exception e) {
 			return false;
 		}

@@ -15,19 +15,20 @@ public class Nurse extends User {
 	@ElementCollection
 	@CollectionTable(name = "nurse_leaveRequests", joinColumns = @JoinColumn(name = "nurse_id"))
 	public List<LeaveRequest> leaveRequests;
-    
+
 	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name = "nurse_medicalReports", joinColumns = @JoinColumn(name = "nurse_id"))
 	public List<MedicalReport> medicalReports;
-    
+
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Nurse_Clinic_ID")
 	public Clinic clinic;
 
 	public Nurse() {
 		super();
+		this.medicalReports = new ArrayList<>();
 	}
 
 	public Nurse(ArrayList<LeaveRequest> leaveRequest, ArrayList<MedicalReport> medicalReport, Clinic clinic) {
@@ -51,8 +52,6 @@ public class Nurse extends User {
 		return leaveRequests;
 	}
 
-	
-
 	public void addLeaveRequest(LeaveRequest newLeaveRequest) {
 		if (newLeaveRequest == null)
 			return;
@@ -72,25 +71,14 @@ public class Nurse extends User {
 			}
 	}
 
-	
-
 	public List<MedicalReport> getMedicalReports() {
 		if (medicalReports == null)
 			medicalReports = new ArrayList<MedicalReport>();
 		return medicalReports;
 	}
 
-	
-
 	public void addMedicalReport(MedicalReport newMedicalReport) {
-		if (newMedicalReport == null)
-			return;
-		if (this.medicalReports == null)
-			this.medicalReports = new ArrayList<MedicalReport>();
-		if (!this.medicalReports.contains(newMedicalReport)) {
-			this.medicalReports.add(newMedicalReport);
-			newMedicalReport.setNurse(this);
-		}
+		this.medicalReports.add(newMedicalReport);
 	}
 
 	public void removeMedicalReport(MedicalReport oldMedicalReport) {
@@ -102,7 +90,5 @@ public class Nurse extends User {
 				oldMedicalReport.setNurse((Nurse) null);
 			}
 	}
-
-	
 
 }

@@ -1,9 +1,7 @@
 package com.clinic.team16.controller;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.AppointmentType;
 import com.clinic.team16.beans.Clinic;
 import com.clinic.team16.beans.ClinicAdministrator;
@@ -34,214 +33,271 @@ import com.clinic.team16.beans.DTO.DoctorAddDTO;
 import com.clinic.team16.beans.DTO.DoctorDTO;
 import com.clinic.team16.beans.DTO.DoctorLeaveDTO;
 import com.clinic.team16.beans.DTO.UserDTO;
+import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicAdminService;
-import com.clinic.team16.service.ClinicService;import com.clinic.team16.service.DoctorService;
+import com.clinic.team16.service.ClinicService;
+import com.clinic.team16.service.DoctorService;
 import com.clinic.team16.service.GradeService;
 import com.clinic.team16.service.PatientService;
 
 @RestController
 @RequestMapping("/doctorApi")
 public class DoctorController {
-	
+
 	@Autowired
 	DoctorService doctorService;
+
 	@Autowired
 	PatientService patientService;
+
 	@Autowired
 	GradeService gradeService;
-	
+
 	@Autowired
 	ClinicAdminService adminService;
-	
+
 	@Autowired
 	ClinicService clinicService;
-	
+
+	@Autowired
+	private AppointmentService appointmentService;
+
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Doctor> createDoctor(@RequestBody Doctor doctor) throws Exception{
+	public ResponseEntity<Doctor> createDoctor(@RequestBody Doctor doctor) throws Exception {
 		System.out.println("Pozvana metoda kontrolera za dodavanje doktora.");
 		Doctor newDoctor = doctorService.create(doctor);
-		return new ResponseEntity<Doctor>(newDoctor,HttpStatus.CREATED);
+		return new ResponseEntity<Doctor>(newDoctor, HttpStatus.CREATED);
 	}
-	
-	@GetMapping(path = "/findAll") 
+
+	@GetMapping(path = "/findAll")
 	public ResponseEntity<List<Doctor>> findAll() {
 		List<Doctor> list = this.doctorService.findAll();
-			
-		if(list != null)
+
+		if (list != null)
 			return new ResponseEntity<List<Doctor>>(list, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	@GetMapping(path = "/findCurrentDoc")
 	public ResponseEntity<UserDTO> findOneByEmail() {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		Doctor found = this.doctorService.findOneByEmail(currentUser);
-		
-		
-		
+
 		System.out.println("PROSLO");
 		if (found != null)
-			return new ResponseEntity<UserDTO>(new UserDTO( found.getEmail(), found.getCity(), found.getCountry(), found.getAddress(), found.getPhoneNumber(), found.getInsuranceNumber(),found.getFirstName(),found.getLastName()), HttpStatus.OK);
+			return new ResponseEntity<UserDTO>(new UserDTO(found.getEmail(), found.getCity(), found.getCountry(),
+					found.getAddress(), found.getPhoneNumber(), found.getInsuranceNumber(), found.getFirstName(),
+					found.getLastName()), HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
-	@GetMapping(path = "/findAllDoctorsDTOByClinic/{clinicID}") 
+
+	@GetMapping(path = "/findAllDoctorsDTOByClinic/{clinicID}")
 	public ResponseEntity<ArrayList<DoctorDTO>> findAllDoctorsDTO(@PathVariable long clinicID) {
 		List<Doctor> list = this.doctorService.findAllByClinic(clinicID);
-			
-		if(list != null) {
+
+		if (list != null) {
 			ArrayList<DoctorDTO> dtoList = new ArrayList<>();
-			
-			for(Doctor d : list)
-				dtoList.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail()));
-			
+
+			for (Doctor d : list)
+				dtoList.add(
+						new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail()));
+
 			return new ResponseEntity<ArrayList<DoctorDTO>>(dtoList, HttpStatus.OK);
-		}
-		else
+		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
-	
-	@GetMapping(path = "/findAllDoctorsDTOCurrentClinic") 
+
+	@GetMapping(path = "/findAllDoctorsDTOCurrentClinic")
 	public ResponseEntity<ArrayList<DoctorDTO>> findAllDoctorsDTOCurrentClinic() {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
 		List<Doctor> list = this.doctorService.findAllByClinic(ca.getClinic().getClinicID());
-			
-		if(list != null) {
+
+		if (list != null) {
 			ArrayList<DoctorDTO> dtoList = new ArrayList<>();
-			
-			for(Doctor d : list)
-				dtoList.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail()));
-			
+
+			for (Doctor d : list)
+				dtoList.add(
+						new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail()));
+
 			return new ResponseEntity<ArrayList<DoctorDTO>>(dtoList, HttpStatus.OK);
-		}
-		else
+		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	@GetMapping(path = "/findOneByEmail")
 	public ResponseEntity<Doctor> findOneByEmail(@RequestParam String email) {
-		
+
 		Doctor found = this.doctorService.findOneByEmail(email);
 		System.out.println("PROSLO");
-		if(found != null) 
+		if (found != null)
 			return new ResponseEntity<Doctor>(found, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
-	@PutMapping(path="/rateDoctor/{doctorID}&{grade}", consumes="application/json")
-	public ResponseEntity<HttpStatus> rateDoctor(@PathVariable("doctorID") long doctorID, @PathVariable("grade") String grade) {
+
+	@PutMapping(path = "/rateDoctor/{doctorID}&{grade}", consumes = "application/json")
+	public ResponseEntity<HttpStatus> rateDoctor(@PathVariable("doctorID") long doctorID,
+			@PathVariable("grade") String grade) {
 		long id = doctorID;
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		Doctor found = this.doctorService.findOneByDoctorID(id);
 		Patient p = this.patientService.findOneByEmail(currentUser);
-		if(found!=null && p != null) {
-		    Grade g = found.addGrade(p,Integer.parseInt(grade));
+		if (found != null && p != null) {
+			Grade g = found.addGrade(p, Integer.parseInt(grade));
 			gradeService.save(g);
 			doctorService.save(found);
 			patientService.save(p);
 			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		else
+		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
-	@GetMapping(path = "/findAllForClinic/{clinicID}") 
+
+	@GetMapping(path = "/findAllForClinic/{clinicID}")
 	public ResponseEntity<List<Doctor>> findAllForClinic(@PathVariable("clinicID") long clinicID) {
 		List<Doctor> list = this.doctorService.findAll();
-		
-		if(list != null)
+
+		if (list != null)
 			return new ResponseEntity<List<Doctor>>(list, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
-	
+
 	@GetMapping(path = "/findCurrent")
 	public ResponseEntity<DoctorLeaveDTO> findCurrent() {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		Doctor found = this.doctorService.findOneByEmail(currentUser);
 		System.out.println("PROSLO");
-		if(found != null) {
-			return new ResponseEntity<DoctorLeaveDTO>(new DoctorLeaveDTO(found.getFirstName()+" "+found.getLastName(), found.getEmail(), found.getCity(), found.getCountry(), found.getAddress(), found.getPhoneNumber(), found.getClinic().getName()), HttpStatus.OK);
-		}
-		else
+		if (found != null) {
+			return new ResponseEntity<DoctorLeaveDTO>(
+					new DoctorLeaveDTO(found.getFirstName() + " " + found.getLastName(), found.getEmail(),
+							found.getCity(), found.getCountry(), found.getAddress(), found.getPhoneNumber(),
+							found.getClinic().getName()),
+					HttpStatus.OK);
+		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
-	@GetMapping(path = "/findAllFreeForDateTime", params = {"date","type"})
-	public ResponseEntity<List<DoctorDTO>> findAllFreeForDateTime(@RequestParam("date") String date, @RequestParam("type") String type) throws ParseException{
+
+	@GetMapping(path = "/findAllFreeForDateTime", params = { "date", "type" })
+	public ResponseEntity<List<DoctorDTO>> findAllFreeForDateTime(@RequestParam("date") String date,
+			@RequestParam("type") String type) throws ParseException {
 		AppointmentType at = AppointmentType.valueOf(type);
-		
+
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
-		
+
 		List<DoctorDTO> dtoList = clinicService.filterDoctorsPredef(ca.getClinic(), at, date);
-		
-		if(dtoList != null) {
-			return new ResponseEntity<List<DoctorDTO>>(dtoList,HttpStatus.OK);
-			
-		}
-		else
+
+		if (dtoList != null) {
+			return new ResponseEntity<List<DoctorDTO>>(dtoList, HttpStatus.OK);
+
+		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
+
 	}
-	
+
 	@PostMapping("/addDoctor")
 	@Transactional
-	public ResponseEntity<HttpStatus> addDoctor(@RequestBody DoctorAddDTO doctor) throws Exception{
+	public ResponseEntity<HttpStatus> addDoctor(@RequestBody DoctorAddDTO doctor) throws Exception {
 		System.out.println("Pozvana metoda kontrolera za dodavanje doktora.");
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
-		
+
 		Doctor find = doctorService.findOneByEmail(doctor.getEmail());
-		
-		if(find == null) {
-		
-		Doctor d = new Doctor();
-		d.setFirstName(doctor.getFirstName());
-		d.setLastName(doctor.getLastName());
-		d.setAddress(doctor.getAddress());
-		d.setCity(doctor.getCity());
-		d.setCountry(doctor.getCountry());
-		d.setInsuranceNumber(doctor.getInsuranceNumber());
-		d.setPassword(doctor.getPassword());
-		d.setEmail(doctor.getEmail());
-		d.setPhoneNumber(doctor.getPhoneNumber());
-		
-		d.setClinic(ca.getClinic());
-		ca.getClinic().getDoctors().add(d);
-		
-		doctorService.save(d);
-		//clinicService.save(ca.getClinic());
-		
-		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-		}else
+
+		if (find == null) {
+
+			Doctor d = new Doctor();
+			d.setFirstName(doctor.getFirstName());
+			d.setLastName(doctor.getLastName());
+			d.setAddress(doctor.getAddress());
+			d.setCity(doctor.getCity());
+			d.setCountry(doctor.getCountry());
+			d.setInsuranceNumber(doctor.getInsuranceNumber());
+			d.setPassword(doctor.getPassword());
+			d.setEmail(doctor.getEmail());
+			d.setPhoneNumber(doctor.getPhoneNumber());
+
+			d.setClinic(ca.getClinic());
+			ca.getClinic().getDoctors().add(d);
+
+			doctorService.save(d);
+			// clinicService.save(ca.getClinic());
+
+			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+		} else
 			return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@DeleteMapping("/deleteDoctor/{id}")
-	public ResponseEntity<HttpStatus> deleteDoctor(@PathVariable("id") long doctorId){
-		
+	public ResponseEntity<HttpStatus> deleteDoctor(@PathVariable("id") long doctorId) {
+
 		Doctor del = doctorService.findOneByDoctorID(doctorId);
 		Clinic cl = del.getClinic();
-		if(del.getAppointments().size() == 0) {
+		if (del.getAppointments().size() == 0) {
 			cl.getDoctors().remove(del);
 			del.setClinic(null);
-			
+
 			doctorService.delete(del);
 			clinicService.save(cl);
-			
+
 			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-			
-		}else
+
+		} else
 			return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
 	}
-	
+
+	@GetMapping(path = "/getFreeTermsForCurrent/{date}")
+	public ResponseEntity<ArrayList<String>> getFreeTermsForCurrent(@PathVariable String date) {
+		ArrayList<String> terms = new ArrayList<>();
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		Doctor d = this.doctorService.findOneByEmail(currentUser);
+
+		ArrayList<Appointment> apps = this.appointmentService.findByDoctorAndDate(date, d.getId());
+		System.out.println(apps.size());
+		if (apps.size() < 15) {
+
+			// slobdni termini
+			ArrayList<String> possTerms = new ArrayList<>();
+
+			possTerms.add("08:00");
+			possTerms.add("08:30");
+			possTerms.add("09:00");
+			possTerms.add("09:30");
+			possTerms.add("10:00");
+			possTerms.add("10:30");
+			possTerms.add("11:00");
+			possTerms.add("11:30");
+			possTerms.add("12:00");
+			possTerms.add("12:30");
+			possTerms.add("13:00");
+			possTerms.add("14:00");
+			possTerms.add("14:30");
+			possTerms.add("15:00");
+			possTerms.add("15:30");
+
+			// 2020-06-18 06:05:00.000000
+			for (Appointment a : apps) {
+				String time = a.getDateTime().toString().substring(11, 16);
+				System.out.println(time + "****************************");
+				if (possTerms.contains(time)) {
+					System.out.println("UDJE" + time);
+					possTerms.remove(time);
+				}
+			}
+
+			for (String p : possTerms) {
+				String finalDate = date + " " + p;
+				terms.add(finalDate);
+			}
+
+			return new ResponseEntity<ArrayList<String>>(terms, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 
 	@PutMapping(path = "/updateDoctorMyself", consumes = "application/json")
 	public ResponseEntity<HttpStatus> updatePatient(@RequestBody User p) {
@@ -255,11 +311,13 @@ public class DoctorController {
 			found.setCity(p.getCity());
 			found.setCountry(p.getCountry());
 			found.setPhoneNumber(p.getPhoneNumber());
-			final Doctor updatedDoc = doctorService.save(found);
-			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+			Doctor updatedDoc = doctorService.save(found);
+
+			if (updatedDoc != null)
+				return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+			else
+				return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
 		} else
 			return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
 	}
-	
-	
 }

@@ -82,6 +82,20 @@ $(document).ready(function(e) {
 		} else {
 			$("#emailSignUp").removeClass("is-invalid");
 		}
+		
+		if(!testEMAIL(email)) {
+			$("#emailSignUp").addClass("is-invalid");
+			Swal.fire({
+      		  position: 'center',
+      		  icon: 'error',
+      		  title: "Please enter email address in right format!",
+      		  html: '<i>eg. someone@somewhere.com</i>',
+      		  showConfirmButton: false,
+      		  timer: 1500
+      		})
+		} else {
+			$("#emailSignUp").removeClass("is-invalid");
+		}
 
 		if(pass == null || pass == "") {
 			$("#passSignUp").addClass("is-invalid");
@@ -160,44 +174,46 @@ $(document).ready(function(e) {
 			phone != "" && insNumber != null && insNumber != "" && firstName != null && firstName != "" &&
 			lastName != null && lastName != "") {
 
-			$.ajax({
-				type : 'POST',
-				url : "patientApi/signUpUser",
-				data : JSON.stringify({
-					"email" : email,
-					"password" : pass,
-					"address" : address,
-					"phoneNumber": phone,
-					"city": city,
-					"country": country,
-					"insuranceNumber": insNumber,
-					"firstName": firstName,
-					"lastName": lastName
-				}),
-				contentType: "application/json; charset=utf-8",
-			    dataType: "json",
-			    statusCode: {
-			        200: function(responseObject, textStatus, jqXHR) {
-			            console.log("usao");
-			            Swal.fire({
-			        		  position: 'center',
-			        		  icon: 'success',
-			        		  title: 'Registration request successfully submited!',
-			        		  showConfirmButton: false,
-			        		  timer: 1500
-			        		})
-			        },
-			        400: function(responseObject, textStatus, errorThrown) {
-			            Swal.fire({
-			        		  position: 'center',
-			        		  icon: 'error',
-			        		  title: 'User with given email already exists!',
-			        		  showConfirmButton: false,
-			        		  timer: 1500
-			        		})
-			        },         
-			    }
-			});
+			if(testEMAIL(email)) {
+				$.ajax({
+					type : 'POST',
+					url : "patientApi/signUpUser",
+					data : JSON.stringify({
+						"email" : email,
+						"password" : pass,
+						"address" : address,
+						"phoneNumber": phone,
+						"city": city,
+						"country": country,
+						"insuranceNumber": insNumber,
+						"firstName": firstName,
+						"lastName": lastName
+					}),
+					contentType: "application/json; charset=utf-8",
+				    dataType: "json",
+				    statusCode: {
+				        200: function(responseObject, textStatus, jqXHR) {
+				            console.log("usao");
+				            Swal.fire({
+				        		  position: 'center',
+				        		  icon: 'success',
+				        		  title: 'Registration request successfully submited!',
+				        		  showConfirmButton: false,
+				        		  timer: 1500
+				        		})
+				        },
+				        400: function(responseObject, textStatus, errorThrown) {
+				            Swal.fire({
+				        		  position: 'center',
+				        		  icon: 'error',
+				        		  title: 'User with given email already exists!',
+				        		  showConfirmButton: false,
+				        		  timer: 1500
+				        		})
+				        },         
+				    }
+				});
+			}
 
 		} else {
 			Swal.fire({
@@ -235,6 +251,12 @@ $(document).ready(function(e) {
 		});
 	});
 });
+
+function testEMAIL(email) {
+	var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+
+}
 
 function whereToGo(user) {
 	var jwt = user.jwt;

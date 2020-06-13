@@ -1,5 +1,6 @@
 package com.clinic.team16.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,9 @@ public class NurseService{	@Autowired
 	
 	public Nurse save(Nurse n) {
 		return this.nurseRepository.save(n);
+	}
+	
+	public ArrayList<Nurse> findAllByClinic(long clinicId) {
+		return this.nurseRepository.findAllByClinic(clinicId);
 	}
 }

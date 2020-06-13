@@ -9,7 +9,8 @@ public class AppointmentRequestDTO {
 	private String dateTime;
 	private AppointmentType examType;
 	private String onlyTime;
-	
+	private String patientName;
+	private String doctorName;
 	public String getOnlyTime() {
 		return onlyTime;
 	}
@@ -33,9 +34,6 @@ public class AppointmentRequestDTO {
 	public void setDoctorName(String doctorName) {
 		this.doctorName = doctorName;
 	}
-
-	private String patientName;
-	private String doctorName;
 
 	public AppointmentRequestDTO() {
 		super();
@@ -80,9 +78,8 @@ public class AppointmentRequestDTO {
 	public void setExamType(AppointmentType examType) {
 		this.examType = examType;
 	}
-	public AppointmentRequestDTO(String email, String doctor, String dateTime, AppointmentType examType, String patientName,String doctorName) {
-			
-		super();
+	public AppointmentRequestDTO(String email, String doctor, String dateTime, AppointmentType examType,
+			String patientName, String doctorName) {		super();
 		this.email = email;
 		this.doctor = doctor;
 		this.dateTime = dateTime;
@@ -98,6 +95,7 @@ public class AppointmentRequestDTO {
 	public void setRequestId(long requestId) {
 		this.requestId = requestId;
 	}
+
 	public AppointmentRequestDTO(String email, String doctor, String dateTime, AppointmentType examType, long requestId,
 			String patientName, String doctorName) {
 		super();

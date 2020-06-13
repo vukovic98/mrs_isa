@@ -1,6 +1,7 @@
 package com.clinic.team16.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,16 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.clinic.team16.beans.Allergies;
 import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.ClinicalCenterAdministrator;
 import com.clinic.team16.beans.MedicalRecord;
-
+import com.clinic.team16.beans.Medication;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.RegistrationRequest;
 import com.clinic.team16.beans.Role;
 import com.clinic.team16.beans.User;
-
+import com.clinic.team16.beans.DTO.AllergiestEditDTO;
 import com.clinic.team16.beans.DTO.AppointmentHistoryDTO;
+import com.clinic.team16.beans.DTO.MedicationsEditDTO;
 import com.clinic.team16.beans.DTO.PatientDTO;
 import com.clinic.team16.beans.DTO.PatientDoctorDTO;
 import com.clinic.team16.beans.DTO.PatientInfoDTO;
@@ -27,6 +30,7 @@ import com.clinic.team16.beans.DTO.PatientMedicalRecordDTO;
 import com.clinic.team16.beans.DTO.UserDTO;
 import com.clinic.team16.service.ClinicalCenterAdminService;
 import com.clinic.team16.service.MedicalRecordService;
+import com.clinic.team16.service.MedicationService;
 import com.clinic.team16.service.PatientService;
 import com.clinic.team16.service.RegistrationRequestService;
 
@@ -52,6 +56,10 @@ public class PatientController {
 
 	@Autowired
 	private MedicalRecordService medicalRecordService;
+	
+	@Autowired
+	private MedicationService medicationService;
+
 
 	@GetMapping(path = "/findAll")
 	public ResponseEntity<List<PatientInfoDTO>> findAll() {
@@ -236,6 +244,24 @@ public class PatientController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	@GetMapping(path = "/medicalRecordForPatient/{patientEmail}")
+	public ResponseEntity<PatientMedicalRecordDTO> medicalRecordForPatient(@PathVariable String patientEmail) {
+		Patient found = this.patientService.findOneByEmail(patientEmail);
+
+		if (found != null) {
+			String name = found.getFirstName() + " " + found.getLastName();
+
+			PatientMedicalRecordDTO record = new PatientMedicalRecordDTO(name, found.getMedicalRecord().getGender(),
+					found.getMedicalRecord().getBirthday().toString(), found.getMedicalRecord().getHeight(),
+					found.getMedicalRecord().getWeight(), found.getMedicalRecord().getBloodType(),
+					found.getMedicalRecord().getAllergies(), found.getMedicalRecord().getPerscriptions());
+
+			return new ResponseEntity<PatientMedicalRecordDTO>(record, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
 
 	@GetMapping(path = "/patientInfo")
 	public ResponseEntity<PatientDTO> patientInfo() {
@@ -289,6 +315,81 @@ public class PatientController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
+	}
+	
+	@PutMapping(path = "/changeWeight/{patientEmail}&{weight}")
+	public ResponseEntity<HttpStatus> changeWeight(@PathVariable String patientEmail, @PathVariable int weight) {
+		Patient p = this.patientService.findOneByEmail(patientEmail);
+		
+		if(p != null) {
+			p.getMedicalRecord().setWeight(weight);
+			
+			this.patientService.save(p);
+			
+			return new ResponseEntity<>(HttpStatus.OK); 
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@PutMapping(path = "/changeHeight/{patientEmail}&{height}")
+	public ResponseEntity<HttpStatus> changeHeight(@PathVariable String patientEmail, @PathVariable int height) {
+		Patient p = this.patientService.findOneByEmail(patientEmail);
+		
+		if(p != null) {
+			p.getMedicalRecord().setHeight(height);
+			
+			this.patientService.save(p);
+			
+			return new ResponseEntity<>(HttpStatus.OK); 
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@PutMapping(path = "/editMedicationInRecord/{patientEmail}", consumes = "application/json")
+	public ResponseEntity<HttpStatus> addMedicationInRecord(@PathVariable String patientEmail, @RequestBody MedicationsEditDTO obj) {
+		Patient p = this.patientService.findOneByEmail(patientEmail);
+		
+		if(p != null) {
+			ArrayList<Medication> medsAdd = new ArrayList<>();
+			ArrayList<Medication> medsRem = new ArrayList<>();
+			
+			for(String m : obj.getMedicationsRemove()) {
+				medsRem.add(this.medicationService.findOneByName(m));
+			}
+			
+			for(String m : obj.getMedicationsAdd()) {
+				medsAdd.add(this.medicationService.findOneByName(m));
+			}
+			
+			p.getMedicalRecord().getPerscriptions().removeAll(medsRem);
+			p.getMedicalRecord().getPerscriptions().addAll(medsAdd);
+			
+			this.patientService.save(p);
+			
+			return new ResponseEntity<>(HttpStatus.OK);
+			
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@PutMapping(path = "/editAllergiesInRecord/{patientEmail}", consumes = "application/json")
+	public ResponseEntity<HttpStatus> addDiagnosisInRecord(@PathVariable String patientEmail, @RequestBody AllergiestEditDTO obj) {
+		Patient p = this.patientService.findOneByEmail(patientEmail);
+		
+		if(p != null) {
+			p.getMedicalRecord().getAllergies().removeAll(obj.getAllergiesRemove());
+			p.getMedicalRecord().getAllergies().addAll(obj.getAllergiesAdd());
+			
+			this.patientService.save(p);
+			
+			return new ResponseEntity<>(HttpStatus.OK);
+			
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 	}
 
 	@PostMapping(path = "/findModalByID", consumes = "application/json")

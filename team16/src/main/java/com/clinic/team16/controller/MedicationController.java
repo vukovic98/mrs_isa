@@ -41,8 +41,9 @@ public class MedicationController {
 	@PostMapping(path = "/addMedication", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addMedication(@RequestBody Medication med) {
 		Medication f = this.medicationService.findOneByCode(med.getCode());
-
-		if (f == null) {
+		Medication f2 = this.medicationService.findOneByName(med.getName());
+		
+		if (f == null && f2 == null) {
 
 			ClinicalCenter c = this.clinicalCenterService.findOneById(1);
 

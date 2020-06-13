@@ -23,17 +23,18 @@ public class MedicalReport {
 	@Column(name = "Approved", nullable = false)
 	private Boolean approved;
     
-	@ElementCollection
-	@CollectionTable(name = "medicalReport_diagnosis", joinColumns = @JoinColumn(name = "medicalReport_Diagnosis_id"))
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "diagnosis_diagnosis_id")
 	public List<Diagnosis> diagnosis;
 	
-	@ElementCollection
-	@CollectionTable(name = "medicalReport_medication", joinColumns = @JoinColumn(name = "medicalReport_Medication_id"))
+	@ManyToMany(cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "medication_medication_id")
 	public List<Medication> medication;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name="MedicalReport_Nurse_ID")
 	public Nurse nurse;
+	
 
 	public long getMedicalReportId() {
 		return this.medicalReportId;

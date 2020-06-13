@@ -1,6 +1,7 @@
 package com.clinic.team16.controller;
 
  
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinic.team16.beans.Allergies;
 import com.clinic.team16.beans.ClinicalCenter;
 import com.clinic.team16.beans.Diagnosis;
 import com.clinic.team16.service.ClinicalCenterService;
@@ -42,8 +44,9 @@ public class DiagnosisController {
 	@PutMapping(path = "/addDiagnosis", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addDiagnosis(@RequestBody Diagnosis d) {
 		Diagnosis found = this.diagnosisService.findOneByCode(d.getCode());
+		Diagnosis f2 = this.diagnosisService.findOneByName(d.getName());
 		
-		if(found == null) {
+		if(found == null && f2 == null) {
 			ClinicalCenter c = this.clinicalCenterService.findOneById(1);
 			d.setClinicalCenter(c);
 			
@@ -56,6 +59,12 @@ public class DiagnosisController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@GetMapping(path = "/findAllAllergies")
+	public ResponseEntity<Allergies[]> findAllAlergies() {
+		
+		return new ResponseEntity<Allergies[]>(Allergies.values(), HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path = "/deleteDiagnosis/{code}")

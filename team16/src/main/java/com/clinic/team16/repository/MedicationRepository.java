@@ -10,4 +10,6 @@ public interface MedicationRepository extends JpaRepository<Medication, Long> {
 	
 	public Medication findOneByCode(String code);
 	
+	public Medication findOneByName(String name);
+	
 }

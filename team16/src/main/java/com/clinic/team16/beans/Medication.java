@@ -1,6 +1,6 @@
 package com.clinic.team16.beans;
 
-import java.util.*;
+import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
