@@ -102,6 +102,7 @@ public class ClinicService {
 	}
 		return doctors;
 	}
+
 	
 	public ArrayList<DoctorDTO> filterDoctors(Clinic c, AppointmentType appType, String date) {
 		ArrayList<DoctorDTO> doctors = new ArrayList<>();
