@@ -36,8 +36,8 @@ public class MedicalRecord {
 	private List<Allergies> allergies;
 
 	
-	@ElementCollection
-	@CollectionTable(name = "medicalRecord_perscriptions", joinColumns = @JoinColumn(name = "medicalRedord_id"))
+	@ManyToMany(cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "perscriptions_medication_id")
 	private List<Medication> perscriptions;
 
 	@Column(name = "MedicalHistory", nullable = false)
