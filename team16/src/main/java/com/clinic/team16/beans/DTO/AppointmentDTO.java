@@ -1,6 +1,5 @@
 package com.clinic.team16.beans.DTO;
 
-
 import com.clinic.team16.beans.AppointmentType;
 
 public class AppointmentDTO {
@@ -13,7 +12,10 @@ public class AppointmentDTO {
 	private String price;
 	private String roomNo;
 	private String roomName;
-	private Double discount;	public AppointmentDTO() {
+	private Double discount;
+	private boolean held;
+
+	public AppointmentDTO() {
 		super();
 	}
 
@@ -42,6 +44,21 @@ public class AppointmentDTO {
 		this.price = price;
 		this.roomNo = roomNo;
 		this.held = held;
+	}
+
+	public AppointmentDTO(long id, String datetime, double duration, String doctor, String patient,
+			AppointmentType appointmentType, String price, String roomNo, String roomName, Double discount) {
+		super();
+		this.id = id;
+		this.datetime = datetime;
+		this.duration = duration;
+		this.doctor = doctor;
+		this.patient = patient;
+		this.appointmentType = appointmentType;
+		this.price = price;
+		this.roomNo = roomNo;
+		this.roomName = roomName;
+		this.discount = discount;
 	}
 
 	public boolean isHeld() {
@@ -115,30 +132,21 @@ public class AppointmentDTO {
 	public void setRoomNo(String roomNo) {
 		this.roomNo = roomNo;
 	}
-public AppointmentDTO(long id, String datetime, double duration, String doctor, String patient,
-			AppointmentType appointmentType, String price, String roomNo, String roomName, Double discount) {
-		super();
-		this.id = id;
-		this.datetime = datetime;
-		this.duration = duration;
-		this.doctor = doctor;
-		this.patient = patient;
-		this.appointmentType = appointmentType;
-		this.price = price;
-		this.roomNo = roomNo;
-		this.roomName = roomName;
-		this.discount = discount;
-	}
+
 	public String getRoomName() {
 		return roomName;
 	}
+
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
+
 	public Double getDiscount() {
 		return discount;
 	}
+
 	public void setDiscount(Double discount) {
 		this.discount = discount;
 	}
+
 }
