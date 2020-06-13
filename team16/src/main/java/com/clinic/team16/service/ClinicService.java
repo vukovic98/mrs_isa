@@ -3,6 +3,7 @@ package com.clinic.team16.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +48,67 @@ public class ClinicService {
 		this.clinicRepository.save(c);
 	}
 
+	public ArrayList<DoctorDTO> filterDoctorsForSurgery(Clinic c, String date) {
+		ArrayList<DoctorDTO> doctors = new ArrayList<>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date dateDate = null;
+
+		try {
+			dateDate = sdf.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (Doctor d : c.getDoctors()) {
+			System.out.println(d.getFirstName() + "-------------------");
+			List<LeaveRequest> leaves = d.getLeaveRequests();
+			ArrayList<String> frontDates = new ArrayList<>();
+
+			boolean leavesOk = true;
+			boolean appointmentsOk = false;
+
+			// leaves
+			if (leaves.size() > 0 && leaves != null) {
+				for (LeaveRequest l : leaves) {
+					if (l.isApproved()) {
+						boolean isBetween = l.getDateFrom().compareTo(dateDate) * dateDate.compareTo(l.getDateTo()) > 0;
+						if (isBetween) {
+							leavesOk = false;
+							break;
+						}
+					}
+				}
+			}
+			System.out.println(leavesOk);
+
+			// appointments
+			ArrayList<Appointment> apps = this.appointmentService.findByDoctorAndDate(sdf.format(dateDate), d.getId());
+			System.out.println(apps.size());
+			appointmentsOk = true;
+			for (Appointment a : apps) {
+				if (sdf2.format(a.getDateTime()).equals(sdf2.format(dateDate))) {
+					appointmentsOk = false;
+					break;
+				}
+			}
+
+			if (leavesOk && appointmentsOk) {
+				doctors.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(),
+						d.getEmail(), frontDates));
+			}
+		}
+		return doctors;
+	}
+
 	public ArrayList<DoctorDTO> filterDoctorsPredef(Clinic c, AppointmentType appType, String date) {
 		ArrayList<DoctorDTO> doctors = new ArrayList<>();
-		System.out.println("DATUM: "+date);
+		System.out.println("DATUM: " + date);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date dateDate = null;
-		
+
 		try {
 			dateDate = sdf.parse(date);
 		} catch (ParseException e) {
@@ -64,11 +120,11 @@ public class ClinicService {
 			if (d.getSpecialty() == appType) {
 				List<LeaveRequest> leaves = d.getLeaveRequests();
 				ArrayList<String> frontDates = new ArrayList<>();
-				
+
 				boolean leavesOk = true;
 				boolean appointmentsOk = false;
 
-				//leaves
+				// leaves
 				if (leaves.size() > 0 && leaves != null) {
 					for (LeaveRequest l : leaves) {
 						if (l.isApproved()) {
@@ -84,33 +140,31 @@ public class ClinicService {
 				System.out.println(leavesOk);
 
 				// appointments
-				ArrayList<Appointment> apps = this.appointmentService.findByDoctorAndDate(sdf.format(dateDate), d.getId());
+				ArrayList<Appointment> apps = this.appointmentService.findByDoctorAndDate(sdf2.format(dateDate),
+						d.getId());
 				System.out.println(apps.size());
 				appointmentsOk = true;
 				for (Appointment a : apps) {
-					if(sdf.format(a.getDateTime()).equals(sdf.format(dateDate))) {
+					if (sdf.format(a.getDateTime()).equals(sdf.format(dateDate))) {
 						appointmentsOk = false;
 					}
 				}
-				
-				
-				
+
 				if (leavesOk && appointmentsOk) {
-					doctors.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail(), frontDates));
+					doctors.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(),
+							d.getEmail(), frontDates));
 				}
 			}
-	}
+		}
 		return doctors;
 	}
 
-	
 	public ArrayList<DoctorDTO> filterDoctors(Clinic c, AppointmentType appType, String date) {
 		ArrayList<DoctorDTO> doctors = new ArrayList<>();
-		System.out.println("DATUM: "+date);
+		System.out.println("DATUM: " + date);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date dateDate = null;
-		
-		
+
 		try {
 			dateDate = sdf.parse(date);
 		} catch (ParseException e) {
@@ -123,11 +177,11 @@ public class ClinicService {
 			if (d.getSpecialty() == appType) {
 				List<LeaveRequest> leaves = d.getLeaveRequests();
 				ArrayList<String> frontDates = new ArrayList<>();
-				
+
 				boolean leavesOk = true;
 				boolean appointmentsOk = false;
 
-				//leaves
+				// leaves
 				if (leaves.size() > 0 && leaves != null) {
 					for (LeaveRequest l : leaves) {
 						if (l.isApproved()) {
@@ -143,57 +197,54 @@ public class ClinicService {
 				System.out.println(leavesOk);
 
 				// appointments
-				ArrayList<Appointment> apps = this.appointmentService.findByDoctorAndDate(sdf.format(dateDate), d.getId());
+				ArrayList<Appointment> apps = this.appointmentService.findByDoctorAndDate(sdf.format(dateDate),
+						d.getId());
 				System.out.println(apps.size());
 				if (apps.size() < 15) {
 					appointmentsOk = true;
-					
-					
-					
-					//slobdni termini
+
+					// slobdni termini
 					ArrayList<String> possTerms = new ArrayList<>();
-			            
-					possTerms.add("08:00"); 
-					possTerms.add("08:30"); 
+
+					possTerms.add("08:00");
+					possTerms.add("08:30");
 					possTerms.add("09:00");
 					possTerms.add("09:30");
-					possTerms.add("10:00"); 
-					possTerms.add("10:30"); 
+					possTerms.add("10:00");
+					possTerms.add("10:30");
 					possTerms.add("11:00");
 					possTerms.add("11:30");
-					possTerms.add("12:00"); 
-					possTerms.add("12:30"); 
+					possTerms.add("12:00");
+					possTerms.add("12:30");
 					possTerms.add("13:00");
-					possTerms.add("14:00"); 
-					possTerms.add("14:30"); 
+					possTerms.add("14:00");
+					possTerms.add("14:30");
 					possTerms.add("15:00");
 					possTerms.add("15:30");
-			            
-			         
-			        //2020-06-18 06:05:00.000000
-			        for(Appointment a : apps) {
-			        	String time = a.getDateTime().toString().substring(11, 16);
-			        	System.out.println(time + "****************************");
-			        	if(possTerms.contains(time)) {
-			        		System.out.println("UDJE" + time);
-			        		possTerms.remove(time);
-			        	}
-			        }
-			        
-			        for(String p : possTerms) {
-			        	String finalDate = date + " " + p;
-		        		frontDates.add(finalDate);
-			        }
-					
+
+					// 2020-06-18 06:05:00.000000
+					for (Appointment a : apps) {
+						String time = a.getDateTime().toString().substring(11, 16);
+						System.out.println(time + "****************************");
+						if (possTerms.contains(time)) {
+							System.out.println("UDJE" + time);
+							possTerms.remove(time);
+						}
+					}
+
+					for (String p : possTerms) {
+						String finalDate = date + " " + p;
+						frontDates.add(finalDate);
+					}
+
 				} else {
 					appointmentsOk = false;
 				}
 				System.out.println(appointmentsOk);
-				
-				
 
 				if (leavesOk && appointmentsOk) {
-					doctors.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail(), frontDates));
+					doctors.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(),
+							d.getEmail(), frontDates));
 				}
 
 			}
