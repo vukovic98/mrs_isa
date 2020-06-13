@@ -120,12 +120,21 @@ public class AppointmentController {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			if (list != null) {
 				for (Appointment a : list) {
-					String doctor = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
-					String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
-					dtoList.add(new AppointmentDTO(a.getAppointmentId(), formatter.format(a.getDateTime()),
-							a.getDuration(), doctor, patient, a.getPricelistItems().getName(),
-							String.valueOf(a.getPricelistItems().getPrice()),
-							String.valueOf(a.getOrdination().getNumber())));
+					if (a.getOrdination() != null) {
+						String doctor = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
+						String patient = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();
+						AppointmentDTO aDTO = new AppointmentDTO(a.getAppointmentId(), formatter.format(a.getDateTime()),
+								a.getDuration(), doctor, patient, a.getPricelistItems().getName(),
+								String.valueOf(a.getPricelistItems().getPrice()),
+								String.valueOf(a.getOrdination().getNumber()));
+						
+						if(a.getMedicalReport() == null)
+							aDTO.setHeld(false);
+						else
+							aDTO.setHeld(true);
+						
+						dtoList.add(aDTO);
+					}
 				}
 				return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
 			} else
@@ -184,6 +193,8 @@ public class AppointmentController {
 	@PostMapping(path = "/addAppointment", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addAppointment(@RequestBody AppointmentRequestDTO request) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		System.out.println(request.getDoctor() + " MAIL");
+		System.out.println(request.getEmail() + " PATIENT MAIL");
 		Doctor d = this.doctorService.findOneByEmail(request.getDoctor());
 		Patient p = this.patientService.findOneByEmail(request.getEmail());
 		ClinicalCenterAdministrator admin = this.clinicalCenterAdminService.findMainClinicalCenterAdmin();
@@ -197,14 +208,14 @@ public class AppointmentController {
 					found = pI;
 				}
 			}
-
+			System.out.println("PRODJE PRICELIST");
 			try {
 				exists = this.appointmentService.checkIfAppointmentExists(d, sdf.parse(request.getDateTime()));
 			} catch (ParseException e) {
 				e.printStackTrace();
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-
+			System.out.println("PRODJE EXISTS");
 			if (!exists) {
 				// dodavanje appointmenta
 				try {
@@ -228,8 +239,11 @@ public class AppointmentController {
 						appReq.setAppointment(app);
 						this.appointmentRequestService.save(appReq);
 
+						this.appointmentService.sendMail(d, p, request.getDateTime());
+						
 						return new ResponseEntity<>(HttpStatus.OK);
 					} else {
+						System.out.println("ZADNJE PUCA");
 						return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 					}
 
@@ -237,10 +251,13 @@ public class AppointmentController {
 					e.printStackTrace();
 				}
 			} else {
+				System.out.println("POSTOJI APP");
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-		} else
+		} else {
+			System.out.println("NE NADJE DOKTORA");
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 		return null;
 	}
 
@@ -278,6 +295,23 @@ public class AppointmentController {
 			return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@GetMapping(path = "/findAppointmentById/{appId}")
+	public ResponseEntity<AppointmentDTO> findById(@PathVariable long appId) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Appointment a = this.appointmentService.findOneById(appId);
+
+		if (a != null) {
+			String doc = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName() + ", " + a.getDoctor().getEmail();
+			String pat = a.getPatient().getFirstName() + " " + a.getPatient().getLastName() + ", " + a.getPatient().getEmail();
+			AppointmentDTO aDto = new AppointmentDTO(a.getAppointmentId(), sdf.format(a.getDateTime()), a.getDuration(),
+					doc, pat, a.getPricelistItems().getName(), a.getPrice() + "", a.getOrdination().getName());
+
+			return new ResponseEntity<AppointmentDTO>(aDto, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 	}
 
 	/*

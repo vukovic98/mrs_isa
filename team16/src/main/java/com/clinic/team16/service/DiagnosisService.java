@@ -29,4 +29,8 @@ public class DiagnosisService {
 	public void delete(Diagnosis s) {
 		this.diagnosisRepository.delete(s);
 	}
+	
+	public Diagnosis findOneByName(String name) {
+		return this.diagnosisRepository.findOneByName(name);
+	}
 }

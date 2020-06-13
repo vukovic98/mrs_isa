@@ -29,4 +29,8 @@ public class MedicationService {
 	public void delete(Medication m) {
 		this.medicationRepository.delete(m);
 	}
+	
+	public Medication findOneByName(String name) {
+		return this.medicationRepository.findOneByName(name); 
+	}
 }

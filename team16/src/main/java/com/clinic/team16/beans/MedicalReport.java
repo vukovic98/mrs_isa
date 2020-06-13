@@ -34,6 +34,7 @@ public class MedicalReport {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name="MedicalReport_Nurse_ID")
 	public Nurse nurse;
+	
 
 	public long getMedicalReportId() {
 		return this.medicalReportId;
