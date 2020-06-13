@@ -8,7 +8,7 @@ public class AppointmentDTO {
 	private double duration;
 	private String doctor;
 	private String patient;
-	private AppointmentType appointmentType;
+	private String appointmentType;
 	private String price;
 	private String roomNo;
 	private String roomName;
@@ -20,7 +20,7 @@ public class AppointmentDTO {
 	}
 
 	public AppointmentDTO(long id, String datetime, double duration, String doctor, String patient,
-			AppointmentType appointmentType, String price, String roomNo) {
+			String appointmentType, String price, String roomNo) {
 		super();
 		this.id = id;
 		this.datetime = datetime;
@@ -33,7 +33,7 @@ public class AppointmentDTO {
 	}
 
 	public AppointmentDTO(long id, String datetime, double duration, String doctor, String patient,
-			AppointmentType appointmentType, String price, String roomNo, boolean held) {
+			String appointmentType, String price, String roomNo, boolean held) {
 		super();
 		this.id = id;
 		this.datetime = datetime;
@@ -47,7 +47,7 @@ public class AppointmentDTO {
 	}
 
 	public AppointmentDTO(long id, String datetime, double duration, String doctor, String patient,
-			AppointmentType appointmentType, String price, String roomNo, String roomName, Double discount) {
+			String appointmentType, String price, String roomNo, String roomName, Double discount) {
 		super();
 		this.id = id;
 		this.datetime = datetime;
@@ -109,11 +109,11 @@ public class AppointmentDTO {
 		this.patient = patient;
 	}
 
-	public AppointmentType getAppointmentType() {
+	public String getAppointmentType() {
 		return appointmentType;
 	}
 
-	public void setAppointmentType(AppointmentType appointmentType) {
+	public void setAppointmentType(String appointmentType) {
 		this.appointmentType = appointmentType;
 	}
 

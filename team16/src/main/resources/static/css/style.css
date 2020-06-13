@@ -3,6 +3,10 @@ body {
 	background-repeat: no-repeat;
 }
 
+.canvasjs-chart-canvas .canvasjs-chart-container{
+	width: -webkit-fill-available;
+}
+
 #map {
   height: 50%;
   width: 50%;

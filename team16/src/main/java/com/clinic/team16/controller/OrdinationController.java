@@ -69,7 +69,7 @@ public class OrdinationController {
 
 	@PostMapping(path = "/addOrdination", consumes = "application/json")
 	@Transactional
-	public ResponseEntity<HttpStatus> addPricelistItem(@RequestBody OrdinationAddDTO ord) {
+	public ResponseEntity<HttpStatus> addOrd(@RequestBody OrdinationAddDTO ord) {
 
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);

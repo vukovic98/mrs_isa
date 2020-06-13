@@ -6,7 +6,7 @@ public class PredefinedAppointmentRequestDTO {
 	private String email;
 	private String doctor; //email njegov
 	private String dateTime;
-	private AppointmentType examType;
+	private String examType;
 	private String onlyTime;
 	private String patientName;
 	private String doctorName;
@@ -30,10 +30,10 @@ public class PredefinedAppointmentRequestDTO {
 	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
-	public AppointmentType getExamType() {
+	public String getExamType() {
 		return examType;
 	}
-	public void setExamType(AppointmentType examType) {
+	public void setExamType(String examType) {
 		this.examType = examType;
 	}
 	public String getOnlyTime() {
@@ -63,7 +63,7 @@ public class PredefinedAppointmentRequestDTO {
 	public PredefinedAppointmentRequestDTO() {
 		super();
 	}
-	public PredefinedAppointmentRequestDTO(String email, String doctor, String dateTime, AppointmentType examType,
+	public PredefinedAppointmentRequestDTO(String email, String doctor, String dateTime, String examType,
 			String onlyTime, String patientName, String doctorName, Double discount) {
 		super();
 		this.email = email;

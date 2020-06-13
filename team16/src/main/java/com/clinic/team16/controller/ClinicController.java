@@ -106,7 +106,7 @@ public class ClinicController {
 	}
 
 	@GetMapping("/findAppointments/{appType}&{date}&{avgGrade}&{location}")
-	public ResponseEntity<List<ClinicFilterDTO>> findAppointments(@PathVariable AppointmentType appType,
+	public ResponseEntity<List<ClinicFilterDTO>> findAppointments(@PathVariable String appType,
 			@PathVariable String date, @PathVariable String avgGrade, @PathVariable String location)
 			throws ParseException {
 		List<Clinic> list = this.clinicService.filterClinics(appType.toString());
@@ -116,7 +116,9 @@ public class ClinicController {
 			for (Clinic c : list) {
 				System.out.println("ima");
 				for (PricelistItem pli : c.getPricelist().getPricelistItems()) {
-					if (pli.getName() == appType) {
+					System.out.println(pli.getName());
+					System.out.println(appType);
+					if (pli.getName().equalsIgnoreCase(appType)) {
 						price = pli.getPrice();
 						break;
 					}
@@ -177,7 +179,7 @@ public class ClinicController {
 
 	@GetMapping(path = "/findAllAppointmentDoctors/{clinicID}&{appType}&{date}")
 	public ResponseEntity<ArrayList<DoctorDTO>> findAllAppointmentDoctors(@PathVariable long clinicID,
-			@PathVariable AppointmentType appType, @PathVariable String date) {
+			@PathVariable String appType, @PathVariable String date) {
 		Clinic c = this.clinicService.findOneByClinicID(clinicID);
 
 		ArrayList<DoctorDTO> doctors = this.clinicService.filterDoctors(c, appType, date);

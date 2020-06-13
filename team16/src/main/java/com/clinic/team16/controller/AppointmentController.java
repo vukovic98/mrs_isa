@@ -220,7 +220,7 @@ public class AppointmentController {
 
 		if (d != null) {
 			for (PricelistItem pI : d.getClinic().getPricelist().getPricelistItems()) {
-				if (pI.getName() == request.getExamType()) {
+				if (pI.getName().equalsIgnoreCase(request.getExamType())) {
 					found = pI;
 				}
 			}
@@ -291,7 +291,7 @@ public class AppointmentController {
 
 		if (d != null) {
 			for (PricelistItem pI : d.getClinic().getPricelist().getPricelistItems()) {
-				if (pI.getName() == request.getExamType()) {
+				if (pI.getName().equalsIgnoreCase(request.getExamType())) {
 					found = pI;
 				}
 			}

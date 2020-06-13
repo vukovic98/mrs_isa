@@ -41,7 +41,7 @@ public class ScheduledTasks {
 	@Autowired
 	private AppointmentService appointmentService;
 	
-	@Scheduled(fixedDelay = 100000)
+	@Scheduled(initialDelay = 100000, fixedDelay = 100000)
 	@Transactional
 	public void approveRequestsAutomatic() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -81,6 +81,7 @@ public class ScheduledTasks {
 				appReqService.sendAcceptedMail(chosenOrd.getName(), appointmentRequest.getAppointment().getDoctor().getFirstName() + " "+ appointmentRequest.getAppointment().getDoctor().getLastName(), sdf.format(appointmentRequest.getAppointment().getDateTime()));
 
 			}else {
+				System.out.println(appointmentRequest.getAppointment().getDoctor().getClinic().getName());
 				chosenOrd = appointmentRequest.getAppointment().getDoctor().getClinic().getOrdinations().get(0);
 				appointmentRequest.setApproved(true);
 				

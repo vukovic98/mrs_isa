@@ -29,8 +29,8 @@ public class Doctor extends User {
 	@CollectionTable(name = "doctor_grades", joinColumns = @JoinColumn(name = "doctor_id"))
 	public List<Grade> grades;
 
-	@Enumerated(EnumType.STRING)
-	private AppointmentType speciality;
+	@Column(name = "speciality",nullable = false)
+	private String speciality;
 
 	public Doctor() {
 		super();
@@ -46,7 +46,7 @@ public class Doctor extends User {
 	}
 
 	public Doctor(Clinic clinic, ArrayList<Appointment> appointment, ArrayList<LeaveRequest> leaveRequests,
-			ArrayList<Grade> grades, AppointmentType appType) {
+			ArrayList<Grade> grades, String appType) {
 		super();
 		this.clinic = clinic;
 		this.appointments = appointment;
@@ -55,11 +55,11 @@ public class Doctor extends User {
 		this.speciality = appType;
 	}
 
-	public AppointmentType getSpecialty() {
+	public String getSpecialty() {
 		return speciality;
 	}
 
-	public void setSpecialty(AppointmentType specialty) {
+	public void setSpecialty(String specialty) {
 		this.speciality = specialty;
 	}
 

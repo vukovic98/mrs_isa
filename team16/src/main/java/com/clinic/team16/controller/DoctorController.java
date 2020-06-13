@@ -183,12 +183,11 @@ public class DoctorController {
 	@GetMapping(path = "/findAllFreeForDateTime", params = { "date", "type" })
 	public ResponseEntity<List<DoctorDTO>> findAllFreeForDateTime(@RequestParam("date") String date,
 			@RequestParam("type") String type) throws ParseException {
-		AppointmentType at = AppointmentType.valueOf(type);
 
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
 
-		List<DoctorDTO> dtoList = clinicService.filterDoctorsPredef(ca.getClinic(), at, date);
+		List<DoctorDTO> dtoList = clinicService.filterDoctorsPredef(ca.getClinic(), type, date);
 
 		if (dtoList != null) {
 			return new ResponseEntity<List<DoctorDTO>>(dtoList, HttpStatus.OK);

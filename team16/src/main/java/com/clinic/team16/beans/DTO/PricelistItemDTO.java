@@ -3,20 +3,20 @@ package com.clinic.team16.beans.DTO;
 import com.clinic.team16.beans.AppointmentType;
 
 public class PricelistItemDTO {
-	private AppointmentType appointmentType;
+	private String appointmentType;
 	private String price;
 	private String id;
 	
 
-	public AppointmentType getAppointmentType() {
+	public String getAppointmentType() {
 		return appointmentType;
 	}
 
-	public void setAppointmentType(AppointmentType appointmentType) {
+	public void setAppointmentType(String appointmentType) {
 		this.appointmentType = appointmentType;
 	}
 
-	public PricelistItemDTO(AppointmentType appointmentType, String price, String id) {
+	public PricelistItemDTO(String appointmentType, String price, String id) {
 		super();
 		this.appointmentType = appointmentType;
 		this.price = price;
