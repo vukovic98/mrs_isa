@@ -70,16 +70,17 @@
 					</div>
 					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
 						data-parent="#accordionExample">
-						<div class="card-body">Anim pariatur cliche reprehenderit,
-							enim eiusmod high life accusamus terry richardson ad squid. 3
-							wolf moon officia aute, non cupidatat skateboard dolor brunch.
-							Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
-							tempor, sunt aliqua put a bird on it squid single-origin coffee
-							nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
-							craft beer labore wes anderson cred nesciunt sapiente ea
-							proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat
-							craft beer farm-to-table, raw denim aesthetic synth nesciunt you
-							probably haven't heard of them accusamus labore sustainable VHS.
+						<div class="card-body">
+						<table class="table table-hover table-bordered" id="averageDoctorTable">
+							<thead>
+								<th>Doctor</th>
+								<th>Average grade</th>
+							</thead>
+							<tbody id="averageDoctorBody">
+							
+							</tbody>
+						</table>
+						
 						</div>
 					</div>
 				</div>
@@ -94,16 +95,7 @@
 					</div>
 					<div id="collapseThree" class="collapse"
 						aria-labelledby="headingThree" data-parent="#accordionExample">
-						<div class="card-body">Anim pariatur cliche reprehenderit,
-							enim eiusmod high life accusamus terry richardson ad squid. 3
-							wolf moon officia aute, non cupidatat skateboard dolor brunch.
-							Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
-							tempor, sunt aliqua put a bird on it squid single-origin coffee
-							nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
-							craft beer labore wes anderson cred nesciunt sapiente ea
-							proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat
-							craft beer farm-to-table, raw denim aesthetic synth nesciunt you
-							probably haven't heard of them accusamus labore sustainable VHS.
+						<div class="card-body"><div id="chartContainer1" style="height: 400px; width: 100%;"></div><div id="chartContainer2" style="height: 400px; width: 100%;"></div><div id="chartContainer3" style="height: 400px; width: 100%;"></div>
 						</div>
 					</div>
 				</div>
@@ -118,16 +110,7 @@
 					</div>
 					<div id="collapseFour" class="collapse"
 						aria-labelledby="headingThree" data-parent="#accordionExample">
-						<div class="card-body">Anim pariatur cliche reprehenderit,
-							enim eiusmod high life accusamus terry richardson ad squid. 3
-							wolf moon officia aute, non cupidatat skateboard dolor brunch.
-							Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
-							tempor, sunt aliqua put a bird on it squid single-origin coffee
-							nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
-							craft beer labore wes anderson cred nesciunt sapiente ea
-							proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat
-							craft beer farm-to-table, raw denim aesthetic synth nesciunt you
-							probably haven't heard of them accusamus labore sustainable VHS.
+						<div class="card-body"><div id="chartContainer11" style="height: 400px; width: 100%;"></div><div id="chartContainer22" style="height: 400px; width: 100%;"></div><div id="chartContainer33" style="height: 400px; width: 100%;"></div>
 						</div>
 					</div>
 				</div>
@@ -137,6 +120,8 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>
+	<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
 		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
