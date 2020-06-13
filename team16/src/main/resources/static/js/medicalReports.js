@@ -43,7 +43,6 @@ $(document).ready(function () {
 	        		"medications": medications
 	        	}),
 	        	contentType: "application/json; charset=utf-8",
-			    dataType: "json",
 			    statusCode: {
 		    		200: function(responseObject, textStatus, jqXHR) {
 		    			console.log("MedicalReports - findAllMedicalReports() - 200 OK");
@@ -86,7 +85,6 @@ $(document).ready(function () {
         		"medicalReportId": id 
         	}),
         	contentType: "application/json; charset=utf-8",
-		    dataType: "json",
         	success: function(report) {
         		console.log(report);
         		$("#reportId").text(report.id);

@@ -107,7 +107,6 @@ $( document ).ready(function() {
         		"email": email 
         	}),
         	contentType: "application/json; charset=utf-8",
-		    dataType: "json",
         	success: function(patient) {
         		$("#modalName").text(patient.name);
 		        $("#modalEmail").text(patient.email);
