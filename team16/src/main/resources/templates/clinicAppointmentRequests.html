@@ -74,14 +74,15 @@
 						<div class="card-body">
 							<div class="col-xs-12 col-sm-12 pl-0">
 								<p id="requestId" style="display: none;"></p>
+								<p id="appointmentType" style="display: none;"></p>
 								<div class="input-group mb-3">
 									<div class="input-group-prepend" style="width: 30%;">
 										<span class="input-group-text w_available" id="doctorSPAN">Date</span>
 									</div>
 									<input type="text" id="dateModal" class="form-control"
 										aria-describedby="basic-addon1" readonly>
-									<select id="termModal" class="form-control disabled"
-										aria-describedby="basic-addon1" ></select>
+									<input type="text" id="termModal" class="form-control"
+										aria-describedby="basic-addon1" readonly>
 								</div>
 								<div class="input-group mb-3">
 									<div class="input-group-prepend" style="width: 30%;">
@@ -89,6 +90,8 @@
 									</div>
 									<input type="text" id="doctorModal" class="form-control"
 										aria-describedby="basic-addon1" readonly>
+									<select id="doctorSelect" class="form-control" style="display:none;"></select>
+										
 								</div>
 								<div class="input-group mb-3">
 									<div class="input-group-prepend" style="width: 30%;">

@@ -1,14 +1,18 @@
 package com.clinic.team16.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +22,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.clinic.team16.beans.Appointment;
-import com.clinic.team16.beans.ClinicAdministrator;
+import com.clinic.team16.beans.AppointmentType;
+import com.clinic.team16.beans.Clinic;import com.clinic.team16.beans.ClinicAdministrator;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.Patient;
+import com.clinic.team16.beans.User;
+import com.clinic.team16.beans.DTO.DoctorAddDTO;
 import com.clinic.team16.beans.DTO.DoctorDTO;
 import com.clinic.team16.beans.DTO.DoctorLeaveDTO;
+import com.clinic.team16.beans.DTO.UserDTO;
 import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.ClinicAdminService;
 import com.clinic.team16.service.ClinicService;
@@ -70,8 +77,21 @@ public class DoctorController {
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-
-	@GetMapping(path = "/findAllDoctorsDTOByClinic/{clinicID}")
+	
+@GetMapping(path = "/findCurrentDoc")
+	public ResponseEntity<UserDTO> findOneByEmail() {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Doctor found = this.doctorService.findOneByEmail(currentUser);
+		
+		
+		
+		System.out.println("PROSLO");
+		if (found != null)
+			return new ResponseEntity<UserDTO>(new UserDTO( found.getEmail(), found.getCity(), found.getCountry(), found.getAddress(), found.getPhoneNumber(), found.getInsuranceNumber(),found.getFirstName(),found.getLastName()), HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	@GetMapping(path = "/findAllDoctorsDTOByClinic/{clinicID}") 
 	public ResponseEntity<ArrayList<DoctorDTO>> findAllDoctorsDTO(@PathVariable long clinicID) {
 		List<Doctor> list = this.doctorService.findAllByClinic(clinicID);
 
@@ -157,6 +177,76 @@ public class DoctorController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@GetMapping(path = "/findAllFreeForDateTime", params = {"date","type"})
+	public ResponseEntity<List<DoctorDTO>> findAllFreeForDateTime(@RequestParam("date") String date, @RequestParam("type") String type) throws ParseException{
+		AppointmentType at = AppointmentType.valueOf(type);
+		
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+		
+		List<DoctorDTO> dtoList = clinicService.filterDoctorsPredef(ca.getClinic(), at, date);
+		
+		if(dtoList != null) {
+			return new ResponseEntity<List<DoctorDTO>>(dtoList,HttpStatus.OK);
+			
+		}
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
+	}
+	
+	@PostMapping("/addDoctor")
+	@Transactional
+	public ResponseEntity<HttpStatus> addDoctor(@RequestBody DoctorAddDTO doctor) throws Exception{
+		System.out.println("Pozvana metoda kontrolera za dodavanje doktora.");
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+		
+		Doctor find = doctorService.findOneByEmail(doctor.getEmail());
+		
+		if(find == null) {
+		
+		Doctor d = new Doctor();
+		d.setFirstName(doctor.getFirstName());
+		d.setLastName(doctor.getLastName());
+		d.setAddress(doctor.getAddress());
+		d.setCity(doctor.getCity());
+		d.setCountry(doctor.getCountry());
+		d.setInsuranceNumber(doctor.getInsuranceNumber());
+		d.setPassword(doctor.getPassword());
+		d.setEmail(doctor.getEmail());
+		d.setPhoneNumber(doctor.getPhoneNumber());
+		
+		d.setClinic(ca.getClinic());
+		ca.getClinic().getDoctors().add(d);
+		
+		doctorService.save(d);
+		//clinicService.save(ca.getClinic());
+		
+		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+		}else
+			return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@DeleteMapping("/deleteDoctor/{id}")
+	public ResponseEntity<HttpStatus> deleteDoctor(@PathVariable("id") long doctorId){
+		
+		Doctor del = doctorService.findOneByDoctorID(doctorId);
+		Clinic cl = del.getClinic();
+		if(del.getAppointments().size() == 0) {
+			cl.getDoctors().remove(del);
+			del.setClinic(null);
+			
+			doctorService.delete(del);
+			clinicService.save(cl);
+			
+			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+			
+		}else
+			return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+	}
+	
 
 	@GetMapping(path = "/getFreeTermsForCurrent/{date}")
 	public ResponseEntity<ArrayList<String>> getFreeTermsForCurrent(@PathVariable String date) {
@@ -207,5 +297,23 @@ public class DoctorController {
 			return new ResponseEntity<ArrayList<String>>(terms, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+@PutMapping(path = "/updateDoctorMyself", consumes = "application/json")
+	public ResponseEntity<HttpStatus> updatePatient(@RequestBody User p) {
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		Doctor found = this.doctorService.findOneByEmail(currentUser);
+
+		if (found != null) {
+			found.setFirstName(p.getFirstName());
+			found.setLastName(p.getLastName());
+			found.setAddress(p.getAddress());
+			found.setCity(p.getCity());
+			found.setCountry(p.getCountry());
+			found.setPhoneNumber(p.getPhoneNumber());
+			final Doctor updatedDoc = doctorService.save(found);
+			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+		} else
+			return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
 	}
 }

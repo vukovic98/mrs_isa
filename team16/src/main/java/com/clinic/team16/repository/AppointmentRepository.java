@@ -33,10 +33,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long > 
 			value = "SELECT * FROM appointment WHERE substring(appointment.date_time,1,10) = ?1 AND appointment.doctor_id = ?2",
 			nativeQuery = true)
 	public List<Appointment> findByDoctorAndDate(String date, Long doctor_id);
+	
 	@Query(
-			value = "SELECT * FROM appointment WHERE appointment.appointment_request_id IN (SELECT appointment_request_id FROM appointment_request WHERE ",
+			value = "SELECT * FROM appointment WHERE appointment.patient_id IS NULL",
 			nativeQuery = true)
-	public List<Appointment> findAllPredefined(Long clinic_id);
+	public List<Appointment> findAllPredefined();
 
 	
 	@Query(

@@ -1,8 +1,8 @@
 $( document ).ready(function() {
 	var filter = sessionStorage.getItem("filter");
-	console.log(filter);
 	var now = currentDate();
     $("#dateF").attr("min",now);
+    $("#datePredef").attr("min",now);
 	if (filter == "ne"){
 		$("#filterDiv").css("display","none");
 	}
@@ -77,16 +77,17 @@ $( document ).ready(function() {
     				  
     				  $.ajax({
     					    type: 'GET',
-    					    url: 'appointmentApi/findAll',
+    					    url: 'appointmentApi/findAllPredefinedCurrent',
     					    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
     					    statusCode: {
     					      200: function(responseObject, textStatus, jqXHR) {
     					        console.log("Appointments - findAll() - 200 OK");
-    					        appointmentsAllOK(responseObject);
+    					        predefAppointmentsAllOK(responseObject);
     					      },
     					      204: function(responseObject, textStatus, jqXHR) {
     					        console.log("Appointments - findAll() - 204 No Content");
-    					        appointmentsAllNO(responseObject);
+    					        //appointmentsAllNO(responseObject);
+    					        
     					      },
     							403: function(responseObject, textStatus, jqXHR) {
     								console.log("403 Unauthorized");
@@ -115,6 +116,27 @@ $( document ).ready(function() {
     					    }
     					  });
     				
+    				  
+     				 $.ajax ({
+ 				    	type: 'GET',
+ 				    	url: '/pricelistItemApi/findAllAppointmentTypes',
+ 					    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+ 				    	statusCode: {
+ 				    		200: function(responseObject, textStatus, jqXHR) {
+ 				    			console.log("200 OK");
+ 				    			loadAppointmentTypesPredefAllOK(responseObject);
+ 				    		},
+ 				    		204: function(responseObject, textStatus, jqXHR) {
+ 				    			console.log("204 No Content");
+ 					
+ 				    		},
+ 							403: function(responseObject, textStatus, jqXHR) {
+ 								console.log("403 Unauthorized");
+ 								unauthorized();
+ 							}
+ 				    	}
+ 				    });
+    				  
     			} else if(responseObject == "PATIENT"){
     				$("#price").css('display', 'none');
     				$("#rooms").css('display', 'none');
@@ -122,9 +144,34 @@ $( document ).ready(function() {
     				
     				$("#li_price").css('display', 'none');
     				$("#li_rooms").css('display', 'none');
-    				//$("#li_appointments").css('display', 'none');
+    				$("#addDoctorBtn").css('display', 'none');
     				
     				var atrs = sessionStorage.getItem('appParam');
+    				var clinicId = atrs.split("&")[0];
+    				 $.ajax({
+ 					    type: 'GET',
+ 					    url: 'appointmentApi/findAllPredefinedForPatient/'+clinicId,
+ 					    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+ 					    statusCode: {
+ 					      200: function(responseObject, textStatus, jqXHR) {
+ 					        console.log("Predefined appointments for clinic - 200 OK");
+ 					        predefAppointmentsAllOK(responseObject,1);
+ 					      },
+ 					      204: function(responseObject, textStatus, jqXHR) {
+ 					        console.log("Predefined appointments for clinic - 204 No Content");
+ 					        //appointmentsAllNO(responseObject);
+ 					        $("#carouselExampleControls").css("display","none");
+ 					        $("#predefAppH1").text("There are no predefined appointments.");
+ 					        
+ 					     
+ 					    		
+ 					      },
+ 							403: function(responseObject, textStatus, jqXHR) {
+ 								console.log("403 Unauthorized");
+ 								unauthorized();
+ 							}
+ 					    }
+ 					  });
     			//---------------ako filtrira klinike------------------------
     			if (atrs.includes("&")){
     				    var attrs2 = atrs.split("&");
@@ -271,8 +318,14 @@ $( document ).ready(function() {
     		}},
     		204: function(responseObject, textStatus, jqXHR) {
     			console.log("Role - findAll() - 204 No Content");
-    			showMessage("Something went wrong!", "antiquewhite");
-    		},
+    		     Swal.fire({
+   		  		  position: 'center',
+   		  		  icon: 'error',
+   		  		  title: 'Something went wrong!',
+   		  		  showConfirmButton: false,
+   		  		  timer: 1500
+   		  		});
+    			},
     		403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
     			unauthorized();
@@ -298,6 +351,175 @@ $( document ).ready(function() {
 		$("#addRoomModal").modal();
 	});
 	
+	
+	$(document).on("click", "#addDoctorBtn", function(){
+		$("#addDoctor").modal();
+	});
+	
+	
+	$(document).on("click", "#fireButton", function(){
+		var id = $(this).parents("tr").attr("id");
+        $.ajax({
+            type: 'DELETE',
+            url: 'doctorApi/deleteDoctor/' + id,
+            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            statusCode: {
+              200: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - delete() - 200 OK");
+                
+                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'success',
+	          		  title: 'Doctor deleted successfully!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})
+	          		
+	          		window.setTimeout(function(){location.reload()},1500);
+                
+              },
+              400: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - delete() - 400 Bad request");
+                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'error',
+	          		  title: 'Removing a doctor with appointemtns is not allowed!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})
+	          		
+	          		
+              },
+      		403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		}
+            }
+          });
+		
+		
+	});
+	
+	
+	
+	$(document).on("click", "#addDoctorModalBtn", function(){
+		var err = false;
+		if($("#firstNameSignUp").val() == null || $("#firstNameSignUp").val() == ""){
+			err = true;
+			$("#firstNameSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#lastNameSignUp").val() == null || $("#lastNameSignUp").val() == ""){
+			err = true;
+			$("#lastNameSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#citySignUp").val() == null || $("#citySignUp").val() == ""){
+			err = true;
+			$("#citySignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#countrySignUp").val() == null || $("#countrySignUp").val() == ""){
+			err = true;
+			$("#countrySignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#addressSignUp").val() == null || $("#addressSignUp").val() == ""){
+			err = true;
+			$("#addressSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#insNumberSignUp").val() == null || $("#insNumberSignUp").val() == ""){
+			err = true;
+			$("#insNumberSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#phoneSignUp").val() == null || $("#phoneSignUp").val() == ""){
+			err = true;
+			$("#phoneSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#emailSignUp").val() == null || $("#emailSignUp").val() == ""){
+			err = true;
+			$("#emailSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#passSignUp").val() == null || $("#passSignUp").val() == ""){
+			err = true;
+			$("#passSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#passRepeatSignUp").val() == null || $("#passRepeatSignUp").val() == ""){
+			err = true;
+			$("#passRepeatSignUp").addClass("is-invalid");
+		}else
+			err = false;
+		
+		if($("#passSignUp").val() != $("#passRepeatSignUp").val()){
+			err = true;
+            Swal.fire({
+        		  position: 'center',
+        		  icon: 'error',
+        		  title: 'The passwords do not match!',
+        		  showConfirmButton: false,
+        		  timer: 1500
+        		})
+        		
+		}else
+			err = false;
+		
+		if(err != true){
+	        $.ajax({
+	            type: 'POST',
+	            url: 'doctorApi/addDoctor',
+	            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	            data : JSON.stringify({
+	              "email" : $("#emailSignUp").val(),
+	              "password" : $("#passSignUp").val(),
+	              "firstName" : $("#firstNameSignUp").val(),
+	              "lastName" : $("#lastNameSignUp").val(),
+	              "address" : $("#addressSignUp").val(),
+	              "city" : $("#citySignUp").val(),
+	              "country" : $("#countrySignUp").val(),
+	              "phoneNumber" : $("#phoneSignUp").val(),
+	              "insuranceNumber" : $("#insNumberSignUp").val()
+	            }),
+	            contentType: "application/json; charset=utf-8",
+	            dataType: "json",
+	            statusCode: {
+	              200: function(responseObject, textStatus, jqXHR) {
+	                console.log("Ordination - add() - 200 OK");
+	                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'success',
+	          		  title: 'New doctor successfully added!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})
+	          		
+	          		window.setTimeout(function(){location.reload()},1500);
+	          		
+	              },
+	              400: function(responseObject, textStatus, jqXHR) {
+	                console.log("Ordination - add() - 400 Bad request");
+	                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+	              },
+	    		  403: function(responseObject, textStatus, jqXHR) {
+	    			console.log("403 Unauthorized");
+	    			unauthorized();
+	    		  }
+	            }
+	          });
+			
+	        
+	        
+		}
+		
+	});
+	
+	
 	$(document).on("click", "#roomCreateModalBtn", function(){
 		var name = $("#roomNameInput").val();
 		var type = $("#roomTypeInput").val();
@@ -315,7 +537,14 @@ $( document ).ready(function() {
             statusCode: {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 200 OK");
-                showMessage("Ordination successfully added!", "palegreen");
+                Swal.fire({
+     		  		  position: 'center',
+     		  		  icon: 'success',
+     		  		  title: 'Ordination successfully added!',
+     		  		  showConfirmButton: false,
+     		  		  timer: 1500
+     		  		});
+              
           	  var table = $("#roomsBody");
         	  
         	    var row = $("<tr id=\""+name+"\"></tr>");
@@ -328,7 +557,14 @@ $( document ).ready(function() {
               },
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 400 Bad request");
-                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+                Swal.fire({
+   		  		  position: 'center',
+   		  		  icon: 'error',
+   		  		  title: 'Ordination with inserted name already exists!',
+   		  		  showConfirmButton: false,
+   		  		  timer: 1500
+   		  		});
+                
               },
     		  403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
@@ -340,9 +576,14 @@ $( document ).ready(function() {
 	
 	$(document).on("click", "#btnMakeApp", function(){
 		var selTerm = $(this).closest("tr").find("select option:selected").val();
-		console.log("sel term: "+selTerm);
 		if ( selTerm == "Choose term"){
-			 showMessage("You must choose exam term!", "antiquewhite");
+			 Swal.fire({
+		  		  position: 'center',
+		  		  icon: 'error',
+		  		  title: 'You must choose exam term!',
+		  		  showConfirmButton: false,
+		  		  timer: 1500
+		  		});
 		}
 		else{
 			var atrs = sessionStorage.getItem('appParam').split("&");
@@ -357,9 +598,7 @@ $( document ).ready(function() {
 			var appType = atrs[1];
 			var date = atrs[2];
 			
-			console.log(atrs);
-			console.log(appType);
-			console.log(date);
+			
 		
 			$("#clinicModal").val($("#name").val());
 			$("#doctorModal").val(dcName + " " + dcLast);
@@ -388,7 +627,6 @@ $( document ).ready(function() {
 		  		200: function(responseObject, textStatus, jqXHR) {
 		  			console.log("200 OK");
 		  			user = responseObject;
-		  			console.log(user);
 		  			var doctor = $("#doctorSPAN").attr('name');
 		  			var clinic = $("#clinicModal").val();
 		  			var dateTime = $("#dateTime").val();
@@ -409,11 +647,25 @@ $( document ).ready(function() {
 		  			  	statusCode: {
 		  			  		200: function(responseObject, textStatus, jqXHR) {
 		  			  			console.log("200 OK");
-		  			  			showMessage("Appointment request successfully submited!", "palegreen");
+		  			  		 Swal.fire({
+		  				  		  position: 'center',
+		  				  		  icon: 'success',
+		  				  		  title: 'Appointment request successfully submited!',
+		  				  		  showConfirmButton: false,
+		  				  		  timer: 1500
+		  				  		});
+		  			  			
 		  			  		},
 		  			  		204: function(responseObject, textStatus, jqXHR) {
 		  			  			console.log("204 No Content");
-		  			  			showMessage("Something went wrong!", "antiquewhite");
+		  			  		 Swal.fire({
+		  				  		  position: 'center',
+		  				  		  icon: 'error',
+		  				  		  title: 'Something went wrong!',
+		  				  		  showConfirmButton: false,
+		  				  		  timer: 1500
+		  				  		});
+		  			  			
 		  			  			window.setTimeout(function(){location.reload()},1500);
 		  			  		},
 		  					403: function(responseObject, textStatus, jqXHR) {
@@ -491,7 +743,13 @@ $( document ).ready(function() {
           statusCode: {
             200: function(responseObject, textStatus, jqXHR) {
               console.log("Ordination - add() - 200 OK");
-              showMessage("Ordination successfully added!", "palegreen");
+              Swal.fire({
+			  		  position: 'center',
+			  		  icon: 'success',
+			  		  title: 'Ordination successfully added!',
+			  		  showConfirmButton: false,
+			  		  timer: 1500
+			  		});
               input.each(function(){
                 $(this).parent("td").html($(this).val());
               }); 
@@ -504,7 +762,14 @@ $( document ).ready(function() {
             },
             400: function(responseObject, textStatus, jqXHR) {
               console.log("Ordination - add() - 400 Bad request");
-              showMessage("Ordination with inserted name already exists!", "antiquewhite");
+              Swal.fire({
+			  		  position: 'center',
+			  		  icon: 'error',
+			  		  title: 'Ordination with inserted name already exists!',
+			  		  showConfirmButton: false,
+			  		  timer: 1500
+			  		});
+             
             },
   		  403: function(responseObject, textStatus, jqXHR) {
   			console.log("403 Unauthorized");
@@ -532,7 +797,13 @@ $( document ).ready(function() {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 200 OK");
                 if(responseObject.hasAppointments == true)
-                	showMessage("Editing rooms with appointments is not allowed!", "red");
+                    Swal.fire({
+  			  		  position: 'center',
+  			  		  icon: 'error',
+  			  		  title: 'Editing rooms with appointments is not allowed!',
+  			  		  showConfirmButton: false,
+  			  		  timer: 1500
+  			  		});
                 else{
                 $("#roomNameInputEdit").val(responseObject.name);
                 $("#editRoomModal").modal();
@@ -541,7 +812,14 @@ $( document ).ready(function() {
               },
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 400 Bad request");
-                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+                Swal.fire({
+			  		  position: 'center',
+			  		  icon: 'error',
+			  		  title: 'Ordination with inserted name already exists!',
+			  		  showConfirmButton: false,
+			  		  timer: 1500
+			  		});
+               
               },
     		  403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
@@ -573,7 +851,14 @@ $( document ).ready(function() {
               200: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 200 OK");
                 if(responseObject.hasAppointments == true)
-                	showMessage("Deleting rooms with appointments is not allowed!", "red");
+                    Swal.fire({
+  			  		  position: 'center',
+  			  		  icon: 'error',
+  			  		  title: 'Deleting rooms with appointments is not allowed!',
+  			  		  showConfirmButton: false,
+  			  		  timer: 1500
+  			  		});
+                	
                 else{
                     $.ajax({
                         type: 'DELETE',
@@ -584,11 +869,25 @@ $( document ).ready(function() {
                         statusCode: {
                           200: function(responseObject, textStatus, jqXHR) {
                             console.log("Ordination - delete() - 200 OK");
-                            showMessage("Ordination successfully deleted!", "palegreen"); 
+                            Swal.fire({
+            			  		  position: 'center',
+            			  		  icon: 'success',
+            			  		  title: 'Ordination successfully deleted!',
+            			  		  showConfirmButton: false,
+            			  		  timer: 1500
+            			  		});
+                           
                           },
                           400: function(responseObject, textStatus, jqXHR) {
                             console.log("Ordination - delete() - 400 Bad request");
-                            showMessage("Something went wrong!", "antiquewhite");
+                            Swal.fire({
+          			  		  position: 'center',
+          			  		  icon: 'error',
+          			  		  title: 'Something went wrong!',
+          			  		  showConfirmButton: false,
+          			  		  timer: 1500
+          			  		});
+                          
                           },
                   		403: function(responseObject, textStatus, jqXHR) {
                 			console.log("403 Unauthorized");
@@ -601,7 +900,13 @@ $( document ).ready(function() {
               },
               400: function(responseObject, textStatus, jqXHR) {
                 console.log("Ordination - add() - 400 Bad request");
-                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+                Swal.fire({
+			  		  position: 'center',
+			  		  icon: 'error',
+			  		  title: 'Ordination with inserted name already exists!',
+			  		  showConfirmButton: false,
+			  		  timer: 1500
+			  		});
               },
     		  403: function(responseObject, textStatus, jqXHR) {
     			console.log("403 Unauthorized");
@@ -664,7 +969,13 @@ $( document ).ready(function() {
 	            statusCode: {
 	              200: function(responseObject, textStatus, jqXHR) {
 	                console.log("PricelistItem - add() - 200 OK");
-	                showMessage("Pricelist item successfully added!", "palegreen");
+	                Swal.fire({
+				  		  position: 'center',
+				  		  icon: 'success',
+				  		  title: 'Pricelist item successfully added!',
+				  		  showConfirmButton: false,
+				  		  timer: 1500
+				  		});
 	                input.each(function(){
 	                  $(this).parent("td").html($(this).val());
 	                }); 
@@ -674,7 +985,13 @@ $( document ).ready(function() {
 	              },
 	              400: function(responseObject, textStatus, jqXHR) {
 	                console.log("PricelistItem - add() - 400 Bad request");
-	                showMessage("Pricelist item with inserted name already exists!", "antiquewhite");
+	                Swal.fire({
+				  		  position: 'center',
+				  		  icon: 'error',
+				  		  title: 'Pricelist item with inserted name already exists!',
+				  		  showConfirmButton: false,
+				  		  timer: 1500
+				  		});
 	              },
 	    		  403: function(responseObject, textStatus, jqXHR) {
 	    			console.log("403 Unauthorized");
@@ -700,11 +1017,24 @@ $( document ).ready(function() {
           statusCode: {
             200: function(responseObject, textStatus, jqXHR) {
               console.log("Pricelist item - delete() - 200 OK");
-              showMessage("Pricelist item successfully deleted!", "palegreen"); 
+              Swal.fire({
+		  		  position: 'center',
+		  		  icon: 'success',
+		  		  title: 'Pricelist item successfully deleted!',
+		  		  showConfirmButton: false,
+		  		  timer: 1500
+		  		});
             },
             400: function(responseObject, textStatus, jqXHR) {
               console.log("Pricelist item - delete() - 400 Bad request");
-              showMessage("Something went wrong!", "antiquewhite");
+              Swal.fire({
+   		  		  position: 'center',
+   		  		  icon: 'error',
+   		  		  title: 'Something went wrong!',
+   		  		  showConfirmButton: false,
+   		  		  timer: 1500
+   		  		});
+                
             },
     		403: function(responseObject, textStatus, jqXHR) {
   			console.log("403 Unauthorized");
@@ -732,6 +1062,20 @@ function loadAppointmentTypesAllOK(pricelistItem){
 		   }
 		  });
 }
+
+function loadAppointmentTypesPredefAllOK(pricelistItem){
+	//popuni select za apptype
+	 var select = $("#appointmentTypePredef");
+	 select.empty();
+	 select.append("<option disabled selected>Select appointment type...</option>");
+	 $.each(pricelistItem, function(i, val) {
+		   if(val.appointmentType != "SURGERY"){
+		    var option = $("<option>"+val.appointmentType+"</option>");
+		    select.append(option);
+		   }
+		  });
+}
+
 $("#applyFilter").click(function(){
 	
 	var appType = $("#appointmentTypeF").val();
@@ -851,7 +1195,7 @@ function showDoctors(doctors,odakle) {
 	var table = $("#doctorBody");
 	table.empty();
 	$.each(doctors,function(i,val){
-		var row = $("<tr id=\""+i+"\"></tr>");
+		var row = $("<tr id=\""+val.id+"\"></tr>");
 		row.append("<td >" + val.firstName + " " + val.lastName + "</td>");
 		row.append("<td >" + val.averageGrade + "</td>");
 		var selectt="<td align=\"center\"><select class=\"select\"><option disabled selected>Choose term</option>";
@@ -878,7 +1222,12 @@ function clinicOK(clinic,odakle){
 	$("#clinicAddress").val(clinic.address + ", " + clinic.city);
 	$("#desc").val(clinic.description);
 	var attr = sessionStorage.setItem('clinicID', clinic.clinicID);
-	
+	if( odakle == 2){
+		$("#doctorSearchTxt").attr("placeholder","Search doctors by name...");
+	}
+	if(odakle == 1){
+		$("#predefinedAddDiv").css("display","none");
+	}
 	$.ajax({
 	    type: 'POST',
 	    url: 'clinicApi/createMap/' + $("#clinicAddress").val(),
@@ -886,9 +1235,7 @@ function clinicOK(clinic,odakle){
 	    statusCode: {
 	      200: function(responseObject, textStatus, jqXHR) {
 	        console.log("Clinics - map() - 200 OK");
-	        console.log(responseObject);
 	        var obj = JSON.parse(responseObject);
-	        console.log(obj.results);
 	        var latV = obj.results[0].geometry.location.lat;
 	        var lonV = obj.results[0].geometry.location.lng;
 	        
@@ -939,10 +1286,10 @@ function doctorAllOK(doctorList) {
 	table.empty();
 	console.log(doctorList);
 	$.each(doctorList, function(i, val) {
-		var row = $("<tr id=\""+i+"\"></tr>");
+		var row = $("<tr id=\""+val.id+"\"></tr>");
 
 		row.append("<td class=\"w-50 modalDoctor\" id=\""+val.email+"\">" + val.firstName + " " + val.lastName + "</td>");
-		row.append("<td class=\"w-50 text-right\"><button type=\"button\" class=\"btn btn-outline-primary mr-3\">Review</button><button type=\"button\" class=\"btn btn-outline-danger\">Fire</button></td>");
+		row.append("<td class=\"w-50 text-right\"><button type=\"button\" class=\"btn btn-outline-primary mr-3\">Review</button><button type=\"button\" class=\"btn btn-outline-danger\" id=\"fireButton\">Fire</button></td>");
 
 		table.append(row);
 	});
@@ -1019,24 +1366,213 @@ function appointmentsAllNO(responseObject) {
 }
 
 
-function appointmentsAllOK(appointmentsList) {
-  var table = $("#appointmentsBody");
+function predefAppointmentsAllOK(appointmentsList,odakle) {
+  var table = $(".carousel-inner");
   table.empty();
-
+  var first = true;
+  console.log(appointmentsList);
+  
+  
+  var amount = Math.floor(appointmentsList.length/3) + 1;
+  var j;
+  for (j = 0; j < amount; j++) {
+	  var row = $("<div class=\"carousel-item\" id=\"item"+j+"\"></div>");
+	  table.append(row);
+	}
   console.log(appointmentsList);
   $.each(appointmentsList, function(i, val) {
-    var row = $("<tr id=\""+i+"\"></tr>");
-    if(val.appointmentType != undefined) {
-    row.append("<td id=\""+val.id+"\">" + val.datetime + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.appointmentType + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.roomNo + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.doctor + "</td>");
-    row.append("<td id=\""+val.id+"\">" + val.duration + " min</td>");
-    row.append("<td id=\""+val.id+"\">" + val.price + "$</td>");
-    table.append(row);
-    }
+	    var rowAdd = $("#item"+Math.floor(i/3)); 
+		var card = $("<div class=\"card\" style=\"width: 18rem; float: left;\"></div>");
+		var cardBody = $("<div class=\"card-body\"></div>");
+		cardBody.append("<h5 class=\"card-title\">"+val.datetime+"h</h5>");
+		cardBody.append("<p class=\"card-text\"><b>Doctor: </b>"+val.doctor+"<br><b>Ordination: </b> "+val.roomName+"<br><b>Type: </b>"+val.appointmentType+"<br><b>Price: </b><s>"+val.price+"</s> "+(val.price*val.discount).toFixed(2)+"$</p>");
+		//ako je pacijent poziva(odakle=1)
+		if(odakle == 1){
+			var btn = "<button id=\"btnSchedule\" type=\"button\" title=\"Schedule appointment\" class=\"btn btn-secondary \">Schedule appointment</button></td>";
+			cardBody.append(btn);
+			//console.log("TOKEN "+sessionStorage.getItem('token')+ "  app id "+val.id);
+			sessionStorage.setItem("appId",val.id);
+			//sessionStorage.setItem("patient",);
+		}
+		card.append(cardBody);
+	    
+		rowAdd.append(card);
+
+
   });
+  
+  $('.carousel-item').first().addClass('active');
+  
+  var controlLeft = $("<a class=\"carousel-control-prev\" href=\"#carouselExampleControls\" role=\"button\" data-slide=\"prev\"><span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"></span><span class=\"sr-only\">Previous</span></a>");
+  var controlRight = $("<a class=\"carousel-control-next\" href=\"#carouselExampleControls\" role=\"button\" data-slide=\"next\"><span class=\"carousel-control-next-icon\" aria-hidden=\"true\"></span><span class=\"sr-only\">Next</span></a>");
+  
+  var car = $("#carouselExampleControls");
+  car.append(controlLeft);
+  car.append(controlRight);
+  
+  
 }
+$(document).on("click", "#btnSchedule", function(){
+	var appointmentId = sessionStorage.getItem("appId");
+	$.ajax({
+	    type: 'POST',
+	    url: 'appointmentApi/schedulePredefinedAppointment/' + appointmentId ,
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    contentType: "application/json; charset=utf-8",
+		dataType: "json",
+	    statusCode: {
+	      200: function(responseObject, textStatus, jqXHR) {
+	        console.log("200 OK - appointment scheduled.");
+	        Swal.fire({
+	  		  position: 'center',
+	  		  icon: 'success',
+	  		  title: 'Successfully scheduled appointment!',
+	  		  showConfirmButton: false,
+	  		  timer: 1500
+	  		});
+	    	window.location.href = "/appointmentHistory";
+
+	        
+	  	//mozda redirekt na appointment history
+	      },
+	      204: function(responseObject, textStatus, jqXHR) {
+	        console.log("204 - Could not schedule appointment.");
+	        Swal.fire({
+		  		  position: 'center',
+		  		  icon: 'error',
+		  		  title: 'Sorry, you can not schedule appointment.',
+		  		  showConfirmButton: false,
+		  		  timer: 1500
+		  		});
+		  	
+	      },
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+	    }
+	  });
+	
+	
+});
+$("#filterPredef").click(function(){
+
+	var date = $("#datePredef").val();
+	var time = $("#timePredef option:selected").text();
+	
+	var type = $("#appointmentTypePredef").val();
+	var disc = $("#discountPredef option:selected").text();
+	
+	$("#dateModalPredef").val(date + " " + time);
+	$("#typeModalPredef").val(type);
+	$("#discountModalPredef").val(disc);
+	
+	
+    $.ajax({
+    	type: 'GET',
+    	url: '/ordinationApi/findAllFreeForDateTime',
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    data: {
+	    	"date" : date+ " "+time
+	    },
+    	statusCode: {
+    		200: function(responseObject, textStatus, jqXHR) {
+    			console.log("200 OK");
+    			var select = $("#roomPredef");
+    			$.each(responseObject, function(i, val) {
+    				var option = "<option value=\""+val.ordId+"\">"+val.name+"</option>";
+    				select.append(option);
+    				
+    			});
+    			$("#predefinedModal").modal();
+    		},
+    		204: function(responseObject, textStatus, jqXHR) {
+    			console.log("204 No Content");    			
+    		},
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+    	}
+    });
+    
+    $.ajax({
+    	type: 'GET',
+    	url: '/doctorApi/findAllFreeForDateTime',
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    data: {
+	    	"date" : date+ " "+time,
+	    	"type" : type
+	    },
+    	statusCode: {
+    		200: function(responseObject, textStatus, jqXHR) {
+    			console.log("200 OK");
+    			var select = $("#doctorPredef");
+    			$.each(responseObject, function(i, val) {
+    				var option = "<option value=\""+val.email+"\">"+val.firstName+" " + val.lastName+"</option>";
+    				select.append(option);
+    				
+    			});
+    			$("#predefinedModal").modal();
+    		},
+    		204: function(responseObject, textStatus, jqXHR) {
+    			console.log("204 No Content");    			
+    		},
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+    	}
+    });
+    
+	
+});
+
+$("#modalApprovePredefBtn").click(function(){
+	
+	var date = $("#datePredef").val();
+	var time = $("#timePredef option:selected").text();
+	
+	var doc = $("#doctorPredef").val();
+	
+    $.ajax({
+    	type: 'POST',
+    	url: '/appointmentApi/addPredefinedAppointment',
+	    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    data: JSON.stringify({
+	    	"email" : doc,
+	    	"examType" : $("#typeModalPredef").val(),
+	    	"dateTime" : date+ " "+time,
+	    	"discount" : $("#discountPredef").val(),
+	    	"ordId" : $("#roomPredef").val()
+	    }),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+    	statusCode: {
+    		200: function(responseObject, textStatus, jqXHR) {
+    			console.log("200 OK");
+                Swal.fire({
+	        		  position: 'center',
+	        		  icon: 'success',
+	        		  title: 'New predefined appointment successfully added!',
+	        		  showConfirmButton: false,
+	        		  timer: 1500
+	        		})
+	        		
+	       
+                window.setTimeout(function(){location.reload()},1500);
+    		},
+    		204: function(responseObject, textStatus, jqXHR) {
+    			console.log("204 No Content");    			
+    		},
+			403: function(responseObject, textStatus, jqXHR) {
+				console.log("403 Unauthorized");
+				unauthorized();
+			}
+    	}
+    });
+});
+
 
 function pricelistAllOK(pricelistItemList) {
 	  var table = $("#pricelistBody");

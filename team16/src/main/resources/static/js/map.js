@@ -10,13 +10,13 @@ $( document ).ready(function() {
 	    statusCode: {
 	      200: function(responseObject, textStatus, jqXHR) {
 	        console.log("Clinics - map() - 200 OK");
-	        console.log(responseObject);
+	        //console.log(responseObject);
 	        var obj = JSON.parse(responseObject);
-	        console.log(obj.results);
+	       // console.log(obj.results);
 	        var latV = obj.results[0].geometry.location.lat;
 	        var lonV = obj.results[0].geometry.location.lng;
 	        
-	        console.log(latV + " " + lonV);
+	        //console.log(latV + " " + lonV);
 	        
 	        initMap(latV, lonV);
 	      },

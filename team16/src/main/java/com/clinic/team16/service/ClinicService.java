@@ -47,6 +47,62 @@ public class ClinicService {
 		this.clinicRepository.save(c);
 	}
 
+	public ArrayList<DoctorDTO> filterDoctorsPredef(Clinic c, AppointmentType appType, String date) {
+		ArrayList<DoctorDTO> doctors = new ArrayList<>();
+		System.out.println("DATUM: "+date);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		java.util.Date dateDate = null;
+		
+		try {
+			dateDate = sdf.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (Doctor d : c.getDoctors()) {
+			System.out.println(d.getFirstName() + "-------------------");
+			if (d.getSpecialty() == appType) {
+				List<LeaveRequest> leaves = d.getLeaveRequests();
+				ArrayList<String> frontDates = new ArrayList<>();
+				
+				boolean leavesOk = true;
+				boolean appointmentsOk = false;
+
+				//leaves
+				if (leaves.size() > 0 && leaves != null) {
+					for (LeaveRequest l : leaves) {
+						if (l.isApproved()) {
+							boolean isBetween = l.getDateFrom().compareTo(dateDate)
+									* dateDate.compareTo(l.getDateTo()) > 0;
+							if (isBetween) {
+								leavesOk = false;
+								break;
+							}
+						}
+					}
+				}
+				System.out.println(leavesOk);
+
+				// appointments
+				ArrayList<Appointment> apps = this.appointmentService.findByDoctorAndDate(sdf.format(dateDate), d.getId());
+				System.out.println(apps.size());
+				appointmentsOk = true;
+				for (Appointment a : apps) {
+					if(sdf.format(a.getDateTime()).equals(sdf.format(dateDate))) {
+						appointmentsOk = false;
+					}
+				}
+				
+				
+				
+				if (leavesOk && appointmentsOk) {
+					doctors.add(new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail(), frontDates));
+				}
+			}
+	}
+		return doctors;
+	}
+	
 	public ArrayList<DoctorDTO> filterDoctors(Clinic c, AppointmentType appType, String date) {
 		ArrayList<DoctorDTO> doctors = new ArrayList<>();
 		System.out.println("DATUM: "+date);

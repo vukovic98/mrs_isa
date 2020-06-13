@@ -11,14 +11,13 @@ public class AppointmentRequestDTO {
 	private String onlyTime;
 	private String patientName;
 	private String doctorName;
-
 	public String getOnlyTime() {
 		return onlyTime;
 	}
 
 	public void setOnlyTime(String onlyTime) {
 		this.onlyTime = onlyTime;
-	}
+	}	
 
 	public String getPatientName() {
 		return patientName;
@@ -79,10 +78,8 @@ public class AppointmentRequestDTO {
 	public void setExamType(AppointmentType examType) {
 		this.examType = examType;
 	}
-
 	public AppointmentRequestDTO(String email, String doctor, String dateTime, AppointmentType examType,
-			String patientName, String doctorName) {
-		super();
+			String patientName, String doctorName) {		super();
 		this.email = email;
 		this.doctor = doctor;
 		this.dateTime = dateTime;
