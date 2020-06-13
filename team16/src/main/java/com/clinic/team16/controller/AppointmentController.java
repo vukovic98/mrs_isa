@@ -144,7 +144,7 @@ public class AppointmentController {
 								String.valueOf(a.getPricelistItems().getPrice()),
 								String.valueOf(a.getOrdination().getNumber()));
 						
-						if(a.getMedicalReport() == null)
+						if(a.getMedicalReport() == null) 
 							aDTO.setHeld(false);
 						else
 							aDTO.setHeld(true);

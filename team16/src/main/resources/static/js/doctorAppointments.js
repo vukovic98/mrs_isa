@@ -771,16 +771,17 @@ function appointmentsAllOK(appointmentsList) {
 	  var table = $("#appointmentsBody");
 	  table.empty();
 	  console.log(appointmentsList);
+	  var curr = currentDate();
 	  
 	  $.each(appointmentsList, function(i, val) {
 	    var row = $("<tr id=\""+i+"\"></tr>");
 	    row.append("<td class=\"w-25\" id=\""+val.id+"\">" + val.datetime + "</td>");
 	    row.append("<td class=\"w-25\" id=\""+val.id+"\">" + val.patient +"</td>");
-	    var curr = currentDate();
+	   
 	    
-	    if(!val.held)
+	    if(!val.held && val.datetime.substring(0,10) == curr) {
 	    	row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" id=\"startBtn\" class=\"btn btn-primary\">Start appointment</button></td>");
-	    else
+	    }else
 	    	row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" id=\"startBtn\" class=\"btn btn-primary\" disabled>Start appointment</button></td>");
 	    table.append(row);
 	    
