@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.AppointmentRequest;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Ordination;
 import com.clinic.team16.beans.DTO.AppointmentRequestDTO;
 import com.clinic.team16.beans.DTO.ApproveRequestDTO;
 import com.clinic.team16.beans.DTO.ApproveRequestNewDataDTO;
+import com.clinic.team16.beans.DTO.ApproveRequestSurgeryDTO;
 import com.clinic.team16.service.AppointmentRequestService;
 import com.clinic.team16.service.AppointmentService;
 import com.clinic.team16.service.DoctorService;
@@ -124,7 +126,7 @@ public class AppointmentRequestController {
 	
 	@PutMapping(path = "/approveRequestNewData")
 	@Transactional
-	public ResponseEntity<HttpStatus> approveRequest(@RequestBody ApproveRequestNewDataDTO body) throws ParseException{
+	public ResponseEntity<HttpStatus> approveRequestNewData(@RequestBody ApproveRequestNewDataDTO body) throws ParseException{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		AppointmentRequest approve = appointmentRequestService.findOneByAppointmentRequestId(body.getRequestId());
 		
@@ -155,5 +157,50 @@ public class AppointmentRequestController {
 		
 	}
 	
+	
+	@PutMapping(path = "/approveRequestSurgery")
+	@Transactional
+	public ResponseEntity<HttpStatus> approveRequestSurgery(@RequestBody ApproveRequestSurgeryDTO body) throws ParseException{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		AppointmentRequest approve = appointmentRequestService.findOneByAppointmentRequestId(body.getRequestId());
+		
+		if(approve != null) {
+			approve.setApproved(true);
+			Ordination or = ordinationService.findOneByNumber(body.getOrdId());
+			approve.getAppointment().setOrdination(or);
+			or.getAppointments().add(approve.getAppointment());
+			
+			approve.getAppointment().getDoctor().getAppointments().add(approve.getAppointment());
+			
+			for (String str : body.getDoctorEmails()) {
+				Doctor surgeryDoc = doctorService.findOneByEmail(str);
+				Appointment duplicate = new Appointment();
+				duplicate.setDateTime(approve.getAppointment().getDateTime());
+				duplicate.setDoctor(surgeryDoc);
+				duplicate.setOrdination(or);
+				duplicate.setDuration(approve.getAppointment().getDuration());
+				duplicate.setPatient(approve.getAppointment().getPatient());
+				duplicate.setPrice(approve.getAppointment().getPrice());
+				duplicate.setPricelistItems(approve.getAppointment().getPricelistItems());
+				surgeryDoc.getAppointments().add(duplicate);
+				appointmentService.save(duplicate);
+				doctorService.save(surgeryDoc);
+				
+				appointmentRequestService.sendAcceptedMail(or.getName(), surgeryDoc.getFirstName() + " "+ surgeryDoc.getLastName(), sdf.format(approve.getAppointment().getDateTime()));
+
+			}
+			doctorService.save(approve.getAppointment().getDoctor());
+			
+			
+			appointmentRequestService.save(approve);
+			appointmentService.save(approve.getAppointment());
+			ordinationService.save(or);
+			appointmentRequestService.sendAcceptedMail(or.getName(), approve.getAppointment().getDoctor().getFirstName() + " "+ approve.getAppointment().getDoctor().getLastName(), sdf.format(approve.getAppointment().getDateTime()));
+			
+			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+		}else
+			return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
+		
+	}
 	
 }

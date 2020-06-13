@@ -41,7 +41,7 @@ public class ScheduledTasks {
 	@Autowired
 	private AppointmentService appointmentService;
 	
-	@Scheduled(initialDelay = 100000, fixedDelay = 100000)
+	@Scheduled(initialDelay = 10000000, fixedDelay = 100000)
 	@Transactional
 	public void approveRequestsAutomatic() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");

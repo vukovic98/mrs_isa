@@ -179,7 +179,7 @@ public class OrdinationController {
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
 		System.out.println(ca.getClinic().getName());
 		List<Ordination> list = ca.getClinic().getOrdinations();
-
+		System.out.println(list.get(0));
 		List<OrdinationDTO> finalList = new ArrayList<OrdinationDTO>();
 		AppointmentRequest ar = requestService.findOneByAppointmentRequestId(reqId);
 
@@ -199,6 +199,7 @@ public class OrdinationController {
 			boolean available = true;
 			for (Ordination ordination : list) {
 				available = true;
+				System.out.println(ordination.getName());
 				for (Appointment a : ordination.getAppointments()) {
 					System.out.println(ordination.getName());
 					System.out.println(sdf.format(a.getDateTime()));
@@ -213,11 +214,11 @@ public class OrdinationController {
 				}
 				if (available) {
 					if (ordination.getType().equals(OrdinationType.OPERATION)) {
-						if (ar.getAppointment().getPricelistItems().getName().equals(AppointmentType.SURGERY))
+						if (ar.getAppointment().getPricelistItems().getName().equalsIgnoreCase("SURGERY"))
 							finalList.add(new OrdinationDTO(ordination.getName(), ordination.getType(),
 									ordination.getNumber()));
 					} else {
-						if (!ar.getAppointment().getPricelistItems().getName().equals(AppointmentType.SURGERY))
+						if (!ar.getAppointment().getPricelistItems().getName().equalsIgnoreCase("SURGERY"))
 							finalList.add(new OrdinationDTO(ordination.getName(), ordination.getType(),
 									ordination.getNumber()));
 					}
@@ -228,7 +229,7 @@ public class OrdinationController {
 			} else {
 				for (Ordination ordination : list) {
 					if (ordination.getType().equals(OrdinationType.OPERATION)) {
-						if (ar.getAppointment().getPricelistItems().getName().equals(AppointmentType.SURGERY)) {
+						if (ar.getAppointment().getPricelistItems().getName().equalsIgnoreCase("SURGERY")) {
 							int freeIndex = 0;
 							for (Appointment apTest : ordination.getAppointments()) {
 								for (Date dateTest : possTerms) {
@@ -246,7 +247,7 @@ public class OrdinationController {
 									ordination.getNumber(), sdf.format(possTerms.get(freeIndex))));
 						}
 					} else {
-						if (!ar.getAppointment().getPricelistItems().getName().equals(AppointmentType.SURGERY)) {
+						if (!ar.getAppointment().getPricelistItems().getName().equalsIgnoreCase("SURGERY")) {
 							int freeIndex = 0;
 							for (Appointment apTest : ordination.getAppointments()) {
 								for (Date dateTest : possTerms) {
@@ -334,5 +335,9 @@ public class OrdinationController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	
+	
+	
 
 }
