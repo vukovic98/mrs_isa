@@ -137,7 +137,6 @@ function passValidation(Password){
    	        	data: JSON.stringify(newPass),
    	        	dataType: 'json',
    	        	contentType: "application/json",
-   			    dataType: "json",
    			    success: function(data){
    			    	Swal.fire({
 		        		  position: 'center',
@@ -232,7 +231,6 @@ function passValidation(Password){
 	        	data: JSON.stringify(formData),
 	        	dataType: 'json',
 	        	contentType: "application/json",
-			    dataType: "json",
 			    success : 
 			    	Swal.fire({
 		        		  position: 'center',
