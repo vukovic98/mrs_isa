@@ -63,4 +63,39 @@ public class AppointmentRequestService {
 			e.printStackTrace();
 		}
 	}
+	
+	@Async
+	public void sendAcceptedMailChanged(String room, String doctor, String date) {
+		try {
+			MimeMessage msg = this.javaMailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+
+			helper.setTo("mrs.isa2020@gmail.com");
+			helper.setSubject("DIV Clinical Center - Appointment approved");
+
+			StringBuffer sb = new StringBuffer();
+
+			sb.append("<h2>Your appointment has been approved - term changed</h2><br>");
+			sb.append(String.format("You have been assigned the room %s. Since there were no available rooms at your chosen time, your new appointment time is %s, and the assigned doctor is %s.",room,date,doctor));
+
+			helper.setText(sb.toString(), true);
+			this.javaMailSender.send(msg);
+			
+
+			helper.setTo("mrs.isa2020@gmail.com");
+			helper.setSubject("DIV Clinical Center - Appointment assigned");
+
+			sb.append("<h2>An appointment has been assigned to you</h2><br>");
+			sb.append(String.format("You have been assigned to an appointment at %s, in the room %s , since there were no available rooms for the patient you will be doing a check-up for.",room,date,doctor));
+
+			helper.setText(sb.toString(), true);
+			this.javaMailSender.send(msg);
+			
+
+			System.out.println("SENT ACCEPTED MAIL!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

@@ -148,7 +148,7 @@ public class AppointmentRequestController {
 			appointmentRequestService.save(approve);
 			appointmentService.save(approve.getAppointment());
 			ordinationService.save(or);
-			appointmentRequestService.sendAcceptedMail(or.getName(), approve.getAppointment().getDoctor().getFirstName() + " "+ approve.getAppointment().getDoctor().getLastName(), sdf.format(approve.getAppointment().getDateTime()));
+			appointmentRequestService.sendAcceptedMailChanged(or.getName(), approve.getAppointment().getDoctor().getFirstName() + " "+ approve.getAppointment().getDoctor().getLastName(), sdf.format(approve.getAppointment().getDateTime()));
 			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 		}else
 			return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
