@@ -29,6 +29,7 @@ import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.User;
+import com.clinic.team16.beans.DTO.ClinicAdminFullInfo;
 import com.clinic.team16.beans.DTO.DoctorAddDTO;
 import com.clinic.team16.beans.DTO.DoctorDTO;
 import com.clinic.team16.beans.DTO.DoctorLeaveDTO;
@@ -61,13 +62,6 @@ public class DoctorController {
 
 	@Autowired
 	private AppointmentService appointmentService;
-
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Doctor> createDoctor(@RequestBody Doctor doctor) throws Exception {
-		System.out.println("Pozvana metoda kontrolera za dodavanje doktora.");
-		Doctor newDoctor = doctorService.create(doctor);
-		return new ResponseEntity<Doctor>(newDoctor, HttpStatus.CREATED);
-	}
 
 	@GetMapping(path = "/findAll")
 	public ResponseEntity<List<Doctor>> findAll() {
@@ -225,9 +219,9 @@ public class DoctorController {
 			doctorService.save(d);
 			// clinicService.save(ca.getClinic());
 
-			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} else
-			return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@DeleteMapping("/deleteDoctor/{id}")
@@ -242,10 +236,10 @@ public class DoctorController {
 			doctorService.delete(del);
 			clinicService.save(cl);
 
-			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 
 		} else
-			return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping(path = "/getFreeTermsForCurrent/{date}")
@@ -293,13 +287,13 @@ public class DoctorController {
 				terms.add(finalDate);
 			}
 
-			return new ResponseEntity<ArrayList<String>>(terms, HttpStatus.OK);
+			return new ResponseEntity<>(terms, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@PutMapping(path = "/updateDoctorMyself", consumes = "application/json")
-	public ResponseEntity<HttpStatus> updatePatient(@RequestBody User p) {
+	public ResponseEntity<HttpStatus> updateDoctorMyself(@RequestBody ClinicAdminFullInfo p) {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		Doctor found = this.doctorService.findOneByEmail(currentUser);
 

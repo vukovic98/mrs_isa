@@ -27,7 +27,6 @@ import com.clinic.team16.service.OrdinationService;
 public class ScheduledTasks {
 	private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
 	@Autowired
 	private AppointmentRequestService appReqService;

@@ -186,8 +186,8 @@ public class AppointmentController {
 	}
 
 	@PostMapping(path = "/findReportById", consumes = "application/json")
-	public ResponseEntity<MedicalReportDTO> findReportById(@RequestBody MedicalReport m) {
-		long id = m.getMedicalReportId();
+	public ResponseEntity<MedicalReportDTO> findReportById(@RequestBody MedicalReportDTO m) {
+		long id = m.getId();
 
 		Appointment a = this.appointmentService.findBuMedicalReport(id);
 

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clinic.team16.beans.Allergies;
 import com.clinic.team16.beans.ClinicalCenter;
 import com.clinic.team16.beans.Diagnosis;
+import com.clinic.team16.beans.DTO.DiagnosisDTO;
 import com.clinic.team16.service.ClinicalCenterService;
 import com.clinic.team16.service.DiagnosisService;
 
@@ -42,11 +43,13 @@ public class DiagnosisController {
 	}
 	
 	@PutMapping(path = "/addDiagnosis", consumes = "application/json")
-	public ResponseEntity<HttpStatus> addDiagnosis(@RequestBody Diagnosis d) {
-		Diagnosis found = this.diagnosisService.findOneByCode(d.getCode());
-		Diagnosis f2 = this.diagnosisService.findOneByName(d.getName());
+	public ResponseEntity<HttpStatus> addDiagnosis(@RequestBody DiagnosisDTO di) {
+		Diagnosis found = this.diagnosisService.findOneByCode(di.getCode());
+		Diagnosis f2 = this.diagnosisService.findOneByName(di.getName());
+		
 		
 		if(found == null && f2 == null) {
+			Diagnosis d = new Diagnosis(di.getName(), di.getCode(), null);
 			ClinicalCenter c = this.clinicalCenterService.findOneById(1);
 			d.setClinicalCenter(c);
 			

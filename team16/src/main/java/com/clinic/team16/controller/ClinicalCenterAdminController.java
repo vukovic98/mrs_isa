@@ -17,6 +17,7 @@ import com.clinic.team16.beans.ClinicalCenterAdministrator;
 import com.clinic.team16.beans.Role;
 import com.clinic.team16.beans.User;
 import com.clinic.team16.beans.DTO.ClinicalCenterAdminInfoDTO;
+import com.clinic.team16.beans.DTO.UserAuthDTO;
 import com.clinic.team16.service.ClinicalCenterAdminService;
 import com.clinic.team16.service.ClinicalCenterService;
 
@@ -74,7 +75,7 @@ public class ClinicalCenterAdminController {
 	}
 
 	@PostMapping(path = "/changePassword", consumes = "application/json")
-	public ResponseEntity<HttpStatus> changePassword(@RequestBody User u) {
+	public ResponseEntity<HttpStatus> changePassword(@RequestBody UserAuthDTO u) {
 		System.out.println(u.getPassword());
 
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();

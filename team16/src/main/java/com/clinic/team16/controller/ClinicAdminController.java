@@ -61,7 +61,7 @@ public class ClinicAdminController {
 	}
 
 	@PutMapping(path = "/updateAdmin", consumes = "application/json")
-	public ResponseEntity<ClinicAdministrator> updatePatient(@RequestBody User p) {
+	public ResponseEntity<ClinicAdministrator> updatePatient(@RequestBody ClinicAdminFullInfo p) {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		ClinicAdministrator found = this.clinicAdminService.findOneByEmail(currentUser);
 
