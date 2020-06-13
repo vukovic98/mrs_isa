@@ -242,8 +242,8 @@ public class DoctorController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(path = "/getFreeTermsForCurrent/{date}")
-	public ResponseEntity<ArrayList<String>> getFreeTermsForCurrent(@PathVariable String date) {
+	@PostMapping(path = "/getFreeTermsForCurrent")
+	public ResponseEntity<ArrayList<String>> getFreeTermsForCurrent(@RequestParam("date") String date) {
 		ArrayList<String> terms = new ArrayList<>();
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 

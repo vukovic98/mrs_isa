@@ -328,8 +328,11 @@ $(document).ready(function(){
 		  var date = this.value;
 		  console.log(date);
 		  $.ajax({
-			    type: 'GET',
-			    url: 'doctorApi/getFreeTermsForCurrent/' + date,
+			    type: 'POST',
+			    url: 'doctorApi/getFreeTermsForCurrent',
+			    data: {
+			    	"date": date;
+			    }
 			    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 			    statusCode: {
 			      200: function(responseObject, textStatus, jqXHR) {
