@@ -22,7 +22,7 @@ public class PricelistItemService {
 		return pricelistItemRepository.findAll();
 	}
 	
-	public PricelistItem findOneByAppointmentType(AppointmentType appointmentType) {
+	public PricelistItem findOneByAppointmentType(String appointmentType) {
 		return pricelistItemRepository.findOneByAppointmentType(appointmentType);
 	}
 	

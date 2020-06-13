@@ -47,7 +47,7 @@ public class ClinicService {
 		this.clinicRepository.save(c);
 	}
 
-	public ArrayList<DoctorDTO> filterDoctorsPredef(Clinic c, AppointmentType appType, String date) {
+	public ArrayList<DoctorDTO> filterDoctorsPredef(Clinic c, String appType, String date) {
 		ArrayList<DoctorDTO> doctors = new ArrayList<>();
 		System.out.println("DATUM: "+date);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -61,7 +61,7 @@ public class ClinicService {
 		}
 		for (Doctor d : c.getDoctors()) {
 			System.out.println(d.getFirstName() + "-------------------");
-			if (d.getSpecialty() == appType) {
+			if (d.getSpecialty().equalsIgnoreCase(appType)) {
 				List<LeaveRequest> leaves = d.getLeaveRequests();
 				ArrayList<String> frontDates = new ArrayList<>();
 				
@@ -103,7 +103,7 @@ public class ClinicService {
 		return doctors;
 	}
 	
-	public ArrayList<DoctorDTO> filterDoctors(Clinic c, AppointmentType appType, String date) {
+	public ArrayList<DoctorDTO> filterDoctors(Clinic c, String appType, String date) {
 		ArrayList<DoctorDTO> doctors = new ArrayList<>();
 		System.out.println("DATUM: "+date);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -119,7 +119,7 @@ public class ClinicService {
 		System.out.println(c.getDoctors().size());
 		for (Doctor d : c.getDoctors()) {
 			System.out.println(d.getFirstName() + "-------------------");
-			if (d.getSpecialty() == appType) {
+			if (d.getSpecialty().equalsIgnoreCase(appType)) {
 				List<LeaveRequest> leaves = d.getLeaveRequests();
 				ArrayList<String> frontDates = new ArrayList<>();
 				

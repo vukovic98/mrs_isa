@@ -7,12 +7,12 @@ public class ClinicFilterDTO {
 	private String name;
 	private String address;
 	private double averageGrade;
-	private AppointmentType appointmentType;
+	private String appointmentType;
 	private double price;
 	private String city;
 	
 	public ClinicFilterDTO(long clinicID, String name, String address, double averageGrade,
-			AppointmentType appointmentType, double price, String city) {
+			String appointmentType, double price, String city) {
 		super();
 		this.clinicID = clinicID;
 		this.name = name;
@@ -31,7 +31,7 @@ public class ClinicFilterDTO {
 	public ClinicFilterDTO() {
 		
 	}
-	public ClinicFilterDTO(long clinicID, String name, String address, double averageGrade, AppointmentType appointmentType,
+	public ClinicFilterDTO(long clinicID, String name, String address, double averageGrade, String appointmentType,
 			double price) {
 		super();
 		this.clinicID = clinicID;
@@ -65,10 +65,10 @@ public class ClinicFilterDTO {
 	public void setAverageGrade(double averageGrade) {
 		this.averageGrade = averageGrade;
 	}
-	public AppointmentType getAppointmentType() {
+	public String getAppointmentType() {
 		return appointmentType;
 	}
-	public void setAppointmentType(AppointmentType appointmentType) {
+	public void setAppointmentType(String appointmentType) {
 		this.appointmentType = appointmentType;
 	}
 	public double getPrice() {

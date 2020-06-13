@@ -18,8 +18,8 @@ public class PricelistItem {
 		return pricelistItemId;
 	}
 
-	@Enumerated(EnumType.STRING)
-	private AppointmentType appointmentType;
+	@Column(name = "appointmentType", nullable = false)
+	private String appointmentType;
 
 	@Column(name = "price", nullable = false)
 	private double price;
@@ -33,18 +33,18 @@ public class PricelistItem {
 		super();
 	}
 
-	public PricelistItem(AppointmentType appointmentType, double price, Pricelist pricelist) {
+	public PricelistItem(String appointmentType, double price, Pricelist pricelist) {
 		super();
 		this.appointmentType = appointmentType;
 		this.price = price;
 		this.pricelist = pricelist;
 	}
 
-	public AppointmentType getName() {
+	public String getName() {
 		return appointmentType;
 	}
 
-	public void setName(AppointmentType appointmentType) {
+	public void setName(String appointmentType) {
 		this.appointmentType = appointmentType;
 	}
 

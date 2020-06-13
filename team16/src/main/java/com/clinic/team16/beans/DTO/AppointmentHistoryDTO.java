@@ -5,14 +5,14 @@ import com.clinic.team16.beans.AppointmentType;
 public class AppointmentHistoryDTO {
 	private long appointmentID;
 	private String datetime;
-	private AppointmentType appointmentType;
+	private String appointmentType;
 	private String doctor;
 	private long clinicID;
 	private long doctorID;
 	private String clinic;
 	private boolean approved;
 	
-	public AppointmentHistoryDTO(long appointmentID, String datetime, AppointmentType appointmentType, String doctor,
+	public AppointmentHistoryDTO(long appointmentID, String datetime, String appointmentType, String doctor,
 			long clinicID, long doctorID, String clinic, boolean approved) {
 		super();
 		this.appointmentID = appointmentID;
@@ -43,10 +43,10 @@ public class AppointmentHistoryDTO {
 	public void setDatetime(String datetime) {
 		this.datetime = datetime;
 	}
-	public AppointmentType getAppointmentType() {
+	public String getAppointmentType() {
 		return appointmentType;
 	}
-	public void setAppointmentType(AppointmentType appointmentType) {
+	public void setAppointmentType(String appointmentType) {
 		this.appointmentType = appointmentType;
 	}
 	public String getDoctor() {
@@ -64,7 +64,7 @@ public class AppointmentHistoryDTO {
 
 	
 
-public AppointmentHistoryDTO(long appointmentID, String datetime, AppointmentType appointmentType, String doctor,
+public AppointmentHistoryDTO(long appointmentID, String datetime, String appointmentType, String doctor,
 			long clinicID, long doctorID, String clinic) {
 		super();
 		this.appointmentID = appointmentID;
