@@ -1,5 +1,6 @@
+
 $( document ).ready(function() {
-    console.log( "ready!" );
+console.log( "ready!" );
     var now = currentDate();
     $("#date").attr("min",now);
     $.ajax ({

@@ -116,8 +116,6 @@ public class ClinicController {
 			for (Clinic c : list) {
 				System.out.println("ima");
 				for (PricelistItem pli : c.getPricelist().getPricelistItems()) {
-					System.out.println(pli.getName());
-					System.out.println(appType);
 					if (pli.getName().equalsIgnoreCase(appType)) {
 						price = pli.getPrice();
 						break;

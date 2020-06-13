@@ -319,4 +319,21 @@ public class DoctorController {
 		} else
 			return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
 	}
+	
+	@GetMapping(path = "/findAllFreeForDateTimeSurgery", params = { "date", "type" })
+	public ResponseEntity<List<DoctorDTO>> findAllFreeForDateTimeSurgery(@RequestParam("date") String date,
+			@RequestParam("type") String type) throws ParseException {
+
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
+
+		List<DoctorDTO> dtoList = clinicService.filterDoctorsForSurgery(ca.getClinic(), date);
+
+		if (dtoList != null) {
+			return new ResponseEntity<List<DoctorDTO>>(dtoList, HttpStatus.OK);
+
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+	}
 }
