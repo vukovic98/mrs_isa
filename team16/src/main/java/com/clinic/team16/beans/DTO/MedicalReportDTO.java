@@ -14,7 +14,6 @@ public class MedicalReportDTO {
 	private String clinic;
 	private ArrayList<String> medications = new ArrayList<>();
 	private ArrayList<String> diagnosis = new ArrayList<>();
-
 	private long nurseId;
 
 	public MedicalReportDTO() {
