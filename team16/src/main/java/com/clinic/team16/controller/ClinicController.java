@@ -298,7 +298,8 @@ public class ClinicController {
 			} catch (Throwable t) {
 			}
 			try {
-				con.disconnect();
+				if(con != null)
+					con.disconnect();
 			} catch (Throwable t) {
 			}
 		}

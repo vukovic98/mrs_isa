@@ -5,16 +5,14 @@ jdk: oraclejdk8
 services:
   - mysql
 
-before_install:
-  - chmod +x mvnw
-  
 addons:
   sonarcloud:
   organization: vukovic98
   token: $SONAR_TOKEN
 
 script:
-  - ./mvnw clean install -DskipTests=false -B
+  - cd team16
+  - ./mvnw clean install
   - ./mvnw sonar:sonar -Dsonar.projectKey=$PROJECT_KEY -Dsonar.organization=vukovic98 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
 
 dist: trusty
