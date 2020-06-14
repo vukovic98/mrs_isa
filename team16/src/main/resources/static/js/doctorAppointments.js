@@ -331,8 +331,8 @@ $(document).ready(function(){
 			    type: 'POST',
 			    url: 'doctorApi/getFreeTermsForCurrent',
 			    data: {
-			    	"date": date;
-			    }
+			    	"date": date
+			    },
 			    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
 			    statusCode: {
 			      200: function(responseObject, textStatus, jqXHR) {
@@ -534,6 +534,38 @@ $(document).ready(function(){
 		  }
 	  });
 	  
+	  
+	  $(document).on('click', '#seeReportBtn', function () {
+		  var appId = $(this).parent().attr('id');
+		  
+		  $.ajax({
+			    type: 'GET',
+			    url: 'medicalReportApi/getReportForAppointment/' + appId,
+			    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+			    statusCode: {
+			      200: function(responseObject, textStatus, jqXHR) {
+			        console.log("MedReport - findAll() - 200 OK");
+			        console.log(responseObject);
+			        seeReportModal(responseObject);
+			      },
+			      204: function(responseObject, textStatus, jqXHR) {
+			        console.log("MedReport - findAll() - 204 No Content");
+			        Swal.fire({
+		        		  position: 'center',
+		        		  icon: 'error',
+		        		  title: 'Something went wrong!',
+		        		  showConfirmButton: false,
+		        		  timer: 1500
+		        		})
+			      },
+					403: function(responseObject, textStatus, jqXHR) {
+						console.log("403 Unauthorized");
+						unauthorized();
+					}
+			    }
+			  });
+	  });
+	  
 	  $(document).on('click', '#appFinishBtn', function () {
 		  var doctor = sessionStorage.getItem('appDoctorEmail');
 		  var patient = sessionStorage.getItem('appPatientEmail');
@@ -600,6 +632,30 @@ $(document).ready(function(){
 			 });
 	  });
 });
+
+function seeReportModal(report) {
+	
+	$("#modalReportID").val(report.id);
+	$("#modalReportPatient").val(report.patient);
+	$("#modalReportDetails").val(report.details);
+	
+	var selectMed = $("#modalReportMedications");
+	selectMed.empty();
+    $.each(report.medications, function(i, val) {  
+		  var option = $("<option>"+val+"</option>");
+		  selectMed.append(option);
+	});
+    
+    var selectDiag = $("#modalReportDiagnosis");
+    selectDiag.empty();
+    $.each(report.medications, function(i, val) {  
+		  var option = $("<option>"+val+"</option>");
+		  selectDiag.append(option);
+    });
+	
+	
+	$("#modalReport").modal();
+}
 
 function loadPatientInfoAllOK(patient) {
 	console.log(patient.fullName);
@@ -784,9 +840,13 @@ function appointmentsAllOK(appointmentsList) {
 	    
 	    if(!val.held && val.datetime.substring(0,10) == curr) {
 	    	row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" id=\"startBtn\" class=\"btn btn-primary\">Start appointment</button></td>");
-	    }else
+	    	row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" id=\"seeReportBtn\" class=\"btn btn-primary\" disabled>See report</button></td>");
+	    	
+	    }else {
 	    	row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" id=\"startBtn\" class=\"btn btn-primary\" disabled>Start appointment</button></td>");
-	    table.append(row);
+	    	row.append("<td class=\"w-25 text-right\" id=\""+val.id+"\"><button type=\"button\" id=\"seeReportBtn\" class=\"btn btn-primary\">See report</button></td>");
+	    }
+	    	table.append(row);
 	    
 	  });
 	}
