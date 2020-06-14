@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,6 +82,7 @@ public class ClinicController {
 
 	}
 
+	@Transactional
 	@PostMapping(path = "/addClinic", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addClinic(@RequestBody ClinicAddDTO clinic) {
 		Clinic found = this.clinicService.findOneByName(clinic.getName());
