@@ -40,7 +40,8 @@ public class ScheduledTasks {
 	@Autowired
 	private AppointmentService appointmentService;
 	
-	@Scheduled(initialDelay = 10000000, fixedDelay = 100000)
+	//@Scheduled(initialDelay = 10000000, fixedDelay = 100000)
+	@Scheduled(cron = "0 0 0 * * *")
 	@Transactional
 	public void approveRequestsAutomatic() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
