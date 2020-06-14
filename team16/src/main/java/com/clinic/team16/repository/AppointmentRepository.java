@@ -43,7 +43,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long > 
 	@Query(
 			value = "SELECT * FROM appointment WHERE appointment.ordination_id = ?1",
 			nativeQuery = true)
-	public List<Appointment> findAllForOrdination(long roomId);	@Query(
+	public List<Appointment> findAllForOrdination(long roomId);
+	
+	@Query(
 			value = "SELECT * FROM appointment WHERE date_time = ?1 AND doctor_id = ?2",
 			nativeQuery = true)
 	public ArrayList<Appointment> checkUniqueConstraint(Date date, long id);}

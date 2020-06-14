@@ -209,8 +209,6 @@ public class AppointmentController {
 	@PostMapping(path = "/addAppointment", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addAppointment(@RequestBody AppointmentRequestDTO request) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		System.out.println(request.getDoctor() + " MAIL");
-		System.out.println(request.getEmail() + " PATIENT MAIL");
 		Doctor d = this.doctorService.findOneByEmail(request.getDoctor());
 		Patient p = this.patientService.findOneByEmail(request.getEmail());
 		ClinicalCenterAdministrator admin = this.clinicalCenterAdminService.findMainClinicalCenterAdmin();
@@ -224,14 +222,13 @@ public class AppointmentController {
 					found = pI;
 				}
 			}
-			System.out.println("PRODJE PRICELIST");
 			try {
 				exists = this.appointmentService.checkIfAppointmentExists(d, sdf.parse(request.getDateTime()));
 			} catch (ParseException e) {
 				e.printStackTrace();
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-			System.out.println("PRODJE EXISTS");
+		
 			if (!exists) {
 				// dodavanje appointmenta
 				try {
@@ -249,7 +246,6 @@ public class AppointmentController {
 						p.addAppointment(app);
 						this.appointmentService.save(app);
 
-						System.out.println("NASTAVI");
 						this.patientService.save(p);
 
 						appReq.setAppointment(app);
@@ -259,7 +255,6 @@ public class AppointmentController {
 						
 						return new ResponseEntity<>(HttpStatus.OK);
 					} else {
-						System.out.println("ZADNJE PUCA");
 						return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 					}
 
@@ -267,11 +262,9 @@ public class AppointmentController {
 					e.printStackTrace();
 				}
 			} else {
-				System.out.println("POSTOJI APP");
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 		} else {
-			System.out.println("NE NADJE DOKTORA");
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return null;

@@ -1,7 +1,8 @@
 $( document ).ready(function() {
     console.log( "ready!" );
-    var now = currentDate();
-    $("#date").attr("min",now);
+    //var now = currentDate();
+    var tmrw = tmrwDate();
+    $("#date").attr("min",tmrw);
     $.ajax ({
     	type: 'GET',
     	url: '/pricelistItemApi/findAllAppointmentTypes',
@@ -46,7 +47,7 @@ $( document ).ready(function() {
     $(document).on('click', '.selectClinicBtn', function () {
     	var btnID = $(this).attr('id');
     	sessionStorage.setItem("appParam", btnID);
-    	console.log("prvo " + btnID);
+    	
     	sessionStorage.setItem("filter", "ne");
     	window.location.href = "/clinicPage";
     });
@@ -144,7 +145,7 @@ function popuniTabelu(){
 	var appType = $("#appointmentTypes").val();
 	var avgGrade = $("#avgGrade").val();
 	var dateControl = document.querySelector('input[type="date"]');
-	console.log("datum: "+dateControl.value);
+	
 	var location =  $("#locations").val(); 
 	if (appType == null || appType == "" ){
 		$("#appointmentTypes").addClass("is-invalid");
@@ -184,8 +185,7 @@ function popuniTabelu(){
 		
 	
 	}
-	console.log(avgGrade);
-	console.log(location);
+
 	}
 function loadAvailableClinicsAllOK(clinics){
 
@@ -230,6 +230,19 @@ function currentDate() {
     var d = new Date(),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+function tmrwDate() {
+    var d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + (d.getDate()+1),
         year = d.getFullYear();
 
     if (month.length < 2) 
