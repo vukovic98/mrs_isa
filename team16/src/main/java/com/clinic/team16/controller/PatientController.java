@@ -179,7 +179,6 @@ public class PatientController {
 
 	@PostMapping(path = "/signUpUser", consumes = "application/json")
 	public ResponseEntity<HttpStatus> signUpUser(@RequestBody UserFullInfoDTO u) {
-		System.out.println("UDJE");
 		Patient p = new Patient(u.getEmail(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getAddress(),
 				u.getCity(), u.getCountry(), u.getPhoneNumber(), u.getInsuranceNumber(), Role.PATIENT);
 		p.setMedicalRecord(null);
@@ -187,7 +186,6 @@ public class PatientController {
 		Patient same = this.patientService.findOneByEmail(u.getEmail());
 
 		if (same != null) {
-			System.out.println("IMA");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 

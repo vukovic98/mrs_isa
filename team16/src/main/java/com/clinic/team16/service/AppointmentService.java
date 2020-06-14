@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.clinic.team16.beans.Appointment;
 import com.clinic.team16.beans.Doctor;
+import com.clinic.team16.beans.Ordination;
 import com.clinic.team16.beans.Patient;
 import com.clinic.team16.repository.AppointmentRepository;
 
@@ -78,6 +79,23 @@ public class AppointmentService {
 		
 		return exists;
 	}
+	
+	public boolean checkIfAppointmentExistsRoom(Ordination o, Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		ArrayList<Appointment> apps = (ArrayList<Appointment>) this.appointmentRepository.findByRoomAndDate(sdf.format(date), o.getNumber());
+		boolean exists = false;
+		
+		for(Appointment a : apps) {
+			if(sdf.format(a.getDateTime()).substring(11, 16).equalsIgnoreCase(sdf.format(date).substring(11, 16))) {
+				exists = true;
+				break;
+			}
+		}
+		
+		return exists;
+		
+	}
+	
 	public boolean checkIfAppointmentIsScheduled(long appointmentId) {
 		boolean isFree = false;
 		Appointment a = this.appointmentRepository.findOneById(appointmentId);

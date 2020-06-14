@@ -152,7 +152,7 @@ function loadRequestsOK(requests){
 		    			 $.each(responseObject, function(i, val) {
 		    				 selectRoom.append("<option value=\""+val.ordId+"\">"+val.name+"</option>");
 		    			 });
-		    			 
+		    			 $('.selectpicker').selectpicker('refresh');
 		    		},
 		    		202: function(responseObject, textStatus, jqXHR) {
 		    			console.log("204 No Content");
@@ -217,13 +217,18 @@ function loadRequestsOK(requests){
 		          		  showConfirmButton: true,
 		          		  timer: 1500
 		          		})
-	                
+		          		window.setTimeout(function(){location.reload()},1500);
 	        	      
 	              },
 	              400: function(responseObject, textStatus, jqXHR) {
 	                console.log("Ordination - add() - 400 Bad request");
-	                showMessage("Ordination with inserted name already exists!", "antiquewhite");
-	              },
+	                Swal.fire({
+		          		  position: 'center',
+		          		  icon: 'error',
+		          		  title: 'An error occured. Try again!',
+		          		  showConfirmButton: true,
+		          		  timer: 1500
+		          		})	              },
 	    		  403: function(responseObject, textStatus, jqXHR) {
 	    			console.log("403 Unauthorized");
 	    			unauthorized();
@@ -255,7 +260,7 @@ function loadRequestsOK(requests){
 				          		  showConfirmButton: true,
 				          		  timer: 1500
 				          		})
-			                
+				          		window.setTimeout(function(){location.reload()},1500);
 			        	      
 			              },
 			              400: function(responseObject, textStatus, jqXHR) {

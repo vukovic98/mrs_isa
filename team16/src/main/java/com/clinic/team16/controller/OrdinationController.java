@@ -317,14 +317,15 @@ public class OrdinationController {
 		if (list != null) {
 			boolean available = true;
 			for (Ordination ordination : list) {
+				available = true;
 				for (Appointment a : ordination.getAppointments()) {
 					if (sdf.format(a.getDateTime()).equals(sdf.format(d))) {
-
 						available = false;
 						break;
 					}
 				}
 				if (available) {
+					System.out.println("IME ORDINACIJE: "+ordination.getName());
 					if (!ordination.getType().equals(OrdinationType.OPERATION)) {
 						finalList.add(
 								new OrdinationDTO(ordination.getName(), ordination.getType(), ordination.getNumber()));

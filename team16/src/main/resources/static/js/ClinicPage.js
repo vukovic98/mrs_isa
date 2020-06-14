@@ -351,9 +351,212 @@ $( document ).ready(function() {
 		$("#addRoomModal").modal();
 	});
 	
+	$(document).on("click", ".room-apps", function(){
+		var name = $(this).parents("tr").find("td:eq(0)").text();
+		
+		$("#roomModalTitleLabel").text("Room "+name+" appointments");
+		
+		$.ajax ({
+	    	type: 'GET',
+	    	url: 'appointmentApi/findAllForRoomList/' + $(this).parents("tr").attr("id"),
+		    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	    	statusCode: {
+	    		200: function(responseObject, textStatus, jqXHR) {
+	    			console.log("Doctors - findAll() - 200 OK");
+	    			var table = $("#roomAppointmentsBody");
+	    			$.each(responseObject, function(i, val) {
+	    				var row = $("<tr></tr>")
+	    				row.append($("<td>"+val.datetime+"</td>"));
+	    				row.append($("<td>"+val.doctor+"</td>"));
+	    				
+	    				
+	    				table.append(row);
+	    			});
+	    		},
+	    		204: function(responseObject, textStatus, jqXHR) {
+	    			console.log("Doctors - findAll() - 204 No Content");
+	    			
+	    		},
+				403: function(responseObject, textStatus, jqXHR) {
+					console.log("403 Unauthorized");
+					unauthorized();
+				}
+	    	}
+	    });
+		
+		
+		$("#roomAppointmentsModal").modal();
+	});
+	
 	
 	$(document).on("click", "#addDoctorBtn", function(){
-		$("#addDoctor").modal();
+		
+		$.ajax({
+		    type: 'GET',
+		    url: 'pricelistItemApi/findAllAppointmentTypesCurrentClinic',
+		    headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+		    statusCode: {
+		      200: function(responseObject, textStatus, jqXHR) {
+		    	  	var sel = $("#doctorSpecialtySelect");
+		    	  	sel.find('option')
+	    		    .remove()
+	    		    .end();
+		    		 $.each(responseObject, function(i, val) {
+		    			    sel.append("<option val=\""+val.appointmentType+"\">"+val.appointmentType+"</option>");
+		    			  });
+		    	  
+		    	  $("#addDoctor").modal();
+		      },
+		      204: function(responseObject, textStatus, jqXHR) {
+
+		      },
+				403: function(responseObject, textStatus, jqXHR) {
+					console.log("403 Unauthorized");
+					unauthorized();
+				}
+		    }
+		  });
+		
+		
+	});
+	
+	$(document).on("click", "#add-new-pricelist", function(){
+		$("#addPricelistModal").modal();
+	});
+	
+	$(document).on("click", ".edit-pricelist", function(){
+		var id = $(this).parents("tr").attr("id");
+		$("#pricelistId").text(id);
+		$("#editItemNameInput").val($(this).parents("tr").find("td:eq(0)").text())
+		$("#editItemPriceInput").val($(this).parents("tr").find("td:eq(1)").text())
+		$("#editPricelistModal").modal();
+	});
+	
+	
+	$(document).on("click", "#itemEditModalBtn", function(){
+	
+		var id = $("#pricelistId").text();
+		
+		var err = false;
+		if($("#editItemNameInput").val() == null || $("#editItemNameInput").val() == ""){
+			err = true;
+			$("#editItemNameInput").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#editItemPriceInput").val() == null || $("#editItemPriceInput").val() == ""){
+			err = true;
+			$("#editItemPriceInput").addClass("is-invalid");
+		}else
+			err = false;
+		
+		if(err != true){
+	        $.ajax({
+	            type: 'PUT',
+	            url: 'pricelistItemApi/editPricelistItem',
+	            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	            data : JSON.stringify({
+	              "id" : id,
+	              "appointmentType" : $("#editItemNameInput").val(),
+	              "price" : $("#editItemPriceInput").val()
+	            }),
+	            contentType: "application/json; charset=utf-8",
+	            dataType: "json",
+	            statusCode: {
+	              200: function(responseObject, textStatus, jqXHR) {
+	                console.log("Pricelistitem - edit() - 200 OK");
+	                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'success',
+	          		  title: 'New price-list item successfully edited!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})
+	          		
+	          		window.setTimeout(function(){location.reload()},1500);
+	          		
+	              },
+	              400: function(responseObject, textStatus, jqXHR) {
+	                console.log("Pricelistitem - edit() - 400 Bad request");
+	                Swal.fire({
+		          		  position: 'center',
+		          		  icon: 'error',
+		          		  title: 'Appointments with this item exist!',
+		          		  showConfirmButton: false,
+		          		  timer: 1500
+		          		})	              },
+	    		  403: function(responseObject, textStatus, jqXHR) {
+	    			console.log("403 Unauthorized");
+	    			unauthorized();
+	    		  }
+	            }
+	          });
+			
+	        
+	        
+		}
+		
+	});
+	
+	
+	$(document).on("click", "#itemCreateModalBtn", function(){
+		var err = false;
+		if($("#itemNameInput").val() == null || $("#itemNameInput").val() == ""){
+			err = true;
+			$("#itemNameInput").addClass("is-invalid");
+		}else
+			err = false;
+		if($("#itemPriceInput").val() == null || $("#itemPriceInput").val() == ""){
+			err = true;
+			$("#itemPriceInput").addClass("is-invalid");
+		}else
+			err = false;
+		
+		if(err != true){
+	        $.ajax({
+	            type: 'POST',
+	            url: 'pricelistItemApi/addPricelistItem',
+	            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+	            data : JSON.stringify({
+	              "appointmentType" : $("#itemNameInput").val(),
+	              "price" : $("#itemPriceInput").val()
+	            }),
+	            contentType: "application/json; charset=utf-8",
+	            dataType: "json",
+	            statusCode: {
+	              200: function(responseObject, textStatus, jqXHR) {
+	                console.log("Ordination - add() - 200 OK");
+	                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'success',
+	          		  title: 'New price-list item successfully added!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})
+	          		
+	          		window.setTimeout(function(){location.reload()},1500);
+	          		
+	              },
+	              400: function(responseObject, textStatus, jqXHR) {
+	                console.log("Ordination - add() - 400 Bad request");
+	                Swal.fire({
+		          		  position: 'center',
+		          		  icon: 'error',
+		          		  title: 'This item already exists!',
+		          		  showConfirmButton: false,
+		          		  timer: 1500
+		          		})	              },
+	    		  403: function(responseObject, textStatus, jqXHR) {
+	    			console.log("403 Unauthorized");
+	    			unauthorized();
+	    		  }
+	            }
+	          });
+			
+	        
+	        
+		}
+		
+		
 	});
 	
 	
@@ -484,7 +687,8 @@ $( document ).ready(function() {
 	              "city" : $("#citySignUp").val(),
 	              "country" : $("#countrySignUp").val(),
 	              "phoneNumber" : $("#phoneSignUp").val(),
-	              "insuranceNumber" : $("#insNumberSignUp").val()
+	              "insuranceNumber" : $("#insNumberSignUp").val(),
+	              "specialty" : $("#doctorSpecialtySelect").val()
 	            }),
 	            contentType: "application/json; charset=utf-8",
 	            dataType: "json",
@@ -545,6 +749,8 @@ $( document ).ready(function() {
      		  		  timer: 1500
      		  		});
               
+                window.setTimeout(function(){location.reload()},1500);
+                
           	  var table = $("#roomsBody");
         	  
         	    var row = $("<tr id=\""+name+"\"></tr>");
@@ -806,6 +1012,7 @@ $( document ).ready(function() {
   			  		});
                 else{
                 $("#roomNameInputEdit").val(responseObject.name);
+                $("#roomEditId").text(num);
                 $("#editRoomModal").modal();
                 }
                 
@@ -834,9 +1041,51 @@ $( document ).ready(function() {
 		
 		
   });
+	$(document).on("click", "#roomEditModalBtn", function(){
 	
-	
-	
+        $.ajax({
+            type: 'PUT',
+            url: 'ordinationApi/editOrdination',
+            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+            data : JSON.stringify({
+              "name" : $("#roomNameInputEdit").val(),
+              "type" : $("#roomTypeInputEdit").val(),
+              "ordId" : parseInt($("#roomEditId").text())
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            statusCode: {
+              200: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - edit() - 200 OK");
+                Swal.fire({
+          		  position: 'center',
+          		  icon: 'success',
+          		  title: 'Ordination successfully edited!',
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		})
+          		
+          		window.setTimeout(function(){location.reload()},1500);
+          		
+              },
+              400: function(responseObject, textStatus, jqXHR) {
+                console.log("Ordination - edit() - 400 Bad request");
+                Swal.fire({
+	          		  position: 'center',
+	          		  icon: 'error',
+	          		  title: 'Ordination with this name exists!',
+	          		  showConfirmButton: false,
+	          		  timer: 1500
+	          		})	              },
+    		  403: function(responseObject, textStatus, jqXHR) {
+    			console.log("403 Unauthorized");
+    			unauthorized();
+    		  }
+            }
+          });
+		
+		
+	});
 	// Delete row on delete button click
 	$(document).on("click", ".delete-room", function(){
 		var id = $(this).parents("tr").attr('id');
@@ -924,18 +1173,6 @@ $( document ).ready(function() {
 	
 	var actions_pricelist = $("pricelistTable td:last-child").html();
 	  // Append table with add row form on add new button click
-	    $(".add-new-pricelist").click(function(){
-	      var actions_pricelist = $("pricelistTable td:last-child").html();
-	    $(this).attr("disabled", "disabled");
-	    var index = $("pricelistTable tbody tr:nth-child(0)").index();
-	        var row = '<tr>' +
-	            '<td><input type="text" class="form-control" name="name" id="type"></td>' +
-	            '<td><input type="text" class="form-control" name="price" id="price"></td>' +
-	              '<td>' + actions_pricelist + '</td>' +
-	        '</tr>';
-	      $("pricelistTable").prepend(row);    
-	    $("pricelistTable tbody tr").eq(index + 1).find(".add-pricelist").toggle();
-	    });
   
   
 	// Add row on add button click
@@ -1030,7 +1267,7 @@ $( document ).ready(function() {
               Swal.fire({
    		  		  position: 'center',
    		  		  icon: 'error',
-   		  		  title: 'Something went wrong!',
+   		  		  title: 'Appointments with this item exist!',
    		  		  showConfirmButton: false,
    		  		  timer: 1500
    		  		});
@@ -1289,7 +1526,8 @@ function doctorAllOK(doctorList) {
 		var row = $("<tr id=\""+val.id+"\"></tr>");
 
 		row.append("<td class=\"w-50 modalDoctor\" id=\""+val.email+"\">" + val.firstName + " " + val.lastName + "</td>");
-		row.append("<td class=\"w-50 text-right\"><button type=\"button\" class=\"btn btn-outline-primary mr-3\">Review</button><button type=\"button\" class=\"btn btn-outline-danger\" id=\"fireButton\">Fire</button></td>");
+		row.append("<td>"+val.role+"</td>");
+		row.append("<td class=\"text-right\"><button style=\"width:100%\" type=\"button\" class=\"btn btn-outline-danger\" id=\"fireButton\">Fire</button></td>");
 
 		table.append(row);
 	});
@@ -1321,7 +1559,7 @@ function roomsAllOK(roomsList) {
 
 	    row.append("<td id=\""+val.ordId+"\">" + val.name + "</td>");
 	    row.append("<td id=\""+val.ordId+"\">" + val.type + "</td>");
-	    row.append("<td class=\"but\"><button class=\"btn btn-primary\" type=\"button\" data-toggle=\"modal\" data-target=\"#exampleModal\" aria-expanded=\"false\" aria-controls=\"exampleModal\">Appointments</button></td>");
+	    row.append("<td class=\"but\"><button class=\"btn btn-primary room-apps\" type=\"button\" data-toggle=\"modal\" aria-expanded=\"false\" aria-controls=\"exampleModal\">Appointments</button></td>");
 	    row.append("<td id=\""+val.name+"\">" +
 		                            "<a class=\"edit-room\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +
 		                            "<a class=\"delete-room\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
@@ -1479,6 +1717,9 @@ $("#filterPredef").click(function(){
     		200: function(responseObject, textStatus, jqXHR) {
     			console.log("200 OK");
     			var select = $("#roomPredef");
+    			select.find('option')
+    		    .remove()
+    		    .end();
     			$.each(responseObject, function(i, val) {
     				var option = "<option value=\""+val.ordId+"\">"+val.name+"</option>";
     				select.append(option);
@@ -1508,6 +1749,9 @@ $("#filterPredef").click(function(){
     		200: function(responseObject, textStatus, jqXHR) {
     			console.log("200 OK");
     			var select = $("#doctorPredef");
+    		    select.find('option')
+    		    .remove()
+    		    .end();
     			$.each(responseObject, function(i, val) {
     				var option = "<option value=\""+val.email+"\">"+val.firstName+" " + val.lastName+"</option>";
     				select.append(option);
@@ -1563,7 +1807,14 @@ $("#modalApprovePredefBtn").click(function(){
                 window.setTimeout(function(){location.reload()},1500);
     		},
     		204: function(responseObject, textStatus, jqXHR) {
-    			console.log("204 No Content");    			
+    			console.log("204 No Content");  
+                Swal.fire({
+	        		  position: 'center',
+	        		  icon: 'error',
+	        		  title: 'An error occured. Try again!',
+	        		  showConfirmButton: false,
+	        		  timer: 1500
+	        		})
     		},
 			403: function(responseObject, textStatus, jqXHR) {
 				console.log("403 Unauthorized");
@@ -1580,10 +1831,10 @@ function pricelistAllOK(pricelistItemList) {
 
 	  console.log(pricelistItemList);
 	  $.each(pricelistItemList, function(i, val) {
-	    var row = $("<tr id=\""+i+"\"></tr>");
+	    var row = $("<tr id=\""+val.id+"\"></tr>");
 	    row.append("<td class=\"appointmentType\" id=\""+val.id+"\">" + val.appointmentType + "</td>");
 	    row.append("<td class=\"price\" id=\""+val.id+"\">" + val.price + "$</td>");
-	    row.append("<td id=\""+val.id+"\">" + "<a class=\"add-priceclist\" title=\"Add\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE03B;</i></a>" +
+	    row.append("<td id=\""+val.id+"\">" + "<a class=\"edit-pricelist\" title=\"Edit\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE254;</i></a>" +
               "<a class=\"delete-pricelist\" title=\"Delete\" data-toggle=\"tooltip\"><i class=\"material-icons\">&#xE872;</i></a>" + "</td>");
 table.append(row);
 

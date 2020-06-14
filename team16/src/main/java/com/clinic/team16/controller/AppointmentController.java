@@ -209,8 +209,6 @@ public class AppointmentController {
 	@PostMapping(path = "/addAppointment", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addAppointment(@RequestBody AppointmentRequestDTO request) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		System.out.println(request.getDoctor() + " MAIL");
-		System.out.println(request.getEmail() + " PATIENT MAIL");
 		Doctor d = this.doctorService.findOneByEmail(request.getDoctor());
 		Patient p = this.patientService.findOneByEmail(request.getEmail());
 		ClinicalCenterAdministrator admin = this.clinicalCenterAdminService.findMainClinicalCenterAdmin();
@@ -224,14 +222,13 @@ public class AppointmentController {
 					found = pI;
 				}
 			}
-			System.out.println("PRODJE PRICELIST");
 			try {
 				exists = this.appointmentService.checkIfAppointmentExists(d, sdf.parse(request.getDateTime()));
 			} catch (ParseException e) {
 				e.printStackTrace();
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-			System.out.println("PRODJE EXISTS");
+		
 			if (!exists) {
 				// dodavanje appointmenta
 				try {
@@ -249,7 +246,6 @@ public class AppointmentController {
 						p.addAppointment(app);
 						this.appointmentService.save(app);
 
-						System.out.println("NASTAVI");
 						this.patientService.save(p);
 
 						appReq.setAppointment(app);
@@ -259,7 +255,6 @@ public class AppointmentController {
 						
 						return new ResponseEntity<>(HttpStatus.OK);
 					} else {
-						System.out.println("ZADNJE PUCA");
 						return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 					}
 
@@ -267,11 +262,9 @@ public class AppointmentController {
 					e.printStackTrace();
 				}
 			} else {
-				System.out.println("POSTOJI APP");
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 		} else {
-			System.out.println("NE NADJE DOKTORA");
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return null;
@@ -286,7 +279,7 @@ public class AppointmentController {
 		// Patient p = this.patientService.findOneByEmail(request.getEmail());
 		ClinicalCenterAdministrator admin = this.clinicalCenterAdminService.findMainClinicalCenterAdmin();
 		PricelistItem found = null;
-
+		Ordination o = ordinationService.findOneByNumber(request.getOrdId());
 		boolean exists = true;
 
 		if (d != null) {
@@ -298,6 +291,7 @@ public class AppointmentController {
 
 			try {
 				exists = this.appointmentService.checkIfAppointmentExists(d, sdf.parse(request.getDateTime()));
+				exists = this.appointmentService.checkIfAppointmentExistsRoom(o, sdf.parse(request.getDateTime()));
 			} catch (ParseException e) {
 				e.printStackTrace();
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -316,7 +310,7 @@ public class AppointmentController {
 
 						Appointment app = new Appointment(0, sdf.parse(request.getDateTime()), 0, null, null, appReq, d,
 								null, found, request.getDiscount());
-						Ordination o = ordinationService.findOneByNumber(request.getOrdId());
+						
 						app.setOrdination(o);
 						d.getAppointments().add(app);
 						o.getAppointments().add(app);
@@ -500,6 +494,25 @@ public class AppointmentController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	@GetMapping(path = "/findAllForRoomList/{roomId}")
+	public ResponseEntity<List<AppointmentDTO>> findAllForRoomList(@PathVariable("roomId") long roomId) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		List<Appointment> list = appointmentService.findAllForOrdination(roomId);
+		List<AppointmentDTO> dtoList = new ArrayList<AppointmentDTO>();
+		if (list != null) {
+			for (Appointment appointment : list) {
+				AppointmentDTO dto = new AppointmentDTO();
+				dto.setDoctor(appointment.getDoctor().getFirstName()+" "+appointment.getDoctor().getLastName());
+				dto.setDatetime(sdf.format(appointment.getDateTime()));
+				dtoList.add(dto);
+			}
+
+			return new ResponseEntity<List<AppointmentDTO>>(dtoList, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
 	/*
 	@GetMapping(path = "/findAllPredefined")
 	public ResponseEntity<List<AppointmentDTO>> findAllPredefined() {

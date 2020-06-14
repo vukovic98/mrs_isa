@@ -106,8 +106,12 @@ public class AppointmentRequestController {
 		AppointmentRequest approve = appointmentRequestService.findOneByAppointmentRequestId(body.getRequestId());
 		
 		if(approve != null) {
-			approve.setApproved(true);
 			Ordination or = ordinationService.findOneByNumber(body.getOrdId());
+			if(appointmentService.checkIfAppointmentExistsRoom(or, approve.getAppointment().getDateTime()))
+				return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+			else {
+			approve.setApproved(true);
+			
 			approve.getAppointment().setOrdination(or);
 			or.getAppointments().add(approve.getAppointment());
 			
@@ -121,6 +125,7 @@ public class AppointmentRequestController {
 			ordinationService.save(or);
 			appointmentRequestService.sendAcceptedMail(or.getName(), approve.getAppointment().getDoctor().getFirstName() + " "+ approve.getAppointment().getDoctor().getLastName(), sdf.format(approve.getAppointment().getDateTime()));
 			return new ResponseEntity<>(HttpStatus.OK);
+			}
 		}else
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		
@@ -133,8 +138,13 @@ public class AppointmentRequestController {
 		AppointmentRequest approve = appointmentRequestService.findOneByAppointmentRequestId(body.getRequestId());
 		
 		if(approve != null) {
-			approve.setApproved(true);
 			Ordination or = ordinationService.findOneByNumber(body.getOrdId());
+			if(appointmentService.checkIfAppointmentExistsRoom(or, approve.getAppointment().getDateTime()))
+				return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+			else {
+			
+			approve.setApproved(true);
+			
 			approve.getAppointment().setOrdination(or);
 			or.getAppointments().add(approve.getAppointment());
 			
@@ -154,6 +164,7 @@ public class AppointmentRequestController {
 			ordinationService.save(or);
 			appointmentRequestService.sendAcceptedMailChanged(or.getName(), approve.getAppointment().getDoctor().getFirstName() + " "+ approve.getAppointment().getDoctor().getLastName(), sdf.format(approve.getAppointment().getDateTime()));
 			return new ResponseEntity<>(HttpStatus.OK);
+			}
 		}else
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		
@@ -167,8 +178,12 @@ public class AppointmentRequestController {
 		AppointmentRequest approve = appointmentRequestService.findOneByAppointmentRequestId(body.getRequestId());
 		
 		if(approve != null) {
-			approve.setApproved(true);
 			Ordination or = ordinationService.findOneByNumber(body.getOrdId());
+			if(appointmentService.checkIfAppointmentExistsRoom(or, approve.getAppointment().getDateTime()))
+				return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+			else {
+			approve.setApproved(true);
+			
 			approve.getAppointment().setOrdination(or);
 			or.getAppointments().add(approve.getAppointment());
 			
@@ -176,6 +191,9 @@ public class AppointmentRequestController {
 			
 			for (String str : body.getDoctorEmails()) {
 				Doctor surgeryDoc = doctorService.findOneByEmail(str);
+				if(appointmentService.checkIfAppointmentExists(surgeryDoc, approve.getAppointment().getDateTime())) {
+					return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+				}
 				Appointment duplicate = new Appointment();
 				duplicate.setDateTime(approve.getAppointment().getDateTime());
 				duplicate.setDoctor(surgeryDoc);
@@ -200,6 +218,7 @@ public class AppointmentRequestController {
 			appointmentRequestService.sendAcceptedMail(or.getName(), approve.getAppointment().getDoctor().getFirstName() + " "+ approve.getAppointment().getDoctor().getLastName(), sdf.format(approve.getAppointment().getDateTime()));
 			
 			return new ResponseEntity<>(HttpStatus.OK);
+			}
 		}else
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		

@@ -265,6 +265,10 @@ function whereToGo(user) {
 			console.log("USAO");
 			window.location.href = "/clinicalCenterAdminInitial";
 		}
+		
+		if(user.role == "CADMIN_INIT"){
+			window.location.href = "/clinicAdminInitial";
+		}
 	
 		if(user.role == "CLINICAL_CENTER_ADMINISTRATOR" || user.role == "MAIN_CLINICAL_CENTER_ADMINISTRATOR") {
 			console.log("USAO");

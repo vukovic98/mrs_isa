@@ -12,6 +12,7 @@ public class DoctorAddDTO {
 	private String country;
 	private String phoneNumber;
 	private String insuranceNumber;
+	private String specialty;
 	public String getEmail() {
 		return email;
 	}
@@ -84,6 +85,12 @@ public class DoctorAddDTO {
 		this.country = country;
 		this.phoneNumber = phoneNumber;
 		this.insuranceNumber = insuranceNumber;
+	}
+	public String getSpecialty() {
+		return specialty;
+	}
+	public void setSpecialty(String specialty) {
+		this.specialty = specialty;
 	}
 	
 	
