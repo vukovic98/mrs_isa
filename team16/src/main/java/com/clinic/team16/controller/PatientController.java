@@ -308,6 +308,11 @@ public class PatientController {
 					ah.setClinic(a.getDoctor().getClinic().getName());
 					ah.setDoctor(a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName());
 					ah.setApproved(a.appointmentRequest.getApproved());
+					if (a.getMedicalReport() == null)
+						ah.setHasMedicalReport(false);
+					else
+						ah.setHasMedicalReport(true);
+						
 					appHistory.add(ah);
 				}
 			}

@@ -61,7 +61,7 @@
 	    			row.append("<td >" + "No" + "</td>");
 	    		}
 	    		
-	    		if (val.approved && inDate < now){
+	    		if (val.hasMedicalReport){
 	    			row.append("<td >" + "Yes" + "</td>");
 		    		row.append("<td class=\" modalTD\" id="+val.appointmentID+" align=\"center\"><button type=\"button\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Click to rate clinic and doctor\" class=\"btn btn-indigo btn-sm m-0\"><i class=\"fa fa-star\"></i></button></td>");}
 	    		else {

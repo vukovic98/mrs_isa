@@ -11,7 +11,27 @@ public class AppointmentHistoryDTO {
 	private long doctorID;
 	private String clinic;
 	private boolean approved;
+	private boolean hasMedicalReport;
 	
+	public AppointmentHistoryDTO(long appointmentID, String datetime, String appointmentType, String doctor,
+			long clinicID, long doctorID, String clinic, boolean approved, boolean hasMedicalReport) {
+		super();
+		this.appointmentID = appointmentID;
+		this.datetime = datetime;
+		this.appointmentType = appointmentType;
+		this.doctor = doctor;
+		this.clinicID = clinicID;
+		this.doctorID = doctorID;
+		this.clinic = clinic;
+		this.approved = approved;
+		this.hasMedicalReport = hasMedicalReport;
+	}
+	public boolean isHasMedicalReport() {
+		return hasMedicalReport;
+	}
+	public void setHasMedicalReport(boolean hasMedicalReport) {
+		this.hasMedicalReport = hasMedicalReport;
+	}
 	public AppointmentHistoryDTO(long appointmentID, String datetime, String appointmentType, String doctor,
 			long clinicID, long doctorID, String clinic, boolean approved) {
 		super();

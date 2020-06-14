@@ -104,7 +104,7 @@ public class MedicalReportController {
 	public ResponseEntity<MedicalReportDTO> getReportForAppointment(@PathVariable long appId) {
 		Appointment a = this.appointmentService.findOneById(appId);
 
-		if (a != null) {
+		if (a != null && a.getMedicalReport() != null) {
 			MedicalReport m = a.getMedicalReport();
 			String doc = a.getDoctor().getFirstName() + " " + a.getDoctor().getLastName();
 			String pat = a.getPatient().getFirstName() + " " + a.getPatient().getLastName();

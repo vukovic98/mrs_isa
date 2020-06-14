@@ -553,7 +553,7 @@ $(document).ready(function(){
 			        Swal.fire({
 		        		  position: 'center',
 		        		  icon: 'error',
-		        		  title: 'Something went wrong!',
+		        		  title: "Appointment was not held!",
 		        		  showConfirmButton: false,
 		        		  timer: 1500
 		        		})
