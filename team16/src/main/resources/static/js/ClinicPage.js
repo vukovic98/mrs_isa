@@ -1700,12 +1700,32 @@ $("#filterPredef").click(function(){
 	
 	var type = $("#appointmentTypePredef").val();
 	var disc = $("#discountPredef option:selected").text();
+	var err = false;
+	if(date == "" || date == null){
+		err = true;
+		$("#datePredef").addClass("is-invalid");
+	}
+	
+	if(time == "" || time == null || time == "Choose term"){
+		err = true;
+		$("#timePredef").addClass("is-invalid");
+	}
+	
+	if(type == "" || type == null){
+		err = true;
+		$("#appointmentTypePredef").addClass("is-invalid");
+	}
+	
+	if(disc == "" || disc == null || disc == "Choose discount"){
+		err = true;
+		$("#discountPredef").addClass("is-invalid");
+	}
 	
 	$("#dateModalPredef").val(date + " " + time);
 	$("#typeModalPredef").val(type);
 	$("#discountModalPredef").val(disc);
 	
-	
+	if(!err){
     $.ajax({
     	type: 'GET',
     	url: '/ordinationApi/findAllFreeForDateTime',
@@ -1725,6 +1745,8 @@ $("#filterPredef").click(function(){
     				select.append(option);
     				
     			});
+    			
+    			
     			$("#predefinedModal").modal();
     		},
     		204: function(responseObject, textStatus, jqXHR) {
@@ -1768,7 +1790,7 @@ $("#filterPredef").click(function(){
 			}
     	}
     });
-    
+	}
 	
 });
 
