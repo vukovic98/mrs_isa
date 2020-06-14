@@ -88,7 +88,7 @@ $(document).ready(function(){
             Swal.fire({
       		  position: 'center',
       		  icon: 'error',
-      		  title: 'Medication with inserted code already exists!',
+      		  title: 'Medication with inserted code or name already exists!',
       		  showConfirmButton: false,
       		  timer: 1500
       		})

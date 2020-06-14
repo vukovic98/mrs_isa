@@ -42,6 +42,7 @@
 						<th class="w-25">Date and time</th>
 						<th class="w-25">Patient</th>
 						<th class="w-25">&nbsp</th>
+						<th class="w-25">&nbsp</th>
 					</tr>
 				</thead>
 				<tbody id="appointmentsBody">
@@ -269,6 +270,10 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+				
 	
 	
 	
@@ -310,7 +315,73 @@
 					</div>
 				
 				<!-- END MODAL FOR ALLERGIES/MEDICATIONS -->
-	
+	 
+	<!-- Modal -->
+	<div class="modal fade" id="modalReport" role="dialog">
+		<div class="modal-dialog w-50" role="document"
+			style="margin-top: 58px; max-width: none !important;">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="card text-center">
+						<div class="card-header">Report information</div>
+						<div class="card-body">
+
+							<div class="input-group mb-3">
+								<div class="input-group-prepend" style="width: 35%;">
+									<span class="input-group-text w_available" id="basic-addon1">Report ID</span>
+								</div>
+								<input type="text" id="modalReportID" class="form-control"
+									placeholder="Clinic name" aria-label="Clinic name"
+									aria-describedby="basic-addon1">
+							</div>
+
+							<div class="input-group mb-3">
+								<div class="input-group-prepend" style="width: 35%;">
+									<span class="input-group-text w_available" id="basic-addon1">Patient</span>
+								</div>
+								<input type="text" id="modalReportPatient" class="form-control"
+									placeholder="Clinic address" aria-label="Clinic city"
+									aria-describedby="basic-addon1">
+							</div>
+							
+							<div class="input-group mb-3">
+								<div class="input-group-prepend" style="width: 35%;">
+									<span class="input-group-text w_available" id="basic-addon1">Medications</span>
+								</div>
+								<select id="modalReportMedications" placeholder="Pricelist"
+									class="form-control" multiple>
+								</select>
+							</div>
+							
+							<div class="input-group mb-3">
+								<div class="input-group-prepend" style="width: 35%;">
+									<span class="input-group-text w_available" id="basic-addon1">Diagnosis</span>
+								</div>
+								<select id="modalReportDiagnosis" placeholder="Pricelist"
+									class="form-control" multiple>
+								</select>
+							</div>
+
+							<div class="input-group mb-3">
+								<div class="input-group-prepend" style="width: 35%;">
+									<span class="input-group-text w_available" id="basic-addon1">Description</span>
+								</div>
+								<textarea rows="4" id="modalReportDetails"
+									placeholder="Description" style="resize: none; width: 65%;" readonly>
+								</textarea>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 					<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 					<script type="application/javascript"
