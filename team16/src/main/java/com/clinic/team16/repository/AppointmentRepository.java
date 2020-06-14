@@ -35,6 +35,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long > 
 	public List<Appointment> findByDoctorAndDate(String date, Long doctor_id);
 	
 	@Query(
+			value = "SELECT * FROM appointment WHERE appointment.date_time = ?1 AND appointment.ordination_id = ?2",
+			nativeQuery = true)
+	public List<Appointment> findByRoomAndDate(String date, int room_id);
+	
+	@Query(
 			value = "SELECT * FROM appointment WHERE appointment.patient_id IS NULL",
 			nativeQuery = true)
 	public List<Appointment> findAllPredefined();

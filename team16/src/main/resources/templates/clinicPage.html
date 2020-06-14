@@ -217,7 +217,7 @@
 											onkeyup="pricelistFunction()">
 									</div>
 									<div class="col-sm-2 text-right pr-0">
-										<button type="button" class="btn btn-info add-new-pricelist">
+										<button type="button" class="btn btn-info add-new-pricelist" id="add-new-pricelist">
 											<i class="fa fa-plus"></i> Add New
 										</button>
 									</div>
@@ -282,7 +282,9 @@
 							<table class="table table-hover table-bordered mt-4 pt-4"
 								id="doctorTable">
 								<thead id="doctorHead">
-
+									<th>Name</th>
+									<th>Specialty</th>
+									<th>&nbsp</th>
 								</thead>
 								<tbody id="doctorBody">
 
@@ -444,6 +446,83 @@
 			<!-- Modal end -->
 
 			<!-- Modal -->
+			<div class="modal fade" id="addPricelistModal" role="dialog">
+				<div class="modal-dialog" role="document" style="margin-top: 60px;">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="card text-center">
+								<div class="card-header">Add price-list item</div>
+								<div class="card-body">
+									<div class="col-xs-12 col-sm-12 pl-0">
+										<p id="pricelistId" style="display: none;"></p>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend" style="width: 30%;">
+												<span class="input-group-text w_available" id="clinicSPAN">Name</span>
+											</div>
+											<input type="text" id="itemNameInput" class="form-control"
+												aria-describedby="basic-addon1" required>
+										</div>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend" style="width: 30%;">
+												<span class="input-group-text w_available" id="doctorSPAN">Price ($)</span>
+											</div>
+											<input type="text" id="itemPriceInput" class="form-control">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" id="itemCreateModalBtn"
+								class="btn btn-primary" data-dismiss="modal">Create</button>
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Modal end -->
+
+			<!-- Modal -->
+			<div class="modal fade" id="editPricelistModal" role="dialog">
+				<div class="modal-dialog" role="document" style="margin-top: 60px;">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="card text-center">
+								<div class="card-header">Edit price-list item</div>
+								<div class="card-body">
+									<div class="col-xs-12 col-sm-12 pl-0">
+										<p id="pricelistId" style="display: none;"></p>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend" style="width: 30%;">
+												<span class="input-group-text w_available" id="clinicSPAN">Name</span>
+											</div>
+											<input type="text" id="editItemNameInput" class="form-control"
+												aria-describedby="basic-addon1" required>
+										</div>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend" style="width: 30%;">
+												<span class="input-group-text w_available" id="doctorSPAN">Price ($)</span>
+											</div>
+											<input type="text" id="editItemPriceInput" class="form-control">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" id="itemEditModalBtn"
+								class="btn btn-primary" data-dismiss="modal">Edit</button>
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Modal end -->
+
+
+			<!-- Modal -->
 			<div class="modal fade" id="editRoomModal" role="dialog">
 				<div class="modal-dialog" role="document" style="margin-top: 60px;">
 					<div class="modal-content">
@@ -452,7 +531,7 @@
 								<div class="card-header">Edit room</div>
 								<div class="card-body">
 									<div class="col-xs-12 col-sm-12 pl-0">
-										<p id="reportId" style="display: none;"></p>
+										<p id="roomEditId" style="display: none;"></p>
 										<div class="input-group mb-3">
 											<div class="input-group-prepend" style="width: 30%;">
 												<span class="input-group-text w_available" id="clinicSPAN">Name</span>
@@ -518,6 +597,7 @@
 														placeholder="Password" required /> <input type="password"
 														class="input form-control" id="passRepeatSignUp"
 														placeholder="Repeat password" required />
+														<select id="doctorSpecialtySelect" class="form-control"></select>
 												</div>
 												
 											</div>
@@ -537,7 +617,32 @@
 
 			<!-- Modal end -->
 
+	<div class="modal fade" id="roomAppointmentsModal" role="dialog">
+		<div class="modal-dialog" role="document" style="margin-top: 60px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="roomModalTitleLabel"></h5>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered" id="appointmentTable">
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Doctor</th>
+							</tr>
+						</thead>
+						<tbody id="roomAppointmentsBody">
 
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	<script type="application/javascript" th:src="@{js/jquery-3.4.1.js}"></script>

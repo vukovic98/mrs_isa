@@ -28,6 +28,7 @@ import com.clinic.team16.beans.ClinicAdministrator;
 import com.clinic.team16.beans.Doctor;
 import com.clinic.team16.beans.Grade;
 import com.clinic.team16.beans.Patient;
+import com.clinic.team16.beans.Role;
 import com.clinic.team16.beans.User;
 import com.clinic.team16.beans.DTO.ClinicAdminFullInfo;
 import com.clinic.team16.beans.DTO.DoctorAddDTO;
@@ -114,7 +115,7 @@ public class DoctorController {
 
 			for (Doctor d : list)
 				dtoList.add(
-						new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail()));
+						new DoctorDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getAverageGrade(), d.getEmail(),d.getSpecialty()));
 
 			return new ResponseEntity<ArrayList<DoctorDTO>>(dtoList, HttpStatus.OK);
 		} else
@@ -212,7 +213,8 @@ public class DoctorController {
 			d.setPassword(doctor.getPassword());
 			d.setEmail(doctor.getEmail());
 			d.setPhoneNumber(doctor.getPhoneNumber());
-
+			d.setRole(Role.DOCTOR);
+			d.setSpecialty(doctor.getSpecialty());
 			d.setClinic(ca.getClinic());
 			ca.getClinic().getDoctors().add(d);
 

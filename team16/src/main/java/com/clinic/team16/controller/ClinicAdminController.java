@@ -91,7 +91,7 @@ public class ClinicAdminController {
 				ClinicAdministrator cA = new ClinicAdministrator(admin.getEmail(), admin.getPassword(),
 						admin.getFirstName(), admin.getLastName(), admin.getAddress(), admin.getCity(),
 						admin.getCountry(), admin.getPhoneNumber(), admin.getInsuranceNumber(),
-						Role.CLINIC_ADMINISTRATOR, c);
+						Role.CADMIN_INIT, c);
 
 				ClinicAdministrator ok = this.clinicAdminService.save(cA);
 
@@ -128,6 +128,7 @@ public class ClinicAdminController {
 		if (found != null) {
 
 			found.setPassword(p.substring(1, p.length() - 1));
+			found.setRole(Role.CLINIC_ADMINISTRATOR);
 			final ClinicAdministrator updatedAdmin = clinicAdminService.save(found);
 			return ResponseEntity.ok(updatedAdmin);
 		} else

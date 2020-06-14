@@ -9,7 +9,7 @@ public class DoctorDTO {
 	private String lastName;
 	private double averageGrade;
 	private ArrayList<String> terms;
-
+	private String role;
 	public DoctorDTO() {
 		super();
 	}
@@ -88,6 +88,24 @@ public class DoctorDTO {
 
 	public void setAverageGrade(double averageGrade) {
 		this.averageGrade = averageGrade;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public DoctorDTO(long id, String firstName, String lastName, double averageGrade, String email, String role) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.averageGrade = averageGrade;
+		this.role = role;
 	}
 
 }

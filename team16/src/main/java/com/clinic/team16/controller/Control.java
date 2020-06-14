@@ -46,6 +46,11 @@ public class Control {
 		   return "clinicalCenterAdminInitial";
 	   }
 	   
+	   @RequestMapping(value = "/clinicAdminInitial")
+	   public String clinicAdminInitial() {
+		   return "clinicAdminInitial";
+	   }
+	   
 	   @RequestMapping(value = "/centerAdmins")
 	   public String centerAdmins() {
 		   return "centerAdmins";
