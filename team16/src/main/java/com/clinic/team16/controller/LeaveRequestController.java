@@ -1,5 +1,6 @@
 package com.clinic.team16.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,14 +96,16 @@ public class LeaveRequestController {
 	
 	@PutMapping(path = "/addLeaveRequest/{email}", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addLeaveRequest(@PathVariable("email") String email,
-			@RequestBody LeaveRequest request) {
+			@RequestBody LeaveRequestDTO request) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		User u = this.userService.findOneByEmail(email);
 		System.out.println(email);
 
 		if (u != null) {
 			if (u instanceof Nurse) {
 				Nurse n = this.nurseService.findOneByEmail(u.getEmail());
-				LeaveRequest l = new LeaveRequest(request.getDateFrom(), request.getDateTo(), false, n);
+				LeaveRequest l = new LeaveRequest(sdf.parse(request.getDateFrom()), 
+						sdf.parse(request.getDateTo()), false, n);
 				n.addLeaveRequest(l);
 
 				LeaveRequest ok = this.leaveRequestService.save(l);
@@ -115,7 +118,8 @@ public class LeaveRequestController {
 			} else if (u instanceof Doctor) {
 				Doctor d = this.doctorService.findOneByEmail(u.getEmail());
 
-				LeaveRequest l = new LeaveRequest(request.getDateFrom(), request.getDateTo(), false, d);
+				LeaveRequest l = new LeaveRequest(sdf.parse(request.getDateFrom()),
+						sdf.parse(request.getDateTo()), false, d);
 				d.addLeaveRequest(l);
 
 				LeaveRequest ok = this.leaveRequestService.save(l);

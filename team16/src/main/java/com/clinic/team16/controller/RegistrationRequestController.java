@@ -18,6 +18,7 @@ import com.clinic.team16.beans.Patient;
 import com.clinic.team16.beans.RegistrationRequest;
 import com.clinic.team16.beans.User;
 import com.clinic.team16.beans.DTO.RegistrationRequestDTO;
+import com.clinic.team16.beans.DTO.UserFullInfoDTO;
 import com.clinic.team16.service.PatientService;
 import com.clinic.team16.service.RegistrationRequestService;
 
@@ -47,7 +48,7 @@ public class RegistrationRequestController {
 	}
 
 	@PostMapping(path = "/acceptUser")
-	public ResponseEntity<HttpStatus> acceptUser(@RequestBody User u) throws MessagingException {
+	public ResponseEntity<HttpStatus> acceptUser(@RequestBody UserFullInfoDTO u) throws MessagingException {
 		String email = u.getEmail();
 
 		Patient p = this.patientService.findOneByEmail(email);
@@ -68,7 +69,7 @@ public class RegistrationRequestController {
 	}
 
 	@PostMapping(path = "/declineUser")
-	public ResponseEntity<HttpStatus> declineUser(@RequestBody User u) throws MessagingException {
+	public ResponseEntity<HttpStatus> declineUser(@RequestBody UserFullInfoDTO u) throws MessagingException {
 		String email = u.getEmail();
 		String reason = u.getAddress(); // smart work
 

@@ -81,6 +81,49 @@ function loadRequestsOK(requests){
 		    			$("#dateModal").val(responseObject.dateTime);
 		    			$("#termModal").val(responseObject.onlyTime);
 		    			$("#appointmentType").text(responseObject.examType);
+		    			if(responseObject.examType != "SURGERY"){
+		    				$("#surgeryDoctorsModal").hide();
+		    				$("#surgerySPAN").hide();
+		    			}else{
+		    				$("#surgeryDoctorsModal").show();
+		    				$("#surgerySPAN").show();
+		    			       $.ajax({
+		    			            type: 'GET',
+		    			            url: 'doctorApi/findAllFreeForDateTimeSurgery',
+		    			            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+		    			            data : {
+		    			              "date" : responseObject.dateTime + " " + responseObject.onlyTime,
+		    			              "type" : responseObject.examType
+		    			            },
+		    			            contentType: "application/json; charset=utf-8",
+		    			            dataType: "json",
+		    			            statusCode: {
+		    			              200: function(responseObject, textStatus, jqXHR) {
+		    			                console.log("Ordination - add() - 200 OK");
+		    			                //showMessage("Ordination successfully added!", "palegreen");
+		    			                
+		    			                	$('#surgeryDoctorsModal')
+		    			                    .find('option')
+		    			                    .remove()
+		    			                    .end();
+		    				    			 $.each(responseObject, function(i, val) {
+		    				    				 $("#surgeryDoctorsModal").append("<option id=\""+val.email+"\" value=\""+val.email+"\">"+val.firstName+" "+val.lastName+"</option>");
+		    				    			 });
+		    				    			 
+		    				    			
+		    			              },
+		    			              400: function(responseObject, textStatus, jqXHR) {
+		    			                console.log("Ordination - add() - 400 Bad request");
+		    			                //showMessage("Ordination with inserted name already exists!", "antiquewhite");
+		    			              },
+		    			    		  403: function(responseObject, textStatus, jqXHR) {
+		    			    			console.log("403 Unauthorized");
+		    			    			unauthorized();
+		    			    		  }
+		    			            }
+		    			          });
+		    				
+		    			}
 		    		},
 		    		204: function(responseObject, textStatus, jqXHR) {
 		    			console.log("204 No Content");
@@ -151,6 +194,7 @@ function loadRequestsOK(requests){
 		  
 		  	
 		  	if(available){
+		  		if($("#appointmentType").text() != "SURGERY"){
 	       $.ajax({
 	            type: 'PUT',
 	            url: 'appointmentRequestApi/approveRequest',
@@ -186,7 +230,47 @@ function loadRequestsOK(requests){
 	    		  }
 	            }
 	          });
-		  	
+		  		}
+		  		else{
+		  			$.ajax({
+			            type: 'PUT',
+			            url: 'appointmentRequestApi/approveRequestSurgery',
+			            headers: { "Authorization": 'Bearer ' + sessionStorage.getItem('token') },
+			            data : JSON.stringify({
+			              "ordId" : idRoom,
+			              "requestId" : idReq,
+			              "doctorEmails" : $("#surgeryDoctorsModal").val()
+			            }),
+			            contentType: "application/json; charset=utf-8",
+			            dataType: "json",
+			            statusCode: {
+			              200: function(responseObject, textStatus, jqXHR) {
+			                console.log("Ordination - add() - 200 OK");
+			                //showMessage("Ordination successfully added!", "palegreen");
+			        	    
+			                Swal.fire({
+				          		  position: 'center',
+				          		  icon: 'success',
+				          		  title: 'Request successfully approved!',
+				          		  showConfirmButton: true,
+				          		  timer: 1500
+				          		})
+			                
+			        	      
+			              },
+			              400: function(responseObject, textStatus, jqXHR) {
+			                console.log("Ordination - add() - 400 Bad request");
+			                showMessage("Ordination with inserted name already exists!", "antiquewhite");
+			              },
+			    		  403: function(responseObject, textStatus, jqXHR) {
+			    			console.log("403 Unauthorized");
+			    			unauthorized();
+			    		  }
+			            }
+			          });
+		  			
+		  			
+		  		}
 	  }else{
 	       $.ajax({
 	            type: 'PUT',

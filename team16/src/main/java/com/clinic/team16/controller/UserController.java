@@ -90,7 +90,7 @@ public class UserController {
 	public ResponseEntity<String> getCurrentUser() {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		if (currentUser != "")
+		if (!currentUser.equals(""))
 			return new ResponseEntity<String>(currentUser, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

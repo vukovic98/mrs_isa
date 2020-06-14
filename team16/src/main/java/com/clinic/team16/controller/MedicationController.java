@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.clinic.team16.beans.ClinicalCenter;
 import com.clinic.team16.beans.Medication;
+import com.clinic.team16.beans.DTO.MedicationDTO;
 import com.clinic.team16.service.ClinicalCenterService;
 import com.clinic.team16.service.MedicationService;
 
@@ -39,12 +40,12 @@ public class MedicationController {
 	}
 
 	@PostMapping(path = "/addMedication", consumes = "application/json")
-	public ResponseEntity<HttpStatus> addMedication(@RequestBody Medication med) {
-		Medication f = this.medicationService.findOneByCode(med.getCode());
-		Medication f2 = this.medicationService.findOneByName(med.getName());
+	public ResponseEntity<HttpStatus> addMedication(@RequestBody MedicationDTO med1) {
+		Medication f = this.medicationService.findOneByCode(med1.getCode());
+		Medication f2 = this.medicationService.findOneByName(med1.getName());
 		
 		if (f == null && f2 == null) {
-
+			Medication med = new Medication(med1.getName(), med1.getCode(), null);
 			ClinicalCenter c = this.clinicalCenterService.findOneById(1);
 
 			med.setClinicalCenter(c);

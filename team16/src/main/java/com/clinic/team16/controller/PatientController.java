@@ -22,12 +22,15 @@ import com.clinic.team16.beans.Role;
 import com.clinic.team16.beans.User;
 import com.clinic.team16.beans.DTO.AllergiestEditDTO;
 import com.clinic.team16.beans.DTO.AppointmentHistoryDTO;
+import com.clinic.team16.beans.DTO.ClinicAdminFullInfo;
 import com.clinic.team16.beans.DTO.MedicationsEditDTO;
 import com.clinic.team16.beans.DTO.PatientDTO;
 import com.clinic.team16.beans.DTO.PatientDoctorDTO;
 import com.clinic.team16.beans.DTO.PatientInfoDTO;
 import com.clinic.team16.beans.DTO.PatientMedicalRecordDTO;
+import com.clinic.team16.beans.DTO.UserAuthDTO;
 import com.clinic.team16.beans.DTO.UserDTO;
+import com.clinic.team16.beans.DTO.UserFullInfoDTO;
 import com.clinic.team16.service.ClinicalCenterAdminService;
 import com.clinic.team16.service.MedicalRecordService;
 import com.clinic.team16.service.MedicationService;
@@ -121,7 +124,7 @@ public class PatientController {
 	}
 
 	@PostMapping(path = "/findModalByEmail", consumes = "application/json")
-	public ResponseEntity<UserDTO> findModalByEmail(@RequestBody User u) {
+	public ResponseEntity<UserDTO> findModalByEmail(@RequestBody UserAuthDTO u) {
 
 		Patient found = this.patientService.findOneByEmail(u.getEmail());
 
@@ -135,7 +138,7 @@ public class PatientController {
 	}
 
 	@PutMapping(path = "/updatePatient", consumes = "application/json")
-	public ResponseEntity<HttpStatus> updatePatient(@RequestBody Patient p) {
+	public ResponseEntity<HttpStatus> updatePatient(@RequestBody UserFullInfoDTO p) {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		Patient found = this.patientService.findOneByEmail(currentUser);
 
@@ -175,7 +178,7 @@ public class PatientController {
 	}
 
 	@PostMapping(path = "/signUpUser", consumes = "application/json")
-	public ResponseEntity<HttpStatus> signUpUser(@RequestBody User u) {
+	public ResponseEntity<HttpStatus> signUpUser(@RequestBody UserFullInfoDTO u) {
 		Patient p = new Patient(u.getEmail(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getAddress(),
 				u.getCity(), u.getCountry(), u.getPhoneNumber(), u.getInsuranceNumber(), Role.PATIENT);
 		p.setMedicalRecord(null);
@@ -237,7 +240,7 @@ public class PatientController {
 					found.getMedicalRecord().getWeight(), found.getMedicalRecord().getBloodType(),
 					found.getMedicalRecord().getAllergies(), found.getMedicalRecord().getPerscriptions());
 
-			return new ResponseEntity<PatientMedicalRecordDTO>(record, HttpStatus.OK);
+			return new ResponseEntity<>(record, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -255,7 +258,7 @@ public class PatientController {
 					found.getMedicalRecord().getWeight(), found.getMedicalRecord().getBloodType(),
 					found.getMedicalRecord().getAllergies(), found.getMedicalRecord().getPerscriptions());
 
-			return new ResponseEntity<PatientMedicalRecordDTO>(record, HttpStatus.OK);
+			return new ResponseEntity<>(record, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -278,7 +281,7 @@ public class PatientController {
 			patient.setPassword(found.getPassword());
 			patient.setPhone(found.getPhoneNumber());
 
-			return new ResponseEntity<PatientDTO>(patient, HttpStatus.OK);
+			return new ResponseEntity<>(patient, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -308,7 +311,7 @@ public class PatientController {
 					appHistory.add(ah);
 				}
 			}
-			return new ResponseEntity<List<AppointmentHistoryDTO>>(appHistory, HttpStatus.OK);
+			return new ResponseEntity<>(appHistory, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -408,7 +411,7 @@ public class PatientController {
 					}
 				}
 			}
-			return new ResponseEntity<AppointmentHistoryDTO>(app, HttpStatus.OK);
+			return new ResponseEntity<>(app, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 

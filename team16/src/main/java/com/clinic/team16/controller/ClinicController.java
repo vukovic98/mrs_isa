@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,17 +71,18 @@ public class ClinicController {
 	public ResponseEntity<ArrayList<ClinicInfoDTO>> findAll() {
 		ArrayList<Clinic> list = this.clinicService.findAll();
 		if (list != null) {
-			ArrayList<ClinicInfoDTO> daoList = new ArrayList<ClinicInfoDTO>();
+			ArrayList<ClinicInfoDTO> daoList = new ArrayList<>();
 			for (Clinic c : list) {
 				daoList.add(new ClinicInfoDTO(c.getClinicID(), c.getName(), c.getAddress(), c.getDescription(),
 						c.getAverageGrade(), c.getCity()));
 			}
-			return new ResponseEntity<ArrayList<ClinicInfoDTO>>(daoList, HttpStatus.OK);
+			return new ResponseEntity<>(daoList, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
 	}
 
+	@Transactional
 	@PostMapping(path = "/addClinic", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addClinic(@RequestBody ClinicAddDTO clinic) {
 		Clinic found = this.clinicService.findOneByName(clinic.getName());
@@ -110,14 +113,12 @@ public class ClinicController {
 			@PathVariable String date, @PathVariable String avgGrade, @PathVariable String location)
 			throws ParseException {
 		List<Clinic> list = this.clinicService.filterClinics(appType.toString());
-		List<ClinicFilterDTO> dtoList = new ArrayList<ClinicFilterDTO>();
+		List<ClinicFilterDTO> dtoList = new ArrayList<>();
 		double price = 0.0;
 		if (list != null) {
 			for (Clinic c : list) {
 				System.out.println("ima");
 				for (PricelistItem pli : c.getPricelist().getPricelistItems()) {
-					System.out.println(pli.getName());
-					System.out.println(appType);
 					if (pli.getName().equalsIgnoreCase(appType)) {
 						price = pli.getPrice();
 						break;
@@ -153,7 +154,7 @@ public class ClinicController {
 					}
 				}
 			}
-			return new ResponseEntity<List<ClinicFilterDTO>>(dtoList, HttpStatus.OK);
+			return new ResponseEntity<>(dtoList, HttpStatus.OK);
 
 		} else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -185,7 +186,7 @@ public class ClinicController {
 		ArrayList<DoctorDTO> doctors = this.clinicService.filterDoctors(c, appType, date);
 
 		if (doctors != null)
-			return new ResponseEntity<ArrayList<DoctorDTO>>(doctors, HttpStatus.OK);
+			return new ResponseEntity<>(doctors, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -197,28 +198,27 @@ public class ClinicController {
 			ClinicInfoDTO cdt = new ClinicInfoDTO(clinicID, c.getName(), c.getAddress(), c.getDescription(),
 					c.getAverageGrade(), c.getCity());
 
-			return new ResponseEntity<ClinicInfoDTO>(cdt, HttpStatus.OK);
+			return new ResponseEntity<>(cdt, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@GetMapping(path = "/getDoctorsGrade/{clinicID}")
 	public ResponseEntity<List<DoctorAvgDTO>> doctorsGrade(@PathVariable("clinicID") long clinicID) {
 		Clinic c = this.clinicService.findOneByClinicID(clinicID);
-		
-		List<DoctorAvgDTO> dtoList = new ArrayList<DoctorAvgDTO>();
+
+		List<DoctorAvgDTO> dtoList = new ArrayList<>();
 		if (c != null) {
 			for (Doctor d : c.getDoctors()) {
 				dtoList.add(new DoctorAvgDTO(d.getFirstName() + " " + d.getLastName(), d.getAverageGrade()));
 			}
 
-			return new ResponseEntity<List<DoctorAvgDTO>>(dtoList, HttpStatus.OK);
+			return new ResponseEntity<>(dtoList, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
 
 	@GetMapping(path = "/getCurrentClinic")
 	public ResponseEntity<Long> currentClinic() {
@@ -226,7 +226,7 @@ public class ClinicController {
 		ClinicAdministrator ca = adminService.findOneByEmail(currentUser);
 
 		if (ca != null) {
-			return new ResponseEntity<Long>(ca.getClinic().getClinicID(), HttpStatus.OK);
+			return new ResponseEntity<>(ca.getClinic().getClinicID(), HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
@@ -242,7 +242,7 @@ public class ClinicController {
 		if (currCl != null) {
 			cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(), currCl.getDescription(),
 					currCl.getAverageGrade(), currCl.getCity());
-			return new ResponseEntity<ClinicInfoDTO>(cl, HttpStatus.OK);
+			return new ResponseEntity<>(cl, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
@@ -254,7 +254,7 @@ public class ClinicController {
 		if (currCl != null) {
 			ClinicInfoDTO cl = new ClinicInfoDTO(currCl.getClinicID(), currCl.getName(), currCl.getAddress(),
 					currCl.getDescription(), currCl.getAverageGrade(), currCl.getCity());
-			return new ResponseEntity<ClinicInfoDTO>(cl, HttpStatus.OK);
+			return new ResponseEntity<>(cl, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
@@ -263,7 +263,7 @@ public class ClinicController {
 	public ResponseEntity<String> createMap(@PathVariable String address) {
 		address = address.replace(" ", "+");
 		System.out.println("UDJE");
-		
+
 		String ONE_CALL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
 		HttpURLConnection con = null;
 		InputStream is = null;
@@ -287,13 +287,14 @@ public class ClinicController {
 			is.close();
 			con.disconnect();
 			System.out.println(buffer.toString());
-			return new ResponseEntity<String>(buffer.toString(), HttpStatus.OK);
-			
+			return new ResponseEntity<>(buffer.toString(), HttpStatus.OK);
+
 		} catch (Throwable t) {
 			t.printStackTrace();
 		} finally {
 			try {
-				is.close();
+				if(is != null)
+					is.close();
 			} catch (Throwable t) {
 			}
 			try {
@@ -305,11 +306,12 @@ public class ClinicController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
 	}
-	
+
 	@GetMapping(path = "/getDailyAppointments/{clinicId}/{money}")
-	public ResponseEntity<List<GraphDTO>> getDailyAppointments(@PathVariable("clinicId") long clinicID, @PathVariable("money") long money){
+	public ResponseEntity<List<GraphDTO>> getDailyAppointments(@PathVariable("clinicId") long clinicID,
+			@PathVariable("money") long money) {
 		Clinic currCl = clinicService.findOneByClinicID(clinicID);
-		
+
 		List<GraphDTO> dtoList = new ArrayList<GraphDTO>();
 		dtoList.add(new GraphDTO("Sunday", Double.valueOf(0)));
 		dtoList.add(new GraphDTO("Monday", Double.valueOf(0)));
@@ -318,69 +320,73 @@ public class ClinicController {
 		dtoList.add(new GraphDTO("Thursday", Double.valueOf(0)));
 		dtoList.add(new GraphDTO("Friday", Double.valueOf(0)));
 		dtoList.add(new GraphDTO("Saturday", Double.valueOf(0)));
-		
-		
+
 		for (Ordination ord : currCl.getOrdinations()) {
 			for (Appointment apt : ord.getAppointments()) {
-				  Calendar currentCalendar = Calendar.getInstance();
-				  int week = currentCalendar.get(Calendar.WEEK_OF_YEAR);
-				  int year = currentCalendar.get(Calendar.YEAR);
-				  Calendar targetCalendar = Calendar.getInstance();
-				  targetCalendar.setTime(apt.getDateTime());
-				  int targetWeek = targetCalendar.get(Calendar.WEEK_OF_YEAR);
-				  int targetYear = targetCalendar.get(Calendar.YEAR);
-				  if(week == targetWeek && year == targetYear) {
-					  if(money == 0)
-						  dtoList.get(targetCalendar.get(Calendar.DAY_OF_WEEK) - 1).setY(dtoList.get(targetCalendar.get(Calendar.DAY_OF_WEEK) - 1).getY() + 1);
-					  else
-						  dtoList.get(targetCalendar.get(Calendar.DAY_OF_WEEK) - 1).setY(dtoList.get(targetCalendar.get(Calendar.DAY_OF_WEEK) - 1).getY() + apt.getPrice());
+				Calendar currentCalendar = Calendar.getInstance();
+				int week = currentCalendar.get(Calendar.WEEK_OF_YEAR);
+				int year = currentCalendar.get(Calendar.YEAR);
+				Calendar targetCalendar = Calendar.getInstance();
+				targetCalendar.setTime(apt.getDateTime());
+				int targetWeek = targetCalendar.get(Calendar.WEEK_OF_YEAR);
+				int targetYear = targetCalendar.get(Calendar.YEAR);
+				if (week == targetWeek && year == targetYear) {
+					if (money == 0)
+						dtoList.get(targetCalendar.get(Calendar.DAY_OF_WEEK) - 1)
+								.setY(dtoList.get(targetCalendar.get(Calendar.DAY_OF_WEEK) - 1).getY() + 1);
+					else
+						dtoList.get(targetCalendar.get(Calendar.DAY_OF_WEEK) - 1).setY(
+								dtoList.get(targetCalendar.get(Calendar.DAY_OF_WEEK) - 1).getY() + apt.getPrice());
 
-				  }
+				}
 			}
 		}
-		
-		return new ResponseEntity<List<GraphDTO>>(dtoList, HttpStatus.OK);
-		
+
+		return new ResponseEntity<>(dtoList, HttpStatus.OK);
+
 	}
-	
+
 	@GetMapping(path = "/getMonthlyAppointments/{clinicId}/{money}")
-	public ResponseEntity<List<GraphDTO>> getMonthlyAppointments(@PathVariable("clinicId") long clinicID, @PathVariable("money") long money){
+	public ResponseEntity<List<GraphDTO>> getMonthlyAppointments(@PathVariable("clinicId") long clinicID,
+			@PathVariable("money") long money) {
 		Clinic currCl = clinicService.findOneByClinicID(clinicID);
-		
-		List<GraphDTO> dtoList = new ArrayList<GraphDTO>();
+
+		List<GraphDTO> dtoList = new ArrayList<>();
 		dtoList.add(new GraphDTO("First week", Double.valueOf(0)));
 		dtoList.add(new GraphDTO("Second week", Double.valueOf(0)));
 		dtoList.add(new GraphDTO("Third week", Double.valueOf(0)));
 		dtoList.add(new GraphDTO("Fourth week", Double.valueOf(0)));
-		
-		
+
 		for (Ordination ord : currCl.getOrdinations()) {
 			for (Appointment apt : ord.getAppointments()) {
-				  Calendar currentCalendar = Calendar.getInstance();
-				  int year = currentCalendar.get(Calendar.YEAR);
-				  int month = currentCalendar.get(Calendar.MONTH);
-				  Calendar targetCalendar = Calendar.getInstance();
-				  targetCalendar.setTime(apt.getDateTime());
-				  int targetYear = targetCalendar.get(Calendar.YEAR);
-				  int targetMonth = currentCalendar.get(Calendar.MONTH);
-				  if(year == targetYear && month == targetMonth) {
-					  if(money == 0)
-						  dtoList.get(targetCalendar.get(Calendar.WEEK_OF_MONTH) - 1).setY(dtoList.get(targetCalendar.get(Calendar.WEEK_OF_MONTH) - 1).getY() + 1);
-					  else
-						  dtoList.get(targetCalendar.get(Calendar.WEEK_OF_MONTH) - 1).setY(dtoList.get(targetCalendar.get(Calendar.WEEK_OF_MONTH) - 1).getY() + apt.getPrice());
+				Calendar currentCalendar = Calendar.getInstance();
+				int year = currentCalendar.get(Calendar.YEAR);
+				int month = currentCalendar.get(Calendar.MONTH);
+				Calendar targetCalendar = Calendar.getInstance();
+				targetCalendar.setTime(apt.getDateTime());
+				int targetYear = targetCalendar.get(Calendar.YEAR);
+				int targetMonth = currentCalendar.get(Calendar.MONTH);
+				if (year == targetYear && month == targetMonth) {
+					if (money == 0)
+						dtoList.get(targetCalendar.get(Calendar.WEEK_OF_MONTH) - 1)
+								.setY(dtoList.get(targetCalendar.get(Calendar.WEEK_OF_MONTH) - 1).getY() + 1);
+					else
+						dtoList.get(targetCalendar.get(Calendar.WEEK_OF_MONTH) - 1).setY(
+								dtoList.get(targetCalendar.get(Calendar.WEEK_OF_MONTH) - 1).getY() + apt.getPrice());
 
-				  }
+				}
 			}
 		}
-		
-		return new ResponseEntity<List<GraphDTO>>(dtoList, HttpStatus.OK);
-		
+
+		return new ResponseEntity<>(dtoList, HttpStatus.OK);
+
 	}
-	
+
 	@GetMapping(path = "/getYearlyAppointments/{clinicId}/{money}")
-	public ResponseEntity<List<GraphDTO>> getYearlyAppointments(@PathVariable("clinicId") long clinicID, @PathVariable("money") long money){
+	public ResponseEntity<List<GraphDTO>> getYearlyAppointments(@PathVariable("clinicId") long clinicID,
+			@PathVariable("money") long money) {
 		Clinic currCl = clinicService.findOneByClinicID(clinicID);
-		
+
 		List<GraphDTO> dtoList = new ArrayList<GraphDTO>();
 		dtoList.add(new GraphDTO("January", Double.valueOf(0)));
 		dtoList.add(new GraphDTO("February", Double.valueOf(0)));
@@ -394,27 +400,28 @@ public class ClinicController {
 		dtoList.add(new GraphDTO("October", Double.valueOf(0)));
 		dtoList.add(new GraphDTO("November", Double.valueOf(0)));
 		dtoList.add(new GraphDTO("December", Double.valueOf(0)));
-		
+
 		for (Ordination ord : currCl.getOrdinations()) {
 			for (Appointment apt : ord.getAppointments()) {
-				  Calendar currentCalendar = Calendar.getInstance();
-				  int year = currentCalendar.get(Calendar.YEAR);
-				  Calendar targetCalendar = Calendar.getInstance();
-				  targetCalendar.setTime(apt.getDateTime());
-				  int targetYear = targetCalendar.get(Calendar.YEAR);
-				  if(year == targetYear) {
-					  if(money == 0)
-						  dtoList.get(targetCalendar.get(Calendar.MONTH)).setY(dtoList.get(targetCalendar.get(Calendar.MONTH)).getY() + 1);
-					  else
-						  dtoList.get(targetCalendar.get(Calendar.MONTH)).setY(dtoList.get(targetCalendar.get(Calendar.MONTH)).getY() + apt.getPrice());
+				Calendar currentCalendar = Calendar.getInstance();
+				int year = currentCalendar.get(Calendar.YEAR);
+				Calendar targetCalendar = Calendar.getInstance();
+				targetCalendar.setTime(apt.getDateTime());
+				int targetYear = targetCalendar.get(Calendar.YEAR);
+				if (year == targetYear) {
+					if (money == 0)
+						dtoList.get(targetCalendar.get(Calendar.MONTH))
+								.setY(dtoList.get(targetCalendar.get(Calendar.MONTH)).getY() + 1);
+					else
+						dtoList.get(targetCalendar.get(Calendar.MONTH))
+								.setY(dtoList.get(targetCalendar.get(Calendar.MONTH)).getY() + apt.getPrice());
 
-				  }
+				}
 			}
 		}
-		
-		return new ResponseEntity<List<GraphDTO>>(dtoList, HttpStatus.OK);
-		
+
+		return new ResponseEntity<>(dtoList, HttpStatus.OK);
+
 	}
-	
 
 }

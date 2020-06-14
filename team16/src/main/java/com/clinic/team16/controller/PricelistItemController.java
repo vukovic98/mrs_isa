@@ -60,11 +60,11 @@ public class PricelistItemController {
 	}
 
 	@PostMapping(path = "/addPricelistItem", consumes = "application/json")
-	public ResponseEntity<HttpStatus> addPricelistItem(@RequestBody PricelistItem pri) {
-		PricelistItem p = this.pricelistItemService.findOneByAppointmentType(pri.getName());
+	public ResponseEntity<HttpStatus> addPricelistItem(@RequestBody PricelistItemDTO p) {
+		PricelistItem found = this.pricelistItemService.findOneByAppointmentType(p.getAppointmentType());
 		
-		if (p == null) {
-
+		if (found == null) {
+			PricelistItem pri = new PricelistItem(p.getAppointmentType(), Long.parseLong(p.getPrice()), null);
 			Pricelist prList = pricelistService.findOneByPricelistId(1);
 
 			pri.setPricelist(prList);

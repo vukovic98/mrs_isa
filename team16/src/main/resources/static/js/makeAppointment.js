@@ -1,5 +1,5 @@
+
 $( document ).ready(function() {
-    console.log( "ready!" );
     //var now = currentDate();
     var tmrw = tmrwDate();
     $("#date").attr("min",tmrw);
@@ -47,7 +47,6 @@ $( document ).ready(function() {
     $(document).on('click', '.selectClinicBtn', function () {
     	var btnID = $(this).attr('id');
     	sessionStorage.setItem("appParam", btnID);
-    	
     	sessionStorage.setItem("filter", "ne");
     	window.location.href = "/clinicPage";
     });
@@ -146,6 +145,7 @@ function popuniTabelu(){
 	var avgGrade = $("#avgGrade").val();
 	var dateControl = document.querySelector('input[type="date"]');
 	
+	
 	var location =  $("#locations").val(); 
 	if (appType == null || appType == "" ){
 		$("#appointmentTypes").addClass("is-invalid");
@@ -185,6 +185,7 @@ function popuniTabelu(){
 		
 	
 	}
+	
 
 	}
 function loadAvailableClinicsAllOK(clinics){

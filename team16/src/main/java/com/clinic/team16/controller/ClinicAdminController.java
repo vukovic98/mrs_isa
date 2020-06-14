@@ -3,6 +3,8 @@ package com.clinic.team16.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +63,7 @@ public class ClinicAdminController {
 	}
 
 	@PutMapping(path = "/updateAdmin", consumes = "application/json")
-	public ResponseEntity<ClinicAdministrator> updatePatient(@RequestBody User p) {
+	public ResponseEntity<ClinicAdministrator> updatePatient(@RequestBody ClinicAdminFullInfo p) {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		ClinicAdministrator found = this.clinicAdminService.findOneByEmail(currentUser);
 
@@ -78,6 +80,7 @@ public class ClinicAdminController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
+	@Transactional
 	@PostMapping(path = "/addAdmin", consumes = "application/json")
 	public ResponseEntity<HttpStatus> addAdmin(@RequestBody ClinicAdminFullInfo admin) {
 		Clinic c = this.clinicService.findOneByName(admin.getClinic());

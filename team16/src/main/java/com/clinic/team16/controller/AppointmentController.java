@@ -144,7 +144,7 @@ public class AppointmentController {
 								String.valueOf(a.getPricelistItems().getPrice()),
 								String.valueOf(a.getOrdination().getNumber()));
 						
-						if(a.getMedicalReport() == null)
+						if(a.getMedicalReport() == null) 
 							aDTO.setHeld(false);
 						else
 							aDTO.setHeld(true);
@@ -186,8 +186,8 @@ public class AppointmentController {
 	}
 
 	@PostMapping(path = "/findReportById", consumes = "application/json")
-	public ResponseEntity<MedicalReportDTO> findReportById(@RequestBody MedicalReport m) {
-		long id = m.getMedicalReportId();
+	public ResponseEntity<MedicalReportDTO> findReportById(@RequestBody MedicalReportDTO m) {
+		long id = m.getId();
 
 		Appointment a = this.appointmentService.findBuMedicalReport(id);
 
